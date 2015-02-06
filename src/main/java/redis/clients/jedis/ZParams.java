@@ -11,34 +11,34 @@ import java.util.List;
 import redis.clients.util.SafeEncoder;
 
 public class ZParams {
-    public enum Aggregate {
-	SUM, MIN, MAX;
+	public enum Aggregate {
+		SUM, MIN, MAX;
 
-	public final byte[] raw;
+		public final byte[] raw;
 
-	Aggregate() {
-	    raw = SafeEncoder.encode(name());
-	}
-    }
-
-    private List<byte[]> params = new ArrayList<byte[]>();
-
-    public ZParams weights(final int... weights) {
-	params.add(WEIGHTS.raw);
-	for (final int weight : weights) {
-	    params.add(Protocol.toByteArray(weight));
+		Aggregate() {
+			raw = SafeEncoder.encode(name());
+		}
 	}
 
-	return this;
-    }
+	private List<byte[]> params = new ArrayList<byte[]>();
 
-    public Collection<byte[]> getParams() {
-	return Collections.unmodifiableCollection(params);
-    }
+	public ZParams weights(final int... weights) {
+		params.add(WEIGHTS.raw);
+		for (final int weight : weights) {
+			params.add(Protocol.toByteArray(weight));
+		}
 
-    public ZParams aggregate(final Aggregate aggregate) {
-	params.add(AGGREGATE.raw);
-	params.add(aggregate.raw);
-	return this;
-    }
+		return this;
+	}
+
+	public Collection<byte[]> getParams() {
+		return Collections.unmodifiableCollection(params);
+	}
+
+	public ZParams aggregate(final Aggregate aggregate) {
+		params.add(AGGREGATE.raw);
+		params.add(aggregate.raw);
+		return this;
+	}
 }

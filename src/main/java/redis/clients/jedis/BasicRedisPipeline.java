@@ -5,31 +5,31 @@ package redis.clients.jedis;
  */
 public interface BasicRedisPipeline {
 
-    Response<String> bgrewriteaof();
+	Response<String> bgrewriteaof();
 
-    Response<String> bgsave();
+	Response<String> bgsave();
 
-    Response<String> configGet(String pattern);
+	Response<String> configGet(String pattern);
 
-    Response<String> configSet(String parameter, String value);
+	Response<String> configSet(String parameter, String value);
 
-    Response<String> configResetStat();
+	Response<String> configResetStat();
 
-    Response<String> save();
+	Response<String> save();
 
-    Response<Long> lastsave();
+	Response<Long> lastsave();
 
-    Response<String> flushDB();
+	Response<String> flushDB();
 
-    Response<String> flushAll();
+	Response<String> flushAll();
 
-    Response<String> info();
+	Response<String> info();
 
-    Response<Long> dbSize();
+	Response<Long> dbSize();
 
-    Response<String> shutdown();
+	Response<String> shutdown();
 
-    Response<String> ping();
+	Response<String> ping();
 
-    Response<String> select(int index);
+	Response<String> select(int index);
 }

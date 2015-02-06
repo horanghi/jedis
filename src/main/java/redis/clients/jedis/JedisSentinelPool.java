@@ -109,6 +109,7 @@ public class JedisSentinelPool extends Pool<Jedis> {
 				log.fine("Connecting to Sentinel " + hap);
 
 				try {
+					@SuppressWarnings("resource")
 					Jedis jedis = new Jedis(hap.getHost(), hap.getPort());
 
 					if (master == null) {

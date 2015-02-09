@@ -1243,7 +1243,7 @@ public class Jedis extends BinaryJedis implements JedisCommands, MultiKeyCommand
 		client.zadd(key, score, member);
 		return client.getIntegerReply();
 	}
-
+	
 	public Long zadd(final String key, final Map<String, Double> scoreMembers) {
 		checkIsInMulti();
 		client.zadd(key, scoreMembers);
@@ -1257,6 +1257,7 @@ public class Jedis extends BinaryJedis implements JedisCommands, MultiKeyCommand
 		return new LinkedHashSet<String>(members);
 	}
 
+	
 	/**
 	 * Remove the specified member from the sorted set value stored at key. If member was not a member of the set no operation is performed.
 	 * If key does not not hold a set value an error is returned.

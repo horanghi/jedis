@@ -319,6 +319,11 @@ public class Client extends BinaryClient implements Commands {
 		zadd(SafeEncoder.encode(key), score, SafeEncoder.encode(member));
 	}
 
+	public void gadd(final String key, final double x, final double y, final double distance, final Unit unit, final String member,
+			final String value) {
+		gadd(SafeEncoder.encode(key), x, y, distance, SafeEncoder.encode(unit.toString()), SafeEncoder.encode(member), SafeEncoder.encode(value));
+	}
+
 	public void zrange(final String key, final long start, final long end) {
 		zrange(SafeEncoder.encode(key), start, end);
 	}
@@ -880,4 +885,5 @@ public class Client extends BinaryClient implements Commands {
 	public void clusterSetSlotImporting(final int slot, final String nodeId) {
 		cluster(Protocol.CLUSTER_SETSLOT, String.valueOf(slot), Protocol.CLUSTER_SETSLOT_IMPORTING, nodeId);
 	}
+
 }

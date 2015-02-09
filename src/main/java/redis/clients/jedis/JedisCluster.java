@@ -8,6 +8,7 @@ import java.util.Set;
 import redis.clients.jedis.BinaryClient.LIST_POSITION;
 
 public class JedisCluster implements JedisCommands, BasicCommands {
+	
 	public static final short HASHSLOTS = 16384;
 	private static final int DEFAULT_TIMEOUT = 1;
 	private static final int DEFAULT_MAX_REDIRECTIONS = 5;

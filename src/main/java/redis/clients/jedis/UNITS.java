@@ -1,15 +1,15 @@
 package redis.clients.jedis;
 
-public enum Unit {
-	KM("km"), M("m");
+public enum UNITS {
+	M("m"), KM("km");
 	
 	private String value;
 	
-	Unit(String value){
+	UNITS(final String value){
 		this.value = value;
 	}
 	
-	public String toString(){
+	public String toValue(){
 		return this.value;
 	}
 }

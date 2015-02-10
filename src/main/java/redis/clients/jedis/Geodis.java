@@ -123,10 +123,10 @@ public class Geodis extends Jedis implements GeoCommands {
 		return result;
 	}
 
-	@Override
-	public Double distance(final double dLat1, final double dLon1, final double dLat2, final double dLon2) {
-		// d = |ax1 + by1 + c | / sqrt(a^2 + b^2)
-		return Math.acos(Math.sin(dLat1) * Math.sin(dLat2) + Math.cos(dLat1) * Math.cos(dLat2) * Math.cos(dLon1 - dLon2));
-	}
+	// @Override
+	// public Double distance(final double dLat1, final double dLon1, final double dLat2, final double dLon2) {
+	// // d = |ax1 + by1 + c | / sqrt(a^2 + b^2)
+	// return Math.acos(Math.sin(dLat1) * Math.sin(dLat2) + Math.cos(dLat1) * Math.cos(dLat2) * Math.cos(dLon1 - dLon2));
+	// }
 
 }

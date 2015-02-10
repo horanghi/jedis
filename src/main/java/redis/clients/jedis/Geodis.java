@@ -97,12 +97,36 @@ public class Geodis extends Jedis implements GeoCommands {
 	public Set<GCircle> gsearchCircle(final String key, final double x, final double y, final double distance) {
 		Set<String> members = gradius(key, x, y, distance, UNITS.M);
 		Set<GCircle> result = new LinkedHashSet<GCircle>();
-		for(String member : members){
+		for (String member : members) {
 			GCircle circle = this.gmember(key, member);
-			if(circle != null ){
-				result.add(circle);
+			if (circle != null) {
+				if (circle.getDistance() > 0) {
+					result.add(circle);
+				}
 			}
 		}
 		return result;
 	}
+
+	@Override
+	public Set<GPoint> gsearchPoint(String key, double x, double y, double distance) {
+		Set<String> members = gradius(key, x, y, distance, UNITS.M);
+		Set<GPoint> result = new LinkedHashSet<GPoint>();
+		for (String member : members) {
+			GCircle circle = this.gmember(key, member);
+			if (circle != null) {
+				if (circle.getDistance() == 0) {
+					result.add(circle);
+				}
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public Double distance(final double dLat1, final double dLon1, final double dLat2, final double dLon2) {
+		// d = |ax1 + by1 + c | / sqrt(a^2 + b^2)
+		return Math.acos(Math.sin(dLat1) * Math.sin(dLat2) + Math.cos(dLat1) * Math.cos(dLat2) * Math.cos(dLon1 - dLon2));
+	}
+
 }

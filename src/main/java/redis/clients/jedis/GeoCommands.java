@@ -25,7 +25,11 @@ public interface GeoCommands {
 
 	Long gaddCircle(final String key, final double x, final double y, final double distance, final String member, final String value);
 
-	Set<GCircle> gsearchCircle(String key, double x, double y, double distance);
+	Set<GCircle> gsearchCircle(final String key, final double x, final double y, final double distance);
+	
+	Set<GPoint> gsearchPoint(final String key, final double x, final double y, final double distance);
+
+	Double distance(final double x1, final double y1, final double x2, final double y2);
 
 	// Long gadd(String key, Map<String, Double> scoreMembers);
 

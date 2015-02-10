@@ -84,5 +84,20 @@ public class GeodisTest {
 		}
 		geodis.del(key);
 	}
+	
+	@Test
+	public void testgaddCirclengsearchCircle4real() {
+		geodis.del(key);
+		assertThat(geodis.gaddCircle(key, 0, 0, 10, member1, value), is(OKl));
+		assertThat(geodis.gaddCircle(key, 0, 0, 20, member1, value), is(0l));
+		assertThat(geodis.gaddCircle(key, 0, 0, 30, member2, value), is(OKl));
+		assertThat(geodis.gsearchCircle(key, 0, 0, 100).size(), is(2));
+		Set<GCircle> circles = geodis.gsearchCircle(key, 0, 0, 100);
+		for (GCircle go : circles) {
+			System.out.println(go.getMember() + " : x. " + go.getX() + " y. " + go.getY() + " dis. " + go.getDistance() + " dsc :"
+					+ go.getValue());
+		}
+		geodis.del(key);
+	}
 
 }

@@ -385,28 +385,6 @@ public class BinaryClient extends Connection {
 		sendCommand(ZADD, key, toByteArray(score), member);
 	}
 
-	// TODO
-	public void gadd(final byte[] key, final double x, final double y, final double distance, final byte[] unitb, final byte[] member,
-			final byte[] value) {
-		sendCommand(GADD, key, member, toByteArray(x), toByteArray(y), toByteArray(distance), unitb, value);
-	}
-
-	private double cal2meter(final double distance, final UNITS unit) {
-		double calDistance = distance;
-		if (UNITS.KM.equals(unit)) {
-			calDistance *= 1000;
-		}
-		return calDistance;
-	}
-
-	// TODO
-	public void gradius(byte[] key, double x, double y, double distance, byte[] unitb) {
-		sendCommand(GRADIUS, key, toByteArray(x), toByteArray(y), toByteArray(distance), unitb);
-	}
-	public void gmember(byte[] key, byte[] member) {
-		sendCommand(GMEMBERVALUE, key, member);
-	}
-	
 	public void zaddBinary(final byte[] key, final Map<byte[], Double> scoreMembers) {
 
 		ArrayList<byte[]> args = new ArrayList<byte[]>(scoreMembers.size() * 2 + 1);
@@ -1191,4 +1169,5 @@ public class BinaryClient extends Connection {
 	public void asking() {
 		sendCommand(Command.ASKING);
 	}
+
 }

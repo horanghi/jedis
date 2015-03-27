@@ -8,9 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.util.SafeEncoder;
 
-public class Client extends BinaryClient implements Commands {
+public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	public Client(final String host) {
 		super(host);
 	}
@@ -317,11 +318,6 @@ public class Client extends BinaryClient implements Commands {
 
 	public void zadd(final String key, final double score, final String member) {
 		zadd(SafeEncoder.encode(key), score, SafeEncoder.encode(member));
-	}
-
-	public void gadd(final String key, final double x, final double y, final double distance, final Unit unit, final String member,
-			final String value) {
-		gadd(SafeEncoder.encode(key), x, y, distance, SafeEncoder.encode(unit.toString()), SafeEncoder.encode(member), SafeEncoder.encode(value));
 	}
 
 	public void zrange(final String key, final long start, final long end) {
@@ -885,5 +881,53 @@ public class Client extends BinaryClient implements Commands {
 	public void clusterSetSlotImporting(final int slot, final String nodeId) {
 		cluster(Protocol.CLUSTER_SETSLOT, String.valueOf(slot), Protocol.CLUSTER_SETSLOT_IMPORTING, nodeId);
 	}
+
+	// Spatial methods =================================================================
+	@Override
+	public void gadd(final String key, final double latitude, final double longitude, final String member, final String value) {
+		gfadd(SafeEncoder.encode(key), latitude, longitude, 0, UNITS.M, SafeEncoder.encode(member), SafeEncoder.encode(value));
+	}
+
+	@Override
+	public void gfadd(final String key, final double lat, final double lon, final double distance, final UNITS unit, final String member,
+			final String value) {
+		gfadd(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(member), SafeEncoder.encode(value));
+	}
+
+	@Override
+	public void gfrangeByRadius(final String key, final double lat, final double lon, final double distance, final UNITS unit) {
+		gfrangeByRadius(SafeEncoder.encode(key), lat, lon, distance, unit);
+	}
+
+	@Override
+	public void gfrangeByRadiusDetail(final String key, final double lat, final double lon, final double distance, final UNITS unit) {
+		gfrangeByRadiusDetail(SafeEncoder.encode(key), lat, lon, distance, unit);
+	}
+
+	@Override
+	public void gfcard(final String key) {
+		gfcard(SafeEncoder.encode(key));
+	}
+
+	@Override
+	public void gfrem(final String key, final String member) {
+		gfrem(SafeEncoder.encode(key), SafeEncoder.encode(member));
+	}
+
+	@Override
+	public void gfmget(final String key, final String[] members) {
+		byte[][] mlist = new byte[members.length][];
+		int idx = 0;
+		for (String member : members) {
+			mlist[idx++] = SafeEncoder.encode(member);
+		}
+		gfmget(SafeEncoder.encode(key), mlist);
+	}
+	
+	@Override
+	public void gfnn(final String key, final double lat, final double lon, final long count) {
+		gfnn(SafeEncoder.encode(key), lat, lon, count);
+	}
+
 
 }

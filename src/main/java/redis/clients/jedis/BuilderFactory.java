@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import redis.clients.jedis.Protocol.UNITS;
+import redis.clients.spatial.model.Circle;
 import redis.clients.util.SafeEncoder;
 
 public class BuilderFactory {
@@ -250,5 +252,115 @@ public class BuilderFactory {
 			return "ZSet<Tuple>";
 		}
 	};
+	public static final Builder<List<Circle>> SPATIAL_GCIRCLE_WITHDISTANCE_LIST = new Builder<List<Circle>>() {
+		@SuppressWarnings("unchecked")
+		public List<Circle> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			final List<Circle> result = new ArrayList<Circle>(l.size());
+			Iterator<byte[]> iterator = l.iterator();
+			while (iterator.hasNext()) {
+				result.add(new Circle(
+						iterator.next(), 
+						Double.valueOf(SafeEncoder.encode(iterator.next())), 
+						Double.valueOf(SafeEncoder.encode(iterator.next())), 
+						Double.valueOf(SafeEncoder.encode(iterator.next())), 
+						UNITS.M, 
+						iterator.next(), 
+						Double.valueOf(SafeEncoder.encode(iterator.next()))));
+			}
+			return result;
+		}
 
+		public String toString() {
+			return "List<GCircle>";
+		}
+
+	};
+
+	public static final Builder<List<Circle>> BYTE_SPATIAL_GCIRCLE_WITHDISTANCE_LIST = new Builder<List<Circle>>() {
+		@SuppressWarnings("unchecked")
+		public List<Circle> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			final List<Circle> result = new ArrayList<Circle>(l.size());
+			Iterator<byte[]> iterator = l.iterator();
+			while (iterator.hasNext()) {
+				result.add(new Circle(
+						iterator.next(), 
+						Double.valueOf(SafeEncoder.encode(iterator.next())), 
+						Double.valueOf(SafeEncoder.encode(iterator.next())), 
+						Double.valueOf(SafeEncoder.encode(iterator.next())), 
+						UNITS.M, 
+						iterator.next(), 
+						Double.valueOf(SafeEncoder.encode(iterator.next()))));
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "GSet<GCircle>";
+		}
+	};
+	
+	public static final Builder<List<Circle>> SPATIAL_GCIRCLE_LIST = new Builder<List<Circle>>() {
+		@SuppressWarnings("unchecked")
+		public List<Circle> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			final List<Circle> result = new ArrayList<Circle>(l.size());
+			Iterator<byte[]> iterator = l.iterator();
+			
+			while (iterator.hasNext()) {
+				result.add(
+						new Circle(
+							iterator.next(), 
+							Double.valueOf(SafeEncoder.encode(iterator.next())), 
+							Double.valueOf(SafeEncoder.encode(iterator.next())), 
+							Double.valueOf(SafeEncoder.encode(iterator.next())), 
+							UNITS.M,
+							iterator.next(), 
+							0));
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "List<GCircle>";
+		}
+
+	};
+	public static final Builder<List<Circle>> BYTE_SPATIAL_GCIRCLE_LIST  = new Builder<List<Circle>>() {
+		@SuppressWarnings("unchecked")
+		public List<Circle> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			final List<Circle> result = new ArrayList<Circle>(l.size());
+			Iterator<byte[]> iterator = l.iterator();
+			while (iterator.hasNext()) {
+				result.add(new Circle(
+								iterator.next(), 
+								Double.valueOf(SafeEncoder.encode(iterator.next())), 
+								Double.valueOf(SafeEncoder.encode(iterator.next())), 
+								Double.valueOf(SafeEncoder.encode(iterator.next())), 
+								UNITS.M,
+								iterator.next(), 
+								0));
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "List<GCircle>";
+		}
+
+	};
 }

@@ -30,21 +30,21 @@ public class Point implements Geometry {
 
 	private Type type = Type.POINT;
 
-	Point(double lat, double lon) {
-		this.x = lat;
-		this.y = lon;
+	public Point(double x, double y) {
+		this.x = x;
+		this.y = y;
 	}
 
-	Point(String member, double lat, double lon, String value) {
-		this.x = lat;
-		this.y = lon;
+	public Point(String member, double x, double y, String value) {
+		this.x = x;
+		this.y = y;
 		this.member = member;
 		this.value = value;
 	}
 
-	Point(byte[] member, double lat, double lon, byte[] value) {
-		this.x = lat;
-		this.y = lon;
+	public Point(byte[] member, double x, double y, byte[] value) {
+		this.x = x;
+		this.y = y;
 		this.member = SafeEncoder.encode(member);
 		this.value = SafeEncoder.encode(value);
 	}

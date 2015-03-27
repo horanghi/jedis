@@ -2,6 +2,7 @@ package redis.clients.geodis.tests;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -16,6 +17,8 @@ import org.junit.Test;
 import redis.clients.jedis.Geodis;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
+import redis.clients.spatial.model.Point;
+import redis.clients.spatial.model.Polygon;
 
 public class GeodisTest {
 
@@ -103,6 +106,80 @@ public class GeodisTest {
 	}
 
 	@Test
+	public void testgaddnGradiusWithMatch() {
+		geodis.del(key);
+		assertThat(geodis.gadd(key, 0, 0, member1, value), is(OKl));
+		assertThat(geodis.gadd(key, 0, 0, member2, value), is(OKl));
+		assertThat(geodis.gfrangeByRadius(key, 0, 0, 10, UNITS.KM).size(), is(2));
+		List<Circle> circles = geodis.gfrangeByRadiusWithMatch(key, 0, 0, 100, UNITS.M, "member*");
+		for (Circle circle : circles) {
+			System.out.println(circle.toString());
+		}
+		geodis.del(key);
+
+		geodis.del(keyb);
+		assertThat(geodis.gadd(keyb, 0, 0, member1b, valueb), is(OKl));
+		assertThat(geodis.gadd(keyb, 0, 0, member2b, valueb), is(OKl));
+		assertThat(geodis.gfrangeByRadius(keyb, 0, 0, 10, UNITS.KM).size(), is(2));
+		List<Circle> circlesb = geodis.gfrangeByRadiusWithMatch(keyb, 0, 0, 100, UNITS.M, "member*".getBytes());
+		for (Circle circle : circlesb) {
+			System.out.println(circle.toString());
+		}
+		geodis.del(keyb);
+	}
+
+	@Test
+	public void testgaddnGradiusWithMatchIfnotMatch() {
+		geodis.del(key);
+		assertThat(geodis.gadd(key, 0, 0, member1, value), is(OKl));
+		assertThat(geodis.gadd(key, 0, 0, member2, value), is(OKl));
+		assertThat(geodis.gadd(key, 0, 0, "memberd", value), is(OKl));
+		assertThat(geodis.gfrangeByRadius(key, 0, 0, 10, UNITS.KM).size(), is(3));
+		List<Circle> circles = geodis.gfrangeByRadiusWithMatch(key, 0, 0, 100, UNITS.M, "memberd*");
+		assertThat(circles.size(), is(1));
+		assertTrue(circles.iterator().next().equals(new Circle("memberd", 0, 0, 0, UNITS.M, value, 0)));
+		geodis.del(key);
+
+		geodis.del(keyb);
+		assertThat(geodis.gadd(keyb, 0, 0, member1b, valueb), is(OKl));
+		assertThat(geodis.gadd(keyb, 0, 0, member2b, valueb), is(OKl));
+		assertThat(geodis.gadd(keyb, 0, 0, "memberd".getBytes(), valueb), is(OKl));
+		assertThat(geodis.gfrangeByRadius(keyb, 0, 0, 10, UNITS.KM).size(), is(3));
+		List<Circle> circlesb = geodis.gfrangeByRadiusWithMatch(keyb, 0, 0, 100, UNITS.M, "memberd*".getBytes());
+		assertThat(circlesb.size(), is(1));
+		assertTrue(circlesb.iterator().next().equals(new Circle("memberd".getBytes(), 0, 0, 0, UNITS.M, valueb, 0)));
+		geodis.del(keyb);
+	}
+
+	@Test
+	public void testgaddnRegion() {
+		// [1,1], [1,-1], [-1,-1], [-1,1], [1,1]
+		Polygon polygon = new Polygon(new Point(1, 1), new Point(1, -1), new Point(1, 1), new Point(-1, -1), new Point(-1, 1), new Point(1,
+				1));
+		System.out.println(polygon.getJsonStr());
+
+		geodis.del(key);
+		assertThat(geodis.gadd(key, 0, 0, member1, value), is(OKl));
+		assertThat(geodis.gadd(key, 0, 0, member2, value), is(OKl));
+		assertThat(geodis.gfrangeByRegion(key, polygon).size(), is(2));
+		List<Circle> circles = geodis.gfrangeByRegion(key, polygon);
+		for (Circle circle : circles) {
+			System.out.println(circle.toString());
+		}
+		geodis.del(key);
+
+		geodis.del(keyb);
+		assertThat(geodis.gadd(keyb, 0, 0, member1b, valueb), is(OKl));
+		assertThat(geodis.gadd(keyb, 0, 0, member2b, valueb), is(OKl));
+		assertThat(geodis.gfrangeByRadius(keyb, 0, 0, 10, UNITS.KM).size(), is(2));
+		List<Circle> circlesb = geodis.gfrangeByRegion(keyb, polygon);
+		for (Circle circle : circlesb) {
+			System.out.println(circle.toString());
+		}
+		geodis.del(keyb);
+	}
+
+	@Test
 	public void testgfcard() {
 		geodis.del(key);
 		assertThat(geodis.gadd(key, 0, 0, member1, value), is(OKl));
@@ -152,6 +229,23 @@ public class GeodisTest {
 	}
 
 	@Test
+	public void testgfgetIfnotexist() {
+		geodis.del(key);
+		assertThat(geodis.gadd(key, 0, 0, member1, value), is(OKl));
+		assertThat(geodis.gadd(key, 0, 0, member2, value), is(OKl));
+		assertNull(geodis.gfget(key, member3));
+		assertTrue(geodis.gfget(key, member1).equals(new Circle(member1, 0, 0, 0, UNITS.M, value, 0)));
+		geodis.del(key);
+
+		geodis.del(keyb);
+		assertThat(geodis.gadd(keyb, 0, 0, member1b, valueb), is(OKl));
+		assertThat(geodis.gadd(keyb, 0, 0, member2b, valueb), is(OKl));
+		assertNull(geodis.gfget(keyb, member3b));
+		assertTrue(geodis.gfget(keyb, member1b).equals(new Circle(member1b, 0, 0, 0, UNITS.M, valueb, 0)));
+		geodis.del(keyb);
+	}
+
+	@Test
 	public void testgfmget() {
 		geodis.del(key);
 		assertThat(geodis.gadd(key, 0, 0, member1, value), is(OKl));
@@ -169,37 +263,82 @@ public class GeodisTest {
 	}
 
 	@Test
+	public void testgfmgetIfnotexist() {
+		geodis.del(key);
+		assertThat(geodis.gadd(key, 0, 0, member1, value), is(OKl));
+		assertThat(geodis.gadd(key, 0, 0, member2, value), is(OKl));
+		assertThat(geodis.gfmget(key, member3, member4).size(), is(0));
+		assertTrue(geodis.gfmget(key, member2).iterator().next().equals(new Circle(member2, 0, 0, 0, UNITS.M, value, 0)));
+		geodis.del(key);
+
+		geodis.del(keyb);
+		assertThat(geodis.gadd(keyb, 0, 0, member1b, valueb), is(OKl));
+		assertThat(geodis.gadd(keyb, 0, 0, member2b, valueb), is(OKl));
+		assertThat(geodis.gfmget(keyb, member3b, member4b).size(), is(0));
+		assertTrue(geodis.gfmget(keyb, member2b).iterator().next().equals(new Circle(member2b, 0, 0, 0, UNITS.M, valueb, 0)));
+		geodis.del(keyb);
+	}
+
+	@Test
 	public void testgfnn() {
 		geodis.del(key);
-		String[] members = {"member1","member2","member3","member4"};
+		String[] members = { "member1", "member2", "member3", "member4" };
 		assertThat(geodis.gadd(key, 0.0, 0.0, members[0], value), is(OKl));
 		assertThat(geodis.gadd(key, 0.1, 0.1, members[1], value), is(OKl));
 		assertThat(geodis.gadd(key, 0.2, 0.2, members[2], value), is(OKl));
 		assertThat(geodis.gadd(key, 0.3, 0.3, members[3], value), is(OKl));
-		assertThat(geodis.gfnn(key, 0, 0 ,3).size(), is(3));
-		List<Circle> result = geodis.gfnn(key, 0, 0 ,4);
+		assertThat(geodis.gfnn(key, 0, 0, 3).size(), is(3));
+		List<Circle> result = geodis.gfnn(key, 0, 0, 4);
 		assertThat(result.size(), is(4));
 		int idx = 0;
-		for(Circle circle : result){
+		for (Circle circle : result) {
 			circle.equals(new Circle(members[idx++], 0, 0, 0, UNITS.M, value, 0));
 		}
 		geodis.del(key);
-		
+
 		geodis.del(keyb);
-		byte[][] membersb = {"member1".getBytes(),"member2".getBytes(),"member3".getBytes(),"member4".getBytes()};
+		byte[][] membersb = { "member1".getBytes(), "member2".getBytes(), "member3".getBytes(), "member4".getBytes() };
 		assertThat(geodis.gadd(keyb, 0.0, 0.0, membersb[0], valueb), is(OKl));
 		assertThat(geodis.gadd(keyb, 0.1, 0.1, membersb[1], valueb), is(OKl));
 		assertThat(geodis.gadd(keyb, 0.2, 0.2, membersb[2], valueb), is(OKl));
 		assertThat(geodis.gadd(keyb, 0.3, 0.3, membersb[3], valueb), is(OKl));
-		assertThat(geodis.gfnn(keyb, 0, 0 ,3).size(), is(3));
-		List<Circle> resultb = geodis.gfnn(keyb, 0, 0 ,4);
+		assertThat(geodis.gfnn(keyb, 0, 0, 3).size(), is(3));
+		List<Circle> resultb = geodis.gfnn(keyb, 0, 0, 4);
 		assertThat(result.size(), is(4));
 		int idx2 = 0;
-		for(Circle circle : resultb){
+		for (Circle circle : resultb) {
 			circle.equals(new Circle(membersb[idx2++], 0, 0, 0, UNITS.M, valueb, 0));
 		}
 		geodis.del(keyb);
+	}
 
+	// @Test
+	public void testgfnnIfnotexist() {
+		geodis.del(key);
+		String[] members = { "member1", "member2", "member3", "member4" };
+		assertThat(geodis.gadd(key, 0.0, 0.0, members[0], value), is(OKl));
+		assertThat(geodis.gadd(key, 0.1, 0.1, members[1], value), is(OKl));
+		assertThat(geodis.gfnn(key, 0, 0, 5).size(), is(2));
+		List<Circle> result = geodis.gfnn(key, 0, 0, 5);
+		assertThat(result.size(), is(2));
+		int idx = 0;
+		for (Circle circle : result) {
+			circle.equals(new Circle(members[idx++], 0, 0, 0, UNITS.M, value, 0));
+		}
+		geodis.del(key);
+
+		geodis.del(keyb);
+		byte[][] membersb = { "member1".getBytes(), "member2".getBytes(), "member3".getBytes(), "member4".getBytes() };
+		assertThat(geodis.gadd(keyb, 0.0, 0.0, membersb[0], valueb), is(OKl));
+		assertThat(geodis.gadd(keyb, 0.1, 0.1, membersb[1], valueb), is(OKl));
+		assertThat(geodis.gfnn(keyb, 0, 0, 3).size(), is(3));
+		List<Circle> resultb = geodis.gfnn(keyb, 0, 0, 5);
+		assertThat(result.size(), is(5));
+		int idx2 = 0;
+		for (Circle circle : resultb) {
+			circle.equals(new Circle(membersb[idx2++], 0, 0, 0, UNITS.M, valueb, 0));
+		}
+		geodis.del(keyb);
 	}
 	//
 	// @Test

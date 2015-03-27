@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import redis.clients.jedis.Protocol.UNITS;
+import redis.clients.spatial.model.Polygon;
 import redis.clients.util.SafeEncoder;
 
 public class Client extends BinaryClient4Spatial implements Commands4Spatial {
@@ -929,5 +930,15 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 		gfnn(SafeEncoder.encode(key), lat, lon, count);
 	}
 
+	@Override
+	public void gfrangeByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern) {
+		gfrangeByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern));
+	}
+
+	@Override
+	public void gfrangeByRegion(String key, Polygon polygon) {
+		gfrangeByRegion(SafeEncoder.encode(key), polygon);
+		
+	}
 
 }

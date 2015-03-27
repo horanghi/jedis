@@ -6,13 +6,17 @@ import static redis.clients.jedis.Protocol.Command.GFCARD;
 import static redis.clients.jedis.Protocol.Command.GFMGET;
 import static redis.clients.jedis.Protocol.Command.GFNN;
 import static redis.clients.jedis.Protocol.Command.GFRANGEBYRADIUS;
+import static redis.clients.jedis.Protocol.Command.GFRANGEBYREGION;
 import static redis.clients.jedis.Protocol.Command.GFREM;
+import static redis.clients.jedis.Protocol.GeoOptions.ASC;
 import static redis.clients.jedis.Protocol.GeoOptions.CONTAINS;
 import static redis.clients.jedis.Protocol.GeoOptions.LIMIT;
+import static redis.clients.jedis.Protocol.GeoOptions.MATCH;
 import static redis.clients.jedis.Protocol.GeoOptions.RADIUS;
 import static redis.clients.jedis.Protocol.GeoOptions.WITHDISTANCE;
 import static redis.clients.jedis.Protocol.GeoOptions.WITHVALUES;
 import redis.clients.jedis.Protocol.UNITS;
+import redis.clients.spatial.model.Polygon;
 
 public class BinaryClient4Spatial extends BinaryClient {
 
@@ -37,14 +41,21 @@ public class BinaryClient4Spatial extends BinaryClient {
 	public void gfrangeByRadius(final byte[] key, final double lat, final double lon, final double distance, final UNITS unit) {
 		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
-		sendCommand(GFRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, CONTAINS.raw);
+		sendCommand(GFRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, CONTAINS.raw, ASC.raw);
 	}
 
 	public void gfrangeByRadiusDetail(final byte[] key, final double lat, final double lon, final double distance, final UNITS unit) {
 		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
 		sendCommand(GFRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, CONTAINS.raw,
-				WITHVALUES.raw, WITHDISTANCE.raw);
+				WITHVALUES.raw, WITHDISTANCE.raw, ASC.raw);
+	}
+	
+	public void gfrangeByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern) {
+		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
+		// [LIMIT offset count]
+		sendCommand(GFRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, CONTAINS.raw,
+				WITHVALUES.raw, WITHDISTANCE.raw,  ASC.raw, MATCH.raw, pattern);
 	}
 
 	public void gfcard(final byte[] key) {
@@ -71,4 +82,11 @@ public class BinaryClient4Spatial extends BinaryClient {
 		//GFNN key latitude longitude LIMIT count [MATCH pattern] [NR|XR] [WITHVALUES] [WITHDISTANCE]
 		sendCommand(GFNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(count), WITHVALUES.raw, WITHDISTANCE.raw);
 	}
+	
+	public void gfrangeByRegion(byte[] key, Polygon polygon) {
+		//GFRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR] 
+		//[WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
+		sendCommand(GFRANGEBYREGION, key, polygon.getJsonbyte(), WITHVALUES.raw);
+	}
+
 }

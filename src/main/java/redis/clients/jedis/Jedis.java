@@ -2778,6 +2778,7 @@ public class Jedis extends BinaryJedis implements JedisCommands, MultiKeyCommand
 		List<Object> result = client.getObjectMultiBulkReply();
 		int newcursor = Integer.parseInt(new String((byte[]) result.get(0)));
 		List<String> results = new ArrayList<String>();
+		@SuppressWarnings("unchecked")
 		List<byte[]> rawResults = (List<byte[]>) result.get(1);
 		for (byte[] bs : rawResults) {
 			results.add(SafeEncoder.encode(bs));
@@ -2807,6 +2808,7 @@ public class Jedis extends BinaryJedis implements JedisCommands, MultiKeyCommand
 		List<Object> result = client.getObjectMultiBulkReply();
 		int newcursor = Integer.parseInt(new String((byte[]) result.get(0)));
 		List<Map.Entry<String, String>> results = new ArrayList<Map.Entry<String, String>>();
+		@SuppressWarnings("unchecked")
 		List<byte[]> rawResults = (List<byte[]>) result.get(1);
 		Iterator<byte[]> iterator = rawResults.iterator();
 		while (iterator.hasNext()) {
@@ -2838,6 +2840,7 @@ public class Jedis extends BinaryJedis implements JedisCommands, MultiKeyCommand
 		List<Object> result = client.getObjectMultiBulkReply();
 		int newcursor = Integer.parseInt(new String((byte[]) result.get(0)));
 		List<String> results = new ArrayList<String>();
+		@SuppressWarnings("unchecked")
 		List<byte[]> rawResults = (List<byte[]>) result.get(1);
 		for (byte[] bs : rawResults) {
 			results.add(SafeEncoder.encode(bs));
@@ -2867,6 +2870,7 @@ public class Jedis extends BinaryJedis implements JedisCommands, MultiKeyCommand
 		List<Object> result = client.getObjectMultiBulkReply();
 		int newcursor = Integer.parseInt(new String((byte[]) result.get(0)));
 		List<Tuple> results = new ArrayList<Tuple>();
+		@SuppressWarnings("unchecked")
 		List<byte[]> rawResults = (List<byte[]>) result.get(1);
 		Iterator<byte[]> iterator = rawResults.iterator();
 		while (iterator.hasNext()) {
@@ -2885,6 +2889,7 @@ public class Jedis extends BinaryJedis implements JedisCommands, MultiKeyCommand
 		List<Object> result = client.getObjectMultiBulkReply();
 		String newcursor = new String((byte[]) result.get(0));
 		List<String> results = new ArrayList<String>();
+		@SuppressWarnings("unchecked")
 		List<byte[]> rawResults = (List<byte[]>) result.get(1);
 		for (byte[] bs : rawResults) {
 			results.add(SafeEncoder.encode(bs));
@@ -2902,6 +2907,7 @@ public class Jedis extends BinaryJedis implements JedisCommands, MultiKeyCommand
 		List<Object> result = client.getObjectMultiBulkReply();
 		String newcursor = new String((byte[]) result.get(0));
 		List<Map.Entry<String, String>> results = new ArrayList<Map.Entry<String, String>>();
+		@SuppressWarnings("unchecked")
 		List<byte[]> rawResults = (List<byte[]>) result.get(1);
 		Iterator<byte[]> iterator = rawResults.iterator();
 		while (iterator.hasNext()) {
@@ -2921,6 +2927,7 @@ public class Jedis extends BinaryJedis implements JedisCommands, MultiKeyCommand
 		List<Object> result = client.getObjectMultiBulkReply();
 		String newcursor = new String((byte[]) result.get(0));
 		List<String> results = new ArrayList<String>();
+		@SuppressWarnings("unchecked")
 		List<byte[]> rawResults = (List<byte[]>) result.get(1);
 		for (byte[] bs : rawResults) {
 			results.add(SafeEncoder.encode(bs));
@@ -2938,6 +2945,7 @@ public class Jedis extends BinaryJedis implements JedisCommands, MultiKeyCommand
 		List<Object> result = client.getObjectMultiBulkReply();
 		String newcursor = new String((byte[]) result.get(0));
 		List<Tuple> results = new ArrayList<Tuple>();
+		@SuppressWarnings("unchecked")
 		List<byte[]> rawResults = (List<byte[]>) result.get(1);
 		Iterator<byte[]> iterator = rawResults.iterator();
 		while (iterator.hasNext()) {

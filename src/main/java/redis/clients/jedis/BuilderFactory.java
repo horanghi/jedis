@@ -262,7 +262,8 @@ public class BuilderFactory {
 			final List<Circle> result = new ArrayList<Circle>(l.size());
 			Iterator<byte[]> iterator = l.iterator();
 			while (iterator.hasNext()) {
-				result.add(new Circle(
+				result.add(
+					new Circle(
 						iterator.next(), 
 						Double.valueOf(SafeEncoder.encode(iterator.next())), 
 						Double.valueOf(SafeEncoder.encode(iterator.next())), 
@@ -275,7 +276,7 @@ public class BuilderFactory {
 		}
 
 		public String toString() {
-			return "List<GCircle>";
+			return "List<Circle>";
 		}
 
 	};
@@ -290,7 +291,8 @@ public class BuilderFactory {
 			final List<Circle> result = new ArrayList<Circle>(l.size());
 			Iterator<byte[]> iterator = l.iterator();
 			while (iterator.hasNext()) {
-				result.add(new Circle(
+				result.add(
+					new Circle(
 						iterator.next(), 
 						Double.valueOf(SafeEncoder.encode(iterator.next())), 
 						Double.valueOf(SafeEncoder.encode(iterator.next())), 
@@ -318,9 +320,12 @@ public class BuilderFactory {
 			Iterator<byte[]> iterator = l.iterator();
 			
 			while (iterator.hasNext()) {
+				byte[] fistValue = iterator.next();
+				if(fistValue == null)
+					continue;
 				result.add(
 						new Circle(
-							iterator.next(), 
+							fistValue, 
 							Double.valueOf(SafeEncoder.encode(iterator.next())), 
 							Double.valueOf(SafeEncoder.encode(iterator.next())), 
 							Double.valueOf(SafeEncoder.encode(iterator.next())), 
@@ -332,7 +337,7 @@ public class BuilderFactory {
 		}
 
 		public String toString() {
-			return "List<GCircle>";
+			return "List<Circle>";
 		}
 
 	};
@@ -345,21 +350,26 @@ public class BuilderFactory {
 			List<byte[]> l = (List<byte[]>) data;
 			final List<Circle> result = new ArrayList<Circle>(l.size());
 			Iterator<byte[]> iterator = l.iterator();
+			
 			while (iterator.hasNext()) {
-				result.add(new Circle(
-								iterator.next(), 
-								Double.valueOf(SafeEncoder.encode(iterator.next())), 
-								Double.valueOf(SafeEncoder.encode(iterator.next())), 
-								Double.valueOf(SafeEncoder.encode(iterator.next())), 
-								UNITS.M,
-								iterator.next(), 
-								0));
+				byte[] fistValue = iterator.next();
+				if(fistValue == null)
+					continue;
+				result.add(
+						new Circle(
+								fistValue, 
+							Double.valueOf(SafeEncoder.encode(iterator.next())), 
+							Double.valueOf(SafeEncoder.encode(iterator.next())), 
+							Double.valueOf(SafeEncoder.encode(iterator.next())), 
+							UNITS.M,
+							iterator.next(), 
+							0));
 			}
 			return result;
 		}
 
 		public String toString() {
-			return "List<GCircle>";
+			return "List<Circle>";
 		}
 
 	};

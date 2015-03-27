@@ -8,6 +8,7 @@ import java.util.List;
 
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
+import redis.clients.spatial.model.Polygon;
 
 public class Geodis extends Jedis implements GeoCommands {
 
@@ -74,6 +75,22 @@ public class Geodis extends Jedis implements GeoCommands {
 	}
 
 	@Override
+	public List<Circle> gfrangeByRadiusWithMatch(final String key, final double lat, final double lon, final double distance,
+			final UNITS unit, final String pattern) {
+		checkIsInMulti();
+		client.gfrangeByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
+		return client.getSpatialMultiBulkReply();
+	}
+
+	@Override
+	public List<Circle> gfrangeByRadiusWithMatch(final byte[] key, final double lat, final double lon, final double distance,
+			final UNITS unit, final byte[] pattern) {
+		checkIsInMulti();
+		client.gfrangeByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
+		return client.getBinarySpatialMultiBulkReply();
+	}
+
+	@Override
 	public long gfcard(final String key) {
 		checkIsInMulti();
 		client.gfcard(key);
@@ -117,12 +134,15 @@ public class Geodis extends Jedis implements GeoCommands {
 
 	@Override
 	public Circle gfget(final String key, final String member) {
-		Iterator<Circle> circlesIterator = gfmget(key, member).iterator();
-		if (circlesIterator.hasNext()) {
-			return circlesIterator.next();
-		} else {
-			return null;
+		List<Circle> result = gfmget(key, member);
+		if (!result.isEmpty()) {
+			Iterator<Circle> circlesIterator = gfmget(key, member).iterator();
+			if (circlesIterator.hasNext()) {
+				return circlesIterator.next();
+			}
 		}
+		return null;
+
 	}
 
 	@Override
@@ -149,70 +169,19 @@ public class Geodis extends Jedis implements GeoCommands {
 		return client.getBinarySpatialMGETMultiBulkReply();
 	}
 
-	//
-	// private GCircle gmember(final byte[] key, final byte[] member) {
-	// checkIsInMulti();
-	// client.gmember(key, member);
-	// final List<String> values = client.getMultiBulkReply();
-	// int idx = 0;
-	// GCircle gObj = null;
-	// if (values != null && !values.isEmpty()) {
-	// gObj = new GCircle();
-	// gObj.setMember(new String(member));
-	// gObj.setX(Double.valueOf(values.get(idx++).toString()));
-	// gObj.setY(Double.valueOf(values.get(idx++).toString()));
-	// gObj.setDistance(Double.valueOf(values.get(idx++).toString()));
-	// idx++;
-	// idx++;
-	// gObj.setValue(values.get(idx++).toString());
-	// }
-	// return gObj;
-	// }
-	//
-	// @Override
-	// public Set<String> gradius(final String key, final double x, final double y, final double distance, final UNITS unit) {
-	// return gradius(SafeEncoder.encode(key), x, y, distance, SafeEncoder.encode(unit.toValue()));
-	// }
-	//
-	// @Override
-	// public Set<String> gradius(final String key, final double x, final double y, final double distance) {
-	// return gradius(key, x, y, distance, UNITS.M);
-	// }
-	//
-	// @Override
-	// public GCircle gmember(final String key, final String member) {
-	// return gmember(SafeEncoder.encode(key), SafeEncoder.encode(member));
-	// }
-	//
-	// @Override
-	// public Set<GCircle> gsearchCircle(final String key, final double x, final double y, final double distance) {
-	// Set<String> members = gradius(key, x, y, distance, UNITS.M);
-	// Set<GCircle> result = new LinkedHashSet<GCircle>();
-	// for (String member : members) {
-	// GCircle circle = this.gmember(key, member);
-	// if (circle != null) {
-	// if (circle.getDistance() > 0) {
-	// result.add(circle);
-	// }
-	// }
-	// }
-	// return result;
-	// }
-	//
-	// @Override
-	// public Set<GPoint> gsearchPoint(String key, double x, double y, double distance) {
-	// Set<String> members = gradius(key, x, y, distance, UNITS.M);
-	// Set<GPoint> result = new LinkedHashSet<GPoint>();
-	// for (String member : members) {
-	// GCircle circle = this.gmember(key, member);
-	// if (circle != null) {
-	// if (circle.getDistance() == 0) {
-	// result.add(circle);
-	// }
-	// }
-	// }
-	// return result;
-	// }
+	@Override
+	public List<Circle> gfrangeByRegion(final String key, final Polygon polygon) {
+		checkIsInMulti();
+		client.gfrangeByRegion(key, polygon);
+		return client.getSpatialMGETMultiBulkReply();
+	}
+	
+	@Override
+	public List<Circle> gfrangeByRegion(final byte[] key, final Polygon polygon) {
+		checkIsInMulti();
+		client.gfrangeByRegion(key, polygon);
+		return client.getBinarySpatialMGETMultiBulkReply();
+	}
 
 	// @Override
 	// public Double distance(final double dLat1, final double dLon1, final double dLat2, final double dLon2) {

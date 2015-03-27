@@ -4,6 +4,7 @@ import java.util.List;
 
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
+import redis.clients.spatial.model.Polygon;
 /**
  * Common interface for sharded and non-sharded Jedis
  */
@@ -45,7 +46,12 @@ public interface GeoCommands {
 
 	List<Circle> gfnn(byte[] key, double lat, double lon, long count);
 
+	List<Circle> gfrangeByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern);
 
+	List<Circle> gfrangeByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern);
 
+	List<Circle> gfrangeByRegion(String key, Polygon polygon);
+
+	List<Circle> gfrangeByRegion(byte[] key, Polygon polygon);
 
 }

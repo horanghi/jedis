@@ -3,15 +3,21 @@ package redis.clients.jedis;
 import static redis.clients.jedis.Protocol.DEFAULT_TIMEOUT;
 import static redis.clients.jedis.Protocol.UNITS.M;
 
+import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
 
 import redis.clients.jedis.Protocol.UNITS;
+import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
 
-public class Geodis extends Jedis implements GeoCommands {
+public class Geodis extends BinaryJedis implements GeoCommands {
 
+	public Geodis(final String host) {
+		super(host);
+	}
+	
 	public Geodis(String host, int port, int timeout) {
 		super(host, port, timeout);
 	}
@@ -20,6 +26,14 @@ public class Geodis extends Jedis implements GeoCommands {
 		super(host, port, DEFAULT_TIMEOUT);
 	}
 
+	public Geodis(JedisShardInfo shardInfo) {
+		super(shardInfo);
+	}
+
+	public Geodis(URI uri) {
+		super(uri);
+	}
+	
 	@Override
 	public Long gadd(final String key, final double lat, final double lon, final String member, final String value) {
 		return gfadd(key, lat, lon, 0, M, member, value);
@@ -47,31 +61,31 @@ public class Geodis extends Jedis implements GeoCommands {
 	}
 
 	@Override
-	public List<String> gfrangeByRadius(final String key, final double lat, final double lon, final double distance, final UNITS unit) {
+	public List<Point> gfrangeByRadius(final String key, final double lat, final double lon, final double distance, final UNITS unit) {
 		checkIsInMulti();
 		client.gfrangeByRadius(key, lat, lon, distance, unit);
-		return client.getMultiBulkReply();
-	}
-
-	@Override
-	public List<byte[]> gfrangeByRadius(final byte[] key, final double lat, final double lon, final double distance, final UNITS unit) {
-		checkIsInMulti();
-		client.gfrangeByRadius(key, lat, lon, distance, unit);
-		return client.getBinaryMultiBulkReply();
-	}
-
-	@Override
-	public List<Point> gfrangeByRadiusDetail(final String key, final double lat, final double lon, final double distance, final UNITS unit) {
-		checkIsInMulti();
-		client.gfrangeByRadiusDetail(key, lat, lon, distance, unit);
 		return client.getSpatialMultiBulkReply();
 	}
 
 	@Override
-	public List<Point> gfrangeByRadiusDetail(final byte[] key, final double lat, final double lon, final double distance, final UNITS unit) {
+	public List<Point> gfrangeByRadius(final byte[] key, final double lat, final double lon, final double distance, final UNITS unit) {
 		checkIsInMulti();
-		client.gfrangeByRadiusDetail(key, lat, lon, distance, unit);
+		client.gfrangeByRadius(key, lat, lon, distance, unit);
 		return client.getBinarySpatialMultiBulkReply();
+	}
+
+	@Override
+	public List<Circle> gfrangeCircleByRadius(final String key, final double lat, final double lon, final double distance, final UNITS unit) {
+		checkIsInMulti();
+		client.gfrangeCircleByRadius(key, lat, lon, distance, unit);
+		return client.getSpatialCircleMultiBulkReply();
+	}
+
+	@Override
+	public List<Circle> gfrangeCircleByRadius(final byte[] key, final double lat, final double lon, final double distance, final UNITS unit) {
+		checkIsInMulti();
+		client.gfrangeCircleByRadius(key, lat, lon, distance, unit);
+		return client.getBinarySpatialCircleMultiBulkReply();
 	}
 
 	@Override
@@ -91,28 +105,44 @@ public class Geodis extends Jedis implements GeoCommands {
 	}
 
 	@Override
-	public long gfcard(final String key) {
+	public List<Point> gfrangeCircleByRadiusWithMatch(final String key, final double lat, final double lon, final double distance,
+			final UNITS unit, final String pattern) {
+		checkIsInMulti();
+		client.gfrangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
+		return client.getSpatialMultiBulkReply();
+	}
+
+	@Override
+	public List<Point> gfrangeCircleByRadiusWithMatch(final byte[] key, final double lat, final double lon, final double distance,
+			final UNITS unit, final byte[] pattern) {
+		checkIsInMulti();
+		client.gfrangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
+		return client.getBinarySpatialMultiBulkReply();
+	}
+
+	@Override
+	public Long gfcard(final String key) {
 		checkIsInMulti();
 		client.gfcard(key);
 		return client.getIntegerReply();
 	}
 
 	@Override
-	public long gfcard(final byte[] key) {
+	public Long gfcard(final byte[] key) {
 		checkIsInMulti();
 		client.gfcard(key);
 		return client.getIntegerReply();
 	}
 
 	@Override
-	public long gfrem(final String key, final String member) {
+	public Long gfrem(final String key, final String member) {
 		checkIsInMulti();
 		client.gfrem(key, member);
 		return client.getIntegerReply();
 	}
 
 	@Override
-	public long gfrem(final byte[] key, final byte[] member) {
+	public Long gfrem(final byte[] key, final byte[] member) {
 		checkIsInMulti();
 		client.gfrem(key, member);
 		return client.getIntegerReply();
@@ -175,7 +205,7 @@ public class Geodis extends Jedis implements GeoCommands {
 		client.gfrangeByRegion(key, polygon);
 		return client.getSpatialMGETMultiBulkReply();
 	}
-	
+
 	@Override
 	public List<Point> gfrangeByRegion(final byte[] key, final Polygon polygon) {
 		checkIsInMulti();
@@ -183,10 +213,10 @@ public class Geodis extends Jedis implements GeoCommands {
 		return client.getBinarySpatialMGETMultiBulkReply();
 	}
 
-	// @Override
-	// public Double distance(final double dLat1, final double dLon1, final double dLat2, final double dLon2) {
-	// // d = |ax1 + by1 + c | / sqrt(a^2 + b^2)
-	// return Math.acos(Math.sin(dLat1) * Math.sin(dLat2) + Math.cos(dLat1) * Math.cos(dLat2) * Math.cos(dLon1 - dLon2));
-	// }
+	@Override
+	public Double distance(final double dLat1, final double dLon1, final double dLat2, final double dLon2) {
+		// d = |ax1 + by1 + c | / sqrt(a^2 + b^2)
+		return Math.acos(Math.sin(dLat1) * Math.sin(dLat2) + Math.cos(dLat1) * Math.cos(dLat2) * Math.cos(dLon1 - dLon2));
+	}
 
 }

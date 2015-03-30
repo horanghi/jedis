@@ -4,8 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-abstract class MultiKeyPipelineBase extends PipelineBase implements BasicRedisPipeline, MultiKeyBinaryRedisPipeline,
-		MultiKeyCommandsPipeline, ClusterPipeline {
+abstract class MultiKeyPipelineBase extends PipelineBase  {
 
 	protected Client client = null;
 

@@ -885,8 +885,8 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 
 	// Spatial methods =================================================================
 	@Override
-	public void gadd(final String key, final double latitude, final double longitude, final String member, final String value) {
-		gfadd(SafeEncoder.encode(key), latitude, longitude, 0, UNITS.M, SafeEncoder.encode(member), SafeEncoder.encode(value));
+	public void gadd(final String key, final double lat, final double lon, final String member, final String value) {
+		gfadd(SafeEncoder.encode(key), lat, lon, 0, UNITS.M, SafeEncoder.encode(member), SafeEncoder.encode(value));
 	}
 
 	@Override
@@ -899,10 +899,10 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	public void gfrangeByRadius(final String key, final double lat, final double lon, final double distance, final UNITS unit) {
 		gfrangeByRadius(SafeEncoder.encode(key), lat, lon, distance, unit);
 	}
-
+	
 	@Override
-	public void gfrangeByRadiusDetail(final String key, final double lat, final double lon, final double distance, final UNITS unit) {
-		gfrangeByRadiusDetail(SafeEncoder.encode(key), lat, lon, distance, unit);
+	public void gfrangeCircleByRadius(final String key, final double lat, final double lon, final double distance, final UNITS unit) {
+		gfrangeCircleByRadius(SafeEncoder.encode(key), lat, lon, distance, unit);
 	}
 
 	@Override
@@ -934,11 +934,20 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	public void gfrangeByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern) {
 		gfrangeByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern));
 	}
-
+	
+	@Override
+	public void gfrangeCircleByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern) {
+		gfrangeCircleByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern));
+	}
+	
 	@Override
 	public void gfrangeByRegion(String key, Polygon polygon) {
 		gfrangeByRegion(SafeEncoder.encode(key), polygon);
 		
 	}
+
+
+
+
 
 }

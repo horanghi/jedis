@@ -3,7 +3,6 @@ package redis.clients.spatial.model;
 import static redis.clients.jedis.Protocol.OPCl.CCL;
 import static redis.clients.jedis.Protocol.OPCl.CL;
 import static redis.clients.jedis.Protocol.OPCl.CO;
-import static redis.clients.jedis.Protocol.OPCl.OOP;
 import static redis.clients.jedis.Protocol.OPCl.OP;
 
 import java.util.Iterator;

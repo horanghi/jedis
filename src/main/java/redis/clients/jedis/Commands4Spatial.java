@@ -15,11 +15,11 @@ public interface Commands4Spatial extends Commands {
 
 	void gfrangeByRadius(String key, double lat, double lon, double distance, UNITS unit);
 
+	void gfrangeCircleByRadius(byte[] key, double lat, double lon, double distance, UNITS unit);
+	
+	void gfrangeCircleByRadius(String key, double lat, double lon, double distance, UNITS unit);
+
 	void gfrangeByRadius(byte[] key, double lat, double lon, double distance, UNITS unit);
-
-	void gfrangeByRadiusDetail(String key, double lat, double lon, double distance, UNITS unit);
-
-	void gfrangeByRadiusDetail(byte[] key, double lat, double lon, double distance, UNITS unit);
 
 	void gfcard(String key);
 
@@ -44,5 +44,7 @@ public interface Commands4Spatial extends Commands {
 	void gfrangeByRegion(String key, Polygon polygon);
 	
 	void gfrangeByRegion(byte[] key, Polygon polygon);
+
+	void gfrangeCircleByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern);
 
 }

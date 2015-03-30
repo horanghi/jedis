@@ -14,9 +14,9 @@ public class PipelinedGetSetBenchmark {
 	private static final int TOTAL_OPERATIONS = 200000;
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
-		Jedis jedis = new Jedis(hnp.getHost(), hnp.getPort());
+		Jedis jedis = new Jedis("172.19.114.201", 19006);//hnp.getHost(), hnp.getPort());
 		jedis.connect();
-		jedis.auth("foobared");
+//		jedis.auth("foobared");
 		jedis.flushAll();
 
 		long begin = Calendar.getInstance().getTimeInMillis();

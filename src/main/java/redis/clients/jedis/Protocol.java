@@ -437,6 +437,7 @@ public final class Protocol {
 		MATCH,
 		WITHVALUES,
 		WITHDISTANCE,
+		XR,NR,
 		ASC,
 		DESC,
 		LIMIT;

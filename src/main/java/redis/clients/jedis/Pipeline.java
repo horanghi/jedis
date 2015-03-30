@@ -5,7 +5,7 @@ import java.util.List;
 
 import redis.clients.jedis.exceptions.JedisDataException;
 
-public class Pipeline extends MultiKeyPipelineBase {
+public class Pipeline extends GeoMultiKeyPipelineBase {
 
 	private MultiResponseBuilder currentMulti;
 

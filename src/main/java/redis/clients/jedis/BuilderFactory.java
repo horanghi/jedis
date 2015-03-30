@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import redis.clients.jedis.Protocol.UNITS;
+import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Point;
 import redis.clients.util.SafeEncoder;
 
@@ -251,6 +253,7 @@ public class BuilderFactory {
 			return "ZSet<Tuple>";
 		}
 	};
+	
 	public static final Builder<List<Point>> SPATIAL_GPoint_WITHDISTANCE_LIST = new Builder<List<Point>>() {
 		@SuppressWarnings("unchecked")
 		public List<Point> build(Object data) {
@@ -278,7 +281,6 @@ public class BuilderFactory {
 		public String toString() {
 			return "List<Point>";
 		}
-
 	};
 
 	public static final Builder<List<Point>> BYTE_SPATIAL_GPoint_WITHDISTANCE_LIST = new Builder<List<Point>>() {
@@ -306,10 +308,69 @@ public class BuilderFactory {
 		}
 
 		public String toString() {
-			return "GSet<GPoint>";
+			return "List<Point>";
 		}
 	};
+	
+	public static final Builder<List<Circle>> SPATIAL_GCircle_WITHDISTANCE_LIST = new Builder<List<Circle>>() {
+		@SuppressWarnings("unchecked")
+		public List<Circle> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			final List<Circle> result = new ArrayList<Circle>(l.size());
+			Iterator<byte[]> iterator = l.iterator();
+			while (iterator.hasNext()) {
+				byte[] fistValue = iterator.next();
+				if (fistValue == null) {
+					continue;
+				}
+				String member = SafeEncoder.encode(fistValue);
+				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double radius = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				String value = SafeEncoder.encode(iterator.next());
+				double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				result.add(new Circle(member, x, y, radius, UNITS.M,  value, distance));
+			}
+			return result;
+		}
 
+		public String toString() {
+			return "List<Circle>";
+		}
+	};
+	
+	public static final Builder<List<Circle>> BYTE_SPATIAL_GCircle_WITHDISTANCE_LIST = new Builder<List<Circle>>() {
+		@SuppressWarnings("unchecked")
+		public List<Circle> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			final List<Circle> result = new ArrayList<Circle>(l.size());
+			Iterator<byte[]> iterator = l.iterator();
+			while (iterator.hasNext()) {
+				byte[] fistValue = iterator.next();
+				if (fistValue == null) {
+					continue;
+				}
+				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double radius = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				byte[] value = iterator.next();
+				double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				result.add(new Circle(fistValue, x, y, radius, UNITS.M,  value, distance));
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "List<Circle>";
+		}
+	};
+	
 	public static final Builder<List<Point>> SPATIAL_GPoint_LIST = new Builder<List<Point>>() {
 		@SuppressWarnings("unchecked")
 		public List<Point> build(Object data) {

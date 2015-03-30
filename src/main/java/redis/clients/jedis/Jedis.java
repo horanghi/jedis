@@ -15,8 +15,8 @@ import redis.clients.jedis.BinaryClient.LIST_POSITION;
 import redis.clients.util.SafeEncoder;
 import redis.clients.util.Slowlog;
 
-public class Jedis extends BinaryJedis implements JedisCommands, MultiKeyCommands, AdvancedJedisCommands, ScriptingCommands, BasicCommands,
-		ClusterCommands {
+public class Jedis extends Geodis implements JedisCommands, MultiKeyCommands, AdvancedJedisCommands, ScriptingCommands, BasicCommands,
+		ClusterCommands, GeoCommands {
 	public Jedis(final String host) {
 		super(host);
 	}

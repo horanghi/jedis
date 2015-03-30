@@ -12,7 +12,7 @@ import redis.clients.jedis.Protocol.Command;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.jedis.exceptions.JedisException;
-import redis.clients.spatial.model.Circle;
+import redis.clients.spatial.model.Point;
 import redis.clients.util.RedisInputStream;
 import redis.clients.util.RedisOutputStream;
 import redis.clients.util.SafeEncoder;
@@ -205,21 +205,21 @@ public class Connection implements Closeable {
 		return BuilderFactory.STRING_LIST.build(getBinaryMultiBulkReply());
 	}
 
-	public List<Circle> getSpatialMultiBulkReply() {
-		return BuilderFactory.SPATIAL_GCIRCLE_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
+	public List<Point> getSpatialMultiBulkReply() {
+		return BuilderFactory.SPATIAL_GPoint_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
 	}
 
-	public List<Circle> getBinarySpatialMultiBulkReply() {
-		return BuilderFactory.BYTE_SPATIAL_GCIRCLE_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
+	public List<Point> getBinarySpatialMultiBulkReply() {
+		return BuilderFactory.BYTE_SPATIAL_GPoint_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
 	}
 
-	public List<Circle> getSpatialMGETMultiBulkReply() {
-		List<Circle> result = BuilderFactory.SPATIAL_GCIRCLE_LIST.build(getBinaryMultiBulkReply());
+	public List<Point> getSpatialMGETMultiBulkReply() {
+		List<Point> result = BuilderFactory.SPATIAL_GPoint_LIST.build(getBinaryMultiBulkReply());
 		return result;
 	}
 
-	public List<Circle> getBinarySpatialMGETMultiBulkReply() {
-		List<Circle> result = BuilderFactory.BYTE_SPATIAL_GCIRCLE_LIST.build(getBinaryMultiBulkReply());
+	public List<Point> getBinarySpatialMGETMultiBulkReply() {
+		List<Point> result = BuilderFactory.BYTE_SPATIAL_GPoint_LIST.build(getBinaryMultiBulkReply());
 		return result;
 	}
 

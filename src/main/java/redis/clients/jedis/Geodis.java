@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import redis.clients.jedis.Protocol.UNITS;
-import redis.clients.spatial.model.Circle;
+import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
 
 public class Geodis extends Jedis implements GeoCommands {
@@ -61,21 +61,21 @@ public class Geodis extends Jedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle> gfrangeByRadiusDetail(final String key, final double lat, final double lon, final double distance, final UNITS unit) {
+	public List<Point> gfrangeByRadiusDetail(final String key, final double lat, final double lon, final double distance, final UNITS unit) {
 		checkIsInMulti();
 		client.gfrangeByRadiusDetail(key, lat, lon, distance, unit);
 		return client.getSpatialMultiBulkReply();
 	}
 
 	@Override
-	public List<Circle> gfrangeByRadiusDetail(final byte[] key, final double lat, final double lon, final double distance, final UNITS unit) {
+	public List<Point> gfrangeByRadiusDetail(final byte[] key, final double lat, final double lon, final double distance, final UNITS unit) {
 		checkIsInMulti();
 		client.gfrangeByRadiusDetail(key, lat, lon, distance, unit);
 		return client.getBinarySpatialMultiBulkReply();
 	}
 
 	@Override
-	public List<Circle> gfrangeByRadiusWithMatch(final String key, final double lat, final double lon, final double distance,
+	public List<Point> gfrangeByRadiusWithMatch(final String key, final double lat, final double lon, final double distance,
 			final UNITS unit, final String pattern) {
 		checkIsInMulti();
 		client.gfrangeByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
@@ -83,7 +83,7 @@ public class Geodis extends Jedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle> gfrangeByRadiusWithMatch(final byte[] key, final double lat, final double lon, final double distance,
+	public List<Point> gfrangeByRadiusWithMatch(final byte[] key, final double lat, final double lon, final double distance,
 			final UNITS unit, final byte[] pattern) {
 		checkIsInMulti();
 		client.gfrangeByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
@@ -119,26 +119,26 @@ public class Geodis extends Jedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle> gfnn(final String key, final double lat, final double lon, final long count) {
+	public List<Point> gfnn(final String key, final double lat, final double lon, final long count) {
 		checkIsInMulti();
 		client.gfnn(key, lat, lon, count);
 		return client.getSpatialMultiBulkReply();
 	}
 
 	@Override
-	public List<Circle> gfnn(final byte[] key, final double lat, final double lon, final long count) {
+	public List<Point> gfnn(final byte[] key, final double lat, final double lon, final long count) {
 		checkIsInMulti();
 		client.gfnn(key, lat, lon, count);
 		return client.getBinarySpatialMultiBulkReply();
 	}
 
 	@Override
-	public Circle gfget(final String key, final String member) {
-		List<Circle> result = gfmget(key, member);
+	public Point gfget(final String key, final String member) {
+		List<Point> result = gfmget(key, member);
 		if (!result.isEmpty()) {
-			Iterator<Circle> circlesIterator = gfmget(key, member).iterator();
-			if (circlesIterator.hasNext()) {
-				return circlesIterator.next();
+			Iterator<Point> PointsIterator = gfmget(key, member).iterator();
+			if (PointsIterator.hasNext()) {
+				return PointsIterator.next();
 			}
 		}
 		return null;
@@ -146,38 +146,38 @@ public class Geodis extends Jedis implements GeoCommands {
 	}
 
 	@Override
-	public Circle gfget(final byte[] key, final byte[] member) {
-		Iterator<Circle> circlesIterator = gfmget(key, member).iterator();
-		if (circlesIterator.hasNext()) {
-			return circlesIterator.next();
+	public Point gfget(final byte[] key, final byte[] member) {
+		Iterator<Point> PointsIterator = gfmget(key, member).iterator();
+		if (PointsIterator.hasNext()) {
+			return PointsIterator.next();
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	public List<Circle> gfmget(final String key, final String... members) {
+	public List<Point> gfmget(final String key, final String... members) {
 		checkIsInMulti();
 		client.gfmget(key, members);
 		return client.getSpatialMGETMultiBulkReply();
 	}
 
 	@Override
-	public List<Circle> gfmget(final byte[] key, final byte[]... members) {
+	public List<Point> gfmget(final byte[] key, final byte[]... members) {
 		checkIsInMulti();
 		client.gfmget(key, members);
 		return client.getBinarySpatialMGETMultiBulkReply();
 	}
 
 	@Override
-	public List<Circle> gfrangeByRegion(final String key, final Polygon polygon) {
+	public List<Point> gfrangeByRegion(final String key, final Polygon polygon) {
 		checkIsInMulti();
 		client.gfrangeByRegion(key, polygon);
 		return client.getSpatialMGETMultiBulkReply();
 	}
 	
 	@Override
-	public List<Circle> gfrangeByRegion(final byte[] key, final Polygon polygon) {
+	public List<Point> gfrangeByRegion(final byte[] key, final Polygon polygon) {
 		checkIsInMulti();
 		client.gfrangeByRegion(key, polygon);
 		return client.getBinarySpatialMGETMultiBulkReply();

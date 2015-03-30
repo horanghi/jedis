@@ -23,6 +23,9 @@ public class Point implements Geometry {
 	private double y;
 	@Setter
 	@Getter
+	private double distance;
+	@Setter
+	@Getter
 	private String member;
 	@Setter
 	@Getter
@@ -41,12 +44,28 @@ public class Point implements Geometry {
 		this.member = member;
 		this.value = value;
 	}
-
+	
 	public Point(byte[] member, double x, double y, byte[] value) {
 		this.x = x;
 		this.y = y;
 		this.member = SafeEncoder.encode(member);
 		this.value = SafeEncoder.encode(value);
+	}
+	
+	public Point(String member, double x, double y, String value, double distance) {
+		this.x = x;
+		this.y = y;
+		this.member = member;
+		this.value = value;
+		this.distance = distance;
+	}
+
+	public Point(byte[] member, double x, double y, byte[] value, double distance) {
+		this.x = x;
+		this.y = y;
+		this.member = SafeEncoder.encode(member);
+		this.value = SafeEncoder.encode(value);
+		this.distance = distance;
 	}
 
 	@Override

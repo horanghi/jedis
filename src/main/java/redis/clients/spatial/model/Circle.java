@@ -18,24 +18,31 @@ public class Circle extends Point implements Geometry {
 	private double radius;
 	@Setter
 	@Getter
-	private double distance;
-	@Setter
-	@Getter
 	private UNITS unit;
 
 	private Type type = Type.CIRCLE;
 
-	public Circle(String member, double x, double y, double radius, UNITS unit, String value, double distance) {
+	public Circle(String member, double x, double y, double radius, UNITS unit, String value) {
 		super(member, x, y, value);
 		this.radius = radius;
-		this.distance = distance;
+		this.unit = unit;
+	}
+
+	public Circle(byte[] member, double x, double y, double radius, UNITS unit, byte[] value) {
+		super(member, x, y, value);
+		this.radius = radius;
+		this.unit = unit;
+	}
+	
+	public Circle(String member, double x, double y, double radius, UNITS unit, String value, double distance) {
+		super(member, x, y, value, distance);
+		this.radius = radius;
 		this.unit = unit;
 	}
 
 	public Circle(byte[] member, double x, double y, double radius, UNITS unit, byte[] value, double distance) {
-		super(member, x, y, value);
+		super(member, x, y, value, distance);
 		this.radius = radius;
-		this.distance = distance;
 		this.unit = unit;
 	}
 

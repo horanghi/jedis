@@ -3,6 +3,7 @@ package redis.clients.jedis;
 import static redis.clients.jedis.Protocol.toByteArray;
 import static redis.clients.jedis.Protocol.Command.GFADD;
 import static redis.clients.jedis.Protocol.Command.GFCARD;
+import static redis.clients.jedis.Protocol.Command.GFGET;
 import static redis.clients.jedis.Protocol.Command.GFMGET;
 import static redis.clients.jedis.Protocol.Command.GFNN;
 import static redis.clients.jedis.Protocol.Command.GFRANGEBYRADIUS;
@@ -13,10 +14,10 @@ import static redis.clients.jedis.Protocol.GeoOptions.CONTAINS;
 import static redis.clients.jedis.Protocol.GeoOptions.LIMIT;
 import static redis.clients.jedis.Protocol.GeoOptions.MATCH;
 import static redis.clients.jedis.Protocol.GeoOptions.NR;
-import static redis.clients.jedis.Protocol.GeoOptions.XR;
 import static redis.clients.jedis.Protocol.GeoOptions.RADIUS;
 import static redis.clients.jedis.Protocol.GeoOptions.WITHDISTANCE;
 import static redis.clients.jedis.Protocol.GeoOptions.WITHVALUES;
+import static redis.clients.jedis.Protocol.GeoOptions.XR;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Polygon;
 
@@ -75,6 +76,12 @@ public class BinaryClient4Spatial extends BinaryClient {
 
 	public void gfrem(final byte[] key, final byte[] member) {
 		sendCommand(GFREM, key, member);
+	}
+
+	public void gfget(byte[] key, byte[] member) {
+		// GFGET key member / GFMGET key member [member ...]
+		sendCommand(GFGET, key, member);
+
 	}
 
 	public void gfmget(final byte[] key, final byte[]... members) {

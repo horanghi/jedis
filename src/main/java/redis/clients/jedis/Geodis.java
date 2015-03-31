@@ -164,14 +164,9 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 
 	@Override
 	public Point gfget(final String key, final String member) {
-		List<Point> result = gfmget(key, member);
-		if (!result.isEmpty()) {
-			Iterator<Point> PointsIterator = gfmget(key, member).iterator();
-			if (PointsIterator.hasNext()) {
-				return PointsIterator.next();
-			}
-		}
-		return null;
+		checkIsInMulti();
+		client.gfget(key, member);
+		return client.getSpatialGETMultiBulkReply();
 
 	}
 

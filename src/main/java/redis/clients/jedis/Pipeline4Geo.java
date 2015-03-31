@@ -10,7 +10,7 @@ import redis.clients.spatial.model.Polygon;
 /**
  * @author horanghi
  */
-public interface GeoPipeline {
+public interface Pipeline4Geo {
 
 	Response<Long> gadd(String key, double lat, double lon, String member, String value);
 
@@ -32,9 +32,9 @@ public interface GeoPipeline {
 
 	Response<List<Point>> gfrangeByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern);
 
-	Response<List<Point>> gfrangeCircleByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern);
+	Response<List<Circle>> gfrangeCircleByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern);
 
-	Response<List<Point>> gfrangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern);
+	Response<List<Circle>> gfrangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern);
 
 	Response<Long> gfcard(String key);
 

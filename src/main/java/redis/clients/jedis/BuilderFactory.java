@@ -253,7 +253,7 @@ public class BuilderFactory {
 			return "ZSet<Tuple>";
 		}
 	};
-	
+
 	public static final Builder<List<Point>> SPATIAL_GPoint_WITHDISTANCE_LIST = new Builder<List<Point>>() {
 		@SuppressWarnings("unchecked")
 		public List<Point> build(Object data) {
@@ -311,7 +311,7 @@ public class BuilderFactory {
 			return "List<Point>";
 		}
 	};
-	
+
 	public static final Builder<List<Circle>> SPATIAL_GCircle_WITHDISTANCE_LIST = new Builder<List<Circle>>() {
 		@SuppressWarnings("unchecked")
 		public List<Circle> build(Object data) {
@@ -332,7 +332,7 @@ public class BuilderFactory {
 				double radius = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				String value = SafeEncoder.encode(iterator.next());
 				double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
-				result.add(new Circle(member, x, y, radius, UNITS.M,  value, distance));
+				result.add(new Circle(member, x, y, radius, UNITS.M, value, distance));
 			}
 			return result;
 		}
@@ -341,7 +341,7 @@ public class BuilderFactory {
 			return "List<Circle>";
 		}
 	};
-	
+
 	public static final Builder<List<Circle>> BYTE_SPATIAL_GCircle_WITHDISTANCE_LIST = new Builder<List<Circle>>() {
 		@SuppressWarnings("unchecked")
 		public List<Circle> build(Object data) {
@@ -361,7 +361,7 @@ public class BuilderFactory {
 				double radius = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				byte[] value = iterator.next();
 				double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
-				result.add(new Circle(fistValue, x, y, radius, UNITS.M,  value, distance));
+				result.add(new Circle(fistValue, x, y, radius, UNITS.M, value, distance));
 			}
 			return result;
 		}
@@ -370,7 +370,7 @@ public class BuilderFactory {
 			return "List<Circle>";
 		}
 	};
-	
+
 	public static final Builder<List<Point>> SPATIAL_GPoint_LIST = new Builder<List<Point>>() {
 		@SuppressWarnings("unchecked")
 		public List<Point> build(Object data) {
@@ -426,6 +426,59 @@ public class BuilderFactory {
 
 		public String toString() {
 			return "List<Point>";
+		}
+
+	};
+
+	public static final Builder<Point> SPATIAL_GPoint = new Builder<Point>() {
+		@SuppressWarnings("unchecked")
+		public Point build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			Point result = null;
+			Iterator<byte[]> iterator = l.iterator();
+
+			if (iterator.hasNext()) {
+				byte[] fistValue = iterator.next();
+				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				iterator.next(); // radius
+				byte[] member = iterator.next();
+				result = new Point(fistValue, x, y, member, 0);
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "Point";
+		}
+
+	};
+	public static final Builder<Point> BYTE_SPATIAL_GPoint = new Builder<Point>() {
+		public Point build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			@SuppressWarnings("unchecked")
+			List<byte[]> l = (List<byte[]>) data;
+			Point result = null;
+			Iterator<byte[]> iterator = l.iterator();
+
+			if (iterator.hasNext()) {
+				byte[] fistValue = iterator.next();
+				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				iterator.next(); // radius
+				byte[] member = iterator.next();
+				result = new Point(fistValue, x, y, member, 0);
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "Point";
 		}
 
 	};

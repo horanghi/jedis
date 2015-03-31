@@ -222,6 +222,14 @@ public class Connection implements Closeable {
 		return BuilderFactory.BYTE_SPATIAL_GCircle_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
 	}
 
+	public Point getSpatialGETMultiBulkReply() {
+		return BuilderFactory.SPATIAL_GPoint.build(getBinaryMultiBulkReply());
+	}
+	
+	public Point getBinarySpatialGETMultiBulkReply() {
+		return BuilderFactory.BYTE_SPATIAL_GPoint.build(getBinaryMultiBulkReply());
+	}
+	
 	public List<Point> getSpatialMGETMultiBulkReply() {
 		List<Point> result = BuilderFactory.SPATIAL_GPoint_LIST.build(getBinaryMultiBulkReply());
 		return result;

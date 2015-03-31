@@ -916,6 +916,11 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
+	public void gfget(final String key, final String member) {
+		gfget(SafeEncoder.encode(key), SafeEncoder.encode(member));
+	}
+	
+	@Override
 	public void gfmget(final String key, final String[] members) {
 		byte[][] mlist = new byte[members.length][];
 		int idx = 0;
@@ -945,6 +950,8 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 		gfrangeByRegion(SafeEncoder.encode(key), polygon);
 		
 	}
+
+
 
 
 

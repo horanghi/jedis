@@ -29,6 +29,8 @@ public interface Commands4Spatial extends Commands {
 
 	void gfrem(byte[] key, byte[] member);
 
+	void gfget(String key, String member);
+	
 	void gfmget(String key, String[] members);
 
 	void gfmget(byte[] key, byte[]... members);
@@ -46,5 +48,7 @@ public interface Commands4Spatial extends Commands {
 	void gfrangeByRegion(byte[] key, Polygon polygon);
 
 	void gfrangeCircleByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern);
+
+
 
 }

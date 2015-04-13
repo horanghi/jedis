@@ -8,9 +8,9 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>jar</packaging>
-	<groupId>com.skplanet.geodis</groupId>
-	<artifactId>geodis</artifactId>
-	<version>0.0.3-2.4.2-SNAPSHOT</version>
+	<groupId>com.skplanet</groupId>
+	<artifactId>jedis</artifactId>
+	<version>0.5.0-2.4.2-SNAPSHOT</version>
 	<name>Geodis</name>
 	<description>Geodis is a blazingly small Geo-Redis java client.</description>
 	<url>https://github.com/xetorthio/jedis</url>

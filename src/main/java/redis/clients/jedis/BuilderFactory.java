@@ -254,14 +254,43 @@ public class BuilderFactory {
 		}
 	};
 
-	public static final Builder<List<Point>> SPATIAL_GPoint_WITHDISTANCE_LIST = new Builder<List<Point>>() {
+	public static final Builder<List<Point<String>>> SPATIAL_GPoint_WITHDISTANCE_LIST = new Builder<List<Point<String>>>() {
 		@SuppressWarnings("unchecked")
-		public List<Point> build(Object data) {
+		public List<Point<String>> build(Object data) {
 			if (null == data) {
 				return null;
 			}
 			List<byte[]> l = (List<byte[]>) data;
-			final List<Point> result = new ArrayList<Point>(l.size());
+			final List<Point<String>> result = new ArrayList<Point<String>>(l.size());
+			Iterator<byte[]> iterator = l.iterator();
+			while (iterator.hasNext()) {
+				String fistValue = SafeEncoder.encode(iterator.next());
+				if (fistValue == null) {
+					continue;
+				}
+				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				iterator.next(); // radius
+				String value = SafeEncoder.encode(iterator.next());
+				double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				result.add(new Point<String>(fistValue, x, y, value, distance));
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "List<Point<String>>";
+		}
+	};
+
+	public static final Builder<List<Point<byte[]>>> BYTE_SPATIAL_GPoint_WITHDISTANCE_LIST = new Builder<List<Point<byte[]>>>() {
+		@SuppressWarnings("unchecked")
+		public List<Point<byte[]>> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			final List<Point<byte[]>> result = new ArrayList<Point<byte[]>>(l.size());
 			Iterator<byte[]> iterator = l.iterator();
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
@@ -271,55 +300,26 @@ public class BuilderFactory {
 				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				iterator.next(); // radius
-				byte[] member = iterator.next();
+				byte[] value = iterator.next();
 				double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
-				result.add(new Point(fistValue, x, y, member, distance));
+				result.add(new Point<byte[]>(fistValue, x, y, value, distance));
 			}
 			return result;
 		}
 
 		public String toString() {
-			return "List<Point>";
+			return "List<Point<byte[]>>";
 		}
 	};
 
-	public static final Builder<List<Point>> BYTE_SPATIAL_GPoint_WITHDISTANCE_LIST = new Builder<List<Point>>() {
+	public static final Builder<List<Circle<String>>> SPATIAL_GCircle_WITHDISTANCE_LIST = new Builder<List<Circle<String>>>() {
 		@SuppressWarnings("unchecked")
-		public List<Point> build(Object data) {
+		public List<Circle<String>> build(Object data) {
 			if (null == data) {
 				return null;
 			}
 			List<byte[]> l = (List<byte[]>) data;
-			final List<Point> result = new ArrayList<Point>(l.size());
-			Iterator<byte[]> iterator = l.iterator();
-			while (iterator.hasNext()) {
-				byte[] fistValue = iterator.next();
-				if (fistValue == null) {
-					continue;
-				}
-				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
-				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
-				iterator.next(); // radius
-				byte[] member = iterator.next();
-				double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
-				result.add(new Point(fistValue, x, y, member, distance));
-			}
-			return result;
-		}
-
-		public String toString() {
-			return "List<Point>";
-		}
-	};
-
-	public static final Builder<List<Circle>> SPATIAL_GCircle_WITHDISTANCE_LIST = new Builder<List<Circle>>() {
-		@SuppressWarnings("unchecked")
-		public List<Circle> build(Object data) {
-			if (null == data) {
-				return null;
-			}
-			List<byte[]> l = (List<byte[]>) data;
-			final List<Circle> result = new ArrayList<Circle>(l.size());
+			final List<Circle<String>> result = new ArrayList<Circle<String>>(l.size());
 			Iterator<byte[]> iterator = l.iterator();
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
@@ -332,24 +332,24 @@ public class BuilderFactory {
 				double radius = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				String value = SafeEncoder.encode(iterator.next());
 				double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
-				result.add(new Circle(member, x, y, radius, UNITS.M, value, distance));
+				result.add(new Circle<String>(member, x, y, radius, UNITS.M, value, distance));
 			}
 			return result;
 		}
 
 		public String toString() {
-			return "List<Circle>";
+			return "List<Circle<String>>";
 		}
 	};
 
-	public static final Builder<List<Circle>> BYTE_SPATIAL_GCircle_WITHDISTANCE_LIST = new Builder<List<Circle>>() {
+	public static final Builder<List<Circle<byte[]>>> BYTE_SPATIAL_GCircle_WITHDISTANCE_LIST = new Builder<List<Circle<byte[]>>>() {
 		@SuppressWarnings("unchecked")
-		public List<Circle> build(Object data) {
+		public List<Circle<byte[]>> build(Object data) {
 			if (null == data) {
 				return null;
 			}
 			List<byte[]> l = (List<byte[]>) data;
-			final List<Circle> result = new ArrayList<Circle>(l.size());
+			final List<Circle<byte[]>> result = new ArrayList<Circle<byte[]>>(l.size());
 			Iterator<byte[]> iterator = l.iterator();
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
@@ -361,24 +361,54 @@ public class BuilderFactory {
 				double radius = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				byte[] value = iterator.next();
 				double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
-				result.add(new Circle(fistValue, x, y, radius, UNITS.M, value, distance));
+				result.add(new Circle<byte[]>(fistValue, x, y, radius, UNITS.M, value, distance));
 			}
 			return result;
 		}
 
 		public String toString() {
-			return "List<Circle>";
+			return "List<Circle<byte[]>>";
 		}
 	};
 
-	public static final Builder<List<Point>> SPATIAL_GPoint_LIST = new Builder<List<Point>>() {
+	public static final Builder<List<Point<String>>> SPATIAL_GPoint_LIST = new Builder<List<Point<String>>>() {
 		@SuppressWarnings("unchecked")
-		public List<Point> build(Object data) {
+		public List<Point<String>> build(Object data) {
 			if (null == data) {
 				return null;
 			}
 			List<byte[]> l = (List<byte[]>) data;
-			final List<Point> result = new ArrayList<Point>(l.size());
+			final List<Point<String>> result = new ArrayList<Point<String>>(l.size());
+			Iterator<byte[]> iterator = l.iterator();
+
+			while (iterator.hasNext()) {
+				byte[] fistValue = iterator.next();
+				if (fistValue == null) {
+					continue;
+				}
+				String member = SafeEncoder.encode(fistValue);
+				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				iterator.next(); // radius
+				String value = SafeEncoder.encode(iterator.next());
+				result.add(new Point<String>(member, x, y, value, 0));
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "List<Point<String>>";
+		}
+
+	};
+	public static final Builder<List<Point<byte[]>>> BYTE_SPATIAL_GPoint_LIST = new Builder<List<Point<byte[]>>>() {
+		public List<Point<byte[]>> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			@SuppressWarnings("unchecked")
+			List<byte[]> l = (List<byte[]>) data;
+			final List<Point<byte[]>> result = new ArrayList<Point<byte[]>>(l.size());
 			Iterator<byte[]> iterator = l.iterator();
 
 			while (iterator.hasNext()) {
@@ -389,96 +419,74 @@ public class BuilderFactory {
 				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				iterator.next(); // radius
-				byte[] member = iterator.next();
-				result.add(new Point(fistValue, x, y, member, 0));
+				byte[] value = iterator.next();
+				result.add(new Point<byte[]>(fistValue, x, y, value, 0));
 			}
 			return result;
 		}
 
 		public String toString() {
-			return "List<Point>";
+			return "List<Point<byte[]>>";
 		}
 
 	};
-	public static final Builder<List<Point>> BYTE_SPATIAL_GPoint_LIST = new Builder<List<Point>>() {
-		public List<Point> build(Object data) {
+
+	public static final Builder<Point<String>> SPATIAL_GPoint = new Builder<Point<String>>() {
+		@SuppressWarnings("unchecked")
+		public Point<String> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			Point<String> result = null;
+			Iterator<byte[]> iterator = l.iterator();
+
+			if (iterator.hasNext()) {
+				byte[] _fistValue = iterator.next();
+				if (_fistValue == null) {
+					return null;
+				}
+				String fistValue = SafeEncoder.encode(_fistValue);
+				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				iterator.next(); // radius
+				String value = SafeEncoder.encode(iterator.next());
+				result = new Point<String>(fistValue, x, y, value, 0);
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "Point";
+		}
+
+	};
+	public static final Builder<Point<byte[]>> BYTE_SPATIAL_GPoint = new Builder<Point<byte[]>>() {
+		public Point<byte[]> build(Object data) {
 			if (null == data) {
 				return null;
 			}
 			@SuppressWarnings("unchecked")
 			List<byte[]> l = (List<byte[]>) data;
-			final List<Point> result = new ArrayList<Point>(l.size());
+			Point<byte[]> result = null;
 			Iterator<byte[]> iterator = l.iterator();
 
-			while (iterator.hasNext()) {
+			if (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
-					continue;
+					return null;
 				}
 				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				iterator.next(); // radius
-				byte[] member = iterator.next();
-				result.add(new Point(fistValue, x, y, member, 0));
+				byte[] value = iterator.next();
+				result = new Point<byte[]>(fistValue, x, y, value, 0);
 			}
 			return result;
 		}
 
 		public String toString() {
-			return "List<Point>";
-		}
-
-	};
-
-	public static final Builder<Point> SPATIAL_GPoint = new Builder<Point>() {
-		@SuppressWarnings("unchecked")
-		public Point build(Object data) {
-			if (null == data) {
-				return null;
-			}
-			List<byte[]> l = (List<byte[]>) data;
-			Point result = null;
-			Iterator<byte[]> iterator = l.iterator();
-
-			if (iterator.hasNext()) {
-				byte[] fistValue = iterator.next();
-				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
-				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
-				iterator.next(); // radius
-				byte[] member = iterator.next();
-				result = new Point(fistValue, x, y, member, 0);
-			}
-			return result;
-		}
-
-		public String toString() {
-			return "Point";
-		}
-
-	};
-	public static final Builder<Point> BYTE_SPATIAL_GPoint = new Builder<Point>() {
-		public Point build(Object data) {
-			if (null == data) {
-				return null;
-			}
-			@SuppressWarnings("unchecked")
-			List<byte[]> l = (List<byte[]>) data;
-			Point result = null;
-			Iterator<byte[]> iterator = l.iterator();
-
-			if (iterator.hasNext()) {
-				byte[] fistValue = iterator.next();
-				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
-				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
-				iterator.next(); // radius
-				byte[] member = iterator.next();
-				result = new Point(fistValue, x, y, member, 0);
-			}
-			return result;
-		}
-
-		public String toString() {
-			return "Point";
+			return "Point<byte[]>";
 		}
 
 	};

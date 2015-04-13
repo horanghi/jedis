@@ -19,21 +19,21 @@ public interface GeoCommands {
 
 	Long gfadd(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] member, byte[] value);
 	
-	List<Point> gfrangeByRadius(String key, double lat, double lon, double distance, UNITS unit);
+	List<Point<String>> gfrangeByRadius(String key, double lat, double lon, double distance, UNITS unit);
 
-	List<Point> gfrangeByRadius(byte[] key, double lat, double lon, double distance, UNITS unit);
+	List<Point<byte[]>> gfrangeByRadius(byte[] key, double lat, double lon, double distance, UNITS unit);
 
-	List<Circle> gfrangeCircleByRadius(String key, double lat, double lon, double distance, UNITS unit);
+	List<Circle<String>> gfrangeCircleByRadius(String key, double lat, double lon, double distance, UNITS unit);
 
-	List<Circle> gfrangeCircleByRadius(byte[] key, double lat, double lon, double distance, UNITS unit);
+	List<Circle<byte[]>> gfrangeCircleByRadius(byte[] key, double lat, double lon, double distance, UNITS unit);
 
-	List<Point> gfrangeByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern);
+	List<Point<String>> gfrangeByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern);
 
-	List<Point> gfrangeByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern);
+	List<Point<byte[]>> gfrangeByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern);
 	
-	List<Point> gfrangeCircleByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern);
+	List<Point<String>> gfrangeCircleByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern);
 
-	List<Point> gfrangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern);
+	List<Point<byte[]>> gfrangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern);
 	
 	Long gfcard(String key);
 
@@ -43,21 +43,21 @@ public interface GeoCommands {
 
 	Long gfrem(byte[] key, byte[] member);
 
-	Point gfget(String key, String member);
+	Point<String> gfget(String key, String member);
 
-	Point gfget(byte[] key, byte[] member);
+	Point<byte[]> gfget(byte[] key, byte[] member);
 
-	List<Point> gfmget(String key, String... members);
+	List<Point<String>> gfmget(String key, String... members);
 	
-	List<Point> gfmget(byte[] key, byte[]... members);
+	List<Point<byte[]>> gfmget(byte[] key, byte[]... members);
 
-	List<Point> gfnn(String key, double lat, double lon, long count);
+	List<Point<String>> gfnn(String key, double lat, double lon, long count);
 
-	List<Point> gfnn(byte[] key, double lat, double lon, long count);
+	List<Point<byte[]>> gfnn(byte[] key, double lat, double lon, long count);
 
-	List<Point> gfrangeByRegion(String key, Polygon polygon);
+	List<Point<String>> gfrangeByRegion(String key, Polygon polygon);
 
-	List<Point> gfrangeByRegion(byte[] key, Polygon polygon);
+	List<Point<byte[]>> gfrangeByRegion(byte[] key, Polygon polygon);
 
 	Double distance(double dLat1, double dLon1, double dLat2, double dLon2);
 

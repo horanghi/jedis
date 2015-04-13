@@ -206,38 +206,36 @@ public class Connection implements Closeable {
 		return BuilderFactory.STRING_LIST.build(getBinaryMultiBulkReply());
 	}
 
-	public List<Point> getSpatialMultiBulkReply() {
+	public List<Point<String>> getSpatialMultiBulkReply() {
 		return BuilderFactory.SPATIAL_GPoint_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
 	}
 
-	public List<Point> getBinarySpatialMultiBulkReply() {
+	public List<Point<byte[]>> getBinarySpatialMultiBulkReply() {
 		return BuilderFactory.BYTE_SPATIAL_GPoint_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
 	}
-	
-	public List<Circle> getSpatialCircleMultiBulkReply() {
+
+	public List<Circle<String>> getSpatialCircleMultiBulkReply() {
 		return BuilderFactory.SPATIAL_GCircle_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
 	}
-	
-	public List<Circle> getBinarySpatialCircleMultiBulkReply() {
+
+	public List<Circle<byte[]>> getBinarySpatialCircleMultiBulkReply() {
 		return BuilderFactory.BYTE_SPATIAL_GCircle_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
 	}
 
-	public Point getSpatialGETMultiBulkReply() {
+	public Point<String> getSpatialGETMultiBulkReply() {
 		return BuilderFactory.SPATIAL_GPoint.build(getBinaryMultiBulkReply());
 	}
-	
-	public Point getBinarySpatialGETMultiBulkReply() {
+
+	public Point<byte[]> getBinarySpatialGETMultiBulkReply() {
 		return BuilderFactory.BYTE_SPATIAL_GPoint.build(getBinaryMultiBulkReply());
 	}
-	
-	public List<Point> getSpatialMGETMultiBulkReply() {
-		List<Point> result = BuilderFactory.SPATIAL_GPoint_LIST.build(getBinaryMultiBulkReply());
-		return result;
+
+	public List<Point<String>> getSpatialMGETMultiBulkReply() {
+		return BuilderFactory.SPATIAL_GPoint_LIST.build(getBinaryMultiBulkReply());
 	}
 
-	public List<Point> getBinarySpatialMGETMultiBulkReply() {
-		List<Point> result = BuilderFactory.BYTE_SPATIAL_GPoint_LIST.build(getBinaryMultiBulkReply());
-		return result;
+	public List<Point<byte[]>> getBinarySpatialMGETMultiBulkReply() {
+		return BuilderFactory.BYTE_SPATIAL_GPoint_LIST.build(getBinaryMultiBulkReply());
 	}
 
 	@SuppressWarnings("unchecked")

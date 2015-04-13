@@ -242,7 +242,7 @@ public class Connection implements Closeable {
 	public List<byte[]> getBinaryMultiBulkReply() {
 		flush();
 		pipelinedCommands--;
-		return (List<byte[]>) Protocol.read(inputStream);
+		return (List<byte[]>) readProtocolWithCheckingBroken();
 	}
 
 	public void resetPipelinedCount() {
@@ -251,7 +251,7 @@ public class Connection implements Closeable {
 
 	@SuppressWarnings("unchecked")
 	public List<Object> getRawObjectMultiBulkReply() {
-		return (List<Object>) Protocol.read(inputStream);
+		return (List<Object>) readProtocolWithCheckingBroken();
 	}
 
 	public List<Object> getObjectMultiBulkReply() {
@@ -264,7 +264,7 @@ public class Connection implements Closeable {
 	public List<Long> getIntegerMultiBulkReply() {
 		flush();
 		pipelinedCommands--;
-		return (List<Long>) Protocol.read(inputStream);
+		return (List<Long>) readProtocolWithCheckingBroken();
 	}
 
 	public List<Object> getAll() {
@@ -276,7 +276,7 @@ public class Connection implements Closeable {
 		flush();
 		while (pipelinedCommands > except) {
 			try {
-				all.add(Protocol.read(inputStream));
+				all.add(readProtocolWithCheckingBroken());
 			} catch (JedisDataException e) {
 				all.add(e);
 			}
@@ -288,6 +288,14 @@ public class Connection implements Closeable {
 	public Object getOne() {
 		flush();
 		pipelinedCommands--;
-		return Protocol.read(inputStream);
+		return readProtocolWithCheckingBroken();
+	}
+
+	protected Object readProtocolWithCheckingBroken() {
+		try {
+			return Protocol.read(inputStream);
+		} catch (JedisConnectionException exc) {
+			throw exc;
+		}
 	}
 }

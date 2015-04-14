@@ -951,10 +951,4 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 		
 	}
 
-
-
-
-
-
-
 }

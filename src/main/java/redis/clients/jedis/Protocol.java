@@ -362,7 +362,11 @@ public final class Protocol {
 		GFRANGEBYREGION, 
 		GGADD,
 		GGRANGE,
-		GGREVRANGE;
+		GGREVRANGE,
+		GGCARD,
+		GGREM,
+		GGGET,
+		GGMGET;
 
 		public final byte[] raw;
 

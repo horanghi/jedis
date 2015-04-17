@@ -2,6 +2,7 @@ package redis.clients.jedis;
 
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.LineString;
+import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
 
 public interface Command4BinarySpatial {
@@ -35,6 +36,18 @@ public interface Command4BinarySpatial {
 	void ggadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString);
 	
 	void ggrange(byte[] key, long start, long stop);
+
+	void ggadd(byte[] key, byte[] member, byte[] value, Point<?> point);
+
+	void ggrevrange(byte[] key, long start, long stop);
+
+	void ggcard(byte[] key);
+
+	void ggrem(byte[] key, byte[] member);
+
+	void ggget(byte[] key, byte[] member);
+
+	void ggmget(byte[] key, byte[][] members);
 
 	
 

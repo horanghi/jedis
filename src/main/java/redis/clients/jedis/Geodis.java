@@ -243,6 +243,21 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
+	public Long ggadd(final String key, final String member, final String value, final Point<String> point) {
+		checkIsInMulti();
+		client.ggadd(key, member, value, point);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggadd(final byte[] key, final byte[] member, final byte[] value, final Point<?> point) {
+		checkIsInMulti();
+		client.ggadd(key, member, value, point);
+		return client.getIntegerReply();
+	}
+
+	
+	@Override
 	public List<Geometry<String>> ggrange(final String key, final long start, final long stop) {
 		checkIsInMulti();
 		client.ggrange(key, start, stop);
@@ -255,4 +270,76 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 		client.ggrange(key, start, stop);
 		return client.getBinarySpatialMGETGEOMultiBulkReply();
 	}
+	
+	@Override
+	public List<Geometry<String>> ggrevrange(final String key, final long start, final long stop) {
+		checkIsInMulti();
+		client.ggrevrange(key, start, stop);
+		return client.getSpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<byte[]>> ggrevrange(final byte[] key, final long start, final long stop) {
+		checkIsInMulti();
+		client.ggrevrange(key, start, stop);
+		return client.getBinarySpatialMGETGEOMultiBulkReply();
+	}
+	
+	@Override
+	public Long ggcard(final String key) {
+		checkIsInMulti();
+		client.ggcard(key);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggcard(final byte[] key) {
+		checkIsInMulti();
+		client.ggcard(key);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggrem(final String key, final String member) {
+		checkIsInMulti();
+		client.ggrem(key, member);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggrem(final byte[] key, final byte[] member) {
+		checkIsInMulti();
+		client.ggrem(key, member);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Geometry<String> ggget(final String key, final String member) {
+		checkIsInMulti();
+		client.ggget(key, member);
+		return client.getSpatialGETMultiBulkReply();
+
+	}
+
+	@Override
+	public Geometry<byte[]> ggget(final byte[] key, final byte[] member) {
+		checkIsInMulti();
+		client.ggget(key, member);
+		return client.getBinarySpatialGETMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<String>> ggmget(final String key, final String[] members) {
+		checkIsInMulti();
+		client.ggmget(key, members);
+		return client.getSpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<byte[]>> ggmget(final byte[] key, final byte[][] members) {
+		checkIsInMulti();
+		client.ggmget(key, members);
+		return client.getBinarySpatialMGETGEOMultiBulkReply();
+	}
+
 }

@@ -268,6 +268,11 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				String fistValue = SafeEncoder.encode(iterator.next());
 				if (fistValue == null) {
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					iterator.next();
 					continue;
 				}
 				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
@@ -297,6 +302,10 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					iterator.next();
 					continue;
 				}
 				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
@@ -326,6 +335,11 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					iterator.next();
 					continue;
 				}
 				String member = SafeEncoder.encode(fistValue);
@@ -356,6 +370,11 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					iterator.next();
 					continue;
 				}
 				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
@@ -386,6 +405,10 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					iterator.next();
 					continue;
 				}
 				String member = SafeEncoder.encode(fistValue);
@@ -416,6 +439,10 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					iterator.next();
 					continue;
 				}
 				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
@@ -506,6 +533,8 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
+					iterator.next();
+					iterator.next();
 					continue;
 				}
 				String member = SafeEncoder.encode(fistValue);
@@ -542,6 +571,8 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
+					iterator.next();
+					iterator.next();
 					continue;
 				}
 				byte[] member = fistValue;

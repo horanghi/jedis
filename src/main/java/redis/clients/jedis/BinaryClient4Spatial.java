@@ -10,7 +10,12 @@ import static redis.clients.jedis.Protocol.Command.GFRANGEBYRADIUS;
 import static redis.clients.jedis.Protocol.Command.GFRANGEBYREGION;
 import static redis.clients.jedis.Protocol.Command.GFREM;
 import static redis.clients.jedis.Protocol.Command.GGADD;
+import static redis.clients.jedis.Protocol.Command.GGCARD;
+import static redis.clients.jedis.Protocol.Command.GGGET;
+import static redis.clients.jedis.Protocol.Command.GGMGET;
 import static redis.clients.jedis.Protocol.Command.GGRANGE;
+import static redis.clients.jedis.Protocol.Command.GGREM;
+import static redis.clients.jedis.Protocol.Command.GGREVRANGE;
 import static redis.clients.jedis.Protocol.GeoOptions.ASC;
 import static redis.clients.jedis.Protocol.GeoOptions.CONTAINS;
 import static redis.clients.jedis.Protocol.GeoOptions.LIMIT;
@@ -22,6 +27,7 @@ import static redis.clients.jedis.Protocol.GeoOptions.WITHVALUES;
 import static redis.clients.jedis.Protocol.GeoOptions.XR;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.LineString;
+import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
 
 public class BinaryClient4Spatial extends BinaryClient implements Command4BinarySpatial {
@@ -125,6 +131,12 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		// GGADD key member value geojson
 		sendCommand(GGADD, key, member, value, polygon.getJsonbyte());
 	}
+	
+	@Override
+	public void ggadd(byte[] key, byte[] member, byte[] value, Point<?> point) {
+		// GGADD key member value geojson
+		sendCommand(GGADD, key, member, value, point.getJsonbyte());
+	}
 
 	@Override
 	public void ggadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString) {
@@ -138,4 +150,38 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		sendCommand(GGRANGE, key, toByteArray(start), toByteArray(stop), WITHVALUES.raw);
 	}
 
+	@Override
+	public void ggrevrange(byte[] key, long start, long stop) {
+		// GGADD key member value geojson
+		sendCommand(GGREVRANGE, key, toByteArray(start), toByteArray(stop), WITHVALUES.raw);
+	}
+	
+	@Override
+	public void ggcard(byte[] key) {
+		sendCommand(GGCARD, key);
+	}
+
+	@Override
+	public void ggrem(byte[] key, byte[] member) {
+		sendCommand(GGREM, key, member);
+	}
+	
+	@Override
+	public void ggget(byte[] key, byte[] member) {
+		// GGGET key member / GGMGET key member [member ...]
+		sendCommand(GGGET, key, member);
+
+	}
+
+	@Override
+	public void ggmget(final byte[] key, final byte[][] members) {
+		// GGGET key member / GGMGET key member [member ...]
+		int len = members.length;
+		byte[][] bargs = new byte[len + 1][];
+		bargs[0] = key;
+		for (int i = 0; i < len; ++i) {
+			bargs[i + 1] = members[i];
+		}
+		sendCommand(GGMGET, bargs);
+	}
 }

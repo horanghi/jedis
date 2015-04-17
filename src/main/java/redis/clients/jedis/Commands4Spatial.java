@@ -2,6 +2,7 @@ package redis.clients.jedis;
 
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.LineString;
+import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
 
 public interface Commands4Spatial extends Commands {
@@ -35,6 +36,18 @@ public interface Commands4Spatial extends Commands {
 	void ggadd(String key, String member, String value, LineString<String> lineString);
 
 	void ggrange(String key, long start, long stop);
+
+	void ggadd(String key, String member, String value, Point<String> point);
+
+	void ggrevrange(String key, long start, long stop);
+
+	void ggcard(String key);
+
+	void ggrem(String key, String member);
+
+	void ggget(String key, String member);
+
+	void ggmget(String key, String[] members);
 
 
 }

@@ -410,36 +410,72 @@ public class GeodisTest {
 		String[] members = { "member1", "member2", "member3", "member4" };
 		Polygon<String> polygon = new Polygon<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
 				new Point<String>(-1, 1), new Point<String>(1, 1));
-		Polygon<String> polygon2 = new Polygon<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
-				new Point<String>(-1, 1), new Point<String>(1, 1));
+		LineString<String> linestr = new LineString<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
+				new Point<String>(-1, 1));
+		Point<String> point = new Point<String>(1, 1);
 		assertThat(geodis.ggadd(key, members[0], value, polygon), is(OKl));
-		assertThat(geodis.ggadd(key, members[1], value, polygon2), is(OKl));
-		assertThat(geodis.ggrange(key, 0, -1).size(), is(2));
+		assertThat(geodis.ggadd(key, members[1], value, linestr), is(OKl));
+		assertThat(geodis.ggadd(key, members[2], value, point), is(OKl));
+		assertThat(geodis.ggrange(key, 0, -1).size(), is(3));
+		assertThat(geodis.ggrange(keyb, 0, -1).size(), is(3));
 		List<Geometry<String>> result = geodis.ggrange(key, 0, -1);
-		assertThat(result.size(), is(2));
+		assertThat(result.size(), is(3));
 		for (Geometry<String> geo : result) {
 			if (geo instanceof Polygon) {
 				System.out.println(((Polygon) geo).getType().name());
+				assertThat(geo.getMember(), is(members[0]));
 			} else if (geo instanceof LineString) {
 				System.out.println(((LineString) geo).getType().name());
+				assertThat(geo.getMember(), is(members[1]));
 			} else if (geo instanceof Point) {
 				System.out.println(((Point) geo).getType().name());
+				assertThat(geo.getMember(), is(members[2]));
 			}
-
 		}
 		geodis.del(key);
-		//
-		// geodis.del(keyb);
-		// byte[][] membersb = { "member1".getBytes(), "member2".getBytes(), "member3".getBytes(), "member4".getBytes() };
-		// assertThat(geodis.gadd(keyb, 0.0, 0.0, membersb[0], valueb), is(OKl));
-		// assertThat(geodis.gadd(keyb, 0.1, 0.1, membersb[1], valueb), is(OKl));
-		// assertThat(geodis.gfnn(keyb, 0, 0, 3).size(), is(3));
-		// List<Point<byte[]>> resultb = geodis.gfnn(keyb, 0, 0, 5);
-		// assertThat(result.size(), is(5));
-		// int idx2 = 0;
-		// for (Point<byte[]> point : resultb) {
-		// point.equals(new Point<byte[]>(membersb[idx2++], 0, 0, valueb, 0));
-		// }
-		// geodis.del(keyb);
+
+		geodis.del(keyb);
+		byte[][] membersb = { "member1".getBytes(), "member2".getBytes(), "member3".getBytes(), "member4".getBytes() };
+		Polygon<byte[]> polygonb = new Polygon<byte[]>(new Point<byte[]>(1, 1), new Point<byte[]>(1, -1), new Point<byte[]>(-1, -1),
+				new Point<byte[]>(-1, 1), new Point<byte[]>(1, 1));
+		LineString<byte[]> linestrb = new LineString<byte[]>(new Point<byte[]>(1, 1), new Point<byte[]>(1, -1), new Point<byte[]>(-1, -1),
+				new Point<byte[]>(-1, 1), new Point<byte[]>(1, 1));
+		Point<byte[]> pointb = new Point<byte[]>(1, 1);
+		assertThat(geodis.ggadd(keyb, membersb[0], valueb, polygonb), is(OKl));
+		assertThat(geodis.ggadd(keyb, membersb[1], valueb, linestrb), is(OKl));
+		assertThat(geodis.ggadd(keyb, membersb[2], valueb, pointb), is(OKl));
+		assertThat(geodis.ggrange(keyb, 0, -1).size(), is(3));
+		List<Geometry<byte[]>> resultb = geodis.ggrange(keyb, 0, -1);
+		assertThat(resultb.size(), is(3));
+		for (Geometry<byte[]> geo : resultb) {
+			if (geo instanceof Polygon) {
+				System.out.println(((Polygon) geo).getType().name());
+				assertThat(geo.getMember(), is(membersb[0]));
+			} else if (geo instanceof LineString) {
+				System.out.println(((LineString) geo).getType().name());
+				assertThat(geo.getMember(), is(membersb[1]));
+			} else if (geo instanceof Point) {
+				System.out.println(((Point) geo).getType().name());
+				assertThat(geo.getMember(), is(membersb[2]));
+			}
+		}
+		
+		//byte => string 조회 . 동일한 값임.
+		assertThat(geodis.ggrange(key, 0, -1).size(), is(3));
+		List<Geometry<String>> result2 = geodis.ggrange(key, 0, -1);
+		assertThat(result2.size(), is(3));
+		for (Geometry<String> geo : result2) {
+			if (geo instanceof Polygon) {
+				System.out.println(((Polygon) geo).getType().name());
+				assertThat(geo.getMember(), is(members[0]));
+			} else if (geo instanceof LineString) {
+				System.out.println(((LineString) geo).getType().name());
+				assertThat(geo.getMember(), is(members[1]));
+			} else if (geo instanceof Point) {
+				System.out.println(((Point) geo).getType().name());
+				assertThat(geo.getMember(), is(members[2]));
+			}
+		}
+		geodis.del(keyb);
 	}
 }

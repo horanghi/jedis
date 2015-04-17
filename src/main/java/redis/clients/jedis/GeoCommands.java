@@ -78,6 +78,30 @@ public interface GeoCommands {
 
 	List<Geometry<byte[]>> ggrange(byte[] key, long start, long stop);
 
+	Long ggadd(String key, String member, String value, Point<String> point);
+
+	Long ggadd(byte[] key, byte[] member, byte[] value, Point<?> point);
+
+	List<Geometry<String>> ggrevrange(String key, long start, long stop);
+
+	List<Geometry<byte[]>> ggrevrange(byte[] key, long start, long stop);
+
+	Long ggcard(String key);
+
+	Long ggcard(byte[] key);
+
+	Long ggrem(String key, String member);
+
+	Long ggrem(byte[] key, byte[] member);
+
+	Geometry<String> ggget(String key, String member);
+
+	Geometry<byte[]> ggget(byte[] key, byte[] member);
+
+	List<Geometry<String>> ggmget(String key, String[] members);
+
+	List<Geometry<byte[]>> ggmget(byte[] key, byte[][] members);
+
 //	List<Point<String>> (String key, Polygon<String> polygon);
 	
 //	List<Geometry<T>> ggrange(String key, double lat, double lon, double distance, UNITS unit);

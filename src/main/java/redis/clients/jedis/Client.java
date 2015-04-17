@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.LineString;
+import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
 import redis.clients.util.SafeEncoder;
 
@@ -962,8 +963,44 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 	
 	@Override
+	public void ggadd(String key, String member, String value, Point<String> point) {
+		ggadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), point);
+	}
+	
+	@Override
 	public void ggrange(final String key, final long start, final long stop){
 		ggrange(SafeEncoder.encode(key), start, stop);
 	}
 
+	@Override
+	public void ggrevrange(String key, long start, long stop) {
+		ggrevrange(SafeEncoder.encode(key), start, stop);
+	}
+
+	@Override
+	public void ggcard(String key) {
+		ggcard(SafeEncoder.encode(key));
+	}
+
+	@Override
+	public void ggrem(String key, String member) {
+		ggrem(SafeEncoder.encode(key), SafeEncoder.encode(member));
+	}
+
+	@Override
+	public void ggget(final String key, final String member) {
+		ggget(SafeEncoder.encode(key), SafeEncoder.encode(member));
+	}
+
+	@Override
+	public void ggmget(final String key, final String[] members) {
+		byte[][] mlist = new byte[members.length][];
+		int idx = 0;
+		for (String member : members) {
+			mlist[idx++] = SafeEncoder.encode(member);
+		}
+		ggmget(SafeEncoder.encode(key), mlist);
+	}
+
+	
 }

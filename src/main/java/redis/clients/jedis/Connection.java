@@ -13,6 +13,7 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.jedis.exceptions.JedisException;
 import redis.clients.spatial.model.Circle;
+import redis.clients.spatial.model.Geometry;
 import redis.clients.spatial.model.Point;
 import redis.clients.util.RedisInputStream;
 import redis.clients.util.RedisOutputStream;
@@ -236,6 +237,14 @@ public class Connection implements Closeable {
 
 	public List<Point<byte[]>> getBinarySpatialMGETMultiBulkReply() {
 		return BuilderFactory.BYTE_SPATIAL_GPoint_LIST.build(getBinaryMultiBulkReply());
+	}
+	
+	public List<Geometry<String>> getSpatialMGETGEOMultiBulkReply() {
+		return BuilderFactory.SPATIAL_GGraphy_LIST.build(getBinaryMultiBulkReply());
+	}
+
+	public List<Geometry<byte[]>> getBinarySpatialMGETGEOMultiBulkReply() {
+		return BuilderFactory.BYTE_SPATIAL_GGraphy_LIST.build(getBinaryMultiBulkReply());
 	}
 
 	@SuppressWarnings("unchecked")

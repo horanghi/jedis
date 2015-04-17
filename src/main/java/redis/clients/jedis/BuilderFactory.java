@@ -11,7 +11,9 @@ import java.util.Set;
 
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
+import redis.clients.spatial.model.Geometry;
 import redis.clients.spatial.model.Point;
+import redis.clients.util.GEOMETRY;
 import redis.clients.util.SafeEncoder;
 
 public class BuilderFactory {
@@ -487,6 +489,71 @@ public class BuilderFactory {
 
 		public String toString() {
 			return "Point<byte[]>";
+		}
+
+	};
+
+	public static final Builder<List<Geometry<String>>> SPATIAL_GGraphy_LIST = new Builder<List<Geometry<String>>>() {
+		@SuppressWarnings("unchecked")
+		public List<Geometry<String>> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			final List<Geometry<String>> result = new ArrayList<Geometry<String>>(l.size());
+			Iterator<byte[]> iterator = l.iterator();
+
+			while (iterator.hasNext()) {
+				byte[] fistValue = iterator.next();
+				if (fistValue == null) {
+					continue;
+				}
+				String member = SafeEncoder.encode(fistValue);
+				String value = SafeEncoder.encode(iterator.next());
+				String geoJsonStr = SafeEncoder.encode(iterator.next());
+				Geometry<String> geo = GEOMETRY.getGeometry(geoJsonStr);
+				geo.setMember(member);
+				geo.setValue(value);
+
+				result.add(geo);
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "List<Geometry<String>>";
+		}
+
+	};
+
+	public static final Builder<List<Geometry<byte[]>>> BYTE_SPATIAL_GGraphy_LIST = new Builder<List<Geometry<byte[]>>>() {
+		@SuppressWarnings("unchecked")
+		public List<Geometry<byte[]>> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			final List<Geometry<byte[]>> result = new ArrayList<Geometry<byte[]>>(l.size());
+			Iterator<byte[]> iterator = l.iterator();
+
+			while (iterator.hasNext()) {
+				byte[] fistValue = iterator.next();
+				if (fistValue == null) {
+					continue;
+				}
+				byte[] member = fistValue;
+				byte[] value = iterator.next();
+				Geometry<byte[]> geo = GEOMETRY.getBGeometry(iterator.next());
+				geo.setMember(member);
+				geo.setValue(value);
+
+				result.add(geo);
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "List<Geometry<byte[]>>";
 		}
 
 	};

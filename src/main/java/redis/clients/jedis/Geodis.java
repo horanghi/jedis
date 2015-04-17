@@ -8,6 +8,8 @@ import java.util.List;
 
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
+import redis.clients.spatial.model.Geometry;
+import redis.clients.spatial.model.LineString;
 import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
 
@@ -16,7 +18,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	public Geodis(final String host) {
 		super(host);
 	}
-	
+
 	public Geodis(String host, int port, int timeout) {
 		super(host, port, timeout);
 	}
@@ -32,7 +34,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	public Geodis(URI uri) {
 		super(uri);
 	}
-	
+
 	@Override
 	public Long gadd(final String key, final double lat, final double lon, final String member, final String value) {
 		return gfadd(key, lat, lon, 0, M, member, value);
@@ -74,14 +76,16 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle<String>> gfrangeCircleByRadius(final String key, final double lat, final double lon, final double distance, final UNITS unit) {
+	public List<Circle<String>> gfrangeCircleByRadius(final String key, final double lat, final double lon, final double distance,
+			final UNITS unit) {
 		checkIsInMulti();
 		client.gfrangeCircleByRadius(key, lat, lon, distance, unit);
 		return client.getSpatialCircleMultiBulkReply();
 	}
 
 	@Override
-	public List<Circle<byte[]>> gfrangeCircleByRadius(final byte[] key, final double lat, final double lon, final double distance, final UNITS unit) {
+	public List<Circle<byte[]>> gfrangeCircleByRadius(final byte[] key, final double lat, final double lon, final double distance,
+			final UNITS unit) {
 		checkIsInMulti();
 		client.gfrangeCircleByRadius(key, lat, lon, distance, unit);
 		return client.getBinarySpatialCircleMultiBulkReply();
@@ -191,14 +195,14 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Point<String>> gfrangeByRegion(final String key, final Polygon polygon) {
+	public List<Point<String>> gfrangeByRegion(final String key, final Polygon<String> polygon) {
 		checkIsInMulti();
 		client.gfrangeByRegion(key, polygon);
 		return client.getSpatialMGETMultiBulkReply();
 	}
 
 	@Override
-	public List<Point<byte[]>> gfrangeByRegion(final byte[] key, final Polygon polygon) {
+	public List<Point<byte[]>> gfrangeByRegion(final byte[] key, final Polygon<?> polygon) {
 		checkIsInMulti();
 		client.gfrangeByRegion(key, polygon);
 		return client.getBinarySpatialMGETMultiBulkReply();
@@ -210,4 +214,45 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 		return Math.acos(Math.sin(dLat1) * Math.sin(dLat2) + Math.cos(dLat1) * Math.cos(dLat2) * Math.cos(dLon1 - dLon2));
 	}
 
+	@Override
+	public Long ggadd(final String key, final String member, final String value, final Polygon<String> polygon) {
+		checkIsInMulti();
+		client.ggadd(key, member, value, polygon);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggadd(final byte[] key, final byte[] member, final byte[] value, final Polygon<?> polygon) {
+		checkIsInMulti();
+		client.ggadd(key, member, value, polygon);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggadd(final String key, final String member, final String value, final LineString<String> lineString) {
+		checkIsInMulti();
+		client.ggadd(key, member, value, lineString);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggadd(final byte[] key, final byte[] member, final byte[] value, final LineString<?> lineString) {
+		checkIsInMulti();
+		client.ggadd(key, member, value, lineString);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public List<Geometry<String>> ggrange(final String key, final long start, final long stop) {
+		checkIsInMulti();
+		client.ggrange(key, start, stop);
+		return client.getSpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<byte[]>> ggrange(final byte[] key, final long start, final long stop) {
+		checkIsInMulti();
+		client.ggrange(key, start, stop);
+		return client.getBinarySpatialMGETGEOMultiBulkReply();
+	}
 }

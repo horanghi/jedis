@@ -359,7 +359,10 @@ public final class Protocol {
 		GFGET,
 		GFMGET,
 		GFNN,
-		GFRANGEBYREGION;
+		GFRANGEBYREGION, 
+		GGADD,
+		GGRANGE,
+		GGREVRANGE;
 
 		public final byte[] raw;
 
@@ -450,7 +453,7 @@ public final class Protocol {
 	}
 
 	public static enum Type {
-		POINT, CIRCLE, POLYGON;
+		POINT, CIRCLE, POLYGON, LINESTRING;
 		Type() {
 		}
 	}

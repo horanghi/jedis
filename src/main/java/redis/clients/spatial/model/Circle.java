@@ -9,7 +9,7 @@ import redis.clients.jedis.Protocol.UNITS;
 
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true, doNotUseGetters = true)
-public class Circle<T> extends Point<T> implements Geometry {
+public class Circle<T> extends Point<T> {
 	/**
 	 * 
 	 */

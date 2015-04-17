@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import redis.clients.jedis.Protocol.UNITS;
+import redis.clients.spatial.model.LineString;
 import redis.clients.spatial.model.Polygon;
 import redis.clients.util.SafeEncoder;
 
@@ -899,7 +900,7 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	public void gfrangeByRadius(final String key, final double lat, final double lon, final double distance, final UNITS unit) {
 		gfrangeByRadius(SafeEncoder.encode(key), lat, lon, distance, unit);
 	}
-	
+
 	@Override
 	public void gfrangeCircleByRadius(final String key, final double lat, final double lon, final double distance, final UNITS unit) {
 		gfrangeCircleByRadius(SafeEncoder.encode(key), lat, lon, distance, unit);
@@ -919,7 +920,7 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	public void gfget(final String key, final String member) {
 		gfget(SafeEncoder.encode(key), SafeEncoder.encode(member));
 	}
-	
+
 	@Override
 	public void gfmget(final String key, final String[] members) {
 		byte[][] mlist = new byte[members.length][];
@@ -929,7 +930,7 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 		}
 		gfmget(SafeEncoder.encode(key), mlist);
 	}
-	
+
 	@Override
 	public void gfnn(final String key, final double lat, final double lon, final long count) {
 		gfnn(SafeEncoder.encode(key), lat, lon, count);
@@ -939,16 +940,30 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	public void gfrangeByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern) {
 		gfrangeByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern));
 	}
-	
+
 	@Override
 	public void gfrangeCircleByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern) {
 		gfrangeCircleByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern));
 	}
+
+	@Override
+	public void gfrangeByRegion(String key, Polygon<String> polygon) {
+		gfrangeByRegion(SafeEncoder.encode(key), polygon);
+	}
+
+	@Override
+	public void ggadd(String key, String member, String value, Polygon<String> polygon) {
+		ggadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), polygon);
+	}
+
+	@Override
+	public void ggadd(String key, String member, String value, LineString<String> lineString) {
+		ggadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), lineString);
+	}
 	
 	@Override
-	public void gfrangeByRegion(String key, Polygon polygon) {
-		gfrangeByRegion(SafeEncoder.encode(key), polygon);
-		
+	public void ggrange(final String key, final long start, final long stop){
+		ggrange(SafeEncoder.encode(key), start, stop);
 	}
 
 }

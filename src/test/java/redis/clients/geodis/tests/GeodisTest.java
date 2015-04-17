@@ -202,7 +202,7 @@ public class GeodisTest {
 	@Test
 	public void testgaddnRegion() {
 		// [1,1], [1,-1], [-1,-1], [-1,1], [1,1]
-		Polygon polygon = new Polygon(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(1, 1),
+		Polygon<String> polygon = new Polygon<String>(new Point<String>(1, 1), new Point<String>(1, -1),
 				new Point<String>(-1, -1), new Point<String>(-1, 1), new Point<String>(1, 1));
 		System.out.println(polygon.getJsonStr());
 

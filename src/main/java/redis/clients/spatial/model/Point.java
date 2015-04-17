@@ -1,14 +1,19 @@
 package redis.clients.spatial.model;
 
+import static redis.clients.jedis.Protocol.OPCl.CCL;
+import static redis.clients.jedis.Protocol.OPCl.CL;
+import static redis.clients.jedis.Protocol.OPCl.OP;
+
 import java.util.Arrays;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import redis.clients.jedis.Protocol.Type;
+import redis.clients.util.SafeEncoder;
 
 @ToString(doNotUseGetters = true)
-public class Point<T> implements Geometry {
+public class Point<T> extends Geometry<T> {
 	/**
 	 * 
 	 */
@@ -23,32 +28,26 @@ public class Point<T> implements Geometry {
 	@Setter
 	@Getter
 	private double distance;
-	@Setter
-	@Getter
-	private T member;
-	@Setter
-	@Getter
-	private T value;
+
 
 	private Type type = Type.POINT;
 
 	public Point(double x, double y) {
+		super();
 		this.x = x;
 		this.y = y;
 	}
 
 	public Point(T member, double x, double y, T value) {
+		super(member, value);
 		this.x = x;
 		this.y = y;
-		this.member = member;
-		this.value = value;
 	}
 
 	public Point(T member, double x, double y, T value, double distance) {
+		super(member, value);
 		this.x = x;
 		this.y = y;
-		this.member = member;
-		this.value = value;
 		this.distance = distance;
 	}
 
@@ -99,6 +98,17 @@ public class Point<T> implements Geometry {
 
 	protected boolean canEqual(Object other) {
 		return other instanceof Point;
+	}
+
+	// {"type": "Point", "coordinates": [1,1]}
+	public String getJsonStr() {
+		StringBuffer sb = new StringBuffer("{\"type\": \"Point\", \"coordinates\": ");
+		sb.append(OP.str).append(this.x).append(",").append(this.y).append(CL.str).append(CCL.str);
+		return sb.toString();
+	}
+
+	public byte[] getJsonbyte() {
+		return SafeEncoder.encode(getJsonStr());
 	}
 
 }

@@ -20,6 +20,8 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
+import redis.clients.spatial.model.Geometry;
+import redis.clients.spatial.model.LineString;
 import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
 
@@ -202,8 +204,8 @@ public class GeodisTest {
 	@Test
 	public void testgaddnRegion() {
 		// [1,1], [1,-1], [-1,-1], [-1,1], [1,1]
-		Polygon<String> polygon = new Polygon<String>(new Point<String>(1, 1), new Point<String>(1, -1),
-				new Point<String>(-1, -1), new Point<String>(-1, 1), new Point<String>(1, 1));
+		Polygon<String> polygon = new Polygon<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
+				new Point<String>(-1, 1), new Point<String>(1, 1));
 		System.out.println(polygon.getJsonStr());
 
 		geodis.del(key);
@@ -401,4 +403,43 @@ public class GeodisTest {
 		// 127.40182709999999
 	}
 
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testggaddandggrange() {
+		geodis.del(key);
+		String[] members = { "member1", "member2", "member3", "member4" };
+		Polygon<String> polygon = new Polygon<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
+				new Point<String>(-1, 1), new Point<String>(1, 1));
+		Polygon<String> polygon2 = new Polygon<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
+				new Point<String>(-1, 1), new Point<String>(1, 1));
+		assertThat(geodis.ggadd(key, members[0], value, polygon), is(OKl));
+		assertThat(geodis.ggadd(key, members[1], value, polygon2), is(OKl));
+		assertThat(geodis.ggrange(key, 0, -1).size(), is(2));
+		List<Geometry<String>> result = geodis.ggrange(key, 0, -1);
+		assertThat(result.size(), is(2));
+		for (Geometry<String> geo : result) {
+			if (geo instanceof Polygon) {
+				System.out.println(((Polygon) geo).getType().name());
+			} else if (geo instanceof LineString) {
+				System.out.println(((LineString) geo).getType().name());
+			} else if (geo instanceof Point) {
+				System.out.println(((Point) geo).getType().name());
+			}
+
+		}
+		geodis.del(key);
+		//
+		// geodis.del(keyb);
+		// byte[][] membersb = { "member1".getBytes(), "member2".getBytes(), "member3".getBytes(), "member4".getBytes() };
+		// assertThat(geodis.gadd(keyb, 0.0, 0.0, membersb[0], valueb), is(OKl));
+		// assertThat(geodis.gadd(keyb, 0.1, 0.1, membersb[1], valueb), is(OKl));
+		// assertThat(geodis.gfnn(keyb, 0, 0, 3).size(), is(3));
+		// List<Point<byte[]>> resultb = geodis.gfnn(keyb, 0, 0, 5);
+		// assertThat(result.size(), is(5));
+		// int idx2 = 0;
+		// for (Point<byte[]> point : resultb) {
+		// point.equals(new Point<byte[]>(membersb[idx2++], 0, 0, valueb, 0));
+		// }
+		// geodis.del(keyb);
+	}
 }

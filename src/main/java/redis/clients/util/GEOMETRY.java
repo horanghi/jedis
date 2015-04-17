@@ -92,26 +92,28 @@ public enum GEOMETRY {
 	}
 
 	public static Geometry<String> getGeometry(final String typeJson) {
-		if (typeJson.startsWith(POLYGON.toString())) {
+		if (StringUtils.contains(typeJson.toUpperCase(), POLYGON.name())) {
 			return POLYGON.getGGeometry(typeJson);
-		} else if (typeJson.startsWith(LINESTRING.toString())) {
+		} else if (StringUtils.contains(typeJson.toUpperCase(), LINESTRING.name())) {
 			return LINESTRING.getGGeometry(typeJson);
-		} else if (typeJson.startsWith(POINT.toString())) {
+		} else if (StringUtils.contains(typeJson.toUpperCase(), POINT.name())) {
 			return POINT.getGGeometry(typeJson);
+		} else {
+			throw new RuntimeException("not support type.");
 		}
-		return null;
 	}
 
 	public static Geometry<byte[]> getBGeometry(final byte[] typeJsonb) {
 		String typeJson = SafeEncoder.encode(typeJsonb);
-		if (typeJson.startsWith(POLYGON.toString())) {
+		if (StringUtils.contains(typeJson.toUpperCase(), POLYGON.name())) {
 			return POLYGON.getGBGeometry(typeJson);
-		} else if (typeJson.startsWith(LINESTRING.toString())) {
+		} else if (StringUtils.contains(typeJson.toUpperCase(), LINESTRING.name())) {
 			return LINESTRING.getGBGeometry(typeJson);
-		} else if (typeJson.startsWith(POINT.toString())) {
+		} else if (StringUtils.contains(typeJson.toUpperCase(), POINT.name())) {
 			return POINT.getGBGeometry(typeJson);
+		} else {
+			throw new RuntimeException("not support type.");
 		}
-		return null;
 	}
 
 	public abstract Geometry<String> getGGeometry(String typeJson);

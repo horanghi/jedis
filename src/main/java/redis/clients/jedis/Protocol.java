@@ -453,7 +453,7 @@ public final class Protocol {
 	}
 
 	public static enum Type {
-		POINT, CIRCLE, POLYGON, LINESTRING;
+		GEOMETRY, POINT, CIRCLE, POLYGON, LINESTRING;
 		Type() {
 		}
 	}

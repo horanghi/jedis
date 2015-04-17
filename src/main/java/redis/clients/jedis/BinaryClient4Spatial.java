@@ -10,6 +10,7 @@ import static redis.clients.jedis.Protocol.Command.GFRANGEBYRADIUS;
 import static redis.clients.jedis.Protocol.Command.GFRANGEBYREGION;
 import static redis.clients.jedis.Protocol.Command.GFREM;
 import static redis.clients.jedis.Protocol.Command.GGADD;
+import static redis.clients.jedis.Protocol.Command.GGRANGE;
 import static redis.clients.jedis.Protocol.GeoOptions.ASC;
 import static redis.clients.jedis.Protocol.GeoOptions.CONTAINS;
 import static redis.clients.jedis.Protocol.GeoOptions.LIMIT;
@@ -23,7 +24,7 @@ import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.LineString;
 import redis.clients.spatial.model.Polygon;
 
-public class BinaryClient4Spatial extends BinaryClient implements Command4BinarySpatial{
+public class BinaryClient4Spatial extends BinaryClient implements Command4BinarySpatial {
 
 	public BinaryClient4Spatial(String host) {
 		super(host);
@@ -124,17 +125,17 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		// GGADD key member value geojson
 		sendCommand(GGADD, key, member, value, polygon.getJsonbyte());
 	}
-	
+
 	@Override
 	public void ggadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString) {
 		// GGADD key member value geojson
 		sendCommand(GGADD, key, member, value, lineString.getJsonbyte());
 	}
-	
+
 	@Override
 	public void ggrange(byte[] key, long start, long stop) {
 		// GGADD key member value geojson
-		sendCommand(GGADD, key, toByteArray(start), toByteArray(stop));
+		sendCommand(GGRANGE, key, toByteArray(start), toByteArray(stop), WITHVALUES.raw);
 	}
 
 }

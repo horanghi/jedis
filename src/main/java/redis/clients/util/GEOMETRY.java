@@ -12,15 +12,15 @@ public enum GEOMETRY {
 		public Geometry<String> getGGeometry(final String typeJson) {
 			// 삽질..성능 우선. Jackson 나중에..
 			// [[1.00000000000000,1.00000000000000]]}
-			String xys = typeJson.substring(this.toString().length());
-			String[] xylist = StringUtils.split(xys, " [,]{}");
+			String xys = typeJson.substring(this.toString().length() - 1);
+			String[] xylist = StringUtils.split(xys, " ,[]{}");
 			return new Point<String>(Double.valueOf(xylist[0]), Double.valueOf(xylist[1]));
 		}
 
 		public Geometry<byte[]> getGBGeometry(final String typeJson) {
 			// 삽질..성능 우선. Jackson 나중에..
 			// [[1.00000000000000,1.00000000000000]]}
-			String xys = typeJson.substring(this.toString().length());
+			String xys = typeJson.substring(this.toString().length() - 1);
 			String[] xylist = StringUtils.split(xys, " [,]{}");
 			return new Point<byte[]>(Double.valueOf(xylist[0]), Double.valueOf(xylist[1]));
 		}

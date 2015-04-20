@@ -317,26 +317,25 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	public Geometry<String> ggget(final String key, final String member) {
 		checkIsInMulti();
 		client.ggget(key, member);
-		return client.getSpatialGETMultiBulkReply();
-
+		return client.getSpatialGETGEOMultiBulkReply();
 	}
 
 	@Override
 	public Geometry<byte[]> ggget(final byte[] key, final byte[] member) {
 		checkIsInMulti();
 		client.ggget(key, member);
-		return client.getBinarySpatialGETMultiBulkReply();
+		return client.getBinarySpatialGETGEOMultiBulkReply();
 	}
 
 	@Override
-	public List<Geometry<String>> ggmget(final String key, final String[] members) {
+	public List<Geometry<String>> ggmget(final String key, final String... members) {
 		checkIsInMulti();
 		client.ggmget(key, members);
 		return client.getSpatialMGETGEOMultiBulkReply();
 	}
 
 	@Override
-	public List<Geometry<byte[]>> ggmget(final byte[] key, final byte[][] members) {
+	public List<Geometry<byte[]>> ggmget(final byte[] key, final byte[]... members) {
 		checkIsInMulti();
 		client.ggmget(key, members);
 		return client.getBinarySpatialMGETGEOMultiBulkReply();

@@ -57,7 +57,6 @@ public class LineString<T> extends Geometry<T> {
 			sb.append(CL.str).append(CL.str).append(CCL.str);
 		}
 
-		System.out.println(sb.toString());
 		return sb.toString();
 
 	}
@@ -69,6 +68,22 @@ public class LineString<T> extends Geometry<T> {
 	@Override
 	public Type getType() {
 		return type;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof LineString)) {
+			return false;
+		}
+		
+//		if(!super.equals((Geometry<T>) o)){
+//			return false;
+//		}
+		
+		return true;
 	}
 
 }

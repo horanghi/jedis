@@ -70,4 +70,19 @@ public class Polygon<T> extends Geometry<T> {
 		return type;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof Polygon)) {
+			return false;
+		}
+		
+//		if(!super.equals((Geometry<T>) o)){
+//			return false;
+//		}
+		
+		return true;
+	}
 }

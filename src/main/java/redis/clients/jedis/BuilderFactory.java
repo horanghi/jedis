@@ -520,6 +520,68 @@ public class BuilderFactory {
 
 	};
 
+	public static final Builder<Geometry<String>> SPATIAL_GGraphy = new Builder<Geometry<String>>() {
+		@SuppressWarnings("unchecked")
+		public Geometry<String> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			Geometry<String> result = null;
+			Iterator<byte[]> iterator = l.iterator();
+
+			if (iterator.hasNext()) {
+				byte[] fistValue = iterator.next();
+				if (fistValue == null) {
+					return null;
+				}
+				String member = SafeEncoder.encode(fistValue);
+				String value = SafeEncoder.encode(iterator.next());
+				String geoJsonStr = SafeEncoder.encode(iterator.next());
+				result = GEOMETRY.getGeometry(geoJsonStr);
+				System.out.println("result : "+ member+", value="+value);
+				result.setMember(member);
+				result.setValue(value);
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "Geometry<String>";
+		}
+
+	};
+
+	public static final Builder<Geometry<byte[]>> BYTE_SPATIAL_GGraphy = new Builder<Geometry<byte[]>>() {
+		@SuppressWarnings("unchecked")
+		public Geometry<byte[]> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			Geometry<byte[]> result = null;
+			Iterator<byte[]> iterator = l.iterator();
+
+			if (iterator.hasNext()) {
+				byte[] fistValue = iterator.next();
+				if (fistValue == null) {
+					return null;
+				}
+				byte[] member = fistValue;
+				byte[] value = iterator.next();
+				result = GEOMETRY.getBGeometry(iterator.next());
+				result.setMember(member);
+				result.setValue(value);
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "Geometry<byte[]>";
+		}
+
+	};
+
 	public static final Builder<List<Geometry<String>>> SPATIAL_GGraphy_LIST = new Builder<List<Geometry<String>>>() {
 		@SuppressWarnings("unchecked")
 		public List<Geometry<String>> build(Object data) {
@@ -541,9 +603,6 @@ public class BuilderFactory {
 				String value = SafeEncoder.encode(iterator.next());
 				String geoJsonStr = SafeEncoder.encode(iterator.next());
 				Geometry<String> geo = GEOMETRY.getGeometry(geoJsonStr);
-				System.out.println(geoJsonStr);
-				System.out.println(member);
-				System.out.println(geo.getType());
 				geo.setMember(member);
 				geo.setValue(value);
 

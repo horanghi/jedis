@@ -3,9 +3,6 @@ package redis.clients.spatial.model;
 import static redis.clients.jedis.Protocol.OPCl.CCL;
 import static redis.clients.jedis.Protocol.OPCl.CL;
 import static redis.clients.jedis.Protocol.OPCl.OP;
-
-import java.util.Arrays;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -28,7 +25,6 @@ public class Point<T> extends Geometry<T> {
 	@Setter
 	@Getter
 	private double distance;
-
 
 	private Type type = Type.POINT;
 
@@ -56,7 +52,7 @@ public class Point<T> extends Geometry<T> {
 		return this.type;
 	}
 
-	@Override
+	@SuppressWarnings("unchecked")
 	public boolean equals(Object o) {
 		if (o == this) {
 			return true;
@@ -64,35 +60,45 @@ public class Point<T> extends Geometry<T> {
 		if (!(o instanceof Point)) {
 			return false;
 		}
-		@SuppressWarnings("unchecked")
+
 		Point<T> other = (Point<T>) o;
-		if (!other.canEqual((Object) this)) {
-			return false;
-		}
-		if (!this.type.equals(other.type)) {
-			return false;
-		}
-		if (this.getMember() == null) {
-			return false;
-		}
-		if (this.getMember() instanceof String) {
-			if (!this.getMember().equals(other.getMember())) {
-				return false;
-			}
-		} else {
-			if (!Arrays.equals(((byte[]) this.getMember()), ((byte[]) other.getMember()))) {
-				return false;
-			}
-		}
+
 		if (Double.compare(this.x, other.x) != 0) {
 			return false;
 		}
 		if (Double.compare(this.y, other.y) != 0) {
 			return false;
 		}
-		if (Double.compare(this.distance, other.distance) != 0) {
+		if (!other.canEqual((Object) this)) {
 			return false;
 		}
+		if (!this.type.equals(other.type)) {
+			return false;
+		}
+//		
+//		if (Double.compare(this.distance, other.distance) != 0) {
+//			return false;
+//		}
+//
+//		if (this.getMember() == null && other.getMember() == null && this.getValue() == null && other.getValue() == null) {
+//			return true;
+//		}
+//
+//		if (this.getMember() == null) {
+//			return false;
+//		}
+//		
+//		if (this.getMember() instanceof String) {
+//			if (!this.getMember().equals(other.getMember())) {
+//				return false;
+//			}
+//		} else {
+//			if (!Arrays.equals(((byte[]) this.getMember()), ((byte[]) other.getMember()))) {
+//				return false;
+//			}
+//		}
+
+
 		return true;
 	}
 

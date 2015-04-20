@@ -98,9 +98,9 @@ public interface GeoCommands {
 
 	Geometry<byte[]> ggget(byte[] key, byte[] member);
 
-	List<Geometry<String>> ggmget(String key, String[] members);
+	List<Geometry<String>> ggmget(String key, String... members);
 
-	List<Geometry<byte[]>> ggmget(byte[] key, byte[][] members);
+	List<Geometry<byte[]>> ggmget(byte[] key, byte[]... members);
 
 //	List<Point<String>> (String key, Polygon<String> polygon);
 	

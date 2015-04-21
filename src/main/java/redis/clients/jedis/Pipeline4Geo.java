@@ -58,5 +58,5 @@ public interface Pipeline4Geo {
 
 	Response<List<Point<String>>> gfrangeByRegion(String key, Polygon<String> polygon);
 
-	Response<List<Point<byte[]>>> gfrangeByRegion(byte[] key, Polygon<?> polygon);
+	Response<List<Point<byte[]>>> gfrangeByRegion(byte[] key, Polygon<byte[]> polygon);
 }

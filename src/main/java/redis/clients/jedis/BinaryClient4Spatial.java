@@ -135,7 +135,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	@Override
 	public void ggadd(byte[] key, byte[] member, byte[] value, Point<?> point) {
 		// GGADD key member value geojson
-		sendCommand(GGADD, key, member, value, point.getJsonbyte());
+		sendCommand(GGADD, key, member, value, point.getJsonByte());
 	}
 
 	@Override

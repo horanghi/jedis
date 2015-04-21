@@ -9,19 +9,17 @@ import lombok.ToString;
 import redis.clients.jedis.Protocol.Type;
 import redis.clients.util.SafeEncoder;
 
-@ToString(doNotUseGetters = true)
+@ToString(doNotUseGetters = true, callSuper = true)
 public class Point<T> extends Geometry<T> {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1978761421041959442L;
 
-	@Setter
 	@Getter
-	private double x;
-	@Setter
+	final private double x;
 	@Getter
-	private double y;
+	final private double y;
 	@Setter
 	@Getter
 	private double distance;
@@ -75,29 +73,6 @@ public class Point<T> extends Geometry<T> {
 		if (!this.type.equals(other.type)) {
 			return false;
 		}
-//		
-//		if (Double.compare(this.distance, other.distance) != 0) {
-//			return false;
-//		}
-//
-//		if (this.getMember() == null && other.getMember() == null && this.getValue() == null && other.getValue() == null) {
-//			return true;
-//		}
-//
-//		if (this.getMember() == null) {
-//			return false;
-//		}
-//		
-//		if (this.getMember() instanceof String) {
-//			if (!this.getMember().equals(other.getMember())) {
-//				return false;
-//			}
-//		} else {
-//			if (!Arrays.equals(((byte[]) this.getMember()), ((byte[]) other.getMember()))) {
-//				return false;
-//			}
-//		}
-
 
 		return true;
 	}
@@ -113,7 +88,7 @@ public class Point<T> extends Geometry<T> {
 		return sb.toString();
 	}
 
-	public byte[] getJsonbyte() {
+	public byte[] getJsonByte() {
 		return SafeEncoder.encode(getJsonStr());
 	}
 

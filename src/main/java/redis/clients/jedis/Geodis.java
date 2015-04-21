@@ -108,19 +108,19 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Point<String>> gfrangeCircleByRadiusWithMatch(final String key, final double lat, final double lon, final double distance,
+	public List<Circle<String>> gfrangeCircleByRadiusWithMatch(final String key, final double lat, final double lon, final double distance,
 			final UNITS unit, final String pattern) {
 		checkIsInMulti();
 		client.gfrangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
-		return client.getSpatialMultiBulkReply();
+		return client.getSpatialCircleMultiBulkReply();
 	}
 
 	@Override
-	public List<Point<byte[]>> gfrangeCircleByRadiusWithMatch(final byte[] key, final double lat, final double lon, final double distance,
+	public List<Circle<byte[]>> gfrangeCircleByRadiusWithMatch(final byte[] key, final double lat, final double lon, final double distance,
 			final UNITS unit, final byte[] pattern) {
 		checkIsInMulti();
 		client.gfrangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
-		return client.getBinarySpatialMultiBulkReply();
+		return client.getBinarySpatialCircleMultiBulkReply();
 	}
 
 	@Override

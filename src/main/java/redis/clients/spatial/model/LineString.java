@@ -9,6 +9,7 @@ import static redis.clients.util.GEOMETRY.LINESTRING;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
+import lombok.Getter;
 import lombok.ToString;
 import redis.clients.jedis.Protocol.Type;
 import redis.clients.util.SafeEncoder;
@@ -21,6 +22,7 @@ public class LineString<T> extends Geometry<T> {
 	 */
 	private static final long serialVersionUID = -6291789145778774869L;
 
+	@Getter
 	final LinkedHashSet<Point<T>> points = new LinkedHashSet<Point<T>>();
 
 	private Type type = Type.LINESTRING;
@@ -69,7 +71,7 @@ public class LineString<T> extends Geometry<T> {
 	public Type getType() {
 		return type;
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) {
@@ -78,12 +80,13 @@ public class LineString<T> extends Geometry<T> {
 		if (!(o instanceof LineString)) {
 			return false;
 		}
-		
-//		if(!super.equals((Geometry<T>) o)){
-//			return false;
+//		@SuppressWarnings("unchecked")
+//		LineString<T> op = (LineString<T>) o;
+//		for (Point<T> p : op.getPoints()) {
+//			if (!points.contains(p)) {
+//				return false;
+//			}
 //		}
-		
 		return true;
 	}
-
 }

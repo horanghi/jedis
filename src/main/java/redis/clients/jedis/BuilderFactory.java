@@ -539,7 +539,6 @@ public class BuilderFactory {
 				String value = SafeEncoder.encode(iterator.next());
 				String geoJsonStr = SafeEncoder.encode(iterator.next());
 				result = GEOMETRY.getGeometry(geoJsonStr);
-				System.out.println("result : "+ member+", value="+value);
 				result.setMember(member);
 				result.setValue(value);
 			}

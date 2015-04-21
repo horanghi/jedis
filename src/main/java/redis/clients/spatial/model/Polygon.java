@@ -8,6 +8,7 @@ import static redis.clients.util.GEOMETRY.POLYGON;
 
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 import lombok.ToString;
 import redis.clients.jedis.Protocol.Type;
@@ -23,7 +24,7 @@ public class Polygon<T> extends Geometry<T> {
 
 	final LinkedHashSet<Point<T>> points = new LinkedHashSet<Point<T>>();
 
-	private Type type = Type.POLYGON;
+	final private Type type = Type.POLYGON;
 
 	@SuppressWarnings("unchecked")
 	public Polygon(Point<T>... points) {
@@ -33,8 +34,22 @@ public class Polygon<T> extends Geometry<T> {
 		}
 	}
 	
+	public Polygon(List<Point<T>> points) {
+		super();
+		for (Point<T> p : points) {
+			this.points.add(p);
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	public Polygon(final T member, final T value, Point<T>... points) {
+		super(member, value);
+		for (Point<T> p : points) {
+			this.points.add(p);
+		}
+	}
+	
+	public Polygon(final T member, final T value, List<Point<T>> points) {
 		super(member, value);
 		for (Point<T> p : points) {
 			this.points.add(p);

@@ -144,13 +144,13 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<List<Point<String>>> gfrangeByRegion(String key, Polygon polygon) {
+	public Response<List<Point<String>>> gfrangeByRegion(String key, Polygon<String> polygon) {
 		client.gfrangeByRegion(key, polygon);
 		return getResponse(BuilderFactory.SPATIAL_GPoint_LIST);
 	}
 
 	@Override
-	public Response<List<Point<byte[]>>> gfrangeByRegion(byte[] key, Polygon polygon) {
+	public Response<List<Point<byte[]>>> gfrangeByRegion(byte[] key, Polygon<byte[]> polygon) {
 		client.gfrangeByRegion(key, polygon);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GPoint_LIST);
 	}

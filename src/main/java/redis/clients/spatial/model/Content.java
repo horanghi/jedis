@@ -10,7 +10,7 @@ import redis.clients.jedis.Protocol.Type;
 
 @ToString
 @EqualsAndHashCode
-public class Geometry<T> implements Serializable {
+public class Content<T> implements Serializable {
 
 	/**
 	 * 
@@ -23,11 +23,14 @@ public class Geometry<T> implements Serializable {
 	@Setter
 	@Getter
 	private T value;
+	@Setter
+	@Getter
+	private double distance;
 
-	public Geometry() {
+	public Content() {
 	}
 
-	public Geometry(final T member, final T value) {
+	public Content(final T member, final T value) {
 		this.member = member;
 		this.value = value;
 	}

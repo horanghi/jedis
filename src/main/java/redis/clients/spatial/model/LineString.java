@@ -8,10 +8,13 @@ import static redis.clients.util.GEOMETRY.LINESTRING;
 
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.ToString;
 import redis.clients.jedis.Protocol.Type;
+import redis.clients.util.GEOMETRY;
 import redis.clients.util.SafeEncoder;
 
 @ToString(doNotUseGetters = true)
@@ -35,6 +38,13 @@ public class LineString<T> extends Geometry<T> {
 		}
 	}
 
+	public LineString(List<Point<T>> points) {
+		super();
+		for (Point<T> p : points) {
+			this.points.add(p);
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	public LineString(T member, T value, Point<T>... points) {
 		super(member, value);
@@ -48,7 +58,7 @@ public class LineString<T> extends Geometry<T> {
 		StringBuffer sb = new StringBuffer(LINESTRING.toString());
 		Iterator<Point<T>> iters = points.iterator();
 		if (iters.hasNext()) {
-			sb.append(OP.str).append(OP.str);
+			sb.append(OP.str);
 			for (int idx = 0; iters.hasNext(); idx++) {
 				Point<T> vp = iters.next();
 				if (idx != 0) {
@@ -56,14 +66,13 @@ public class LineString<T> extends Geometry<T> {
 				}
 				sb.append(OP.str).append(vp.getX()).append(CO.str).append(vp.getY()).append(CL.str);
 			}
-			sb.append(CL.str).append(CL.str).append(CCL.str);
+			sb.append(CL.str).append(CCL.str);
 		}
-
 		return sb.toString();
 
 	}
 
-	public byte[] getJsonbyte() {
+	public byte[] getJsonByte() {
 		return SafeEncoder.encode(getJsonStr());
 	}
 
@@ -72,6 +81,7 @@ public class LineString<T> extends Geometry<T> {
 		return type;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) {
@@ -80,13 +90,10 @@ public class LineString<T> extends Geometry<T> {
 		if (!(o instanceof LineString)) {
 			return false;
 		}
-//		@SuppressWarnings("unchecked")
-//		LineString<T> op = (LineString<T>) o;
-//		for (Point<T> p : op.getPoints()) {
-//			if (!points.contains(p)) {
-//				return false;
-//			}
-//		}
+		System.out.println(GEOMETRY.equals((Set) this.points, (Set) ((LineString<T>) o).getPoints()));
+		if (!GEOMETRY.equals((Set) this.points, (Set) ((LineString<T>) o).getPoints())) {
+			return false;
+		}
 		return true;
 	}
 }

@@ -3,6 +3,7 @@ package redis.clients.spatial.model;
 import static redis.clients.jedis.Protocol.OPCl.CCL;
 import static redis.clients.jedis.Protocol.OPCl.CL;
 import static redis.clients.jedis.Protocol.OPCl.OP;
+import static redis.clients.util.GEOMETRY.POINT;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -55,25 +56,18 @@ public class Point<T> extends Geometry<T> {
 		if (o == this) {
 			return true;
 		}
-		if (!(o instanceof Point)) {
-			return false;
-		}
 
 		Point<T> other = (Point<T>) o;
 
-		if (Double.compare(this.x, other.x) != 0) {
+		if (!(o instanceof Point)) {
 			return false;
 		}
-		if (Double.compare(this.y, other.y) != 0) {
+		if (this.x != other.x) {
 			return false;
 		}
-		if (!other.canEqual((Object) this)) {
+		if (this.y != other.y) {
 			return false;
 		}
-		if (!this.type.equals(other.type)) {
-			return false;
-		}
-
 		return true;
 	}
 
@@ -83,7 +77,7 @@ public class Point<T> extends Geometry<T> {
 
 	// {"type": "Point", "coordinates": [1,1]}
 	public String getJsonStr() {
-		StringBuffer sb = new StringBuffer("{\"type\": \"Point\", \"coordinates\": ");
+		StringBuffer sb = new StringBuffer(POINT.toString());
 		sb.append(OP.str).append(this.x).append(",").append(this.y).append(CL.str).append(CCL.str);
 		return sb.toString();
 	}

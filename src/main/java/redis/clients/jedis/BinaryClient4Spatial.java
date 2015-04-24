@@ -123,13 +123,13 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	public void gfrangeByRegion(byte[] key, Polygon<?> polygon) {
 		// GFRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
 		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
-		sendCommand(GFRANGEBYREGION, key, polygon.getJsonbyte(), WITHVALUES.raw);
+		sendCommand(GFRANGEBYREGION, key, polygon.getJsonByte(), WITHVALUES.raw);
 	}
 
 	@Override
 	public void ggadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon) {
 		// GGADD key member value geojson
-		sendCommand(GGADD, key, member, value, polygon.getJsonbyte());
+		sendCommand(GGADD, key, member, value, polygon.getJsonByte());
 	}
 	
 	@Override
@@ -141,7 +141,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	@Override
 	public void ggadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString) {
 		// GGADD key member value geojson
-		sendCommand(GGADD, key, member, value, lineString.getJsonbyte());
+		sendCommand(GGADD, key, member, value, lineString.getJsonByte());
 	}
 
 	@Override

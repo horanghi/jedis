@@ -13,6 +13,7 @@ import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Geometry;
 import redis.clients.spatial.model.Point;
+import redis.clients.spatial.model.Polygon;
 import redis.clients.util.GEOMETRY;
 import redis.clients.util.SafeEncoder;
 
@@ -538,6 +539,7 @@ public class BuilderFactory {
 				String member = SafeEncoder.encode(fistValue);
 				String value = SafeEncoder.encode(iterator.next());
 				String geoJsonStr = SafeEncoder.encode(iterator.next());
+				System.out.println("geoJsonStr2 ="+geoJsonStr);
 				result = GEOMETRY.getGeometry(geoJsonStr);
 				result.setMember(member);
 				result.setValue(value);
@@ -590,7 +592,6 @@ public class BuilderFactory {
 			List<byte[]> l = (List<byte[]>) data;
 			final List<Geometry<String>> result = new ArrayList<Geometry<String>>(l.size());
 			Iterator<byte[]> iterator = l.iterator();
-
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
@@ -601,6 +602,7 @@ public class BuilderFactory {
 				String member = SafeEncoder.encode(fistValue);
 				String value = SafeEncoder.encode(iterator.next());
 				String geoJsonStr = SafeEncoder.encode(iterator.next());
+				System.out.println(member + " : "+geoJsonStr);
 				Geometry<String> geo = GEOMETRY.getGeometry(geoJsonStr);
 				geo.setMember(member);
 				geo.setValue(value);

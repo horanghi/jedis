@@ -9,9 +9,12 @@ import static redis.clients.util.GEOMETRY.POLYGON;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
+import lombok.Getter;
 import lombok.ToString;
 import redis.clients.jedis.Protocol.Type;
+import redis.clients.util.GEOMETRY;
 import redis.clients.util.SafeEncoder;
 
 @ToString(doNotUseGetters = true)
@@ -22,6 +25,7 @@ public class Polygon<T> extends Geometry<T> {
 	 */
 	private static final long serialVersionUID = -5983153208342809216L;
 
+	@Getter
 	final LinkedHashSet<Point<T>> points = new LinkedHashSet<Point<T>>();
 
 	final private Type type = Type.POLYGON;
@@ -33,14 +37,14 @@ public class Polygon<T> extends Geometry<T> {
 			this.points.add(p);
 		}
 	}
-	
+
 	public Polygon(List<Point<T>> points) {
 		super();
 		for (Point<T> p : points) {
 			this.points.add(p);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Polygon(final T member, final T value, Point<T>... points) {
 		super(member, value);
@@ -48,7 +52,7 @@ public class Polygon<T> extends Geometry<T> {
 			this.points.add(p);
 		}
 	}
-	
+
 	public Polygon(final T member, final T value, List<Point<T>> points) {
 		super(member, value);
 		for (Point<T> p : points) {
@@ -64,6 +68,9 @@ public class Polygon<T> extends Geometry<T> {
 			sb.append(OP.str).append(OP.str);
 			for (int idx = 0; iters.hasNext(); idx++) {
 				Point<T> vp = iters.next();
+				if(vp == null){
+					break;
+				}
 				if (idx != 0) {
 					sb.append(CO.str);
 				}
@@ -76,7 +83,7 @@ public class Polygon<T> extends Geometry<T> {
 		return sb.toString();
 	}
 
-	public byte[] getJsonbyte() {
+	public byte[] getJsonByte() {
 		return SafeEncoder.encode(getJsonStr());
 	}
 
@@ -85,6 +92,7 @@ public class Polygon<T> extends Geometry<T> {
 		return type;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) {
@@ -93,11 +101,11 @@ public class Polygon<T> extends Geometry<T> {
 		if (!(o instanceof Polygon)) {
 			return false;
 		}
-		
-//		if(!super.equals((Geometry<T>) o)){
-//			return false;
-//		}
-		
+
+		if(!GEOMETRY.equals((Set) this.points, (Set)((Polygon<T>) o).getPoints())){
+			return false;
+		}
+
 		return true;
 	}
 }

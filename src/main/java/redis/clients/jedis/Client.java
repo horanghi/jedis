@@ -1,6 +1,7 @@
 package redis.clients.jedis;
 
 import static redis.clients.jedis.Protocol.toByteArray;
+import static redis.clients.jedis.Protocol.Command.GGADD;
 
 import java.util.ArrayList;
 import java.util.HashMap;

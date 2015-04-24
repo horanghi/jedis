@@ -38,7 +38,7 @@ public enum GEOMETRY {
 			String[] xylist = StringUtils.split(xys, " [,]{}:");
 			List<Point<String>> resultList = new ArrayList<Point<String>>();
 			for (int idx = 0; idx < xylist.length;) {
-				if(xylist[idx] == null){
+				if (xylist[idx] == null) {
 					break;
 				}
 				Point<String> point = new Point<String>(Double.valueOf(xylist[idx++]), Double.valueOf(xylist[idx++]));
@@ -54,7 +54,7 @@ public enum GEOMETRY {
 			String[] xylist = StringUtils.split(xys, " [,]{}:");
 			List<Point<byte[]>> resultList = new ArrayList<Point<byte[]>>();
 			for (int idx = 0; idx < xylist.length;) {
-				if(xylist[idx] == null){
+				if (xylist[idx] == null) {
 					break;
 				}
 				Point<byte[]> point = new Point<byte[]>(Double.valueOf(xylist[idx++]), Double.valueOf(xylist[idx++]));
@@ -70,7 +70,7 @@ public enum GEOMETRY {
 			String[] xylist = StringUtils.split(xys, " [,]{}:");
 			List<Point<String>> resultList = new ArrayList<Point<String>>();
 			for (int idx = 0; idx < xylist.length;) {
-				if(xylist[idx] == null){
+				if (xylist[idx] == null) {
 					break;
 				}
 				Point<String> point = new Point<String>(Double.valueOf(xylist[idx++]), Double.valueOf(xylist[idx++]));
@@ -84,7 +84,7 @@ public enum GEOMETRY {
 			String[] xylist = StringUtils.split(xys, " [,]{}:");
 			List<Point<byte[]>> resultList = new ArrayList<Point<byte[]>>();
 			for (int idx = 0; idx < xylist.length;) {
-				if(xylist[idx] == null){
+				if (xylist[idx] == null) {
 					break;
 				}
 				Point<byte[]> point = new Point<byte[]>(Double.valueOf(xylist[idx++]), Double.valueOf(xylist[idx++]));
@@ -133,11 +133,9 @@ public enum GEOMETRY {
 		if (point1 == null || point2 == null) {
 			return false;
 		}
-
 		if (point1.size() != point2.size()) {
 			return false;
 		}
-
 		if (point1.size() + point2.size() == 0) {
 			return false;
 		}
@@ -145,7 +143,8 @@ public enum GEOMETRY {
 		Object[] origin = point1.toArray();
 		Object[] diffList = point2.toArray();
 		boolean match = false;
-		for (Object ps : origin) { // 1,2,3,4,5 // 10,20,3,40,50
+		for (Object ps : origin) {
+			match = false;
 			for (Object pb : diffList) {
 				if (((Point<?>) pb).equals((Point<?>) ps)) {
 					match = true;

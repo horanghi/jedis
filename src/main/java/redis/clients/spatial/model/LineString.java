@@ -90,7 +90,6 @@ public class LineString<T> extends Geometry<T> {
 		if (!(o instanceof LineString)) {
 			return false;
 		}
-		System.out.println(GEOMETRY.equals((Set) this.points, (Set) ((LineString<T>) o).getPoints()));
 		if (!GEOMETRY.equals((Set) this.points, (Set) ((LineString<T>) o).getPoints())) {
 			return false;
 		}

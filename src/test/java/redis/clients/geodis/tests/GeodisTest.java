@@ -1,6 +1,7 @@
 package redis.clients.geodis.tests;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -19,10 +20,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import redis.clients.jedis.Connection;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.Protocol.Command;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Geometry;
@@ -293,6 +292,13 @@ public class GeodisTest {
 		assertFalse(point1.equals(point5));// x,y만 비교
 		assertTrue(point1.equals(point1_1)); // x,y만 비교
 		assertTrue(point1_1.equals(point1_2)); // x,y만 비교
+		
+		assertThat(point1, is(point2)); // x,y만 비교
+		assertThat(point1, not(point3));// x,y만 비교
+		assertThat(point1, not(point4));// x,y만 비교
+		assertThat(point1, not(point5));// x,y만 비교
+		assertThat(point1, is(point1_1)); // x,y만 비교
+		assertThat(point1_1, is(point1_2)); // x,y만 비교
 
 		assertTrue(((Geometry) point1_1).equals((Geometry) point1_2)); // x,y만 비교
 
@@ -314,9 +320,9 @@ public class GeodisTest {
 		Polygon<String> polygon2 = new Polygon<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
 				new Point<String>(-1, 1), new Point<String>(1, 1));
 		Polygon<String> polygon3 = new Polygon<String>(new Point<String>(0, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
-				new Point<String>(-1, 1), new Point<String>(1, 1));
+				new Point<String>(-1, 1), new Point<String>(1, 1));//다름.
 		Polygon<String> polygon4 = new Polygon<String>(new Point<String>(0, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
-				new Point<String>(-1, 1), new Point<String>(1, 1), new Point<String>(1, 1));
+				new Point<String>(-1, 1), new Point<String>(1, 1), new Point<String>(1, 1));//다름.
 		Polygon<String> polygon1_1 = new Polygon<String>(new Point<String>(1, -1), new Point<String>(-1, -1), new Point<String>(-1, 1),
 				new Point<String>(1, 1), new Point<String>(1, -1));
 
@@ -325,31 +331,45 @@ public class GeodisTest {
 		assertFalse(polygon1.equals(polygon4)); // x,y만 비교
 		assertTrue(polygon1.equals(polygon1_1)); // x,y만 비교
 		
-		assertThat(polygon1.equals(polygon2)); // x,y만 비교
-		assertThat(polygon1.equals(polygon3)); // x,y만 비교
-		assertThat(polygon1.equals(polygon4)); // x,y만 비교
-		assertThat(polygon1.equals(polygon1_1)); // x,y만 비교
+		assertThat(polygon1, is(polygon2)); // x,y만 비교
+		assertThat(polygon1, not(polygon3)); // x,y만 비교
+		assertThat(polygon1, not(polygon4)); // x,y만 비교
+		assertThat(polygon1, is(polygon1_1)); // x,y만 비교
 
 		LineString<String> linestr1 = new LineString<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
 				new Point<String>(-1, 1));
 		LineString<String> linestr2 = new LineString<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
 				new Point<String>(-1, 1));
 		LineString<String> linestr3 = new LineString<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
-				new Point<String>(-1, 1), new Point<String>(-1, 0));
+				new Point<String>(-1, 1), new Point<String>(-1, 0)); //다름 
 		LineString<String> linestr4 = new LineString<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
-				new Point<String>(-1, 0));
+				new Point<String>(-1, 0));//다름 
 		LineString<String> linestr1_1 = new LineString<String>(new Point<String>(1, -1), new Point<String>(-1, -1),
 				new Point<String>(-1, 1), new Point<String>(1, 1));
 
 		assertTrue(linestr1.equals(linestr2)); // x,y만 비교
 		assertFalse(linestr1.equals(linestr3)); // x,y만 비교
+		System.out.println(linestr1.getJsonStr().equals(linestr4.getJsonStr()));
 		assertFalse(linestr1.equals(linestr4)); // x,y만 비교
 		assertTrue(linestr1.equals(linestr1_1)); // x,y만 비교
 		
-		assertThat(linestr1.equals(linestr2)); // x,y만 비교
-		assertThat(linestr1.equals(linestr3)); // x,y만 비교
-		assertThat(linestr1.equals(linestr4)); // x,y만 비교
-		assertThat(linestr1.equals(linestr1_1)); // x,y만 비교
+		assertThat(linestr1, is(linestr2)); // x,y만 비교
+		assertThat(linestr1, not(linestr3)); // x,y만 비교
+		assertThat(linestr1, not(linestr4)); // x,y만 비교
+		assertThat(linestr1, is(linestr1_1)); // x,y만 비교
+	}
+	
+	@Test
+	public void testdiff() {
+		LineString<String> linestr1 = new LineString<String>(new Point<String>(1, 1), new Point<String>(-1, 1));
+		LineString<String> linestr4 = new LineString<String>(new Point<String>(1, 1), new Point<String>(-1, 0));//다름 
+		LineString<String> linestr1_1 = new LineString<String>(new Point<String>(-1, 1), new Point<String>(1, 1));
+		
+		assertTrue(linestr1.equals(linestr1_1)); // x,y만 비교
+		assertThat(linestr1, is(linestr1_1)); // x,y만 비교
+		assertFalse(linestr1.equals(linestr4)); // x,y만 비교
+		
+		assertThat(linestr1, not(linestr4)); // x,y만 비교
 	}
 
 	@Test

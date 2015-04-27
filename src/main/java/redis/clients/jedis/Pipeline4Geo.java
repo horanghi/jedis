@@ -4,6 +4,8 @@ import java.util.List;
 
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
+import redis.clients.spatial.model.Geometry;
+import redis.clients.spatial.model.LineString;
 import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
 
@@ -59,4 +61,40 @@ public interface Pipeline4Geo {
 	Response<List<Point<String>>> gfrangeByRegion(String key, Polygon<String> polygon);
 
 	Response<List<Point<byte[]>>> gfrangeByRegion(byte[] key, Polygon<byte[]> polygon);
+
+	Response<Long> ggadd(String key, String member, String value, Polygon<String> polygon);
+
+	Response<Long> ggadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon);
+
+	Response<Long> ggadd(String key, String member, String value, LineString<String> lineString);
+
+	Response<Long> ggadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString);
+
+	Response<List<Geometry<String>>> ggrange(String key, long start, long stop);
+
+	Response<List<Geometry<byte[]>>> ggrange(byte[] key, long start, long stop);
+
+	Response<Long> ggadd(String key, String member, String value, Point<String> point);
+
+	Response<Long> ggadd(byte[] key, byte[] member, byte[] value, Point<?> point);
+
+	Response<List<Geometry<String>>> ggrevrange(String key, long start, long stop);
+
+	Response<List<Geometry<byte[]>>> ggrevrange(byte[] key, long start, long stop);
+
+	Response<Long> ggcard(String key);
+
+	Response<Long> ggcard(byte[] key);
+
+	Response<Long> ggrem(String key, String member);
+
+	Response<Long> ggrem(byte[] key, byte[] member);
+
+	Response<Geometry<String>> ggget(String key, String member);
+
+	Response<Geometry<byte[]>> ggget(byte[] key, byte[] member);
+
+	Response<List<Geometry<String>>> ggmget(String key, String[] members);
+
+	Response<List<Geometry<byte[]>>> ggmget(byte[] key, byte[][] members);
 }

@@ -13,7 +13,6 @@ import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Geometry;
 import redis.clients.spatial.model.Point;
-import redis.clients.spatial.model.Polygon;
 import redis.clients.util.GEOMETRY;
 import redis.clients.util.SafeEncoder;
 

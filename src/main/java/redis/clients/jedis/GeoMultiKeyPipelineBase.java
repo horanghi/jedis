@@ -4,11 +4,13 @@ import java.util.List;
 
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
+import redis.clients.spatial.model.Geometry;
+import redis.clients.spatial.model.LineString;
 import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
 
-abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements Pipeline4Geo { 
-	
+abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements Pipeline4Geo {
+
 	@Override
 	public Response<Long> gadd(String key, double lat, double lon, String member, String value) {
 		client.gadd(key, lat, lon, member, value);
@@ -58,15 +60,17 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<List<Point<String>>> gfrangeByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern) {
+	public Response<List<Point<String>>> gfrangeByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit,
+			String pattern) {
 		client.gfrangeByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
-		return getResponse(BuilderFactory.SPATIAL_GPoint_LIST);
+		return getResponse(BuilderFactory.SPATIAL_GPoint_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Point<byte[]>>> gfrangeByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern) {
+	public Response<List<Point<byte[]>>> gfrangeByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit,
+			byte[] pattern) {
 		client.gfrangeByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
-		return getResponse(BuilderFactory.BYTE_SPATIAL_GPoint_LIST);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GPoint_WITHDISTANCE_LIST);
 	}
 
 	@Override
@@ -153,6 +157,114 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	public Response<List<Point<byte[]>>> gfrangeByRegion(byte[] key, Polygon<byte[]> polygon) {
 		client.gfrangeByRegion(key, polygon);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GPoint_LIST);
+	}
+
+	@Override
+	public Response<Long> ggadd(String key, String member, String value, Polygon<String> polygon) {
+		client.ggadd(key, member, value, polygon);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> ggadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon) {
+		client.ggadd(key, member, value, polygon);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> ggadd(String key, String member, String value, LineString<String> lineString) {
+		client.ggadd(key, member, value, lineString);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> ggadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString) {
+		client.ggadd(key, member, value, lineString);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> ggrange(String key, long start, long stop) {
+		client.ggrange(key, start, stop);
+		return getResponse(BuilderFactory.SPATIAL_GGraphy_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> ggrange(byte[] key, long start, long stop) {
+		client.ggrange(key, start, stop);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGraphy_LIST);
+	}
+
+	@Override
+	public Response<Long> ggadd(String key, String member, String value, Point<String> point) {
+		client.ggadd(key, member, value, point);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> ggadd(byte[] key, byte[] member, byte[] value, Point<?> point) {
+		client.ggadd(key, member, value, point);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> ggrevrange(String key, long start, long stop) {
+		client.ggrevrange(key, start, stop);
+		return getResponse(BuilderFactory.SPATIAL_GGraphy_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> ggrevrange(byte[] key, long start, long stop) {
+		client.ggrevrange(key, start, stop);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGraphy_LIST);
+	}
+
+	@Override
+	public Response<Long> ggcard(String key) {
+		client.ggcard(key);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> ggcard(byte[] key) {
+		client.ggcard(key);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> ggrem(String key, String member) {
+		client.ggrem(key, member);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> ggrem(byte[] key, byte[] member) {
+		client.ggrem(key, member);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Geometry<String>> ggget(String key, String member) {
+		client.ggget(key, member);
+		return getResponse(BuilderFactory.SPATIAL_GGraphy);
+	}
+
+	@Override
+	public Response<Geometry<byte[]>> ggget(byte[] key, byte[] member) {
+		client.ggget(key, member);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGraphy);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> ggmget(String key, String... members) {
+		client.ggmget(key, members);
+		return getResponse(BuilderFactory.SPATIAL_GGraphy_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> ggmget(byte[] key, byte[]... members) {
+		client.ggmget(key, members);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGraphy_LIST);
 	}
 
 }

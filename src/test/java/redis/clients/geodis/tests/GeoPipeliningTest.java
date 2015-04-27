@@ -24,6 +24,8 @@ import redis.clients.jedis.Response;
 import redis.clients.jedis.Tuple;
 import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.spatial.model.Circle;
+import redis.clients.spatial.model.Point;
+import redis.clients.spatial.model.Polygon;
 
 public class GeoPipeliningTest extends Assert {
 	static JedisPool geodisPool;
@@ -31,7 +33,8 @@ public class GeoPipeliningTest extends Assert {
 
 	Long OKl = 1l;
 
-	String key = "helloKey";
+	String keyf = "helloKeyf";
+	String keyg = "helloKeyg";
 	String member1 = "memkey1";
 	String member2 = "memkey2";
 	String member3 = "memkey3";
@@ -39,13 +42,14 @@ public class GeoPipeliningTest extends Assert {
 	String member5 = "memkey5";
 	String value = "desc";
 
-	byte[] keyb = key.getBytes();
+	byte[] keyb = keyf.getBytes();
 	byte[] member1b = member1.getBytes();
 	byte[] member2b = member2.getBytes();
 	byte[] member3b = member3.getBytes();
 	byte[] member4b = member4.getBytes();
 	byte[] member5b = member5.getBytes();
 	byte[] valueb = value.getBytes();
+
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -59,41 +63,51 @@ public class GeoPipeliningTest extends Assert {
 
 	@Before
 	public void setUp() throws Exception {
+		Polygon<String> polygon = new Polygon<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
+				new Point<String>(-1, 1), new Point<String>(1, 1));
+		
 		jedis = geodisPool.getResource();
 		jedis.flushAll();
-		jedis.gadd(key, 0, 0, member1, value);
-		jedis.gadd(key, 0, 0, member2, value);
-		jedis.gadd(key, 0, 0, member3, value);
-		jedis.gadd(key, 0, 0, member4, value);
-		jedis.gadd(key, 0, 0, member5, value);
+		jedis.gadd(keyf, 0, 0, member1, value);
+		jedis.gadd(keyf, 0, 0, member2, value);
+		jedis.gadd(keyf, 0, 0, member3, value);
+		jedis.gadd(keyf, 0, 0, member4, value);
+		jedis.gadd(keyf, 0, 0, member5, value);
 
-		jedis.gfadd(key, 0.1, 0.1, 1, M, member1, value);
-		jedis.gfadd(key, 0.1, 0.2, 1, M, member2, value);
-		jedis.gfadd(key, 0.1, 0.3, 1, M, member3, value);
-		jedis.gfadd(key, 0.1, 0.4, 1, M, member4, value);
-		jedis.gfadd(key, 0.1, 0.5, 1, M, member5, value);
-		
-		jedis.del(new String[]{"foo", "bar", "string", "hash", "list", "set", "zset"});
+//		jedis.gfadd(keyf, 0.1, 0.1, 1, M, member1, value);
+//		jedis.gfadd(keyf, 0.1, 0.2, 1, M, member2, value);
+//		jedis.gfadd(keyf, 0.1, 0.3, 1, M, member3, value);
+//		jedis.gfadd(keyf, 0.1, 0.4, 1, M, member4, value);
+//		jedis.gfadd(keyf, 0.1, 0.5, 1, M, member5, value);
+
+		jedis.ggadd(keyg, member1, value, polygon);
+		jedis.ggadd(keyg, member2, value, polygon);
+		jedis.ggadd(keyg, member3, value, polygon);
+		jedis.ggadd(keyg, member4, value, polygon);
+		jedis.ggadd(keyg, member5, value, polygon);
+
+		jedis.del(new String[] { "foo", "bar", "string", "hash", "list", "set", "zset" });
 	}
 
 	@After
 	public void release() throws Exception {
-		jedis.flushAll();
+		// jedis.flushAll();
 		geodisPool.returnResource(jedis);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void pipeline() throws UnsupportedEncodingException {
+	public void pipelinegfrangeCircleByRadius() throws UnsupportedEncodingException {
 		Pipeline p = jedis.pipelined();
-		p.gfrangeCircleByRadius(key, 0.1, 0.1, 1, M);
-		p.gfrangeCircleByRadius(key, 0.1, 0.2, 1, M);
-		p.gfrangeCircleByRadius(key, 0.1, 0.3, 1, M);
-		p.gfrangeCircleByRadius(key, 0.1, 0.4, 1, M);
-		p.gfrangeCircleByRadius(key, 0.1, 0.5, 1, M);
+		p.gfrangeCircleByRadius(keyf, 0.1, 0.1, 1, M);
+		p.gfrangeCircleByRadius(keyf, 0.1, 0.2, 1, M);
+		p.gfrangeCircleByRadius(keyf, 0.1, 0.3, 1, M);
+		p.gfrangeCircleByRadius(keyf, 0.1, 0.4, 1, M);
+		p.gfrangeCircleByRadius(keyf, 0.1, 0.5, 1, M);
 		List<Object> results = p.syncAndReturnAll();
 
 		assertEquals(5, results.size());
+		System.out.println(((List<Circle<String>>) results.get(0)).get(0));
 		assertTrue(((List<Circle<String>>) results.get(0)).get(0).getMember().equals(member1));
 		assertTrue(((List<Circle<String>>) results.get(1)).get(0).getMember().equals(member2));
 		assertTrue(((List<Circle<String>>) results.get(2)).get(0).getMember().equals(member3));
@@ -102,6 +116,69 @@ public class GeoPipeliningTest extends Assert {
 
 		assertTrue(((List<Circle<String>>) results.get(4)).get(0).equals(new Circle<String>(member5, 0.1, 0.5, 1, M, value)));
 
+		p.gfrangeCircleByRadius(keyb, 0.1, 0.1, 1, M);
+		p.gfrangeCircleByRadius(keyb, 0.1, 0.2, 1, M);
+		p.gfrangeCircleByRadius(keyb, 0.1, 0.3, 1, M);
+		p.gfrangeCircleByRadius(keyb, 0.1, 0.4, 1, M);
+		p.gfrangeCircleByRadius(keyb, 0.1, 0.5, 1, M);
+		List<Object> resultsb = p.syncAndReturnAll();
+
+		assertEquals(5, results.size());
+		System.out.println(((List<Circle<byte[]>>) resultsb.get(0)).get(0));
+		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(0)).get(0).getMember()).equals(member1));
+		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(1)).get(0).getMember()).equals(member2));
+		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(2)).get(0).getMember()).equals(member3));
+		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(3)).get(0).getMember()).equals(member4));
+		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(4)).get(0).getMember()).equals(member5));
+
+		assertTrue(((List<Circle<byte[]>>) resultsb.get(4)).get(0).equals(new Circle<byte[]>(member5b, 0.1, 0.5, 1, M, valueb)));
+		jedis.del(keyb);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void pipelinegfrangeByRadiusWithMatch() throws UnsupportedEncodingException {
+		Pipeline p = jedis.pipelined();
+		p.gfrangeByRadiusWithMatch(keyf, 0, 0, 1, M, "memkey1*");
+		// p.gfrangeByRadiusWithMatch(key, 0.1, 0.2, 1, M, "memkey2");
+		// p.gfrangeByRadiusWithMatch(key, 0.1, 0.3, 1, M, "memkey3");
+		// p.gfrangeByRadiusWithMatch(key, 0.1, 0.4, 1, M, "memkey4");
+		// p.gfrangeByRadiusWithMatch(key, 0.1, 0.5, 1, M, "memkey5");
+		List<Object> results = p.syncAndReturnAll();
+
+		System.out.println("results.size() :" + results.size());
+		assertEquals(1, results.size());
+		Iterator<?> its = results.iterator();
+		while (its.hasNext()) {
+			List<Point<String>> ccList = (List<Point<String>>) its.next();
+			for (Point<String> cc : ccList) {
+				System.out.println(cc);
+			}
+
+		}
+		assertTrue(((List<Point<String>>) results.get(0)).get(0).getMember().equals(member1));
+		// assertTrue(((List<Circle<String>>) results.get(1)).get(0).getMember().equals(member2));
+		// assertTrue(((List<Circle<String>>) results.get(2)).get(0).getMember().equals(member3));
+		// assertTrue(((List<Circle<String>>) results.get(3)).get(0).getMember().equals(member4));
+		// assertTrue(((List<Circle<String>>) results.get(4)).get(0).getMember().equals(member5));
+		//
+		// assertTrue(((List<Circle<String>>) results.get(4)).get(0).equals(new Circle<String>(member5, 0.1, 0.5, 1, M, value)));
+		//
+		// p.gfrangeByRadiusWithMatch(keyb, 0.1, 0.1, 1, M, "memkey1".getBytes());
+		// p.gfrangeByRadiusWithMatch(keyb, 0.1, 0.2, 1, M, "memkey2".getBytes());
+		// p.gfrangeByRadiusWithMatch(keyb, 0.1, 0.3, 1, M, "memkey3".getBytes());
+		// p.gfrangeByRadiusWithMatch(keyb, 0.1, 0.4, 1, M, "memkey4".getBytes());
+		// p.gfrangeByRadiusWithMatch(keyb, 0.1, 0.5, 1, M, "memkey5*".getBytes());
+		// List<Object> resultsb = p.syncAndReturnAll();
+		//
+		// assertEquals(5, results.size());
+		// assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(0)).get(0).getMember()).equals(member1));
+		// assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(1)).get(0).getMember()).equals(member2));
+		// assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(2)).get(0).getMember()).equals(member3));
+		// assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(3)).get(0).getMember()).equals(member4));
+		// assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(4)).get(0).getMember()).equals(member5));
+		//
+		// assertTrue(((List<Circle<byte[]>>) resultsb.get(4)).get(0).equals(new Circle<byte[]>(member5b, 0.1, 0.5, 1, M, valueb)));
 	}
 
 	@Test
@@ -111,7 +188,7 @@ public class GeoPipeliningTest extends Assert {
 		jedis.hset("hash", "foo", "bar");
 		jedis.zadd("zset", 1, "foo");
 		jedis.sadd("set", "foo");
-		
+
 		Pipeline p = jedis.pipelined();
 		Response<String> string = p.get("string");
 		Response<String> list = p.lpop("list");
@@ -153,7 +230,7 @@ public class GeoPipeliningTest extends Assert {
 
 		assertNotNull(score.get());
 	}
-	
+
 	@Test
 	public void pipelineBinarySafeHashCommands() {
 		jedis.hset("key".getBytes(), "f1".getBytes(), "v111".getBytes());
@@ -208,7 +285,7 @@ public class GeoPipeliningTest extends Assert {
 		assertTrue(Arrays.equals(firstKey, value1) || Arrays.equals(firstKey, value2));
 		assertTrue(Arrays.equals(secondKey, value1) || Arrays.equals(secondKey, value2));
 	}
-	
+
 	@Test
 	public void pipelineSelect() {
 		Pipeline p = jedis.pipelined();

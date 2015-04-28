@@ -99,11 +99,11 @@ public class GeoPipeliningTest extends Assert {
 	@Test
 	public void pipelinegfrangeCircleByRadius() throws UnsupportedEncodingException {
 		Pipeline p = jedis.pipelined();
-		p.gfrangeCircleByRadius(keyf, 0.1, 0.1, 1, M);
-		p.gfrangeCircleByRadius(keyf, 0.1, 0.2, 1, M);
-		p.gfrangeCircleByRadius(keyf, 0.1, 0.3, 1, M);
-		p.gfrangeCircleByRadius(keyf, 0.1, 0.4, 1, M);
-		p.gfrangeCircleByRadius(keyf, 0.1, 0.5, 1, M);
+		p.grangeCircleByRadius(keyf, 0.1, 0.1, 1, M);
+		p.grangeCircleByRadius(keyf, 0.1, 0.2, 1, M);
+		p.grangeCircleByRadius(keyf, 0.1, 0.3, 1, M);
+		p.grangeCircleByRadius(keyf, 0.1, 0.4, 1, M);
+		p.grangeCircleByRadius(keyf, 0.1, 0.5, 1, M);
 		List<Object> results = p.syncAndReturnAll();
 
 		assertEquals(5, results.size());
@@ -116,11 +116,11 @@ public class GeoPipeliningTest extends Assert {
 
 		assertTrue(((List<Circle<String>>) results.get(4)).get(0).equals(new Circle<String>(member5, 0.1, 0.5, 1, M, value)));
 
-		p.gfrangeCircleByRadius(keyb, 0.1, 0.1, 1, M);
-		p.gfrangeCircleByRadius(keyb, 0.1, 0.2, 1, M);
-		p.gfrangeCircleByRadius(keyb, 0.1, 0.3, 1, M);
-		p.gfrangeCircleByRadius(keyb, 0.1, 0.4, 1, M);
-		p.gfrangeCircleByRadius(keyb, 0.1, 0.5, 1, M);
+		p.grangeCircleByRadius(keyb, 0.1, 0.1, 1, M);
+		p.grangeCircleByRadius(keyb, 0.1, 0.2, 1, M);
+		p.grangeCircleByRadius(keyb, 0.1, 0.3, 1, M);
+		p.grangeCircleByRadius(keyb, 0.1, 0.4, 1, M);
+		p.grangeCircleByRadius(keyb, 0.1, 0.5, 1, M);
 		List<Object> resultsb = p.syncAndReturnAll();
 
 		assertEquals(5, results.size());
@@ -139,7 +139,7 @@ public class GeoPipeliningTest extends Assert {
 	@Test
 	public void pipelinegfrangeByRadiusWithMatch() throws UnsupportedEncodingException {
 		Pipeline p = jedis.pipelined();
-		p.gfrangeByRadiusWithMatch(keyf, 0, 0, 1, M, "memkey1*");
+		p.grangeByRadiusWithMatch(keyf, 0, 0, 1, M, "memkey1*");
 		// p.gfrangeByRadiusWithMatch(key, 0.1, 0.2, 1, M, "memkey2");
 		// p.gfrangeByRadiusWithMatch(key, 0.1, 0.3, 1, M, "memkey3");
 		// p.gfrangeByRadiusWithMatch(key, 0.1, 0.4, 1, M, "memkey4");

@@ -9,27 +9,27 @@ public interface Command4BinarySpatial {
 
 	public void gadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
 
-	public void gfadd(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] member, byte[] value);
+	public void gadd(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] member, byte[] value);
 
-	void gfrangeCircleByRadius(byte[] key, double lat, double lon, double distance, UNITS unit);
+	void grangeCircleByRadius(byte[] key, double lat, double lon, double distance, UNITS unit);
 	
 	void gfrangeByRadius(byte[] key, double lat, double lon, double distance, UNITS unit);
 
-	void gfcard(byte[] key);
+	void gcard(byte[] key);
 
-	void gfrem(byte[] key, byte[] member);
+	void grem(byte[] key, byte[] member);
 	
-	void gfget(byte[] key, byte[] member);
+	void gget(byte[] key, byte[] member);
 
-	void gfmget(byte[] key, byte[]... members);
+	void gmget(byte[] key, byte[]... members);
 
-	void gfnn(byte[] key, double lat, double lon, long count);
+	void gnn(byte[] key, double lat, double lon, long count);
 
-	void gfrangeByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern);
+	void grangeByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern);
 
-	void gfrangeByRegion(byte[] key, Polygon<?> polygon);
+	void grangeByRegion(byte[] key, Polygon<?> polygon);
 
-	void gfrangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern);
+	void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern);
 
 	void ggadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon);
 	

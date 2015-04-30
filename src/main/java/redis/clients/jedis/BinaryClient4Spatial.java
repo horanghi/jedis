@@ -1,14 +1,14 @@
 package redis.clients.jedis;
 
 import static redis.clients.jedis.Protocol.toByteArray;
-import static redis.clients.jedis.Protocol.Command.GFADD;
-import static redis.clients.jedis.Protocol.Command.GFCARD;
-import static redis.clients.jedis.Protocol.Command.GFGET;
-import static redis.clients.jedis.Protocol.Command.GFMGET;
-import static redis.clients.jedis.Protocol.Command.GFNN;
-import static redis.clients.jedis.Protocol.Command.GFRANGEBYRADIUS;
-import static redis.clients.jedis.Protocol.Command.GFRANGEBYREGION;
-import static redis.clients.jedis.Protocol.Command.GFREM;
+import static redis.clients.jedis.Protocol.Command.GADD;
+import static redis.clients.jedis.Protocol.Command.GCARD;
+import static redis.clients.jedis.Protocol.Command.GGET;
+import static redis.clients.jedis.Protocol.Command.GMGET;
+import static redis.clients.jedis.Protocol.Command.GNN;
+import static redis.clients.jedis.Protocol.Command.GRANGEBYRADIUS;
+import static redis.clients.jedis.Protocol.Command.GRANGEBYREGION;
+import static redis.clients.jedis.Protocol.Command.GREM;
 import static redis.clients.jedis.Protocol.Command.GGADD;
 import static redis.clients.jedis.Protocol.Command.GGCARD;
 import static redis.clients.jedis.Protocol.Command.GGGET;
@@ -49,14 +49,14 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	public void gadd(final byte[] key, final double lat, final double lon, final double distance, final UNITS unit, final byte[] member,
 			final byte[] value) {
 		// GFADD key member value latitude longitude [RADIUS radius m|km]
-		sendCommand(GFADD, key, member, value, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw);
+		sendCommand(GADD, key, member, value, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw);
 	}
 
 	@Override
 	public void gfrangeByRadius(final byte[] key, final double lat, final double lon, final double distance, final UNITS unit) {
 		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
-		sendCommand(GFRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, CONTAINS.raw,
+		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, CONTAINS.raw,
 				WITHVALUES.raw, WITHDISTANCE.raw, NR.raw, ASC.raw);
 	}
 
@@ -64,7 +64,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	public void grangeCircleByRadius(final byte[] key, final double lat, final double lon, final double distance, final UNITS unit) {
 		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
-		sendCommand(GFRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, CONTAINS.raw,
+		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, CONTAINS.raw,
 				WITHVALUES.raw, WITHDISTANCE.raw, XR.raw, ASC.raw);
 	}
 
@@ -72,7 +72,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	public void grangeByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern) {
 		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
-		sendCommand(GFRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, CONTAINS.raw,
+		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, CONTAINS.raw,
 				WITHVALUES.raw, WITHDISTANCE.raw, ASC.raw, NR.raw, MATCH.raw, pattern);
 	}
 
@@ -80,24 +80,24 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	public void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern) {
 		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
-		sendCommand(GFRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, CONTAINS.raw,
+		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, CONTAINS.raw,
 				WITHVALUES.raw, WITHDISTANCE.raw, ASC.raw, XR.raw, MATCH.raw, pattern);
 	}
 
 	public void gcard(final byte[] key) {
 		// GFCARD key
-		sendCommand(GFCARD, key);
+		sendCommand(GCARD, key);
 	}
 
 	@Override
 	public void grem(final byte[] key, final byte[] member) {
-		sendCommand(GFREM, key, member);
+		sendCommand(GREM, key, member);
 	}
 
 	@Override
 	public void gget(byte[] key, byte[] member) {
 		// GFGET key member / GFMGET key member [member ...]
-		sendCommand(GFGET, key, member);
+		sendCommand(GGET, key, member);
 
 	}
 
@@ -110,20 +110,20 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		for (int i = 0; i < len; ++i) {
 			bargs[i + 1] = members[i];
 		}
-		sendCommand(GFMGET, bargs);
+		sendCommand(GMGET, bargs);
 	}
 
 	@Override
 	public void gnn(final byte[] key, final double lat, final double lon, final long count) {
 		// GFNN key latitude longitude LIMIT count [MATCH pattern] [NR|XR] [WITHVALUES] [WITHDISTANCE]
-		sendCommand(GFNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(count), WITHVALUES.raw, WITHDISTANCE.raw);
+		sendCommand(GNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(count), NR.raw, WITHVALUES.raw, WITHDISTANCE.raw);
 	}
 
 	@Override
 	public void grangeByRegion(byte[] key, Polygon<?> polygon) {
 		// GFRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
 		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
-		sendCommand(GFRANGEBYREGION, key, polygon.getJsonByte(), WITHVALUES.raw);
+		sendCommand(GRANGEBYREGION, key, polygon.getJsonByte(), WITHVALUES.raw);
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		// GGADD key member value geojson
 		sendCommand(GGADD, key, member, value, polygon.getJsonByte());
 	}
-	
+
 	@Override
 	public void ggadd(byte[] key, byte[] member, byte[] value, Point<?> point) {
 		// GGADD key member value geojson
@@ -155,7 +155,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		// GGADD key member value geojson
 		sendCommand(GGREVRANGE, key, toByteArray(start), toByteArray(stop), WITHVALUES.raw);
 	}
-	
+
 	@Override
 	public void ggcard(byte[] key) {
 		sendCommand(GGCARD, key);
@@ -165,7 +165,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	public void ggrem(byte[] key, byte[] member) {
 		sendCommand(GGREM, key, member);
 	}
-	
+
 	@Override
 	public void ggget(byte[] key, byte[] member) {
 		// GGGET key member / GGMGET key member [member ...]

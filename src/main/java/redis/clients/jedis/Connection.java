@@ -208,51 +208,51 @@ public class Connection implements Closeable {
 	}
 
 	public List<Point<String>> getSpatialMultiBulkReply() {
-		return BuilderFactory.SPATIAL_GPoint_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
+		return BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
 	}
 
 	public List<Point<byte[]>> getBinarySpatialMultiBulkReply() {
-		return BuilderFactory.BYTE_SPATIAL_GPoint_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
+		return BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
 	}
 
 	public List<Circle<String>> getSpatialCircleMultiBulkReply() {
-		return BuilderFactory.SPATIAL_GCircle_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
+		return BuilderFactory.SPATIAL_GCIRCLE_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
 	}
 
 	public List<Circle<byte[]>> getBinarySpatialCircleMultiBulkReply() {
-		return BuilderFactory.BYTE_SPATIAL_GCircle_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
+		return BuilderFactory.BYTE_SPATIAL_GCIRCLE_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
 	}
 
 	public Point<String> getSpatialGETMultiBulkReply() {
-		return BuilderFactory.SPATIAL_GPoint.build(getBinaryMultiBulkReply());
+		return BuilderFactory.SPATIAL_GPOINT.build(getBinaryMultiBulkReply());
 	}
 
 	public Point<byte[]> getBinarySpatialGETMultiBulkReply() {
-		return BuilderFactory.BYTE_SPATIAL_GPoint.build(getBinaryMultiBulkReply());
+		return BuilderFactory.BYTE_SPATIAL_GPOINT.build(getBinaryMultiBulkReply());
 	}
 
 	public List<Point<String>> getSpatialMGETMultiBulkReply() {
-		return BuilderFactory.SPATIAL_GPoint_LIST.build(getBinaryMultiBulkReply());
+		return BuilderFactory.SPATIAL_GPOINT_LIST.build(getBinaryMultiBulkReply());
 	}
 
 	public List<Point<byte[]>> getBinarySpatialMGETMultiBulkReply() {
-		return BuilderFactory.BYTE_SPATIAL_GPoint_LIST.build(getBinaryMultiBulkReply());
+		return BuilderFactory.BYTE_SPATIAL_GPOINT_LIST.build(getBinaryMultiBulkReply());
 	}
 	
 	public Geometry<String> getSpatialGETGEOMultiBulkReply() {
-		return BuilderFactory.SPATIAL_GGraphy.build(getBinaryMultiBulkReply());
+		return BuilderFactory.SPATIAL_GGRAPHY.build(getBinaryMultiBulkReply());
 	}
 
 	public Geometry<byte[]> getBinarySpatialGETGEOMultiBulkReply() {
-		return BuilderFactory.BYTE_SPATIAL_GGraphy.build(getBinaryMultiBulkReply());
+		return BuilderFactory.BYTE_SPATIAL_GGRAPHY.build(getBinaryMultiBulkReply());
 	}
 	
 	public List<Geometry<String>> getSpatialMGETGEOMultiBulkReply() {
-		return BuilderFactory.SPATIAL_GGraphy_LIST.build(getBinaryMultiBulkReply());
+		return BuilderFactory.SPATIAL_GGRAPHY_LIST.build(getBinaryMultiBulkReply());
 	}
 
 	public List<Geometry<byte[]>> getBinarySpatialMGETGEOMultiBulkReply() {
-		return BuilderFactory.BYTE_SPATIAL_GGraphy_LIST.build(getBinaryMultiBulkReply());
+		return BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST.build(getBinaryMultiBulkReply());
 	}
 
 	@SuppressWarnings("unchecked")

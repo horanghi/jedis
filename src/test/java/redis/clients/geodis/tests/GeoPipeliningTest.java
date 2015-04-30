@@ -1,5 +1,6 @@
 package redis.clients.geodis.tests;
 
+import static redis.clients.jedis.Protocol.UNITS.KM;
 import static redis.clients.jedis.Protocol.UNITS.M;
 
 import java.io.UnsupportedEncodingException;
@@ -40,6 +41,11 @@ public class GeoPipeliningTest extends Assert {
 	String member3 = "memkey3";
 	String member4 = "memkey4";
 	String member5 = "memkey5";
+	String member6 = "memkey6";
+	String member7 = "memkey7";
+	String member8 = "memkey8";
+	String member9 = "memkey9";
+	String member10 = "memkey10";
 	String value = "desc";
 
 	byte[] keyb = keyf.getBytes();
@@ -48,8 +54,12 @@ public class GeoPipeliningTest extends Assert {
 	byte[] member3b = member3.getBytes();
 	byte[] member4b = member4.getBytes();
 	byte[] member5b = member5.getBytes();
+	byte[] member6b = member6.getBytes();
+	byte[] member7b = member7.getBytes();
+	byte[] member8b = member8.getBytes();
+	byte[] member9b = member9.getBytes();
+	byte[] member10b = member10.getBytes();
 	byte[] valueb = value.getBytes();
-
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -65,7 +75,7 @@ public class GeoPipeliningTest extends Assert {
 	public void setUp() throws Exception {
 		Polygon<String> polygon = new Polygon<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
 				new Point<String>(-1, 1), new Point<String>(1, 1));
-		
+
 		jedis = geodisPool.getResource();
 		jedis.flushAll();
 		jedis.gadd(keyf, 0, 0, member1, value);
@@ -74,11 +84,11 @@ public class GeoPipeliningTest extends Assert {
 		jedis.gadd(keyf, 0, 0, member4, value);
 		jedis.gadd(keyf, 0, 0, member5, value);
 
-//		jedis.gfadd(keyf, 0.1, 0.1, 1, M, member1, value);
-//		jedis.gfadd(keyf, 0.1, 0.2, 1, M, member2, value);
-//		jedis.gfadd(keyf, 0.1, 0.3, 1, M, member3, value);
-//		jedis.gfadd(keyf, 0.1, 0.4, 1, M, member4, value);
-//		jedis.gfadd(keyf, 0.1, 0.5, 1, M, member5, value);
+		jedis.gadd(keyf, 0.1, 0.1, 1, M, member6, value);
+		jedis.gadd(keyf, 0.1, 0.2, 1, M, member7, value);
+		jedis.gadd(keyf, 0.1, 0.3, 1, M, member8, value);
+		jedis.gadd(keyf, 0.1, 0.4, 1, M, member9, value);
+		jedis.gadd(keyf, 0.1, 0.5, 1, M, member10, value);
 
 		jedis.ggadd(keyg, member1, value, polygon);
 		jedis.ggadd(keyg, member2, value, polygon);
@@ -91,13 +101,13 @@ public class GeoPipeliningTest extends Assert {
 
 	@After
 	public void release() throws Exception {
-		// jedis.flushAll();
+		jedis.flushAll();
 		geodisPool.returnResource(jedis);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void pipelinegfrangeCircleByRadius() throws UnsupportedEncodingException {
+	public void pipelinegrangeCircleByRadius() throws UnsupportedEncodingException {
 		Pipeline p = jedis.pipelined();
 		p.grangeCircleByRadius(keyf, 0.1, 0.1, 1, M);
 		p.grangeCircleByRadius(keyf, 0.1, 0.2, 1, M);
@@ -108,11 +118,11 @@ public class GeoPipeliningTest extends Assert {
 
 		assertEquals(5, results.size());
 		System.out.println(((List<Circle<String>>) results.get(0)).get(0));
-		assertTrue(((List<Circle<String>>) results.get(0)).get(0).getMember().equals(member1));
-		assertTrue(((List<Circle<String>>) results.get(1)).get(0).getMember().equals(member2));
-		assertTrue(((List<Circle<String>>) results.get(2)).get(0).getMember().equals(member3));
-		assertTrue(((List<Circle<String>>) results.get(3)).get(0).getMember().equals(member4));
-		assertTrue(((List<Circle<String>>) results.get(4)).get(0).getMember().equals(member5));
+		assertTrue(((List<Circle<String>>) results.get(0)).get(0).getMember().equals(member6));
+		assertTrue(((List<Circle<String>>) results.get(1)).get(0).getMember().equals(member7));
+		assertTrue(((List<Circle<String>>) results.get(2)).get(0).getMember().equals(member8));
+		assertTrue(((List<Circle<String>>) results.get(3)).get(0).getMember().equals(member9));
+		assertTrue(((List<Circle<String>>) results.get(4)).get(0).getMember().equals(member10));
 
 		assertTrue(((List<Circle<String>>) results.get(4)).get(0).equals(new Circle<String>(member5, 0.1, 0.5, 1, M, value)));
 
@@ -125,11 +135,11 @@ public class GeoPipeliningTest extends Assert {
 
 		assertEquals(5, results.size());
 		System.out.println(((List<Circle<byte[]>>) resultsb.get(0)).get(0));
-		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(0)).get(0).getMember()).equals(member1));
-		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(1)).get(0).getMember()).equals(member2));
-		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(2)).get(0).getMember()).equals(member3));
-		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(3)).get(0).getMember()).equals(member4));
-		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(4)).get(0).getMember()).equals(member5));
+		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(0)).get(0).getMember()).equals(member6));
+		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(1)).get(0).getMember()).equals(member7));
+		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(2)).get(0).getMember()).equals(member8));
+		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(3)).get(0).getMember()).equals(member9));
+		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(4)).get(0).getMember()).equals(member10));
 
 		assertTrue(((List<Circle<byte[]>>) resultsb.get(4)).get(0).equals(new Circle<byte[]>(member5b, 0.1, 0.5, 1, M, valueb)));
 		jedis.del(keyb);
@@ -137,49 +147,91 @@ public class GeoPipeliningTest extends Assert {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void pipelinegfrangeByRadiusWithMatch() throws UnsupportedEncodingException {
+	public void pipelinegrangeByRadiusWithMatch() throws UnsupportedEncodingException {
 		Pipeline p = jedis.pipelined();
-		p.grangeByRadiusWithMatch(keyf, 0, 0, 1, M, "memkey1*");
-		// p.gfrangeByRadiusWithMatch(key, 0.1, 0.2, 1, M, "memkey2");
-		// p.gfrangeByRadiusWithMatch(key, 0.1, 0.3, 1, M, "memkey3");
-		// p.gfrangeByRadiusWithMatch(key, 0.1, 0.4, 1, M, "memkey4");
-		// p.gfrangeByRadiusWithMatch(key, 0.1, 0.5, 1, M, "memkey5");
+		p.grangeByRadiusWithMatch(keyf, 0.1, 0.1, 20, KM, "memkey1*");
+		p.grangeByRadiusWithMatch(keyf, 0.1, 0.2, 25, KM, "memkey2*");
+		p.grangeByRadiusWithMatch(keyf, 0.1, 0.3, 36, KM, "*memkey3");
+		p.grangeByRadiusWithMatch(keyf, 0.1, 0.4, 46, KM, "*memkey4*");
+		p.grangeByRadiusWithMatch(keyf, 0.1, 0.5, 57, KM, "memkey5**");
 		List<Object> results = p.syncAndReturnAll();
 
-		System.out.println("results.size() :" + results.size());
-		assertEquals(1, results.size());
-		Iterator<?> its = results.iterator();
-		while (its.hasNext()) {
-			List<Point<String>> ccList = (List<Point<String>>) its.next();
-			for (Point<String> cc : ccList) {
-				System.out.println(cc);
-			}
+		assertEquals(5, results.size());
 
-		}
 		assertTrue(((List<Point<String>>) results.get(0)).get(0).getMember().equals(member1));
-		// assertTrue(((List<Circle<String>>) results.get(1)).get(0).getMember().equals(member2));
-		// assertTrue(((List<Circle<String>>) results.get(2)).get(0).getMember().equals(member3));
-		// assertTrue(((List<Circle<String>>) results.get(3)).get(0).getMember().equals(member4));
-		// assertTrue(((List<Circle<String>>) results.get(4)).get(0).getMember().equals(member5));
-		//
-		// assertTrue(((List<Circle<String>>) results.get(4)).get(0).equals(new Circle<String>(member5, 0.1, 0.5, 1, M, value)));
-		//
-		// p.gfrangeByRadiusWithMatch(keyb, 0.1, 0.1, 1, M, "memkey1".getBytes());
-		// p.gfrangeByRadiusWithMatch(keyb, 0.1, 0.2, 1, M, "memkey2".getBytes());
-		// p.gfrangeByRadiusWithMatch(keyb, 0.1, 0.3, 1, M, "memkey3".getBytes());
-		// p.gfrangeByRadiusWithMatch(keyb, 0.1, 0.4, 1, M, "memkey4".getBytes());
-		// p.gfrangeByRadiusWithMatch(keyb, 0.1, 0.5, 1, M, "memkey5*".getBytes());
-		// List<Object> resultsb = p.syncAndReturnAll();
-		//
-		// assertEquals(5, results.size());
-		// assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(0)).get(0).getMember()).equals(member1));
-		// assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(1)).get(0).getMember()).equals(member2));
-		// assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(2)).get(0).getMember()).equals(member3));
-		// assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(3)).get(0).getMember()).equals(member4));
-		// assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(4)).get(0).getMember()).equals(member5));
-		//
-		// assertTrue(((List<Circle<byte[]>>) resultsb.get(4)).get(0).equals(new Circle<byte[]>(member5b, 0.1, 0.5, 1, M, valueb)));
+		assertTrue(((List<Point<String>>) results.get(1)).get(0).getMember().equals(member2));
+		assertTrue(((List<Point<String>>) results.get(2)).get(0).getMember().equals(member3));
+		assertTrue(((List<Point<String>>) results.get(3)).get(0).getMember().equals(member4));
+		assertTrue(((List<Point<String>>) results.get(4)).get(0).getMember().equals(member5));
+
+		assertTrue(((List<Point<String>>) results.get(4)).get(0).equals(new Point<String>(member5, 0, 0, value)));
+
+		p.grangeByRadiusWithMatch(keyb, 0.1, 0.1, 20, KM, "memkey1*".getBytes());
+		p.grangeByRadiusWithMatch(keyb, 0.1, 0.2, 25, KM, "memkey2*".getBytes());
+		p.grangeByRadiusWithMatch(keyb, 0.1, 0.3, 36, KM, "memkey3*".getBytes());
+		p.grangeByRadiusWithMatch(keyb, 0.1, 0.4, 46, KM, "memkey4".getBytes());
+		p.grangeByRadiusWithMatch(keyb, 0.1, 0.5, 57, KM, "memkey5**".getBytes());
+
+		p.grangeByRadiusWithMatch(keyb, 0.1, 0.5, 57, KM, "memkey6**".getBytes());
+
+		List<Object> resultsb = p.syncAndReturnAll();
+
+		assertEquals(5, results.size());
+		assertTrue(new String(((List<Point<byte[]>>) resultsb.get(0)).get(0).getMember()).equals(member1));
+		assertTrue(new String(((List<Point<byte[]>>) resultsb.get(1)).get(0).getMember()).equals(member2));
+		assertTrue(new String(((List<Point<byte[]>>) resultsb.get(2)).get(0).getMember()).equals(member3));
+		assertTrue(new String(((List<Point<byte[]>>) resultsb.get(3)).get(0).getMember()).equals(member4));
+		assertTrue(new String(((List<Point<byte[]>>) resultsb.get(4)).get(0).getMember()).equals(member5));
+
+		assertTrue(((List<Point<byte[]>>) resultsb.get(5)).size() == 0);
+
+		assertTrue(((List<Point<byte[]>>) resultsb.get(4)).get(0).equals(new Point<byte[]>(member5b, 0, 0, valueb)));
 	}
+
+//	@SuppressWarnings("unchecked")
+//	@Test
+//	public void pipelinegnn() throws UnsupportedEncodingException {
+//		Pipeline p = jedis.pipelined();
+//		p.gnn(keyf, 0.1, 0.1, 1);
+//		p.gnn(keyf, 0.1, 0.2, 2);
+//		p.gnn(keyf, 0.1, 0.3, 3);
+//		p.gnn(keyf, 0.1, 0.4, 4);
+//		p.gnn(keyf, 0.1, 0.5, 2);
+//		List<Object> results = p.syncAndReturnAll();
+//
+//		assertEquals(5, results.size());
+//		
+//		System.out.println(((List<Point<String>>) results.get(0)).get(0).getMember());
+//
+//		assertTrue(((List<Point<String>>) results.get(0)).get(0).getMember().equals(member6));
+//		assertTrue(((List<Point<String>>) results.get(1)).get(0).getMember().equals(member7));
+//		assertTrue(((List<Point<String>>) results.get(2)).get(0).getMember().equals(member3));
+//		assertTrue(((List<Point<String>>) results.get(3)).get(0).getMember().equals(member4));
+//		assertTrue(((List<Point<String>>) results.get(4)).get(0).getMember().equals(member5));
+//
+//		assertTrue(((List<Point<String>>) results.get(4)).get(0).equals(new Point<String>(member5, 0, 0, value)));
+//
+//		p.grangeByRadiusWithMatch(keyb, 0.1, 0.1, 20, KM, "memkey1*".getBytes());
+//		p.grangeByRadiusWithMatch(keyb, 0.1, 0.2, 25, KM, "memkey2*".getBytes());
+//		p.grangeByRadiusWithMatch(keyb, 0.1, 0.3, 36, KM, "memkey3*".getBytes());
+//		p.grangeByRadiusWithMatch(keyb, 0.1, 0.4, 46, KM, "memkey4".getBytes());
+//		p.grangeByRadiusWithMatch(keyb, 0.1, 0.5, 57, KM, "memkey5**".getBytes());
+//
+//		p.grangeByRadiusWithMatch(keyb, 0.1, 0.5, 57, KM, "memkey6**".getBytes());
+//
+//		List<Object> resultsb = p.syncAndReturnAll();
+//
+//		assertEquals(5, results.size());
+//		assertTrue(new String(((List<Point<byte[]>>) resultsb.get(0)).get(0).getMember()).equals(member1));
+//		assertTrue(new String(((List<Point<byte[]>>) resultsb.get(1)).get(0).getMember()).equals(member2));
+//		assertTrue(new String(((List<Point<byte[]>>) resultsb.get(2)).get(0).getMember()).equals(member3));
+//		assertTrue(new String(((List<Point<byte[]>>) resultsb.get(3)).get(0).getMember()).equals(member4));
+//		assertTrue(new String(((List<Point<byte[]>>) resultsb.get(4)).get(0).getMember()).equals(member5));
+//
+//		assertTrue(resultsb.get(5) == null);
+//
+//		assertTrue(((List<Point<byte[]>>) resultsb.get(4)).get(0).equals(new Point<byte[]>(member5b, 0, 0, valueb)));
+//	}
 
 	@Test
 	public void pipelineResponse() {

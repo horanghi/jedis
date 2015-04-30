@@ -487,6 +487,18 @@ public class GeodisTest {
 		for (Point<String> point : result) {
 			point.equals(new Point<String>(members[idx++], 0, 0, value, 0));
 		}
+		
+		List<Point<String>> result2 = geodis.gnn(key, 0.01, 0.01, 5);
+		assertThat(result2.size(), is(4));
+		assertThat(result2.get(0).getMember(), is(members[0]));
+		assertThat(result2.get(1).getMember(), is(members[1]));
+		assertThat(result2.get(2).getMember(), is(members[2]));
+		assertThat(result2.get(3).getMember(), is(members[3]));
+		
+		List<Point<String>> result3 = geodis.gnn(key, 0.11, 0.11, 1);
+		assertThat(result3.size(), is(1));
+		assertThat(result3.get(0).getMember(), is(members[1]));
+		
 		geodis.del(key);
 
 		geodis.del(keyb);
@@ -505,7 +517,7 @@ public class GeodisTest {
 		geodis.del(keyb);
 	}
 
-	// @Test
+	 @Test
 	public void testgfnnIfnotexist() {
 		geodis.del(key);
 		String[] members = { "member1", "member2", "member3", "member4" };
@@ -524,9 +536,9 @@ public class GeodisTest {
 		byte[][] membersb = { "member1".getBytes(), "member2".getBytes(), "member3".getBytes(), "member4".getBytes() };
 		assertThat(geodis.gadd(keyb, 0.0, 0.0, membersb[0], valueb), is(OKl));
 		assertThat(geodis.gadd(keyb, 0.1, 0.1, membersb[1], valueb), is(OKl));
-		assertThat(geodis.gnn(keyb, 0, 0, 3).size(), is(3));
+		assertThat(geodis.gnn(keyb, 0, 0, 3).size(), is(2));
 		List<Point<byte[]>> resultb = geodis.gnn(keyb, 0, 0, 5);
-		assertThat(result.size(), is(5));
+		assertThat(result.size(), is(2));
 		int idx2 = 0;
 		for (Point<byte[]> point : resultb) {
 			point.equals(new Point<byte[]>(membersb[idx2++], 0, 0, valueb, 0));

@@ -38,53 +38,53 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	@Override
 	public Response<List<Point<String>>> grangeByRadius(String key, double lat, double lon, double distance, UNITS unit) {
 		client.grangeByRadius(key, lat, lon, distance, unit);
-		return getResponse(BuilderFactory.SPATIAL_GPoint_LIST);
+		return getResponse(BuilderFactory.SPATIAL_GPOINT_LIST);
 	}
 
 	@Override
 	public Response<List<Point<byte[]>>> grangeByRadius(byte[] key, double lat, double lon, double distance, UNITS unit) {
 		client.gfrangeByRadius(key, lat, lon, distance, unit);
-		return getResponse(BuilderFactory.BYTE_SPATIAL_GPoint_LIST);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_LIST);
 	}
 
 	@Override
 	public Response<List<Circle<String>>> grangeCircleByRadius(String key, double lat, double lon, double distance, UNITS unit) {
 		client.grangeCircleByRadius(key, lat, lon, distance, unit);
-		return getResponse(BuilderFactory.SPATIAL_GCircle_WITHDISTANCE_LIST);
+		return getResponse(BuilderFactory.SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
 	public Response<List<Circle<byte[]>>> grangeCircleByRadius(byte[] key, double lat, double lon, double distance, UNITS unit) {
 		client.grangeCircleByRadius(key, lat, lon, distance, unit);
-		return getResponse(BuilderFactory.BYTE_SPATIAL_GCircle_WITHDISTANCE_LIST);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
 	public Response<List<Point<String>>> grangeByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit,
 			String pattern) {
 		client.grangeByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
-		return getResponse(BuilderFactory.SPATIAL_GPoint_WITHDISTANCE_LIST);
+		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST);
 	}
 
 	@Override
 	public Response<List<Point<byte[]>>> grangeByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit,
 			byte[] pattern) {
 		client.grangeByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
-		return getResponse(BuilderFactory.BYTE_SPATIAL_GPoint_WITHDISTANCE_LIST);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST);
 	}
 
 	@Override
 	public Response<List<Circle<String>>> grangeCircleByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit,
 			String pattern) {
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
-		return getResponse(BuilderFactory.SPATIAL_GCircle_WITHDISTANCE_LIST);
+		return getResponse(BuilderFactory.SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
 	public Response<List<Circle<byte[]>>> grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit,
 			byte[] pattern) {
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
-		return getResponse(BuilderFactory.BYTE_SPATIAL_GCircle_WITHDISTANCE_LIST);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
@@ -114,49 +114,49 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	@Override
 	public Response<Point<String>> gget(String key, String member) {
 		client.gget(key, member);
-		return getResponse(BuilderFactory.SPATIAL_GPoint);
+		return getResponse(BuilderFactory.SPATIAL_GPOINT);
 	}
 
 	@Override
 	public Response<Point<byte[]>> gget(byte[] key, byte[] member) {
 		client.gget(key, member);
-		return getResponse(BuilderFactory.BYTE_SPATIAL_GPoint);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT);
 	}
 
 	@Override
 	public Response<List<Point<String>>> gmget(String key, String... members) {
 		client.gmget(key, members);
-		return getResponse(BuilderFactory.SPATIAL_GPoint_LIST);
+		return getResponse(BuilderFactory.SPATIAL_GPOINT_LIST);
 	}
 
 	@Override
 	public Response<List<Point<byte[]>>> gmget(byte[] key, byte[]... members) {
 		client.gmget(key, members);
-		return getResponse(BuilderFactory.BYTE_SPATIAL_GPoint_LIST);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_LIST);
 	}
 
 	@Override
 	public Response<List<Point<String>>> gnn(String key, double lat, double lon, long count) {
 		client.gnn(key, lat, lon, count);
-		return getResponse(BuilderFactory.SPATIAL_GPoint_LIST);
+		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST);
 	}
 
 	@Override
 	public Response<List<Point<byte[]>>> gnn(byte[] key, double lat, double lon, long count) {
 		client.gnn(key, lat, lon, count);
-		return getResponse(BuilderFactory.BYTE_SPATIAL_GPoint_LIST);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST);
 	}
 
 	@Override
 	public Response<List<Point<String>>> grangeByRegion(String key, Polygon<String> polygon) {
 		client.grangeByRegion(key, polygon);
-		return getResponse(BuilderFactory.SPATIAL_GPoint_LIST);
+		return getResponse(BuilderFactory.SPATIAL_GPOINT_LIST);
 	}
 
 	@Override
 	public Response<List<Point<byte[]>>> grangeByRegion(byte[] key, Polygon<byte[]> polygon) {
 		client.grangeByRegion(key, polygon);
-		return getResponse(BuilderFactory.BYTE_SPATIAL_GPoint_LIST);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_LIST);
 	}
 
 	@Override
@@ -186,13 +186,13 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	@Override
 	public Response<List<Geometry<String>>> ggrange(String key, long start, long stop) {
 		client.ggrange(key, start, stop);
-		return getResponse(BuilderFactory.SPATIAL_GGraphy_LIST);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
 	public Response<List<Geometry<byte[]>>> ggrange(byte[] key, long start, long stop) {
 		client.ggrange(key, start, stop);
-		return getResponse(BuilderFactory.BYTE_SPATIAL_GGraphy_LIST);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
@@ -210,13 +210,13 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	@Override
 	public Response<List<Geometry<String>>> ggrevrange(String key, long start, long stop) {
 		client.ggrevrange(key, start, stop);
-		return getResponse(BuilderFactory.SPATIAL_GGraphy_LIST);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
 	public Response<List<Geometry<byte[]>>> ggrevrange(byte[] key, long start, long stop) {
 		client.ggrevrange(key, start, stop);
-		return getResponse(BuilderFactory.BYTE_SPATIAL_GGraphy_LIST);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
@@ -246,25 +246,25 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	@Override
 	public Response<Geometry<String>> ggget(String key, String member) {
 		client.ggget(key, member);
-		return getResponse(BuilderFactory.SPATIAL_GGraphy);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY);
 	}
 
 	@Override
 	public Response<Geometry<byte[]>> ggget(byte[] key, byte[] member) {
 		client.ggget(key, member);
-		return getResponse(BuilderFactory.BYTE_SPATIAL_GGraphy);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY);
 	}
 
 	@Override
 	public Response<List<Geometry<String>>> ggmget(String key, String... members) {
 		client.ggmget(key, members);
-		return getResponse(BuilderFactory.SPATIAL_GGraphy_LIST);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
 	public Response<List<Geometry<byte[]>>> ggmget(byte[] key, byte[]... members) {
 		client.ggmget(key, members);
-		return getResponse(BuilderFactory.BYTE_SPATIAL_GGraphy_LIST);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
 	}
 
 }

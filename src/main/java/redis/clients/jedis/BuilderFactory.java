@@ -256,7 +256,7 @@ public class BuilderFactory {
 		}
 	};
 
-	public static final Builder<List<Point<String>>> SPATIAL_GPoint_WITHDISTANCE_LIST = new Builder<List<Point<String>>>() {
+	public static final Builder<List<Point<String>>> SPATIAL_GPOINT_WITHDISTANCE_LIST = new Builder<List<Point<String>>>() {
 		@SuppressWarnings("unchecked")
 		public List<Point<String>> build(Object data) {
 			if (null == data) {
@@ -290,7 +290,7 @@ public class BuilderFactory {
 		}
 	};
 
-	public static final Builder<List<Point<byte[]>>> BYTE_SPATIAL_GPoint_WITHDISTANCE_LIST = new Builder<List<Point<byte[]>>>() {
+	public static final Builder<List<Point<byte[]>>> BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST = new Builder<List<Point<byte[]>>>() {
 		@SuppressWarnings("unchecked")
 		public List<Point<byte[]>> build(Object data) {
 			if (null == data) {
@@ -323,7 +323,7 @@ public class BuilderFactory {
 		}
 	};
 
-	public static final Builder<List<Circle<String>>> SPATIAL_GCircle_WITHDISTANCE_LIST = new Builder<List<Circle<String>>>() {
+	public static final Builder<List<Circle<String>>> SPATIAL_GCIRCLE_WITHDISTANCE_LIST = new Builder<List<Circle<String>>>() {
 		@SuppressWarnings("unchecked")
 		public List<Circle<String>> build(Object data) {
 			if (null == data) {
@@ -358,7 +358,7 @@ public class BuilderFactory {
 		}
 	};
 
-	public static final Builder<List<Circle<byte[]>>> BYTE_SPATIAL_GCircle_WITHDISTANCE_LIST = new Builder<List<Circle<byte[]>>>() {
+	public static final Builder<List<Circle<byte[]>>> BYTE_SPATIAL_GCIRCLE_WITHDISTANCE_LIST = new Builder<List<Circle<byte[]>>>() {
 		@SuppressWarnings("unchecked")
 		public List<Circle<byte[]>> build(Object data) {
 			if (null == data) {
@@ -392,7 +392,7 @@ public class BuilderFactory {
 		}
 	};
 
-	public static final Builder<List<Point<String>>> SPATIAL_GPoint_LIST = new Builder<List<Point<String>>>() {
+	public static final Builder<List<Point<String>>> SPATIAL_GPOINT_LIST = new Builder<List<Point<String>>>() {
 		@SuppressWarnings("unchecked")
 		public List<Point<String>> build(Object data) {
 			if (null == data) {
@@ -426,7 +426,7 @@ public class BuilderFactory {
 		}
 
 	};
-	public static final Builder<List<Point<byte[]>>> BYTE_SPATIAL_GPoint_LIST = new Builder<List<Point<byte[]>>>() {
+	public static final Builder<List<Point<byte[]>>> BYTE_SPATIAL_GPOINT_LIST = new Builder<List<Point<byte[]>>>() {
 		public List<Point<byte[]>> build(Object data) {
 			if (null == data) {
 				return null;
@@ -460,7 +460,7 @@ public class BuilderFactory {
 
 	};
 
-	public static final Builder<Point<String>> SPATIAL_GPoint = new Builder<Point<String>>() {
+	public static final Builder<Point<String>> SPATIAL_GPOINT = new Builder<Point<String>>() {
 		@SuppressWarnings("unchecked")
 		public Point<String> build(Object data) {
 			if (null == data) {
@@ -490,7 +490,7 @@ public class BuilderFactory {
 		}
 
 	};
-	public static final Builder<Point<byte[]>> BYTE_SPATIAL_GPoint = new Builder<Point<byte[]>>() {
+	public static final Builder<Point<byte[]>> BYTE_SPATIAL_GPOINT = new Builder<Point<byte[]>>() {
 		public Point<byte[]> build(Object data) {
 			if (null == data) {
 				return null;
@@ -520,7 +520,7 @@ public class BuilderFactory {
 
 	};
 
-	public static final Builder<Geometry<String>> SPATIAL_GGraphy = new Builder<Geometry<String>>() {
+	public static final Builder<Geometry<String>> SPATIAL_GGRAPHY = new Builder<Geometry<String>>() {
 		@SuppressWarnings("unchecked")
 		public Geometry<String> build(Object data) {
 			if (null == data) {
@@ -552,7 +552,7 @@ public class BuilderFactory {
 
 	};
 
-	public static final Builder<Geometry<byte[]>> BYTE_SPATIAL_GGraphy = new Builder<Geometry<byte[]>>() {
+	public static final Builder<Geometry<byte[]>> BYTE_SPATIAL_GGRAPHY = new Builder<Geometry<byte[]>>() {
 		@SuppressWarnings("unchecked")
 		public Geometry<byte[]> build(Object data) {
 			if (null == data) {
@@ -582,7 +582,7 @@ public class BuilderFactory {
 
 	};
 
-	public static final Builder<List<Geometry<String>>> SPATIAL_GGraphy_LIST = new Builder<List<Geometry<String>>>() {
+	public static final Builder<List<Geometry<String>>> SPATIAL_GGRAPHY_LIST = new Builder<List<Geometry<String>>>() {
 		@SuppressWarnings("unchecked")
 		public List<Geometry<String>> build(Object data) {
 			if (null == data) {
@@ -617,7 +617,7 @@ public class BuilderFactory {
 
 	};
 
-	public static final Builder<List<Geometry<byte[]>>> BYTE_SPATIAL_GGraphy_LIST = new Builder<List<Geometry<byte[]>>>() {
+	public static final Builder<List<Geometry<byte[]>>> BYTE_SPATIAL_GGRAPHY_LIST = new Builder<List<Geometry<byte[]>>>() {
 		@SuppressWarnings("unchecked")
 		public List<Geometry<byte[]>> build(Object data) {
 			if (null == data) {

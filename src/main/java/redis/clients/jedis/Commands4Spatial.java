@@ -49,5 +49,13 @@ public interface Commands4Spatial extends Commands {
 
 	void ggmget(String key, String[] members);
 
+	void ggrelation(String key, Polygon<String> polygon);
+
+	void ggrelation(String key, LineString<String> lineString);
+
+	void ggrelation(String key, Point<String> point);
+
+	void ggnn(String key, double lat, double lon, long count);
+
 
 }

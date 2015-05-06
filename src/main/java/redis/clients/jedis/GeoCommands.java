@@ -102,6 +102,22 @@ public interface GeoCommands {
 
 	List<Geometry<byte[]>> ggmget(byte[] key, byte[]... members);
 
+	List<Geometry<String>> ggrelation(String key, Polygon<String> polygon);
+
+	List<Geometry<byte[]>> ggrelation(byte[] key, Polygon<byte[]> polygon);
+
+	List<Geometry<String>> ggrelation(String key, LineString<String> lineString);
+
+	List<Geometry<byte[]>> ggrelation(byte[] key, LineString<byte[]> lineString);
+
+	List<Geometry<String>> ggrelation(String key, Point<String> point);
+
+	List<Geometry<byte[]>> ggrelation(byte[] key, Point<byte[]> point);
+
+	List<Geometry<String>> ggnn(String key, double lat, double lon, long count);
+
+	List<Geometry<byte[]>> ggnn(byte[] key, double lat, double lon, long count);
+
 //	List<Point<String>> (String key, Polygon<String> polygon);
 	
 //	List<Geometry<T>> ggrange(String key, double lat, double lon, double distance, UNITS unit);

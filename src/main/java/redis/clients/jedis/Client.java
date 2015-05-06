@@ -961,14 +961,14 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	public void ggadd(String key, String member, String value, LineString<String> lineString) {
 		ggadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), lineString);
 	}
-	
+
 	@Override
 	public void ggadd(String key, String member, String value, Point<String> point) {
 		ggadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), point);
 	}
-	
+
 	@Override
-	public void ggrange(final String key, final long start, final long stop){
+	public void ggrange(final String key, final long start, final long stop) {
 		ggrange(SafeEncoder.encode(key), start, stop);
 	}
 
@@ -1002,5 +1002,25 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 		ggmget(SafeEncoder.encode(key), mlist);
 	}
 
-	
+	@Override
+	public void ggrelation(String key, Polygon<String> polygon) {
+		ggrelation(SafeEncoder.encode(key), polygon);
+	}
+
+	@Override
+	public void ggrelation(String key, LineString<String> lineString) {
+		ggrelation(SafeEncoder.encode(key), lineString);
+	}
+
+	@Override
+	public void ggrelation(String key, Point<String> point) {
+		ggrelation(SafeEncoder.encode(key), point);
+
+	}
+
+	@Override
+	public void ggnn(String key, double lat, double lon, long count) {
+		ggnn(SafeEncoder.encode(key), lat, lon, count);
+	}
+
 }

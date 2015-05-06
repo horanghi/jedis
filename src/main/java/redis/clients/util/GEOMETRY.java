@@ -2,7 +2,6 @@ package redis.clients.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -48,7 +47,7 @@ public enum GEOMETRY {
 		}
 
 		public Geometry<byte[]> getGBGeometry(final String typeJson) {
-			// 삽질..성능 우선. Jackson 나중에..
+			// 삽질..성능 우선. Jackson 고려할까 ? 말까 ? Object로 하는 부분에 대해서....
 			// [[[1.00000000000000,1.00000000000000],[1.00000000000000,-1.00000000000000]]]}
 			String xys = typeJson.substring(this.toString().length());
 			String[] xylist = StringUtils.split(xys, " [,]{}:");
@@ -66,7 +65,6 @@ public enum GEOMETRY {
 	LINESTRING("{\"type\":\"LineString\",\"coordinates\":") {
 		public Geometry<String> getGGeometry(final String typeJson) {
 			String xys = typeJson.substring(this.toString().length());
-			System.out.println(typeJson);
 			String[] xylist = StringUtils.split(xys, " [,]{}:");
 			List<Point<String>> resultList = new ArrayList<Point<String>>();
 			for (int idx = 0; idx < xylist.length;) {
@@ -129,7 +127,7 @@ public enum GEOMETRY {
 
 	public abstract Geometry<byte[]> getGBGeometry(String typeJson);
 
-	public static boolean equals(Set<Point<?>> point1, Set<Point<?>> point2) {
+	public static boolean equals(List<Point<?>> point1, List<Point<?>> point2) {
 		if (point1 == null || point2 == null) {
 			return false;
 		}
@@ -140,12 +138,10 @@ public enum GEOMETRY {
 			return false;
 		}
 
-		Object[] origin = point1.toArray();
-		Object[] diffList = point2.toArray();
 		boolean match = false;
-		for (Object ps : origin) {
+		for (Object ps : point1) {
 			match = false;
-			for (Object pb : diffList) {
+			for (Object pb : point2) {
 				if (((Point<?>) pb).equals((Point<?>) ps)) {
 					match = true;
 					break;

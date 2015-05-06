@@ -49,8 +49,12 @@ public interface Command4BinarySpatial {
 
 	void ggmget(byte[] key, byte[][] members);
 
+	void ggrelation(byte[] key, Polygon<?> polygon);
 	
+	void ggrelation(byte[] key, LineString<?> lineString);
 
-	
+	void ggrelation(byte[] key, Point<?> point);
+
+	void ggnn(byte[] key, double lat, double lon, long count);
 
 }

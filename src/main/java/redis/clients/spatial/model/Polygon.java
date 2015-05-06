@@ -6,15 +6,13 @@ import static redis.clients.jedis.Protocol.OPCl.CO;
 import static redis.clients.jedis.Protocol.OPCl.OP;
 import static redis.clients.util.GEOMETRY.POLYGON;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import lombok.Getter;
 import lombok.ToString;
 import redis.clients.jedis.Protocol.Type;
-import redis.clients.util.GEOMETRY;
 import redis.clients.util.SafeEncoder;
 
 @ToString(doNotUseGetters = true)
@@ -26,7 +24,7 @@ public class Polygon<T> extends Geometry<T> {
 	private static final long serialVersionUID = -5983153208342809216L;
 
 	@Getter
-	final LinkedHashSet<Point<T>> points = new LinkedHashSet<Point<T>>();
+	final List<Point<T>> points = new ArrayList<Point<T>>();
 
 	final private Type type = Type.POLYGON;
 
@@ -68,7 +66,7 @@ public class Polygon<T> extends Geometry<T> {
 			sb.append(OP.str).append(OP.str);
 			for (int idx = 0; iters.hasNext(); idx++) {
 				Point<T> vp = iters.next();
-				if(vp == null){
+				if (vp == null) {
 					break;
 				}
 				if (idx != 0) {
@@ -79,7 +77,6 @@ public class Polygon<T> extends Geometry<T> {
 			sb.append(CL.str).append(CL.str).append(CCL.str);
 		}
 
-		System.out.println(sb.toString());
 		return sb.toString();
 	}
 
@@ -102,7 +99,11 @@ public class Polygon<T> extends Geometry<T> {
 			return false;
 		}
 
-		if(!GEOMETRY.equals((Set) this.points, (Set)((Polygon<T>) o).getPoints())){
+		if (this.points.size() == 0) {
+			return false;
+		}
+
+		if (!this.points.containsAll((List) ((Polygon<T>) o).getPoints())) {
 			return false;
 		}
 

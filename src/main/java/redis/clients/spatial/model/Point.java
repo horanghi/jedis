@@ -57,11 +57,11 @@ public class Point<T> extends Geometry<T> {
 			return true;
 		}
 
-		Point<T> other = (Point<T>) o;
-
 		if (!(o instanceof Point)) {
 			return false;
 		}
+		Point<T> other = (Point<T>) o;
+		
 		if (Double.compare(this.x, other.x) != 0) {
 			return false;
 		}

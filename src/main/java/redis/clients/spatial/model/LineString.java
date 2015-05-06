@@ -6,10 +6,9 @@ import static redis.clients.jedis.Protocol.OPCl.CO;
 import static redis.clients.jedis.Protocol.OPCl.OP;
 import static redis.clients.util.GEOMETRY.LINESTRING;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -26,7 +25,7 @@ public class LineString<T> extends Geometry<T> {
 	private static final long serialVersionUID = -6291789145778774869L;
 
 	@Getter
-	final LinkedHashSet<Point<T>> points = new LinkedHashSet<Point<T>>();
+	final List<Point<T>> points = new ArrayList<Point<T>>();
 
 	private Type type = Type.LINESTRING;
 
@@ -90,7 +89,7 @@ public class LineString<T> extends Geometry<T> {
 		if (!(o instanceof LineString)) {
 			return false;
 		}
-		if (!GEOMETRY.equals((Set) this.points, (Set) ((LineString<T>) o).getPoints())) {
+		if (!GEOMETRY.equals((List) this.points, (List) ((LineString<T>) o).getPoints())) {
 			return false;
 		}
 		return true;

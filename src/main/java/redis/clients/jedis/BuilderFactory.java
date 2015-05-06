@@ -538,7 +538,6 @@ public class BuilderFactory {
 				String member = SafeEncoder.encode(fistValue);
 				String value = SafeEncoder.encode(iterator.next());
 				String geoJsonStr = SafeEncoder.encode(iterator.next());
-				System.out.println("geoJsonStr2 ="+geoJsonStr);
 				result = GEOMETRY.getGeometry(geoJsonStr);
 				result.setMember(member);
 				result.setValue(value);
@@ -601,7 +600,6 @@ public class BuilderFactory {
 				String member = SafeEncoder.encode(fistValue);
 				String value = SafeEncoder.encode(iterator.next());
 				String geoJsonStr = SafeEncoder.encode(iterator.next());
-				System.out.println(member + " : "+geoJsonStr);
 				Geometry<String> geo = GEOMETRY.getGeometry(geoJsonStr);
 				geo.setMember(member);
 				geo.setValue(value);

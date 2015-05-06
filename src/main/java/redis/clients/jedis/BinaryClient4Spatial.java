@@ -3,19 +3,21 @@ package redis.clients.jedis;
 import static redis.clients.jedis.Protocol.toByteArray;
 import static redis.clients.jedis.Protocol.Command.GADD;
 import static redis.clients.jedis.Protocol.Command.GCARD;
+import static redis.clients.jedis.Protocol.Command.GGADD;
+import static redis.clients.jedis.Protocol.Command.GGCARD;
 import static redis.clients.jedis.Protocol.Command.GGET;
+import static redis.clients.jedis.Protocol.Command.GGGET;
+import static redis.clients.jedis.Protocol.Command.GGMGET;
+import static redis.clients.jedis.Protocol.Command.GGNN;
+import static redis.clients.jedis.Protocol.Command.GGRANGE;
+import static redis.clients.jedis.Protocol.Command.GGRELATION;
+import static redis.clients.jedis.Protocol.Command.GGREM;
+import static redis.clients.jedis.Protocol.Command.GGREVRANGE;
 import static redis.clients.jedis.Protocol.Command.GMGET;
 import static redis.clients.jedis.Protocol.Command.GNN;
 import static redis.clients.jedis.Protocol.Command.GRANGEBYRADIUS;
 import static redis.clients.jedis.Protocol.Command.GRANGEBYREGION;
 import static redis.clients.jedis.Protocol.Command.GREM;
-import static redis.clients.jedis.Protocol.Command.GGADD;
-import static redis.clients.jedis.Protocol.Command.GGCARD;
-import static redis.clients.jedis.Protocol.Command.GGGET;
-import static redis.clients.jedis.Protocol.Command.GGMGET;
-import static redis.clients.jedis.Protocol.Command.GGRANGE;
-import static redis.clients.jedis.Protocol.Command.GGREM;
-import static redis.clients.jedis.Protocol.Command.GGREVRANGE;
 import static redis.clients.jedis.Protocol.GeoOptions.ASC;
 import static redis.clients.jedis.Protocol.GeoOptions.CONTAINS;
 import static redis.clients.jedis.Protocol.GeoOptions.LIMIT;
@@ -23,6 +25,7 @@ import static redis.clients.jedis.Protocol.GeoOptions.MATCH;
 import static redis.clients.jedis.Protocol.GeoOptions.NR;
 import static redis.clients.jedis.Protocol.GeoOptions.RADIUS;
 import static redis.clients.jedis.Protocol.GeoOptions.WITHDISTANCE;
+import static redis.clients.jedis.Protocol.GeoOptions.WITHGEOJSON;
 import static redis.clients.jedis.Protocol.GeoOptions.WITHVALUES;
 import static redis.clients.jedis.Protocol.GeoOptions.XR;
 import redis.clients.jedis.Protocol.UNITS;
@@ -183,5 +186,30 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 			bargs[i + 1] = members[i];
 		}
 		sendCommand(GGMGET, bargs);
+	}
+
+	@Override
+	public void ggrelation(byte[] key, Polygon<?> polygon) {
+		// GGRELATION mygg contains '{"type": "Polygon", "coordinates": [[[1,1], [1,-1], [-1,-1], [-1,1], [1,1]]]}' withvalues withgeojson
+		sendCommand(GGRELATION, key, CONTAINS.raw, polygon.getJsonByte(), WITHVALUES.raw, WITHGEOJSON.raw);
+	}
+
+	@Override
+	public void ggrelation(byte[] key, LineString<?> lineString) {
+		// GGRELATION mygg contains '{"type": "Polygon", "coordinates": [[[1,1], [1,-1], [-1,-1], [-1,1], [1,1]]]}' withvalues withgeojson
+		sendCommand(GGRELATION, key, CONTAINS.raw, lineString.getJsonByte(), WITHVALUES.raw, WITHGEOJSON.raw);
+	}
+
+	@Override
+	public void ggrelation(byte[] key, Point<?> point) {
+		// GGRELATION mygg contains '{"type": "Polygon", "coordinates": [[[1,1], [1,-1], [-1,-1], [-1,1], [1,1]]]}' withvalues withgeojson
+		sendCommand(GGRELATION, key, CONTAINS.raw, point.getJsonByte(), WITHVALUES.raw, WITHGEOJSON.raw);
+	}
+
+	@Override
+	public void ggnn(final byte[] key, final double lat, final double lon, final long count) {
+		// ggnn mygg 0 0 limit 2 withvalues withdistance withgeojson
+		sendCommand(GGNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(count), WITHVALUES.raw,
+				WITHGEOJSON.raw);
 	}
 }

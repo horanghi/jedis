@@ -85,7 +85,6 @@ public final class Protocol {
 
 	private static void processError(final RedisInputStream is) {
 		String message = is.readLine();
-		System.out.println(message);
 		// TODO: I'm not sure if this is the best way to do this.
 		// Maybe Read only first 5 bytes instead?
 		if (message.startsWith(MOVED_RESPONSE)) {
@@ -366,7 +365,9 @@ public final class Protocol {
 		GGCARD,
 		GGREM,
 		GGGET,
-		GGMGET;
+		GGMGET,
+		GGRELATION,
+		GGNN;
 
 		public final byte[] raw;
 
@@ -444,6 +445,7 @@ public final class Protocol {
 		MATCH,
 		WITHVALUES,
 		WITHDISTANCE,
+		WITHGEOJSON,
 		XR,NR,
 		ASC,
 		DESC,

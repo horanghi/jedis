@@ -1024,8 +1024,8 @@ public class GeodisTest {
 		
 		assertTrue(geodis.ggnn(key, 0, 0, 3).contains(polygon));
 		assertTrue(geodis.ggnn(key, 0, 0, 3).contains(linestr));
-		//assertTrue(geodis.ggnn(key, 0, 0, 3).contains(point));
-		assertTrue(geodis.ggnn(key, 0, 0, 8).contains(point));
+		assertTrue(geodis.ggnn(key, 0, 0, 3).contains(point));
+		assertTrue(geodis.ggnn(key, 0, 0, 3).contains(point));
 		assertTrue(geodis.ggnn(key, 2, 2, 3).contains(point));
 
 		geodis.del(key);
@@ -1045,8 +1045,8 @@ public class GeodisTest {
 		
 		assertTrue(geodis.ggnn(keyb, 0, 0, 3).contains(polygon));
 		assertTrue(geodis.ggnn(keyb, 0, 0, 3).contains(linestr));
-		//assertTrue(geodis.ggnn(keyb, 0, 0, 3).contains(point));
-		assertTrue(geodis.ggnn(keyb, 0, 0, 8).contains(point));
+		assertTrue(geodis.ggnn(keyb, 0, 0, 3).contains(point));
+		assertTrue(geodis.ggnn(keyb, 0, 0, 3).contains(point));
 		assertTrue(geodis.ggnn(keyb, 2, 2, 3).contains(point));
 
 		geodis.del(keyb);
@@ -1070,11 +1070,11 @@ public class GeodisTest {
 		assertThat(geodis.ggnnWithMatch(key, 0, 0, 1, "*01*").size(), is(1));
 		assertThat(geodis.ggnnWithMatch(key, 0, 0, 1, "member?1*").size(), is(1));
 		
-		assertTrue(geodis.ggnnWithMatch(key, 0, 0, 8, "member*").contains(polygon));
-		assertTrue(geodis.ggnnWithMatch(key, 0, 0, 8, "member*").contains(linestr));
-		//assertTrue(geodis.ggnnWithMatch(key, 0, 0, 3, "member*").contains(point));
-		assertTrue(geodis.ggnnWithMatch(key, 0, 0, 8, "member*").contains(point));
-		assertTrue(geodis.ggnnWithMatch(key, 2, 2, 8, "member*").contains(point));
+		assertTrue(geodis.ggnnWithMatch(key, 0, 0, 3, "member*").contains(polygon));
+		assertTrue(geodis.ggnnWithMatch(key, 0, 0, 3, "member*").contains(linestr));
+		assertTrue(geodis.ggnnWithMatch(key, 0, 0, 3, "member*").contains(point));
+		assertTrue(geodis.ggnnWithMatch(key, 0, 0, 3, "member*").contains(point));
+		assertTrue(geodis.ggnnWithMatch(key, 2, 2, 3, "member*").contains(point));
 
 		geodis.del(key);
 		
@@ -1089,13 +1089,13 @@ public class GeodisTest {
 		assertThat(geodis.ggadd(keyb, membersb[1], valueb, linestrb), is(OKl));
 		assertThat(geodis.ggadd(keyb, membersb[2], valueb, pointb), is(OKl));
 
-		assertThat(geodis.ggnn(keyb, 0, 0, 3).size(), is(3));
+		assertThat(geodis.ggnnWithMatch(keyb, 0, 0, 8, "member*".getBytes()).size(), is(3));
 		
-		assertTrue(geodis.ggnn(keyb, 0, 0, 3).contains(polygon));
-		assertTrue(geodis.ggnn(keyb, 0, 0, 3).contains(linestr));
-		//assertTrue(geodis.ggnn(keyb, 0, 0, 3).contains(point));
-		assertTrue(geodis.ggnn(keyb, 0, 0, 8).contains(point));
-		assertTrue(geodis.ggnn(keyb, 2, 2, 3).contains(point));
+		assertTrue(geodis.ggnnWithMatch(keyb, 0, 0, 3, "member*".getBytes()).contains(polygonb));
+		assertTrue(geodis.ggnnWithMatch(keyb, 0, 0, 3, "member*".getBytes()).contains(linestrb));
+		assertTrue(geodis.ggnnWithMatch(keyb, 0, 0, 3, "member*".getBytes()).contains(pointb));
+		assertTrue(geodis.ggnnWithMatch(keyb, 0, 0, 3, "member*".getBytes()).contains(pointb));
+		assertTrue(geodis.ggnnWithMatch(keyb, 2, 2, 3, "member*".getBytes()).contains(pointb));
 
 		geodis.del(keyb);
 	}

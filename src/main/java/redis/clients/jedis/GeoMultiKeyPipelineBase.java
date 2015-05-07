@@ -267,4 +267,65 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
 	}
 
+	@Override
+	public Response<List<Geometry<String>>> ggrelation(final String key, final Polygon<String> polygon) {
+		client.ggrelation(key, polygon);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> ggrelation(final byte[] key, final Polygon<byte[]> polygon) {
+		client.ggrelation(key, polygon);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> ggrelation(final String key, final LineString<String> lineString) {
+		client.ggrelation(key, lineString);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> ggrelation(final byte[] key, final LineString<byte[]> lineString) {
+		client.ggrelation(key, lineString);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> ggrelation(final String key, final Point<String> point) {
+		client.ggrelation(key, point);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> ggrelation(final byte[] key, final Point<byte[]> point) {
+		client.ggrelation(key, point);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> ggnn(final String key, final double lat, final double lon, final long count) {
+		client.ggnn(key, lat, lon, count);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> ggnn(final byte[] key, final double lat, final double lon, final long count) {
+		client.ggnn(key, lat, lon, count);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> ggnnWithMatch(final String key, final double lat, final double lon, final long count,
+			final String pattern) {
+		client.ggnnWithMatch(key, lat, lon, count, pattern);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> ggnnWithMatch(final byte[] key, final double lat, final double lon, final long count,
+			final byte[] pattern) {
+		client.ggnnWithMatch(key, lat, lon, count, pattern);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
 }

@@ -1,5 +1,6 @@
 package redis.clients.geodis.tests;
 
+import static org.hamcrest.CoreMatchers.is;
 import static redis.clients.jedis.Protocol.UNITS.KM;
 import static redis.clients.jedis.Protocol.UNITS.M;
 
@@ -188,50 +189,126 @@ public class GeoPipeliningTest extends Assert {
 		assertTrue(((List<Point<byte[]>>) resultsb.get(4)).get(0).equals(new Point<byte[]>(member5b, 0, 0, valueb)));
 	}
 
-//	@SuppressWarnings("unchecked")
-//	@Test
-//	public void pipelinegnn() throws UnsupportedEncodingException {
-//		Pipeline p = jedis.pipelined();
-//		p.gnn(keyf, 0.1, 0.1, 1);
-//		p.gnn(keyf, 0.1, 0.2, 2);
-//		p.gnn(keyf, 0.1, 0.3, 3);
-//		p.gnn(keyf, 0.1, 0.4, 4);
-//		p.gnn(keyf, 0.1, 0.5, 2);
-//		List<Object> results = p.syncAndReturnAll();
-//
-//		assertEquals(5, results.size());
-//		
-//		System.out.println(((List<Point<String>>) results.get(0)).get(0).getMember());
-//
-//		assertTrue(((List<Point<String>>) results.get(0)).get(0).getMember().equals(member6));
-//		assertTrue(((List<Point<String>>) results.get(1)).get(0).getMember().equals(member7));
-//		assertTrue(((List<Point<String>>) results.get(2)).get(0).getMember().equals(member3));
-//		assertTrue(((List<Point<String>>) results.get(3)).get(0).getMember().equals(member4));
-//		assertTrue(((List<Point<String>>) results.get(4)).get(0).getMember().equals(member5));
-//
-//		assertTrue(((List<Point<String>>) results.get(4)).get(0).equals(new Point<String>(member5, 0, 0, value)));
-//
-//		p.grangeByRadiusWithMatch(keyb, 0.1, 0.1, 20, KM, "memkey1*".getBytes());
-//		p.grangeByRadiusWithMatch(keyb, 0.1, 0.2, 25, KM, "memkey2*".getBytes());
-//		p.grangeByRadiusWithMatch(keyb, 0.1, 0.3, 36, KM, "memkey3*".getBytes());
-//		p.grangeByRadiusWithMatch(keyb, 0.1, 0.4, 46, KM, "memkey4".getBytes());
-//		p.grangeByRadiusWithMatch(keyb, 0.1, 0.5, 57, KM, "memkey5**".getBytes());
-//
-//		p.grangeByRadiusWithMatch(keyb, 0.1, 0.5, 57, KM, "memkey6**".getBytes());
-//
-//		List<Object> resultsb = p.syncAndReturnAll();
-//
-//		assertEquals(5, results.size());
-//		assertTrue(new String(((List<Point<byte[]>>) resultsb.get(0)).get(0).getMember()).equals(member1));
-//		assertTrue(new String(((List<Point<byte[]>>) resultsb.get(1)).get(0).getMember()).equals(member2));
-//		assertTrue(new String(((List<Point<byte[]>>) resultsb.get(2)).get(0).getMember()).equals(member3));
-//		assertTrue(new String(((List<Point<byte[]>>) resultsb.get(3)).get(0).getMember()).equals(member4));
-//		assertTrue(new String(((List<Point<byte[]>>) resultsb.get(4)).get(0).getMember()).equals(member5));
-//
-//		assertTrue(resultsb.get(5) == null);
-//
-//		assertTrue(((List<Point<byte[]>>) resultsb.get(4)).get(0).equals(new Point<byte[]>(member5b, 0, 0, valueb)));
-//	}
+	@SuppressWarnings("unchecked")
+	@Test
+	public void pipelinegnn() throws UnsupportedEncodingException {
+		jedis.del(keyf);
+
+		jedis.gadd(keyf, 0, 0.01, member1, value);
+		jedis.gadd(keyf, 0, 0.02, member2, value);
+		jedis.gadd(keyf, 0, 0.03, member3, value);
+		jedis.gadd(keyf, 0, 0.04, member4, value);
+		jedis.gadd(keyf, 0, 0.05, member5, value);
+
+		Pipeline p = jedis.pipelined();
+		p.gnn(keyf, 0, 0.1, 1);
+		p.gnn(keyf, 0, 0.2, 2);
+		p.gnn(keyf, 0, 0.3, 3);
+		p.gnn(keyf, 0, 0.4, 4);
+		p.gnn(keyf, 0, 0.5, 2);
+		List<Object> results = p.syncAndReturnAll();
+
+		assertEquals(5, results.size());
+
+		Point<String> mm1 = new Point<String>(member1, 0, 0.01, value);
+		Point<String> mm2 = new Point<String>(member2, 0, 0.02, value);
+		Point<String> mm3 = new Point<String>(member3, 0, 0.03, value);
+		Point<String> mm4 = new Point<String>(member4, 0, 0.04, value);
+		Point<String> mm5 = new Point<String>(member5, 0, 0.05, value);
+
+		assertTrue(((List<Point<String>>) results.get(0)).contains(mm5));
+		assertTrue(((List<Point<String>>) results.get(1)).contains(mm5));
+		assertTrue(((List<Point<String>>) results.get(1)).contains(mm4));
+		assertTrue(((List<Point<String>>) results.get(2)).contains(mm5));
+		assertTrue(((List<Point<String>>) results.get(2)).contains(mm4));
+		assertTrue(((List<Point<String>>) results.get(2)).contains(mm3));
+		assertTrue(((List<Point<String>>) results.get(3)).contains(mm5));
+		assertTrue(((List<Point<String>>) results.get(3)).contains(mm4));
+		assertTrue(((List<Point<String>>) results.get(3)).contains(mm3));
+		assertTrue(((List<Point<String>>) results.get(3)).contains(mm3));
+		assertTrue(((List<Point<String>>) results.get(4)).contains(mm4));
+		assertTrue(((List<Point<String>>) results.get(4)).contains(mm5));
+
+		Point<String> mm1e = new Point<String>(0, 0.01);
+		Point<String> mm2e = new Point<String>(0, 0.02);
+		Point<String> mm3e = new Point<String>(0, 0.03);
+		Point<String> mm4e = new Point<String>(0, 0.04);
+		Point<String> mm5e = new Point<String>(0, 0.05);
+
+		assertTrue(((List<Point<String>>) results.get(0)).contains(mm5e));
+		assertTrue(((List<Point<String>>) results.get(1)).contains(mm5e));
+		assertTrue(((List<Point<String>>) results.get(1)).contains(mm4e));
+		assertTrue(((List<Point<String>>) results.get(2)).contains(mm5e));
+		assertTrue(((List<Point<String>>) results.get(2)).contains(mm4e));
+		assertTrue(((List<Point<String>>) results.get(2)).contains(mm3e));
+		assertTrue(((List<Point<String>>) results.get(3)).contains(mm5e));
+		assertTrue(((List<Point<String>>) results.get(3)).contains(mm4e));
+		assertTrue(((List<Point<String>>) results.get(3)).contains(mm3e));
+		assertTrue(((List<Point<String>>) results.get(3)).contains(mm3e));
+		assertTrue(((List<Point<String>>) results.get(4)).contains(mm4e));
+		assertTrue(((List<Point<String>>) results.get(4)).contains(mm5e));
+
+		jedis.del(keyf);
+		
+		jedis.del(keyb);
+
+		jedis.gadd(keyb, 0, 0.01, member1b, valueb);
+		jedis.gadd(keyb, 0, 0.02, member2b, valueb);
+		jedis.gadd(keyb, 0, 0.03, member3b, valueb);
+		jedis.gadd(keyb, 0, 0.04, member4b, valueb);
+		jedis.gadd(keyb, 0, 0.05, member5b, valueb);
+
+		Pipeline pb = jedis.pipelined();
+		pb.gnn(keyb, 0, 0.1, 1);
+		pb.gnn(keyb, 0, 0.2, 2);
+		pb.gnn(keyb, 0, 0.3, 3);
+		pb.gnn(keyb, 0, 0.4, 4);
+		pb.gnn(keyb, 0, 0.5, 2);
+		List<Object> resultsb = pb.syncAndReturnAll();
+
+		assertEquals(5, resultsb.size());
+
+		Point<byte[]> mm1b = new Point<byte[]>(member1b, 0, 0.01, valueb);
+		Point<byte[]> mm2b = new Point<byte[]>(member2b, 0, 0.02, valueb);
+		Point<byte[]> mm3b = new Point<byte[]>(member3b, 0, 0.03, valueb);
+		Point<byte[]> mm4b = new Point<byte[]>(member4b, 0, 0.04, valueb);
+		Point<byte[]> mm5b = new Point<byte[]>(member5b, 0, 0.05, valueb);
+
+		assertTrue(((List<Point<byte[]>>) results.get(0)).contains(mm5b));
+		assertTrue(((List<Point<byte[]>>) results.get(1)).contains(mm5b));
+		assertTrue(((List<Point<byte[]>>) results.get(1)).contains(mm4b));
+		assertTrue(((List<Point<byte[]>>) results.get(2)).contains(mm5b));
+		assertTrue(((List<Point<byte[]>>) results.get(2)).contains(mm4b));
+		assertTrue(((List<Point<byte[]>>) results.get(2)).contains(mm3b));
+		assertTrue(((List<Point<byte[]>>) results.get(3)).contains(mm5b));
+		assertTrue(((List<Point<byte[]>>) results.get(3)).contains(mm4b));
+		assertTrue(((List<Point<byte[]>>) results.get(3)).contains(mm3b));
+		assertTrue(((List<Point<byte[]>>) results.get(3)).contains(mm3b));
+		assertTrue(((List<Point<byte[]>>) results.get(4)).contains(mm4b));
+		assertTrue(((List<Point<byte[]>>) results.get(4)).contains(mm5b));
+
+		Point<byte[]> mm1eb = new Point<byte[]>(0, 0.01);
+		Point<byte[]> mm2eb = new Point<byte[]>(0, 0.02);
+		Point<byte[]> mm3eb = new Point<byte[]>(0, 0.03);
+		Point<byte[]> mm4eb = new Point<byte[]>(0, 0.04);
+		Point<byte[]> mm5eb = new Point<byte[]>(0, 0.05);
+
+		assertTrue(((List<Point<byte[]>>) results.get(0)).contains(mm5eb));
+		assertTrue(((List<Point<byte[]>>) results.get(1)).contains(mm5eb));
+		assertTrue(((List<Point<byte[]>>) results.get(1)).contains(mm4eb));
+		assertTrue(((List<Point<byte[]>>) results.get(2)).contains(mm5eb));
+		assertTrue(((List<Point<byte[]>>) results.get(2)).contains(mm4eb));
+		assertTrue(((List<Point<byte[]>>) results.get(2)).contains(mm3eb));
+		assertTrue(((List<Point<byte[]>>) results.get(3)).contains(mm5eb));
+		assertTrue(((List<Point<byte[]>>) results.get(3)).contains(mm4eb));
+		assertTrue(((List<Point<byte[]>>) results.get(3)).contains(mm3eb));
+		assertTrue(((List<Point<byte[]>>) results.get(3)).contains(mm3eb));
+		assertTrue(((List<Point<byte[]>>) results.get(4)).contains(mm4eb));
+		assertTrue(((List<Point<byte[]>>) results.get(4)).contains(mm5eb));
+
+		jedis.del(keyb);
+
+	}
 
 	@Test
 	public void pipelineResponse() {

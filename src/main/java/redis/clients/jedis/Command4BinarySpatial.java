@@ -57,4 +57,6 @@ public interface Command4BinarySpatial {
 
 	void ggnn(byte[] key, double lat, double lon, long count);
 
+	void ggnnWithMatch(byte[] key, double lat, double lon, long count, byte[] pattern);
+
 }

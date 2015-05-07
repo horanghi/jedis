@@ -1024,11 +1024,79 @@ public class GeodisTest {
 		
 		assertTrue(geodis.ggnn(key, 0, 0, 3).contains(polygon));
 		assertTrue(geodis.ggnn(key, 0, 0, 3).contains(linestr));
+		//assertTrue(geodis.ggnn(key, 0, 0, 3).contains(point));
 		assertTrue(geodis.ggnn(key, 0, 0, 8).contains(point));
-		
 		assertTrue(geodis.ggnn(key, 2, 2, 3).contains(point));
 
+		geodis.del(key);
+		
+		geodis.del(keyb);
+		byte[][] membersb = { "member01".getBytes(), "member02".getBytes(), "member03".getBytes(), "member04".getBytes() };
+		Polygon<byte[]> polygonb = new Polygon<byte[]>(new Point<byte[]>(0, 0), new Point<byte[]>(1, -1), new Point<byte[]>(-1, -1),
+				new Point<byte[]>(-1, 1), new Point<byte[]>(0, 0));
+		LineString<byte[]> linestrb = new LineString<byte[]>(new Point<byte[]>(1, 1), new Point<byte[]>(1, -1), new Point<byte[]>(-1, -1),
+				new Point<byte[]>(-1, 1));
+		Point<byte[]> pointb = new Point<byte[]>(2, 2);
+		assertThat(geodis.ggadd(keyb, membersb[0], valueb, polygonb), is(OKl));
+		assertThat(geodis.ggadd(keyb, membersb[1], valueb, linestrb), is(OKl));
+		assertThat(geodis.ggadd(keyb, membersb[2], valueb, pointb), is(OKl));
 
-//		geodis.del(key);
+		assertThat(geodis.ggnn(keyb, 0, 0, 3).size(), is(3));
+		
+		assertTrue(geodis.ggnn(keyb, 0, 0, 3).contains(polygon));
+		assertTrue(geodis.ggnn(keyb, 0, 0, 3).contains(linestr));
+		//assertTrue(geodis.ggnn(keyb, 0, 0, 3).contains(point));
+		assertTrue(geodis.ggnn(keyb, 0, 0, 8).contains(point));
+		assertTrue(geodis.ggnn(keyb, 2, 2, 3).contains(point));
+
+		geodis.del(keyb);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testggnnWithMatch() {
+		geodis.del(key);
+		String[] members = { "member01", "member02", "member03", "member04" };
+		Polygon<String> polygon = new Polygon<String>(new Point<String>(0, 0), new Point<String>(1, -1), new Point<String>(-1, -1),
+				new Point<String>(-1, 1), new Point<String>(0, 0));
+		LineString<String> linestr = new LineString<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
+				new Point<String>(-1, 1));
+		Point<String> point = new Point<String>(2, 2);
+		assertThat(geodis.ggadd(key, members[0], value, polygon), is(OKl));
+		assertThat(geodis.ggadd(key, members[1], value, linestr), is(OKl));
+		assertThat(geodis.ggadd(key, members[2], value, point), is(OKl));
+
+		assertThat(geodis.ggnnWithMatch(key, 0, 0, 1, "member01*").size(), is(1));
+		assertThat(geodis.ggnnWithMatch(key, 0, 0, 1, "*01*").size(), is(1));
+		assertThat(geodis.ggnnWithMatch(key, 0, 0, 1, "member?1*").size(), is(1));
+		
+		assertTrue(geodis.ggnnWithMatch(key, 0, 0, 8, "member*").contains(polygon));
+		assertTrue(geodis.ggnnWithMatch(key, 0, 0, 8, "member*").contains(linestr));
+		//assertTrue(geodis.ggnnWithMatch(key, 0, 0, 3, "member*").contains(point));
+		assertTrue(geodis.ggnnWithMatch(key, 0, 0, 8, "member*").contains(point));
+		assertTrue(geodis.ggnnWithMatch(key, 2, 2, 8, "member*").contains(point));
+
+		geodis.del(key);
+		
+		geodis.del(keyb);
+		byte[][] membersb = { "member01".getBytes(), "member02".getBytes(), "member03".getBytes(), "member04".getBytes() };
+		Polygon<byte[]> polygonb = new Polygon<byte[]>(new Point<byte[]>(0, 0), new Point<byte[]>(1, -1), new Point<byte[]>(-1, -1),
+				new Point<byte[]>(-1, 1), new Point<byte[]>(0, 0));
+		LineString<byte[]> linestrb = new LineString<byte[]>(new Point<byte[]>(1, 1), new Point<byte[]>(1, -1), new Point<byte[]>(-1, -1),
+				new Point<byte[]>(-1, 1));
+		Point<byte[]> pointb = new Point<byte[]>(2, 2);
+		assertThat(geodis.ggadd(keyb, membersb[0], valueb, polygonb), is(OKl));
+		assertThat(geodis.ggadd(keyb, membersb[1], valueb, linestrb), is(OKl));
+		assertThat(geodis.ggadd(keyb, membersb[2], valueb, pointb), is(OKl));
+
+		assertThat(geodis.ggnn(keyb, 0, 0, 3).size(), is(3));
+		
+		assertTrue(geodis.ggnn(keyb, 0, 0, 3).contains(polygon));
+		assertTrue(geodis.ggnn(keyb, 0, 0, 3).contains(linestr));
+		//assertTrue(geodis.ggnn(keyb, 0, 0, 3).contains(point));
+		assertTrue(geodis.ggnn(keyb, 0, 0, 8).contains(point));
+		assertTrue(geodis.ggnn(keyb, 2, 2, 3).contains(point));
+
+		geodis.del(keyb);
 	}
 }

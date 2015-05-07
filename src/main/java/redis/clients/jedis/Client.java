@@ -1023,4 +1023,9 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 		ggnn(SafeEncoder.encode(key), lat, lon, count);
 	}
 
+	@Override
+	public void ggnnWithMatch(String key, double lat, double lon, long count, String pattern) {
+		ggnnWithMatch(SafeEncoder.encode(key), lat, lon, count, SafeEncoder.encode(pattern));
+	}
+
 }

@@ -118,7 +118,8 @@ public interface GeoCommands {
 
 	List<Geometry<byte[]>> ggnn(byte[] key, double lat, double lon, long count);
 
-//	List<Point<String>> (String key, Polygon<String> polygon);
-	
-//	List<Geometry<T>> ggrange(String key, double lat, double lon, double distance, UNITS unit);
+	List<Geometry<String>> ggnnWithMatch(String key, double lat, double lon, long count, String pattern);
+
+	List<Geometry<byte[]>> ggnnWithMatch(byte[] key, double lat, double lon, long count, byte[] pattern);
+
 }

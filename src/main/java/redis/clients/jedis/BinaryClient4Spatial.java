@@ -212,4 +212,11 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		sendCommand(GGNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(count), WITHVALUES.raw,
 				WITHGEOJSON.raw);
 	}
+	
+	@Override
+	public void ggnnWithMatch(final byte[] key, final double lat, final double lon, final long count, final byte[] pattern) {
+		// ggnn mygg 0 0 limit 2 match hello* withvalues withdistance withgeojson
+		sendCommand(GGNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(count), MATCH.raw, pattern, WITHVALUES.raw,
+				WITHGEOJSON.raw);
+	}
 }

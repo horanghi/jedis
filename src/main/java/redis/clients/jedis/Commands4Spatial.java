@@ -57,5 +57,6 @@ public interface Commands4Spatial extends Commands {
 
 	void ggnn(String key, double lat, double lon, long count);
 
+	void ggnnWithMatch(String key, double lat, double lon, long count, String pattern);
 
 }

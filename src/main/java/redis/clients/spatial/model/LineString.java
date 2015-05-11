@@ -17,7 +17,7 @@ import redis.clients.util.GEOMETRY;
 import redis.clients.util.SafeEncoder;
 
 @ToString(doNotUseGetters = true)
-public class LineString<T> extends Geometry<T> {
+public class LineString<T> extends Geometry<T> implements Comparable<T> {
 
 	/**
 	 * 
@@ -93,5 +93,22 @@ public class LineString<T> extends Geometry<T> {
 			return false;
 		}
 		return true;
+	}
+	
+	public boolean equalsDeep(Point<T> o){
+		if(this.equals((Object) o)){
+			if (super.equalsDeep(o)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public int compareTo(T o) {
+		if (this.equals((Object) o)){
+			return 0;
+		}
+		return -1;
 	}
 }

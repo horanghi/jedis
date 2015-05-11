@@ -71,7 +71,7 @@ public class GeodisTest {
 	public void tearDown() throws Exception {
 		geodisPool.returnResource(geodis);
 	}
-
+	
 	@SuppressWarnings("rawtypes")
 	@Test
 	public void test0Equals() {
@@ -87,6 +87,29 @@ public class GeodisTest {
 
 		String[] vas = { "1", "2", "3", "4" };
 		sendCommand(4, vas);
+
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@Test
+	public void test1Equals() {
+		Point<String> asop = new Point<String>("member1", 0, 0 , "values");
+		Point<String> asop2 = new Point<String>("member2", 0, 0 , "values");
+		Point<String> asop3 = new Point<String>(0, 0);
+		Point<String> asop4 = new Point<String>("mm", 0, 0, "values");
+		Point<String> asop11 = new Point<String>("member1", 0, 0 , "values");
+		
+		assertThat(asop, is(asop2));
+		assertTrue(asop.equals(asop2));
+		
+		assertTrue(asop.equals(asop3));
+		assertThat(asop, is(asop3));
+		
+		assertFalse(asop.equalsDeep(asop2));
+		assertFalse(asop.equalsDeep(asop3));
+		assertFalse(asop.equalsDeep(asop4));
+		assertTrue(asop.equalsDeep(asop11));
+		
 
 	}
 
@@ -416,7 +439,7 @@ public class GeodisTest {
 		assertThat(geodis.gadd(keyb, 0, 0, member1b, valueb), is(OKl));
 		assertThat(geodis.gadd(keyb, 0, 0, member2b, valueb), is(OKl));
 		assertNotNull(geodis.gget(keyb, member1b));
-		assertTrue(geodis.gget(keyb, member1b).equals(new Point<byte[]>(member1b, 0, 0, valueb, 0)));
+		assertTrue(geodis.gget(keyb, member1b).equalsDeep(new Point<byte[]>(member1b, 0, 0, valueb, 0)));
 		geodis.del(keyb);
 	}
 
@@ -443,14 +466,15 @@ public class GeodisTest {
 		assertThat(geodis.gadd(key, 0, 0, member1, value), is(OKl));
 		assertThat(geodis.gadd(key, 0, 0, member2, value), is(OKl));
 		assertThat(geodis.gmget(key, member1).size(), is(1));
-		assertTrue(geodis.gmget(key, member2).iterator().next().equals(new Point<String>(member2, 0, 0, value, 0)));
+		assertThat(geodis.gmget(key, member2).iterator().next(), is(new Point<String>(member2, 0, 0, value, 0)));
+		assertTrue(geodis.gmget(key, member2).iterator().next().equalsDeep(new Point<String>(member2, 0, 0, value, 0)));
 		geodis.del(key);
 
 		geodis.del(keyb);
 		assertThat(geodis.gadd(keyb, 0, 0, member1b, valueb), is(OKl));
 		assertThat(geodis.gadd(keyb, 0, 0, member2b, valueb), is(OKl));
 		assertThat(geodis.gmget(keyb, member1b).size(), is(1));
-		assertTrue(geodis.gmget(keyb, member2b).iterator().next().equals(new Point<byte[]>(member2b, 0, 0, valueb, 0)));
+		assertTrue(geodis.gmget(keyb, member2b).iterator().next().equals((Object) new Point<byte[]>(member2b, 0, 0, valueb, 0)));
 		geodis.del(keyb);
 	}
 
@@ -800,7 +824,7 @@ public class GeodisTest {
 		assertThat(geodis.ggadd(keyb, membersb[1], valueb, linestrb), is(OKl));
 		assertThat(geodis.ggadd(keyb, membersb[2], valueb, pointb), is(OKl));
 		assertNotNull(geodis.ggget(keyb, membersb[0]));
-		assertTrue(geodis.ggget(keyb, membersb[2]).equals(new Point<byte[]>(1, 1)));
+		assertThat((Point<byte[]>) geodis.ggget(keyb, membersb[2]), is(new Point<byte[]>(1, 1)));
 		geodis.del(keyb);
 	}
 
@@ -840,7 +864,7 @@ public class GeodisTest {
 		assertNotNull(geodis.ggmget(keyb, membersb));
 		assertTrue(((Polygon<byte[]>) geodis.ggmget(keyb, membersb).get(0)).equals(polygonb));
 		assertTrue(((LineString<byte[]>) geodis.ggmget(keyb, membersb).get(1)).equals(linestrb));
-		assertTrue(((Point<byte[]>) geodis.ggmget(keyb, membersb).get(2)).equals(new Point<byte[]>(1, 1)));
+		assertTrue(((Point<byte[]>) geodis.ggmget(keyb, membersb).get(2)).equals((Object) new Point<byte[]>(1, 1)));
 		geodis.del(keyb);
 	}
 
@@ -908,7 +932,7 @@ public class GeodisTest {
 		assertThat(geodis.gadd(keyb, 0, 0, member1b, valueb), is(OKl));
 		assertThat(geodis.gadd(keyb, 0, 0, member2b, valueb), is(OKl));
 		assertNull(geodis.gget(keyb, member3b));
-		assertTrue(geodis.gget(keyb, member1b).equals(new Point<byte[]>(member1b, 0, 0, valueb, 0)));
+		assertTrue(geodis.gget(keyb, member1b).equalsDeep(new Point<byte[]>(member1b, 0, 0, valueb, 0)));
 		geodis.del(keyb);
 	}
 
@@ -918,14 +942,15 @@ public class GeodisTest {
 		assertThat(geodis.gadd(key, 0, 0, member1, value), is(OKl));
 		assertThat(geodis.gadd(key, 0, 0, member2, value), is(OKl));
 		assertThat(geodis.gmget(key, member1).size(), is(1));
-		assertTrue(geodis.gmget(key, member2).iterator().next().equals(new Point<String>(member2, 0, 0, value, 0)));
+		assertThat(geodis.gmget(key, member2).iterator().next(), is(new Point<String>(member2, 0, 0, value, 0)));
 		geodis.del(key);
 
 		geodis.del(keyb);
 		assertThat(geodis.gadd(keyb, 0, 0, member1b, valueb), is(OKl));
 		assertThat(geodis.gadd(keyb, 0, 0, member2b, valueb), is(OKl));
 		assertThat(geodis.gmget(keyb, member1b).size(), is(1));
-		assertTrue(geodis.gmget(keyb, member2b).iterator().next().equals(new Point<byte[]>(member2b, 0, 0, valueb, 0)));
+		Point<byte[]> pb = new Point<byte[]>(member2b, 0, 0, valueb, 0);
+		assertTrue(geodis.gmget(keyb, member2b).iterator().next().equals((Object) pb));
 		geodis.del(keyb);
 	}
 
@@ -935,14 +960,14 @@ public class GeodisTest {
 		assertThat(geodis.gadd(key, 0, 0, member1, value), is(OKl));
 		assertThat(geodis.gadd(key, 0, 0, member2, value), is(OKl));
 		assertThat(geodis.gmget(key, member3, member4).size(), is(0));
-		assertTrue(geodis.gmget(key, member2).iterator().next().equals(new Point<String>(member2, 0, 0, value, 0)));
+		assertThat(geodis.gmget(key, member2).iterator().next(), is(new Point<String>(member2, 0, 0, value, 0)));
 		geodis.del(key);
 
 		geodis.del(keyb);
 		assertThat(geodis.gadd(keyb, 0, 0, member1b, valueb), is(OKl));
 		assertThat(geodis.gadd(keyb, 0, 0, member2b, valueb), is(OKl));
 		assertThat(geodis.gmget(keyb, member3b, member4b).size(), is(0));
-		assertTrue(geodis.gmget(keyb, member2b).iterator().next().equals(new Point<byte[]>(member2b, 0, 0, valueb, 0)));
+		assertTrue(geodis.gmget(keyb, member2b).iterator().next().equals((Object) new Point<byte[]>(member2b, 0, 0, valueb, 0)));
 		geodis.del(keyb);
 	}
 

@@ -9,7 +9,7 @@ import redis.clients.jedis.Protocol.UNITS;
 
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true, doNotUseGetters = true)
-public class Circle<T> extends Point<T> {
+public class Circle<T> extends Point<T> implements Comparable<T> {
 	/**
 	 * 
 	 */
@@ -41,4 +41,20 @@ public class Circle<T> extends Point<T> {
 		return type;
 	}
 
+	public boolean equalsDeep(Point<T> o) {
+		if (this.equals((Object) o)) {
+			if (super.equalsDeep(o)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public int compareTo(T o) {
+		if (this.equals((Object) o)) {
+			return 0;
+		}
+		return -1;
+	}
 }

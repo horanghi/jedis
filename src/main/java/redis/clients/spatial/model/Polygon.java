@@ -16,7 +16,7 @@ import redis.clients.jedis.Protocol.Type;
 import redis.clients.util.SafeEncoder;
 
 @ToString(doNotUseGetters = true)
-public class Polygon<T> extends Geometry<T> {
+public class Polygon<T> extends Geometry<T> implements Comparable<T> {
 
 	/**
 	 * 
@@ -108,5 +108,22 @@ public class Polygon<T> extends Geometry<T> {
 		}
 
 		return true;
+	}
+
+	public boolean equalsDeep(Polygon<T> o) {
+		if (this.equals((Object) o)) {
+			if (super.equalsDeep(o)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public int compareTo(T o) {
+		if (this.equals((Object) o)) {
+			return 0;
+		}
+		return -1;
 	}
 }

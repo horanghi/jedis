@@ -11,7 +11,7 @@ import redis.clients.jedis.Protocol.Type;
 import redis.clients.util.SafeEncoder;
 
 @ToString(doNotUseGetters = true, callSuper = true)
-public class Point<T> extends Geometry<T> {
+public class Point<T> extends Geometry<T> implements Comparable<T> {
 	/**
 	 * 
 	 */
@@ -61,18 +61,24 @@ public class Point<T> extends Geometry<T> {
 			return false;
 		}
 		Point<T> other = (Point<T>) o;
-		
+
 		if (Double.compare(this.x, other.x) != 0) {
 			return false;
 		}
 		if (Double.compare(this.y, other.y) != 0) {
 			return false;
 		}
+
 		return true;
 	}
 
-	protected boolean canEqual(Object other) {
-		return other instanceof Point;
+	public boolean equalsDeep(Point<T> other) {
+		if (this.equals((Object) other)) {
+			if (super.equalsDeep((Geometry<T>) other)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	// {"type": "Point", "coordinates": [1,1]}
@@ -84,6 +90,14 @@ public class Point<T> extends Geometry<T> {
 
 	public byte[] getJsonByte() {
 		return SafeEncoder.encode(getJsonStr());
+	}
+
+	@Override
+	public int compareTo(T o) {
+		if (this.equals((Object) o)) {
+			return 0;
+		}
+		return -1;
 	}
 
 }

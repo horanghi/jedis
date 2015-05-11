@@ -1,16 +1,15 @@
 package redis.clients.spatial.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import redis.clients.jedis.Protocol.Type;
 
-@EqualsAndHashCode
 @ToString
-public class Geometry<T> implements Serializable {
+public class Geometry<T> implements Serializable, Comparable<T> {
 
 	/**
 	 * 
@@ -34,5 +33,39 @@ public class Geometry<T> implements Serializable {
 
 	public Type getType() {
 		return Type.GEOMETRY;
+	}
+
+	@SuppressWarnings("unchecked")
+	public boolean equals(Object o) {
+		return this.equalsDeep((Geometry<T>) o);
+	}
+
+	@SuppressWarnings("unchecked")
+	public boolean equalsDeep(Geometry<T> o) {
+		try {
+			if (this.member instanceof String) {
+				Geometry<String> other = (Geometry<String>) o;
+				if (this.member.equals(other.getMember())) {
+					return true;
+				}
+			} else {
+				Geometry<byte[]> other = (Geometry<byte[]>) o;
+				if (Arrays.equals(((Geometry<byte[]>) this).getMember(), ((Geometry<byte[]>) other).getMember())) {
+					return true;
+				}
+			}
+			return false;
+		} catch (Exception e) {
+			return false;
+		}
+
+	}
+
+	@Override
+	public int compareTo(T o) {
+		if (this.equals((Object) o)) {
+			return 0;
+		}
+		return -1;
 	}
 }

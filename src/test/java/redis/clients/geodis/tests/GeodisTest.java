@@ -197,19 +197,12 @@ public class GeodisTest {
 		assertThat(geodis.gadd(key, 0, 0, member2, value), is(OKl));
 		assertThat(geodis.grangeByRadius(key, 0, 0, 10, UNITS.KM).size(), is(2));
 		List<Point<String>> Points = geodis.grangeByRadiusWithMatch(key, 0, 0, 10, M, "member*");
-		for (Point<String> point : Points) {
-			System.out.println(point.toString());
-		}
-		geodis.del(key);
 
 		geodis.del(keyb);
 		assertThat(geodis.gadd(keyb, 0, 0, member1b, valueb), is(OKl));
 		assertThat(geodis.gadd(keyb, 0, 0, member2b, valueb), is(OKl));
 		assertThat(geodis.grangeByRadius(keyb, 0, 0, 10, UNITS.KM).size(), is(2));
 		List<Point<byte[]>> Pointsb = geodis.grangeByRadiusWithMatch(keyb, 0, 0, 10, M, "member*".getBytes());
-		for (Point<byte[]> point : Pointsb) {
-			System.out.println(point.toString());
-		}
 		geodis.del(keyb);
 	}
 
@@ -224,9 +217,6 @@ public class GeodisTest {
 		assertThat(geodis.grangeCircleByRadius(key, 0, 0, 30, UNITS.KM).size(), is(2));
 		List<Circle<String>> circles = geodis.grangeCircleByRadiusWithMatch(key, 0, 0, 40, M, "*memkey4*");
 		assertThat(circles.size(), is(1));
-		for (Circle<String> point : circles) {
-			System.out.println(point.toString());
-		}
 		geodis.del(key);
 
 		geodis.del(keyb);
@@ -238,9 +228,6 @@ public class GeodisTest {
 		assertThat(geodis.grangeCircleByRadius(key, 0, 0, 30, UNITS.KM).size(), is(2));
 		List<Circle<byte[]>> circlesb = geodis.grangeCircleByRadiusWithMatch(keyb, 0, 0, 40, M, "*4*".getBytes());
 		assertThat(circlesb.size(), is(1));
-		for (Circle<byte[]> point : circlesb) {
-			System.out.println(point.toString());
-		}
 		geodis.del(keyb);
 	}
 
@@ -279,21 +266,28 @@ public class GeodisTest {
 		assertThat(geodis.gadd(key, 0, 0, member1, value), is(OKl));
 		assertThat(geodis.gadd(key, 0, 0, member2, value), is(OKl));
 		assertThat(geodis.grangeByRegion(key, polygon).size(), is(2));
-		List<Point<String>> Points = geodis.grangeByRegion(key, polygon);
-		for (Point<String> point : Points) {
-			System.out.println(point.toString());
-		}
 		geodis.del(key);
 
 		geodis.del(keyb);
 		assertThat(geodis.gadd(keyb, 0, 0, member1b, valueb), is(OKl));
 		assertThat(geodis.gadd(keyb, 0, 0, member2b, valueb), is(OKl));
 		assertThat(geodis.grangeByRadius(keyb, 0, 0, 10, UNITS.KM).size(), is(2));
-		List<Point<byte[]>> Pointsb = geodis.grangeByRegion(keyb, polygon);
-		for (Point<byte[]> point : Pointsb) {
-			System.out.println(point.toString());
-		}
 		geodis.del(keyb);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testgaddnRegion2() {
+		// [1,1], [1,-1], [-1,-1], [-1,1], [1,1]
+		Polygon<byte[]> polygon = new Polygon<byte[]>(new Point<byte[]>(1, 1), new Point<byte[]>(1, -1), new Point<byte[]>(-1, -1),
+				new Point<byte[]>(-1, 1), new Point<byte[]>(1, 1));
+		System.out.println(polygon.getJsonStr());
+
+		geodis.del(key);
+		assertThat(geodis.gadd(keyb, 0, 0, member1b, valueb), is(OKl));
+		assertThat(geodis.gadd(keyb, 0, 0, member2b, valueb), is(OKl));
+		assertThat(geodis.grangeByRegion(keyb, polygon).size(), is(2));
+		geodis.del(key);
 	}
 
 	@SuppressWarnings("unchecked")

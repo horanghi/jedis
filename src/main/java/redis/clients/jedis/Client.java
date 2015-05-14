@@ -899,7 +899,7 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 
 	@Override
 	public void grangeByRadius(final String key, final double lat, final double lon, final double distance, final UNITS unit) {
-		gfrangeByRadius(SafeEncoder.encode(key), lat, lon, distance, unit);
+		grangeByRadius(SafeEncoder.encode(key), lat, lon, distance, unit);
 	}
 
 	@Override

@@ -71,7 +71,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	@Override
 	public List<Point<byte[]>> grangeByRadius(final byte[] key, final double lat, final double lon, final double distance, final UNITS unit) {
 		checkIsInMulti();
-		client.gfrangeByRadius(key, lat, lon, distance, unit);
+		client.grangeByRadius(key, lat, lon, distance, unit);
 		return client.getBinarySpatialMultiBulkReply();
 	}
 
@@ -395,7 +395,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 		client.ggnn(key, lat, lon, count);
 		return client.getBinarySpatialMGETGEOMultiBulkReply();
 	}
-	
+
 	@Override
 	public List<Geometry<String>> ggnnWithMatch(final String key, final double lat, final double lon, final long count, final String pattern) {
 		checkIsInMulti();

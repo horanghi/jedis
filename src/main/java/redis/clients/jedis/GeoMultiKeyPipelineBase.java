@@ -38,13 +38,13 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	@Override
 	public Response<List<Point<String>>> grangeByRadius(String key, double lat, double lon, double distance, UNITS unit) {
 		client.grangeByRadius(key, lat, lon, distance, unit);
-		return getResponse(BuilderFactory.SPATIAL_GPOINT_LIST);
+		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST);
 	}
 
 	@Override
 	public Response<List<Point<byte[]>>> grangeByRadius(byte[] key, double lat, double lon, double distance, UNITS unit) {
-		client.gfrangeByRadius(key, lat, lon, distance, unit);
-		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_LIST);
+		client.grangeByRadius(key, lat, lon, distance, unit);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST);
 	}
 
 	@Override

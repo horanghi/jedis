@@ -529,10 +529,11 @@ public class BuilderFactory {
 			List<byte[]> l = (List<byte[]>) data;
 			Geometry<String> result = null;
 			Iterator<byte[]> iterator = l.iterator();
-
 			if (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
+					iterator.next();
+					iterator.next();
 					return null;
 				}
 				String member = SafeEncoder.encode(fistValue);

@@ -13,7 +13,7 @@ public interface Command4BinarySpatial {
 
 	void grangeCircleByRadius(byte[] key, double lat, double lon, double distance, UNITS unit);
 	
-	void gfrangeByRadius(byte[] key, double lat, double lon, double distance, UNITS unit);
+	void grangeByRadius(byte[] key, double lat, double lon, double distance, UNITS unit);
 
 	void gcard(byte[] key);
 

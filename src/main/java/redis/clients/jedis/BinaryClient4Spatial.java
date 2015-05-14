@@ -32,6 +32,7 @@ import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.LineString;
 import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
+import redis.clients.util.SafeEncoder;
 
 public class BinaryClient4Spatial extends BinaryClient implements Command4BinarySpatial {
 
@@ -56,7 +57,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void gfrangeByRadius(final byte[] key, final double lat, final double lon, final double distance, final UNITS unit) {
+	public void grangeByRadius(final byte[] key, final double lat, final double lon, final double distance, final UNITS unit) {
 		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
 		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, CONTAINS.raw,

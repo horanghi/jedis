@@ -44,6 +44,13 @@ public class LineString<T> extends Geometry<T> implements Comparable<T> {
 		}
 	}
 
+	public LineString(T member, T value, List<Point<T>> points) {
+		super(member, value);
+		for (Point<T> p : points) {
+			this.points.add(p);
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	public LineString(T member, T value, Point<T>... points) {
 		super(member, value);
@@ -94,9 +101,9 @@ public class LineString<T> extends Geometry<T> implements Comparable<T> {
 		}
 		return true;
 	}
-	
-	public boolean equalsDeep(Point<T> o){
-		if(this.equals((Object) o)){
+
+	public boolean equalsDeep(Point<T> o) {
+		if (this.equals((Object) o)) {
 			if (super.equalsDeep(o)) {
 				return true;
 			}
@@ -106,7 +113,7 @@ public class LineString<T> extends Geometry<T> implements Comparable<T> {
 
 	@Override
 	public int compareTo(T o) {
-		if (this.equals((Object) o)){
+		if (this.equals((Object) o)) {
 			return 0;
 		}
 		return -1;

@@ -67,8 +67,7 @@ public class GeoPipeliningTest extends Assert {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		geodisPool = new JedisPool("172.19.114.201", 19006);
-//		geodisPool = new JedisPool(new JedisPoolConfig(), "172.19.114.204", 19000, 3000, "a1234");
+		geodisPool = new JedisPool("172.19.114.202", 19006);
 	}
 
 	@AfterClass
@@ -82,7 +81,7 @@ public class GeoPipeliningTest extends Assert {
 				new Point<String>(-1, 1), new Point<String>(1, 1));
 
 		jedis = geodisPool.getResource();
-//		jedis.flushAll();
+		jedis.flushAll();
 		jedis.gadd(keyf, 0, 0, member1, value);
 		jedis.gadd(keyf, 0, 0, member2, value);
 		jedis.gadd(keyf, 0, 0, member3, value);
@@ -106,7 +105,7 @@ public class GeoPipeliningTest extends Assert {
 
 	@After
 	public void release() throws Exception {
-//		jedis.flushAll();
+		jedis.flushAll();
 		geodisPool.returnResource(jedis);
 	}
 
@@ -903,7 +902,7 @@ public class GeoPipeliningTest extends Assert {
 		Response<String> list = p.lpop("list");
 		Response<String> hash = p.hget("hash", "foo");
 		Response<Set<String>> zset = p.zrange("zset", 0, -1);
-//		Response<String> set = p.spop("set");
+		Response<String> set = p.spop("set");
 		Response<Boolean> blist = p.exists("list");
 		Response<Double> zincrby = p.zincrby("zset", 1, "foo");
 		Response<Long> zcard = p.zcard("zset");
@@ -919,7 +918,7 @@ public class GeoPipeliningTest extends Assert {
 		assertEquals("foo", list.get());
 		assertEquals("bar", hash.get());
 		assertEquals("foo", zset.get().iterator().next());
-//		assertEquals("foo", set.get());
+		assertEquals("foo", set.get());
 		assertEquals(false, blist.get());
 		assertEquals(Double.valueOf(2), zincrby.get());
 		assertEquals(Long.valueOf(1), zcard.get());
@@ -995,12 +994,12 @@ public class GeoPipeliningTest extends Assert {
 		assertTrue(Arrays.equals(secondKey, value1) || Arrays.equals(secondKey, value2));
 	}
 
-//	@Test
-//	public void pipelineSelect() {
-//		Pipeline p = jedis.pipelined();
-//		p.select(1);
-//		p.sync();
-//	}
+	@Test
+	public void pipelineSelect() {
+		Pipeline p = jedis.pipelined();
+		p.select(1);
+		p.sync();
+	}
 
 	@Test
 	public void pipelineResponseWithoutData() {
@@ -1023,15 +1022,15 @@ public class GeoPipeliningTest extends Assert {
 		p.sync();
 	}
 
-//	@Test
-//	public void pipelineWithPubSub() {
-//		Pipeline pipelined = jedis.pipelined();
-//		Response<Long> p1 = pipelined.publish("foo", "bar");
-//		Response<Long> p2 = pipelined.publish("foo".getBytes(), "bar".getBytes());
-//		pipelined.sync();
-//		assertEquals(0, p1.get().longValue());
-//		assertEquals(0, p2.get().longValue());
-//	}
+	@Test
+	public void pipelineWithPubSub() {
+		Pipeline pipelined = jedis.pipelined();
+		Response<Long> p1 = pipelined.publish("foo", "bar");
+		Response<Long> p2 = pipelined.publish("foo".getBytes(), "bar".getBytes());
+		pipelined.sync();
+		assertEquals(0, p1.get().longValue());
+		assertEquals(0, p2.get().longValue());
+	}
 
 	@Test
 	public void canRetrieveUnsetKey() {
@@ -1057,131 +1056,131 @@ public class GeoPipeliningTest extends Assert {
 		assertEquals(r.get(), "bar");
 	}
 
-//	@Test
-//	public void multi() {
-//		Pipeline p = jedis.pipelined();
-//		p.multi();
-//		Response<Long> r1 = p.hincrBy("a", "f1", -1);
-//		Response<Long> r2 = p.hincrBy("a", "f1", -2);
-//		Response<List<Object>> r3 = p.exec();
-//		List<Object> result = p.syncAndReturnAll();
-//
-//		assertEquals(new Long(-1), r1.get());
-//		assertEquals(new Long(-3), r2.get());
-//
-//		assertEquals(4, result.size());
-//
-//		assertEquals("OK", result.get(0));
-//		assertEquals("QUEUED", result.get(1));
-//		assertEquals("QUEUED", result.get(2));
-//
-//		// 4th result is a list with the results from the multi
-//		@SuppressWarnings("unchecked")
-//		List<Object> multiResult = (List<Object>) result.get(3);
-//		assertEquals(new Long(-1), multiResult.get(0));
-//		assertEquals(new Long(-3), multiResult.get(1));
-//
-//		assertEquals(new Long(-1), r3.get().get(0));
-//		assertEquals(new Long(-3), r3.get().get(1));
-//
-//	}
+	@Test
+	public void multi() {
+		Pipeline p = jedis.pipelined();
+		p.multi();
+		Response<Long> r1 = p.hincrBy("a", "f1", -1);
+		Response<Long> r2 = p.hincrBy("a", "f1", -2);
+		Response<List<Object>> r3 = p.exec();
+		List<Object> result = p.syncAndReturnAll();
 
-//	@Test
-//	public void multiWithSync() {
-//		jedis.set("foo", "314");
-//		jedis.set("bar", "foo");
-//		jedis.set("hello", "world");
-//		Pipeline p = jedis.pipelined();
-//		Response<String> r1 = p.get("bar");
-//		p.multi();
-//		Response<String> r2 = p.get("foo");
-//		p.exec();
-//		Response<String> r3 = p.get("hello");
-//		p.sync();
-//
-//		// before multi
-//		assertEquals("foo", r1.get());
-//		// It should be readable whether exec's response was built or not
-//		assertEquals("314", r2.get());
-//		// after multi
-//		assertEquals("world", r3.get());
-//	}
+		assertEquals(new Long(-1), r1.get());
+		assertEquals(new Long(-3), r2.get());
 
-//	@Test
-//	public void testDiscardInPipeline() {
-//		Pipeline pipeline = jedis.pipelined();
-//		pipeline.multi();
-//		pipeline.set("foo", "bar");
-//		Response<String> discard = pipeline.discard();
-//		Response<String> get = pipeline.get("foo");
-//		pipeline.sync();
-//		discard.get();
-//		get.get();
-//	}
+		assertEquals(4, result.size());
 
-//	@Test
-//	public void testEval() {
-//		String script = "return 'success!'";
-//
-//		Pipeline p = jedis.pipelined();
-//		Response<String> result = p.eval(script);
-//		p.sync();
-//
-//		assertEquals("success!", result.get());
-//	}
+		assertEquals("OK", result.get(0));
+		assertEquals("QUEUED", result.get(1));
+		assertEquals("QUEUED", result.get(2));
 
-//	@Test
-//	public void testEvalKeyAndArg() {
-//		String key = "test";
-//		String arg = "3";
-//		String script = "redis.call('INCRBY', KEYS[1], ARGV[1]) redis.call('INCRBY', KEYS[1], ARGV[1])";
-//
-//		Pipeline p = jedis.pipelined();
-//		p.set(key, "0");
-//		Response<String> result0 = p.eval(script, Arrays.asList(key), Arrays.asList(arg));
-//		p.incr(key);
-//		Response<String> result1 = p.eval(script, Arrays.asList(key), Arrays.asList(arg));
-//		Response<String> result2 = p.get(key);
-//		p.sync();
-//
-//		assertNull(result0.get());
-//		assertNull(result1.get());
-//		assertEquals("13", result2.get());
-//	}
+		// 4th result is a list with the results from the multi
+		@SuppressWarnings("unchecked")
+		List<Object> multiResult = (List<Object>) result.get(3);
+		assertEquals(new Long(-1), multiResult.get(0));
+		assertEquals(new Long(-3), multiResult.get(1));
 
-//	@Test
-//	public void testEvalsha() {
-//		String script = "return 'success!'";
-//		String sha1 = jedis.scriptLoad(script);
-//
-//		assertTrue(jedis.scriptExists(sha1));
-//
-//		Pipeline p = jedis.pipelined();
-//		Response<String> result = p.evalsha(sha1);
-//		p.sync();
-//
-//		assertEquals("success!", result.get());
-//	}
+		assertEquals(new Long(-1), r3.get().get(0));
+		assertEquals(new Long(-3), r3.get().get(1));
 
-//	@Test
-//	public void testEvalshaKeyAndArg() {
-//		String key = "test";
-//		String arg = "3";
-//		String script = "redis.call('INCRBY', KEYS[1], ARGV[1]) redis.call('INCRBY', KEYS[1], ARGV[1])";
-//		String sha1 = jedis.scriptLoad(script);
-//
-//		assertTrue(jedis.scriptExists(sha1));
-//
-//		Pipeline p = jedis.pipelined();
-//		p.set(key, "0");
-//		Response<String> result0 = p.evalsha(sha1, Arrays.asList(key), Arrays.asList(arg));
-//		p.incr(key);
-//		Response<String> result1 = p.evalsha(sha1, Arrays.asList(key), Arrays.asList(arg));
-//		Response<String> result2 = p.get(key);
-//		p.sync();
-//
-//		assertNull(result0.get());
-//		assertNull(result1.get());
-//		assertEquals("13", result2.get());
-//	}
+	}
+
+	@Test
+	public void multiWithSync() {
+		jedis.set("foo", "314");
+		jedis.set("bar", "foo");
+		jedis.set("hello", "world");
+		Pipeline p = jedis.pipelined();
+		Response<String> r1 = p.get("bar");
+		p.multi();
+		Response<String> r2 = p.get("foo");
+		p.exec();
+		Response<String> r3 = p.get("hello");
+		p.sync();
+
+		// before multi
+		assertEquals("foo", r1.get());
+		// It should be readable whether exec's response was built or not
+		assertEquals("314", r2.get());
+		// after multi
+		assertEquals("world", r3.get());
+	}
+
+	@Test
+	public void testDiscardInPipeline() {
+		Pipeline pipeline = jedis.pipelined();
+		pipeline.multi();
+		pipeline.set("foo", "bar");
+		Response<String> discard = pipeline.discard();
+		Response<String> get = pipeline.get("foo");
+		pipeline.sync();
+		discard.get();
+		get.get();
+	}
+
+	@Test
+	public void testEval() {
+		String script = "return 'success!'";
+
+		Pipeline p = jedis.pipelined();
+		Response<String> result = p.eval(script);
+		p.sync();
+
+		assertEquals("success!", result.get());
+	}
+
+	@Test
+	public void testEvalKeyAndArg() {
+		String key = "test";
+		String arg = "3";
+		String script = "redis.call('INCRBY', KEYS[1], ARGV[1]) redis.call('INCRBY', KEYS[1], ARGV[1])";
+
+		Pipeline p = jedis.pipelined();
+		p.set(key, "0");
+		Response<String> result0 = p.eval(script, Arrays.asList(key), Arrays.asList(arg));
+		p.incr(key);
+		Response<String> result1 = p.eval(script, Arrays.asList(key), Arrays.asList(arg));
+		Response<String> result2 = p.get(key);
+		p.sync();
+
+		assertNull(result0.get());
+		assertNull(result1.get());
+		assertEquals("13", result2.get());
+	}
+
+	@Test
+	public void testEvalsha() {
+		String script = "return 'success!'";
+		String sha1 = jedis.scriptLoad(script);
+
+		assertTrue(jedis.scriptExists(sha1));
+
+		Pipeline p = jedis.pipelined();
+		Response<String> result = p.evalsha(sha1);
+		p.sync();
+
+		assertEquals("success!", result.get());
+	}
+
+	@Test
+	public void testEvalshaKeyAndArg() {
+		String key = "test";
+		String arg = "3";
+		String script = "redis.call('INCRBY', KEYS[1], ARGV[1]) redis.call('INCRBY', KEYS[1], ARGV[1])";
+		String sha1 = jedis.scriptLoad(script);
+
+		assertTrue(jedis.scriptExists(sha1));
+
+		Pipeline p = jedis.pipelined();
+		p.set(key, "0");
+		Response<String> result0 = p.evalsha(sha1, Arrays.asList(key), Arrays.asList(arg));
+		p.incr(key);
+		Response<String> result1 = p.evalsha(sha1, Arrays.asList(key), Arrays.asList(arg));
+		Response<String> result2 = p.get(key);
+		p.sync();
+
+		assertNull(result0.get());
+		assertNull(result1.get());
+		assertEquals("13", result2.get());
+	}
 }

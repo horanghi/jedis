@@ -46,7 +46,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public Long gadd(final String key, final double lat, final double lon, final double distance, final UNITS unit, final String member,
+	public Long gadd(final String key, final double lat, final double lon, final long distance, final UNITS unit, final String member,
 			final String value) {
 		checkIsInMulti();
 		client.gadd(key, lat, lon, distance, unit, member, value);
@@ -54,7 +54,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public Long gadd(final byte[] key, final double lat, final double lon, final double distance, final UNITS unit, final byte[] member,
+	public Long gadd(final byte[] key, final double lat, final double lon, final long distance, final UNITS unit, final byte[] member,
 			final byte[] value) {
 		checkIsInMulti();
 		client.gadd(key, lat, lon, distance, unit, member, value);
@@ -62,21 +62,21 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Point<String>> grangeByRadius(final String key, final double lat, final double lon, final double distance, final UNITS unit) {
+	public List<Point<String>> grangeByRadius(final String key, final double lat, final double lon, final long distance, final UNITS unit) {
 		checkIsInMulti();
 		client.grangeByRadius(key, lat, lon, distance, unit);
 		return client.getSpatialMultiBulkReply();
 	}
 
 	@Override
-	public List<Point<byte[]>> grangeByRadius(final byte[] key, final double lat, final double lon, final double distance, final UNITS unit) {
+	public List<Point<byte[]>> grangeByRadius(final byte[] key, final double lat, final double lon, final long distance, final UNITS unit) {
 		checkIsInMulti();
 		client.grangeByRadius(key, lat, lon, distance, unit);
 		return client.getBinarySpatialMultiBulkReply();
 	}
 
 	@Override
-	public List<Circle<String>> grangeCircleByRadius(final String key, final double lat, final double lon, final double distance,
+	public List<Circle<String>> grangeCircleByRadius(final String key, final double lat, final double lon, final long distance,
 			final UNITS unit) {
 		checkIsInMulti();
 		client.grangeCircleByRadius(key, lat, lon, distance, unit);
@@ -84,7 +84,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle<byte[]>> grangeCircleByRadius(final byte[] key, final double lat, final double lon, final double distance,
+	public List<Circle<byte[]>> grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long distance,
 			final UNITS unit) {
 		checkIsInMulti();
 		client.grangeCircleByRadius(key, lat, lon, distance, unit);
@@ -92,7 +92,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Point<String>> grangeByRadiusWithMatch(final String key, final double lat, final double lon, final double distance,
+	public List<Point<String>> grangeByRadiusWithMatch(final String key, final double lat, final double lon, final long distance,
 			final UNITS unit, final String pattern) {
 		checkIsInMulti();
 		client.grangeByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
@@ -100,7 +100,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Point<byte[]>> grangeByRadiusWithMatch(final byte[] key, final double lat, final double lon, final double distance,
+	public List<Point<byte[]>> grangeByRadiusWithMatch(final byte[] key, final double lat, final double lon, final long distance,
 			final UNITS unit, final byte[] pattern) {
 		checkIsInMulti();
 		client.grangeByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
@@ -108,7 +108,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle<String>> grangeCircleByRadiusWithMatch(final String key, final double lat, final double lon, final double distance,
+	public List<Circle<String>> grangeCircleByRadiusWithMatch(final String key, final double lat, final double lon, final long distance,
 			final UNITS unit, final String pattern) {
 		checkIsInMulti();
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
@@ -116,7 +116,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle<byte[]>> grangeCircleByRadiusWithMatch(final byte[] key, final double lat, final double lon, final double distance,
+	public List<Circle<byte[]>> grangeCircleByRadiusWithMatch(final byte[] key, final double lat, final double lon, final long distance,
 			final UNITS unit, final byte[] pattern) {
 		checkIsInMulti();
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
@@ -209,7 +209,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public Double distance(final double dLat1, final double dLon1, final double dLat2, final double dLon2) {
+	public double distance(final double dLat1, final double dLon1, final double dLat2, final double dLon2) {
 		// d = |ax1 + by1 + c | / sqrt(a^2 + b^2)
 		return Math.acos(Math.sin(dLat1) * Math.sin(dLat2) + Math.cos(dLat1) * Math.cos(dLat2) * Math.cos(dLon1 - dLon2));
 	}

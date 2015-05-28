@@ -892,18 +892,18 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gadd(final String key, final double lat, final double lon, final double distance, final UNITS unit, final String member,
+	public void gadd(final String key, final double lat, final double lon, final long distance, final UNITS unit, final String member,
 			final String value) {
 		gadd(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(member), SafeEncoder.encode(value));
 	}
 
 	@Override
-	public void grangeByRadius(final String key, final double lat, final double lon, final double distance, final UNITS unit) {
+	public void grangeByRadius(final String key, final double lat, final double lon, final long distance, final UNITS unit) {
 		grangeByRadius(SafeEncoder.encode(key), lat, lon, distance, unit);
 	}
 
 	@Override
-	public void grangeCircleByRadius(final String key, final double lat, final double lon, final double distance, final UNITS unit) {
+	public void grangeCircleByRadius(final String key, final double lat, final double lon, final long distance, final UNITS unit) {
 		grangeCircleByRadius(SafeEncoder.encode(key), lat, lon, distance, unit);
 	}
 
@@ -938,12 +938,12 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void grangeByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern) {
+	public void grangeByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern) {
 		grangeByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern));
 	}
 
 	@Override
-	public void grangeCircleByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern) {
+	public void grangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern) {
 		grangeCircleByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern));
 	}
 

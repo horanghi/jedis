@@ -1,0 +1,355 @@
+{
+    "total_count": 55,
+    "paging": {
+       "next":"kkk"
+     },
+    "pois": [
+        {
+            "category": {
+                "category_id": "01-09",
+                "type": "medium",
+                "name": "분식"
+            },
+            "activities": {
+                "wished": false,
+                "picked": false
+            },
+            "poi_id": 4972762,
+            "main_image": {
+                "image": "http://file.pickat.com/files/91/917071/20150511/b9b5e46c8da60165c753cfcc402089c49aa359b9",
+                "type": "pick"
+            },
+            "name": "마복림떡볶이할머니",
+            "tags": [],
+            "scoreboard": {
+                "wishes": 23,
+                "score": 22152300,
+                "up_ratings": 14,
+                "picks": 22,
+                "down_ratings": 13,
+                "comments": 1,
+                "images": 58,
+                "blog_reviews": 0
+            },
+            "abbr_address": "서울 중구 신당동",
+            "theme": {
+                "theme_id": 22383,
+                "public_theme_id": 22383,
+                "type": "public",
+                "name": "T map으로 찾아가는 음식점 Top 100"
+            },
+            "has_coupon": false,
+            "location": {
+                "type": "Point",
+                "coordinates": [
+                    127.01508,
+                    37.56322
+                ]
+            },
+            "address": "서울 중구 신당동 292-112",
+            "is_closed": false
+        },
+        {
+            "category": {
+                "category_id": "01-09",
+                "type": "medium",
+                "name": "분식"
+            },
+            "activities": {
+                "wished": false,
+                "picked": false
+            },
+            "poi_id": 5601252,
+            "main_image": {
+                "image": "http://file.pickat.com/files/0/0/20130808/fcc666405de9b114beb71a93058ecaae4f45c7bc",
+                "type": "pick"
+            },
+            "name": "아이러브신당동",
+            "tags": [],
+            "scoreboard": {
+                "wishes": 8,
+                "score": 11040841,
+                "up_ratings": 3,
+                "picks": 11,
+                "down_ratings": 3,
+                "comments": 3,
+                "images": 82,
+                "blog_reviews": 41
+            },
+            "abbr_address": "서울 중구 신당동",
+            "theme": {
+                "theme_id": 12167,
+                "public_theme_id": 12167,
+                "type": "public",
+                "name": "TV에도 나온 추천 맛집"
+            },
+            "has_coupon": false,
+            "location": {
+                "type": "Point",
+                "coordinates": [
+                    127.014725,
+                    37.563194
+                ]
+            },
+            "address": "서울 중구 신당동 302-4",
+            "is_closed": false
+        },
+        {
+            "category": {
+                "category_id": "01-09",
+                "type": "medium",
+                "name": "분식"
+            },
+            "activities": {
+                "wished": false,
+                "picked": false
+            },
+            "poi_id": 5057889,
+            "main_image": {
+                "image": "http://file.pickat.com/files/0/0/20130508/874599ff243d18c13184c046e89abcde92fdb30e",
+                "type": "pick"
+            },
+            "name": "종점떡볶이",
+            "tags": [],
+            "scoreboard": {
+                "wishes": 1,
+                "score": 3020108,
+                "up_ratings": 1,
+                "picks": 3,
+                "down_ratings": 1,
+                "comments": 0,
+                "images": 28,
+                "blog_reviews": 8
+            },
+            "abbr_address": "서울 중구 신당동",
+            "theme": {
+                "theme_id": 869,
+                "public_theme_id": 869,
+                "type": "public",
+                "name": "진짜 매워 눈물나는 떡볶이 맛집"
+            },
+            "has_coupon": false,
+            "location": {
+                "type": "Point",
+                "coordinates": [
+                    127.014915,
+                    37.562695
+                ]
+            },
+            "address": "서울 중구 신당동 292-123",
+            "is_closed": false
+        },
+        {
+            "category": {
+                "category_id": "01-09",
+                "type": "medium",
+                "name": "분식"
+            },
+            "activities": {
+                "wished": false,
+                "picked": false
+            },
+            "poi_id": 4947330,
+            "main_image": {
+                "image": "http://file.pickat.com/files/0/0/20130623/5e016518cb7d780f6a869207912361af573e92e5",
+                "type": "pick"
+            },
+            "name": "미니네닭발떡볶이",
+            "tags": [],
+            "scoreboard": {
+                "wishes": 0,
+                "score": 1000000,
+                "up_ratings": 0,
+                "picks": 1,
+                "down_ratings": 0,
+                "comments": 0,
+                "images": 52,
+                "blog_reviews": 0
+            },
+            "abbr_address": "서울 중구 신당동",
+            "theme": {
+                "theme_id": 1836,
+                "public_theme_id": 1836,
+                "type": "public",
+                "name": "신당동에서 소문난 맛집"
+            },
+            "has_coupon": false,
+            "location": {
+                "type": "Point",
+                "coordinates": [
+                    127.015,
+                    37.56283
+                ]
+            },
+            "address": "서울 중구 신당동 292-141",
+            "is_closed": false
+        },
+        {
+            "category": {
+                "category_id": "01-01",
+                "type": "medium",
+                "name": "한식"
+            },
+            "activities": {
+                "wished": false,
+                "picked": false
+            },
+            "poi_id": 4949013,
+            "main_image": {
+                "image": "http://scontent-a.cdninstagram.com/hphotos-xfa1/t51.2885-15/e15/914809_551819878254817_1662143958_n.jpg",
+                "type": "instagram"
+            },
+            "name": "우리집떡볶이",
+            "tags": [],
+            "scoreboard": {
+                "wishes": 0,
+                "score": 3,
+                "up_ratings": 0,
+                "picks": 0,
+                "down_ratings": 0,
+                "comments": 0,
+                "images": 11,
+                "blog_reviews": 3
+            },
+            "abbr_address": "서울 중구 신당동",
+            "has_coupon": false,
+            "location": {
+                "type": "Point",
+                "coordinates": [
+                    127.01486,
+                    37.56261
+                ]
+            },
+            "address": "서울 중구 신당동 292-126",
+            "is_closed": false
+        },
+        {
+            "category": {
+                "category_id": "13-12",
+                "type": "medium",
+                "name": "문구점"
+            },
+            "activities": {
+                "wished": false,
+                "picked": false
+            },
+            "poi_id": 4525836,
+            "has_coupon": false,
+            "name": "모닝글로리",
+            "tags": [],
+            "scoreboard": {
+                "wishes": 0,
+                "score": 0,
+                "up_ratings": 0,
+                "picks": 0,
+                "down_ratings": 0,
+                "comments": 0,
+                "images": 0,
+                "blog_reviews": 0
+            },
+            "abbr_address": "서울 중구 신당동",
+            "location": {
+                "type": "Point",
+                "coordinates": [
+                    127.014725,
+                    37.563194
+                ]
+            },
+            "address": "서울 중구 신당동 302-4",
+            "is_closed": false
+        },
+        {
+            "category": {
+                "category_id": "17-01",
+                "type": "medium",
+                "name": "기타"
+            },
+            "activities": {
+                "wished": false,
+                "picked": false
+            },
+            "poi_id": 543728,
+            "has_coupon": false,
+            "name": "대현빌딩",
+            "tags": [],
+            "scoreboard": {
+                "wishes": 0,
+                "score": -1,
+                "up_ratings": 0,
+                "picks": 0,
+                "down_ratings": 0,
+                "comments": 0,
+                "images": 0,
+                "blog_reviews": 0
+            },
+            "abbr_address": "서울 중구 신당동",
+            "location": {
+                "type": "Point",
+                "coordinates": [
+                    127.01405,
+                    37.562473
+                ]
+            },
+            "address": "서울 중구 신당동 241-60",
+            "is_closed": false
+        },
+        {
+            "category": {
+                "category_id": "17-01",
+                "type": "medium",
+                "name": "기타"
+            },
+            "activities": {
+                "wished": false,
+                "picked": false
+            },
+            "poi_id": 4527607,
+            "has_coupon": false,
+            "name": "성원빌딩",
+            "tags": [],
+            "scoreboard": {
+                "wishes": 0,
+                "score": -1,
+                "up_ratings": 0,
+                "picks": 0,
+                "down_ratings": 0,
+                "comments": 0,
+                "images": 0,
+                "blog_reviews": 0
+            },
+            "abbr_address": "서울 중구 신당동",
+            "location": {
+                "type": "Point",
+                "coordinates": [
+                    127.014725,
+                    37.56322
+                ]
+            },
+            "address": "서울 중구 신당동 302-4",
+            "is_closed": false
+        }
+    ],
+    "suggestions": [
+        {
+            "p_keyword_id": "22",
+            "name": "떡볶이"
+        },
+        {
+            "p_category_id": "01-05",
+            "name": "바삭!치킨"
+        },
+        {
+            "p_category_id": "02-01",
+            "name": "카페디저트"
+        },
+        {
+            "p_category_id": "01-04",
+            "name": "중국요리"
+        },
+        {
+            "p_category_id": "01-09",
+            "name": "분식당길때"
+        }
+    ],
+    "is_geofenced": true
+}

@@ -9,11 +9,11 @@ public interface Command4BinarySpatial {
 
 	public void gadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
 
-	public void gadd(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] member, byte[] value);
+	public void gadd(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] member, byte[] value);
 
-	void grangeCircleByRadius(byte[] key, double lat, double lon, double distance, UNITS unit);
+	void grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit);
 	
-	void grangeByRadius(byte[] key, double lat, double lon, double distance, UNITS unit);
+	void grangeByRadius(byte[] key, double lat, double lon, long distance, UNITS unit);
 
 	void gcard(byte[] key);
 
@@ -25,11 +25,11 @@ public interface Command4BinarySpatial {
 
 	void gnn(byte[] key, double lat, double lon, long count);
 
-	void grangeByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern);
+	void grangeByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern);
 
 	void grangeByRegion(byte[] key, Polygon<?> polygon);
 
-	void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern);
+	void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern);
 
 	void ggadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon);
 	

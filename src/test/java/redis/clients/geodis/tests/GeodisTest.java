@@ -21,6 +21,7 @@ import org.junit.Test;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Geometry;
@@ -54,7 +55,12 @@ public class GeodisTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		geodisPool = new JedisPool("172.19.114.201", 19006);
+		//gcontainer 
+		geodisPool = new JedisPool(new JedisPoolConfig(), "172.19.114.204", 19000, 3000, "a1234");
+		
+		//spatial redis
+//		geodisPool = new JedisPool("172.19.114.201", 19006);
+		
 	}
 
 	@AfterClass

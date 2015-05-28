@@ -102,8 +102,12 @@ public class Polygon<T> extends Geometry<T> implements Comparable<T> {
 		if (this.points.size() == 0) {
 			return false;
 		}
-
-		if (!this.points.containsAll((List) ((Polygon<T>) o).getPoints())) {
+		List<Point<T>> p2 = (List) ((Polygon<T>) o).getPoints();
+		if (!this.points.containsAll(p2)) {
+			return false;
+		}
+		
+		if (!p2.containsAll(this.points)) {
 			return false;
 		}
 

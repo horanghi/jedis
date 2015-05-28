@@ -24,64 +24,64 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<Long> gadd(String key, double lat, double lon, double distance, UNITS unit, String member, String value) {
+	public Response<Long> gadd(String key, double lat, double lon, long distance, UNITS unit, String member, String value) {
 		client.gadd(key, lat, lon, distance, unit, member, value);
 		return getResponse(BuilderFactory.LONG);
 	}
 
 	@Override
-	public Response<Long> gadd(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] member, byte[] value) {
+	public Response<Long> gadd(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] member, byte[] value) {
 		client.gadd(key, lat, lon, distance, unit, member, value);
 		return getResponse(BuilderFactory.LONG);
 	}
 
 	@Override
-	public Response<List<Point<String>>> grangeByRadius(String key, double lat, double lon, double distance, UNITS unit) {
+	public Response<List<Point<String>>> grangeByRadius(String key, double lat, double lon, long distance, UNITS unit) {
 		client.grangeByRadius(key, lat, lon, distance, unit);
 		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Point<byte[]>>> grangeByRadius(byte[] key, double lat, double lon, double distance, UNITS unit) {
+	public Response<List<Point<byte[]>>> grangeByRadius(byte[] key, double lat, double lon, long distance, UNITS unit) {
 		client.grangeByRadius(key, lat, lon, distance, unit);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Circle<String>>> grangeCircleByRadius(String key, double lat, double lon, double distance, UNITS unit) {
+	public Response<List<Circle<String>>> grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit) {
 		client.grangeCircleByRadius(key, lat, lon, distance, unit);
 		return getResponse(BuilderFactory.SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Circle<byte[]>>> grangeCircleByRadius(byte[] key, double lat, double lon, double distance, UNITS unit) {
+	public Response<List<Circle<byte[]>>> grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit) {
 		client.grangeCircleByRadius(key, lat, lon, distance, unit);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Point<String>>> grangeByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit,
+	public Response<List<Point<String>>> grangeByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit,
 			String pattern) {
 		client.grangeByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
 		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Point<byte[]>>> grangeByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit,
+	public Response<List<Point<byte[]>>> grangeByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit,
 			byte[] pattern) {
 		client.grangeByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Circle<String>>> grangeCircleByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit,
+	public Response<List<Circle<String>>> grangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit,
 			String pattern) {
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
 		return getResponse(BuilderFactory.SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Circle<byte[]>>> grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit,
+	public Response<List<Circle<byte[]>>> grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit,
 			byte[] pattern) {
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GCIRCLE_WITHDISTANCE_LIST);

@@ -9,11 +9,11 @@ public interface Commands4Spatial extends Commands {
 
 	public void gadd(String key, double lat, double lon, String member, String value);
 
-	public void gadd(String key, double lat, double lon, double distance, UNITS unit, String member, String value);
+	public void gadd(String key, double lat, double lon, long distance, UNITS unit, String member, String value);
 
-	void grangeByRadius(String key, double lat, double lon, double distance, UNITS unit);
+	void grangeByRadius(String key, double lat, double lon, long distance, UNITS unit);
 
-	void grangeCircleByRadius(String key, double lat, double lon, double distance, UNITS unit);
+	void grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit);
 
 	void gcard(String key);
 
@@ -25,11 +25,11 @@ public interface Commands4Spatial extends Commands {
 
 	void gnn(String key, double lat, double lon, long count);
 
-	void grangeByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern);
+	void grangeByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern);
 
 	void grangeByRegion(String key, Polygon<String> polygon);
 	
-	void grangeCircleByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern);
+	void grangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern);
 
 	void ggadd(String key, String member, String value, Polygon<String> polygon);
 	

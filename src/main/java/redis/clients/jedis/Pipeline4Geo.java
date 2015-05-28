@@ -18,26 +18,26 @@ public interface Pipeline4Geo {
 
 	Response<Long> gadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
 
-	Response<Long> gadd(String key, double lat, double lon, double distance, UNITS unit, String member, String value);
+	Response<Long> gadd(String key, double lat, double lon, long distance, UNITS unit, String member, String value);
 
-	Response<Long> gadd(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] member, byte[] value);
+	Response<Long> gadd(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] member, byte[] value);
 
-	Response<List<Point<String>>> grangeByRadius(String key, double lat, double lon, double distance, UNITS unit);
+	Response<List<Point<String>>> grangeByRadius(String key, double lat, double lon, long distance, UNITS unit);
 
-	Response<List<Point<byte[]>>> grangeByRadius(byte[] key, double lat, double lon, double distance, UNITS unit);
+	Response<List<Point<byte[]>>> grangeByRadius(byte[] key, double lat, double lon, long distance, UNITS unit);
 
-	Response<List<Circle<String>>> grangeCircleByRadius(String key, double lat, double lon, double distance, UNITS unit);
+	Response<List<Circle<String>>> grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit);
 
-	Response<List<Circle<byte[]>>> grangeCircleByRadius(byte[] key, double lat, double lon, double distance, UNITS unit);
+	Response<List<Circle<byte[]>>> grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit);
 
-	Response<List<Point<String>>> grangeByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit, String pattern);
+	Response<List<Point<String>>> grangeByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern);
 
-	Response<List<Point<byte[]>>> grangeByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit, byte[] pattern);
+	Response<List<Point<byte[]>>> grangeByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern);
 
-	Response<List<Circle<String>>> grangeCircleByRadiusWithMatch(String key, double lat, double lon, double distance, UNITS unit,
+	Response<List<Circle<String>>> grangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit,
 			String pattern);
 
-	Response<List<Circle<byte[]>>> grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double distance, UNITS unit,
+	Response<List<Circle<byte[]>>> grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit,
 			byte[] pattern);
 
 	Response<Long> gcard(String key);

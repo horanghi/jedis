@@ -1,5 +1,7 @@
 package redis.clients.jedis;
 
+import redis.clients.jedis.Protocol.ORDERBY;
+import redis.clients.jedis.Protocol.SCOPE;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.LineString;
 import redis.clients.spatial.model.Point;
@@ -12,9 +14,11 @@ public interface Commands4Spatial extends Commands {
 	public void gadd(String key, double lat, double lon, long distance, UNITS unit, String member, String value);
 
 	void grangeByRadius(String key, double lat, double lon, long distance, UNITS unit);
-
+	
 	void grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit);
-
+	
+	void grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit, SCOPE scope, ORDERBY order);
+	
 	void gcard(String key);
 
 	void grem(String key, String member);
@@ -30,6 +34,9 @@ public interface Commands4Spatial extends Commands {
 	void grangeByRegion(String key, Polygon<String> polygon);
 	
 	void grangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern);
+	
+	void grangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern, SCOPE scope,
+			ORDERBY order);
 
 	void ggadd(String key, String member, String value, Polygon<String> polygon);
 	
@@ -58,5 +65,6 @@ public interface Commands4Spatial extends Commands {
 	void ggnn(String key, double lat, double lon, long count);
 
 	void ggnnWithMatch(String key, double lat, double lon, long count, String pattern);
+
 
 }

@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import redis.clients.jedis.Protocol.SCOPE;
+import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.LineString;
 import redis.clients.spatial.model.Point;
@@ -908,6 +910,12 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
+	public void grangeCircleByRadius(final String key, final double lat, final double lon, final long distance, final UNITS unit,
+			final SCOPE scope, final ORDERBY order) {
+		grangeCircleByRadius(SafeEncoder.encode(key), lat, lon, distance, unit, scope, order);
+	}
+
+	@Override
 	public void gcard(final String key) {
 		gcard(SafeEncoder.encode(key));
 	}
@@ -945,6 +953,12 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	@Override
 	public void grangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern) {
 		grangeCircleByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern));
+	}
+
+	@Override
+	public void grangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern, SCOPE scope,
+			ORDERBY order) {
+		grangeCircleByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern), scope, order);
 	}
 
 	@Override

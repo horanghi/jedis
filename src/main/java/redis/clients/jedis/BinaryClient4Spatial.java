@@ -18,8 +18,6 @@ import static redis.clients.jedis.Protocol.Command.GNN;
 import static redis.clients.jedis.Protocol.Command.GRANGEBYRADIUS;
 import static redis.clients.jedis.Protocol.Command.GRANGEBYREGION;
 import static redis.clients.jedis.Protocol.Command.GREM;
-import static redis.clients.jedis.Protocol.GeoOptions.ASC;
-import static redis.clients.jedis.Protocol.GeoOptions.CONTAINS;
 import static redis.clients.jedis.Protocol.GeoOptions.LIMIT;
 import static redis.clients.jedis.Protocol.GeoOptions.MATCH;
 import static redis.clients.jedis.Protocol.GeoOptions.NR;
@@ -28,11 +26,14 @@ import static redis.clients.jedis.Protocol.GeoOptions.WITHDISTANCE;
 import static redis.clients.jedis.Protocol.GeoOptions.WITHGEOJSON;
 import static redis.clients.jedis.Protocol.GeoOptions.WITHVALUES;
 import static redis.clients.jedis.Protocol.GeoOptions.XR;
+import static redis.clients.jedis.Protocol.ORDERBY.ASC;
+import static redis.clients.jedis.Protocol.SCOPE.CONTAINS;
+import redis.clients.jedis.Protocol.ORDERBY;
+import redis.clients.jedis.Protocol.SCOPE;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.LineString;
 import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
-import redis.clients.util.SafeEncoder;
 
 public class BinaryClient4Spatial extends BinaryClient implements Command4BinarySpatial {
 
@@ -73,6 +74,15 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
+	public void grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long distance, final UNITS unit,
+			final SCOPE scope, final ORDERBY order) {
+		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
+		// [LIMIT offset count]
+		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, scope.raw,
+				WITHVALUES.raw, WITHDISTANCE.raw, XR.raw, order.raw);
+	}
+
+	@Override
 	public void grangeByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern) {
 		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
@@ -86,6 +96,15 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		// [LIMIT offset count]
 		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, CONTAINS.raw,
 				WITHVALUES.raw, WITHDISTANCE.raw, ASC.raw, XR.raw, MATCH.raw, pattern);
+	}
+
+	@Override
+	public void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern, SCOPE scope,
+			ORDERBY order) {
+		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
+		// [LIMIT offset count]
+		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, scope.raw,
+				WITHVALUES.raw, WITHDISTANCE.raw, order.raw, XR.raw, MATCH.raw, pattern);
 	}
 
 	public void gcard(final byte[] key) {
@@ -210,10 +229,9 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	@Override
 	public void ggnn(final byte[] key, final double lat, final double lon, final long count) {
 		// ggnn mygg 0 0 limit 2 withvalues withdistance withgeojson
-		sendCommand(GGNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(count), WITHVALUES.raw,
-				WITHGEOJSON.raw);
+		sendCommand(GGNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(count), WITHVALUES.raw, WITHGEOJSON.raw);
 	}
-	
+
 	@Override
 	public void ggnnWithMatch(final byte[] key, final double lat, final double lon, final long count, final byte[] pattern) {
 		// ggnn mygg 0 0 limit 2 match hello* withvalues withdistance withgeojson

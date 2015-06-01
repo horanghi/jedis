@@ -6,6 +6,8 @@ import static redis.clients.jedis.Protocol.UNITS.M;
 import java.net.URI;
 import java.util.List;
 
+import redis.clients.jedis.Protocol.SCOPE;
+import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Geometry;
@@ -76,6 +78,22 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
+	public List<Point<String>> grangeByRadius(final String key, final double lat, final double lon, final long distance, final UNITS unit,
+			final ORDERBY sort) {
+		checkIsInMulti();
+		client.grangeByRadius(key, lat, lon, distance, unit);
+		return client.getSpatialMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> grangeByRadius(final byte[] key, final double lat, final double lon, final long distance, final UNITS unit,
+			final ORDERBY sort) {
+		checkIsInMulti();
+		client.grangeByRadius(key, lat, lon, distance, unit);
+		return client.getBinarySpatialMultiBulkReply();
+	}
+
+	@Override
 	public List<Circle<String>> grangeCircleByRadius(final String key, final double lat, final double lon, final long distance,
 			final UNITS unit) {
 		checkIsInMulti();
@@ -88,6 +106,22 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 			final UNITS unit) {
 		checkIsInMulti();
 		client.grangeCircleByRadius(key, lat, lon, distance, unit);
+		return client.getBinarySpatialCircleMultiBulkReply();
+	}
+
+	@Override
+	public List<Circle<String>> grangeCircleByRadius(final String key, final double lat, final double lon, final long distance,
+			final UNITS unit, final SCOPE scope, final ORDERBY order) {
+		checkIsInMulti();
+		client.grangeCircleByRadius(key, lat, lon, distance, unit, scope, order);
+		return client.getSpatialCircleMultiBulkReply();
+	}
+
+	@Override
+	public List<Circle<byte[]>> grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long distance,
+			final UNITS unit, final SCOPE scope, final ORDERBY order) {
+		checkIsInMulti();
+		client.grangeCircleByRadius(key, lat, lon, distance, unit, scope, order);
 		return client.getBinarySpatialCircleMultiBulkReply();
 	}
 
@@ -120,6 +154,22 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 			final UNITS unit, final byte[] pattern) {
 		checkIsInMulti();
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
+		return client.getBinarySpatialCircleMultiBulkReply();
+	}
+
+	@Override
+	public List<Circle<String>> grangeCircleByRadiusWithMatch(final String key, final double lat, final double lon, final long distance,
+			final UNITS unit, final String pattern, final SCOPE scope, final ORDERBY order) {
+		checkIsInMulti();
+		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern, scope, order);
+		return client.getSpatialCircleMultiBulkReply();
+	}
+
+	@Override
+	public List<Circle<byte[]>> grangeCircleByRadiusWithMatch(final byte[] key, final double lat, final double lon, final long distance,
+			final UNITS unit, final byte[] pattern, final SCOPE scope, final ORDERBY order) {
+		checkIsInMulti();
+		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern, scope, order);
 		return client.getBinarySpatialCircleMultiBulkReply();
 	}
 

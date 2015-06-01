@@ -435,20 +435,36 @@ public final class Protocol {
 			raw = SafeEncoder.encode(unit);
 		}
 	}
+	
+	public static enum SCOPE {
+		CONTAINS("contains"), WITHIN("within");
+
+		public final byte[] raw;
+
+		SCOPE(String option) {
+			raw = SafeEncoder.encode(this.name());
+		}
+	}
+	
+	public static enum ORDERBY {
+		ASC("asc"), DESC("desc");
+
+		public final byte[] raw;
+
+		ORDERBY(String option) {
+			raw = SafeEncoder.encode(this.name());
+		}
+	}
 
 	public static enum GeoOptions {
 		// CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
 		RADIUS,
-		CONTAINS,
-		WITHIN,
 		MATCH,
 		WITHVALUES,
 		WITHDISTANCE,
 		WITHGEOJSON,
 		XR,NR,
-		ASC,
-		DESC,
 		LIMIT;
 
 		public final byte[] raw;

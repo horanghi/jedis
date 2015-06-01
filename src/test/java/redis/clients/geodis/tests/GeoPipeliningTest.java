@@ -21,8 +21,9 @@ import org.junit.Test;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Pipeline;
+import redis.clients.jedis.Protocol.ORDERBY;
+import redis.clients.jedis.Protocol.SCOPE;
 import redis.clients.jedis.Response;
 import redis.clients.jedis.Tuple;
 import redis.clients.jedis.exceptions.JedisDataException;
@@ -214,15 +215,17 @@ public class GeoPipeliningTest extends Assert {
 		p.grangeCircleByRadiusWithMatch(keyf, 0.1, 0.3, 1, M, "?emkey8*");
 		p.grangeCircleByRadiusWithMatch(keyf, 0.1, 0.4, 1, M, "*memk?y9");
 		p.grangeCircleByRadiusWithMatch(keyf, 0.1, 0.5, 1, M, "*memkey10*");
+		p.grangeCircleByRadiusWithMatch(keyf, 0.1, 0.5, 1, M, "*memkey10*", SCOPE.CONTAINS, ORDERBY.ASC);
 		List<Object> results = p.syncAndReturnAll();
 
-		assertEquals(5, results.size());
+		assertEquals(6, results.size());
 		System.out.println(((List<Circle<String>>) results.get(0)).get(0));
 		assertTrue(((List<Circle<String>>) results.get(0)).get(0).getMember().equals(member6));
 		assertTrue(((List<Circle<String>>) results.get(1)).get(0).getMember().equals(member7));
 		assertTrue(((List<Circle<String>>) results.get(2)).get(0).getMember().equals(member8));
 		assertTrue(((List<Circle<String>>) results.get(3)).get(0).getMember().equals(member9));
 		assertTrue(((List<Circle<String>>) results.get(4)).get(0).getMember().equals(member10));
+		assertTrue(((List<Circle<String>>) results.get(5)).get(0).getMember().equals(member10));
 
 		assertTrue(((List<Circle<String>>) results.get(4)).get(0).equals(new Circle<String>(member5, 0.1, 0.5, 1, M, value)));
 
@@ -231,15 +234,17 @@ public class GeoPipeliningTest extends Assert {
 		p.grangeCircleByRadiusWithMatch(keyb, 0.1, 0.3, 1, M, "?emkey8*".getBytes());
 		p.grangeCircleByRadiusWithMatch(keyb, 0.1, 0.4, 1, M, "*memk?y9".getBytes());
 		p.grangeCircleByRadiusWithMatch(keyb, 0.1, 0.5, 1, M, "*memkey10*".getBytes());
+		p.grangeCircleByRadiusWithMatch(keyb, 0.1, 0.5, 1, M, "*memkey10*".getBytes(), SCOPE.CONTAINS, ORDERBY.ASC);
 		List<Object> resultsb = p.syncAndReturnAll();
 
-		assertEquals(5, results.size());
+		assertEquals(6, results.size());
 		System.out.println(((List<Circle<byte[]>>) resultsb.get(0)).get(0));
 		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(0)).get(0).getMember()).equals(member6));
 		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(1)).get(0).getMember()).equals(member7));
 		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(2)).get(0).getMember()).equals(member8));
 		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(3)).get(0).getMember()).equals(member9));
 		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(4)).get(0).getMember()).equals(member10));
+		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(5)).get(0).getMember()).equals(member10));
 
 		assertTrue(((List<Circle<byte[]>>) resultsb.get(4)).get(0).equals(new Circle<byte[]>(member5b, 0.1, 0.5, 1, M, valueb)));
 		jedis.del(keyb);
@@ -846,15 +851,17 @@ public class GeoPipeliningTest extends Assert {
 		p.grangeCircleByRadius(keyf, 0.1, 0.3, 1, M);
 		p.grangeCircleByRadius(keyf, 0.1, 0.4, 1, M);
 		p.grangeCircleByRadius(keyf, 0.1, 0.5, 1, M);
+		p.grangeCircleByRadius(keyf, 0.1, 0.5, 1, M, SCOPE.CONTAINS, ORDERBY.ASC);
 		List<Object> results = p.syncAndReturnAll();
 
-		assertEquals(5, results.size());
+		assertEquals(6, results.size());
 		System.out.println(((List<Circle<String>>) results.get(0)).get(0));
 		assertTrue(((List<Circle<String>>) results.get(0)).get(0).getMember().equals(member6));
 		assertTrue(((List<Circle<String>>) results.get(1)).get(0).getMember().equals(member7));
 		assertTrue(((List<Circle<String>>) results.get(2)).get(0).getMember().equals(member8));
 		assertTrue(((List<Circle<String>>) results.get(3)).get(0).getMember().equals(member9));
 		assertTrue(((List<Circle<String>>) results.get(4)).get(0).getMember().equals(member10));
+		assertTrue(((List<Circle<String>>) results.get(5)).get(0).getMember().equals(member10));
 
 		assertTrue(((List<Circle<String>>) results.get(4)).get(0).equals(new Circle<String>(member5, 0.1, 0.5, 1, M, value)));
 
@@ -872,15 +879,19 @@ public class GeoPipeliningTest extends Assert {
 		pb.grangeCircleByRadius(keyb, 0.1, 0.3, 1, M);
 		pb.grangeCircleByRadius(keyb, 0.1, 0.4, 1, M);
 		pb.grangeCircleByRadius(keyb, 0.1, 0.5, 1, M);
+		pb.grangeCircleByRadius(keyb, 0.1, 0.5, 1, M, SCOPE.CONTAINS, ORDERBY.ASC);
+		
+		
 		List<Object> resultsb = pb.syncAndReturnAll();
 
-		assertEquals(5, results.size());
+		assertEquals(6, results.size());
 		System.out.println(((List<Circle<byte[]>>) resultsb.get(0)).get(0));
 		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(0)).get(0).getMember()).equals(member6));
 		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(1)).get(0).getMember()).equals(member7));
 		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(2)).get(0).getMember()).equals(member8));
 		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(3)).get(0).getMember()).equals(member9));
 		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(4)).get(0).getMember()).equals(member10));
+		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(5)).get(0).getMember()).equals(member10));
 
 		assertTrue(((List<Circle<byte[]>>) resultsb.get(4)).get(0).equals(new Circle<byte[]>(member5b, 0.1, 0.5, 1, M, valueb)));
 		jedis.del(keyb);

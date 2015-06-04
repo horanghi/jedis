@@ -210,19 +210,19 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 
 	@Override
 	public void ggrelation(byte[] key, Polygon<?> polygon) {
-		// GGRELATION mygg contains '{"type": "Polygon", "coordinates": [[[1,1], [1,-1], [-1,-1], [-1,1], [1,1]]]}' withvalues withgeojson
+		// GGRELATION mygg '{"type": "Polygon", "coordinates": [[[1,1], [1,-1], [-1,-1], [-1,1], [1,1]]]}' contains withvalues withgeojson
 		sendCommand(GGRELATION, key, polygon.getJsonByte(), CONTAINS.raw, WITHVALUES.raw, WITHGEOJSON.raw);
 	}
 
 	@Override
 	public void ggrelation(byte[] key, LineString<?> lineString) {
-		// GGRELATION mygg contains '{"type": "Polygon", "coordinates": [[[1,1], [1,-1], [-1,-1], [-1,1], [1,1]]]}' withvalues withgeojson
+		// GGRELATION mygg '{"type": "Polygon", "coordinates": [[[1,1], [1,-1], [-1,-1], [-1,1], [1,1]]]}' contains withvalues withgeojson
 		sendCommand(GGRELATION, key, lineString.getJsonByte(), CONTAINS.raw, WITHVALUES.raw, WITHGEOJSON.raw);
 	}
 
 	@Override
 	public void ggrelation(byte[] key, Point<?> point) {
-		// GGRELATION mygg contains '{"type": "Polygon", "coordinates": [[[1,1], [1,-1], [-1,-1], [-1,1], [1,1]]]}' withvalues withgeojson
+		// GGRELATION mygg '{"type": "Polygon", "coordinates": [[[1,1], [1,-1], [-1,-1], [-1,1], [1,1]]]}' contains withvalues withgeojson
 		sendCommand(GGRELATION, key, point.getJsonByte(), CONTAINS.raw, WITHVALUES.raw, WITHGEOJSON.raw);
 	}
 

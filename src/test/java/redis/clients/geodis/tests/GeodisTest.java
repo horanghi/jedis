@@ -58,7 +58,7 @@ public class GeodisTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		//spatial redis
-		geodisPool = new JedisPool("172.19.114.202", 19006);
+		geodisPool = new JedisPool("172.19.114.201", 19006);
 		
 	}
 

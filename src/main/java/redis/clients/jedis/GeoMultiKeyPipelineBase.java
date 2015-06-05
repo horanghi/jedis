@@ -174,19 +174,19 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<List<Point<String>>> grangeByRegion(String key, Polygon<String> polygon) {
+	public Response<List<Point<String>>> grangeByRegion(String key, Polygon<?> polygon) {
 		client.grangeByRegion(key, polygon);
 		return getResponse(BuilderFactory.SPATIAL_GPOINT_LIST);
 	}
 
 	@Override
-	public Response<List<Point<byte[]>>> grangeByRegion(byte[] key, Polygon<byte[]> polygon) {
+	public Response<List<Point<byte[]>>> grangeByRegion(byte[] key, Polygon<?> polygon) {
 		client.grangeByRegion(key, polygon);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_LIST);
 	}
 
 	@Override
-	public Response<Long> ggadd(String key, String member, String value, Polygon<String> polygon) {
+	public Response<Long> ggadd(String key, String member, String value, Polygon<?> polygon) {
 		client.ggadd(key, member, value, polygon);
 		return getResponse(BuilderFactory.LONG);
 	}
@@ -198,7 +198,7 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<Long> ggadd(String key, String member, String value, LineString<String> lineString) {
+	public Response<Long> ggadd(String key, String member, String value, LineString<?> lineString) {
 		client.ggadd(key, member, value, lineString);
 		return getResponse(BuilderFactory.LONG);
 	}
@@ -222,7 +222,7 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<Long> ggadd(String key, String member, String value, Point<String> point) {
+	public Response<Long> ggadd(String key, String member, String value, Point<?> point) {
 		client.ggadd(key, member, value, point);
 		return getResponse(BuilderFactory.LONG);
 	}
@@ -294,37 +294,37 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<List<Geometry<String>>> ggrelation(final String key, final Polygon<String> polygon) {
+	public Response<List<Geometry<String>>> ggrelation(final String key, final Polygon<?> polygon) {
 		client.ggrelation(key, polygon);
 		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
-	public Response<List<Geometry<byte[]>>> ggrelation(final byte[] key, final Polygon<byte[]> polygon) {
+	public Response<List<Geometry<byte[]>>> ggrelation(final byte[] key, final Polygon<?> polygon) {
 		client.ggrelation(key, polygon);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
-	public Response<List<Geometry<String>>> ggrelation(final String key, final LineString<String> lineString) {
+	public Response<List<Geometry<String>>> ggrelation(final String key, final LineString<?> lineString) {
 		client.ggrelation(key, lineString);
 		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
-	public Response<List<Geometry<byte[]>>> ggrelation(final byte[] key, final LineString<byte[]> lineString) {
+	public Response<List<Geometry<byte[]>>> ggrelation(final byte[] key, final LineString<?> lineString) {
 		client.ggrelation(key, lineString);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
-	public Response<List<Geometry<String>>> ggrelation(final String key, final Point<String> point) {
+	public Response<List<Geometry<String>>> ggrelation(final String key, final Point<?> point) {
 		client.ggrelation(key, point);
 		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
-	public Response<List<Geometry<byte[]>>> ggrelation(final byte[] key, final Point<byte[]> point) {
+	public Response<List<Geometry<byte[]>>> ggrelation(final byte[] key, final Point<?> point) {
 		client.ggrelation(key, point);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
 	}
@@ -369,7 +369,6 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 
 	@Override
 	public Response<Long> gupdate(String key, double lat, double lon, String member) {
-		// TODO Auto-generated method stub
 		client.gupdate(key, lat, lon, member);
 		return getResponse(BuilderFactory.LONG);
 	}

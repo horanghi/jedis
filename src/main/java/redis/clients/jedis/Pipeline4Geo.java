@@ -90,15 +90,15 @@ public interface Pipeline4Geo {
 
 	Response<List<Point<byte[]>>> gnn(byte[] key, double lat, double lon, long count);
 
-	Response<List<Point<String>>> grangeByRegion(String key, Polygon<String> polygon);
+	Response<List<Point<String>>> grangeByRegion(String key, Polygon<?> polygon);
 
-	Response<List<Point<byte[]>>> grangeByRegion(byte[] key, Polygon<byte[]> polygon);
+	Response<List<Point<byte[]>>> grangeByRegion(byte[] key, Polygon<?> polygon);
 
-	Response<Long> ggadd(String key, String member, String value, Polygon<String> polygon);
+	Response<Long> ggadd(String key, String member, String value, Polygon<?> polygon);
 
 	Response<Long> ggadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon);
 
-	Response<Long> ggadd(String key, String member, String value, LineString<String> lineString);
+	Response<Long> ggadd(String key, String member, String value, LineString<?> lineString);
 
 	Response<Long> ggadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString);
 
@@ -106,7 +106,7 @@ public interface Pipeline4Geo {
 
 	Response<List<Geometry<byte[]>>> ggrange(byte[] key, long start, long stop);
 
-	Response<Long> ggadd(String key, String member, String value, Point<String> point);
+	Response<Long> ggadd(String key, String member, String value, Point<?> point);
 
 	Response<Long> ggadd(byte[] key, byte[] member, byte[] value, Point<?> point);
 
@@ -130,17 +130,17 @@ public interface Pipeline4Geo {
 
 	Response<List<Geometry<byte[]>>> ggmget(byte[] key, byte[][] members);
 
-	Response<List<Geometry<String>>> ggrelation(String key, Polygon<String> polygon);
+	Response<List<Geometry<String>>> ggrelation(String key, Polygon<?> polygon);
 
-	Response<List<Geometry<byte[]>>> ggrelation(byte[] key, Polygon<byte[]> polygon);
+	Response<List<Geometry<byte[]>>> ggrelation(byte[] key, Polygon<?> polygon);
 
-	Response<List<Geometry<String>>> ggrelation(String key, LineString<String> lineString);
+	Response<List<Geometry<String>>> ggrelation(String key, LineString<?> lineString);
 
-	Response<List<Geometry<byte[]>>> ggrelation(byte[] key, LineString<byte[]> lineString);
+	Response<List<Geometry<byte[]>>> ggrelation(byte[] key, LineString<?> lineString);
 
-	Response<List<Geometry<String>>> ggrelation(String key, Point<String> point);
+	Response<List<Geometry<String>>> ggrelation(String key, Point<?> point);
 
-	Response<List<Geometry<byte[]>>> ggrelation(byte[] key, Point<byte[]> point);
+	Response<List<Geometry<byte[]>>> ggrelation(byte[] key, Point<?> point);
 	
 	Response<List<Geometry<String>>> ggrelationBy(String key, String byKey, String byMember);
 

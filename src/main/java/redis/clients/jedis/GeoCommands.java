@@ -84,39 +84,39 @@ public interface GeoCommands {
 
 	List<Point<byte[]>> gnn(byte[] key, double lat, double lon, long count);
 
-	List<Point<String>> grangeByRegion(String key, Polygon<String> polygon);
+	List<Point<String>> grangeByRegion(String key, Polygon<?> polygon);
 
-	List<Point<byte[]>> grangeByRegion(byte[] key, Polygon<byte[]> polygon);
+	List<Point<byte[]>> grangeByRegion(byte[] key, Polygon<?> polygon);
 	
-	List<Point<String>> grangeByRegion(String key, LineString<String> lineString);
+	List<Point<String>> grangeByRegion(String key, LineString<?> lineString);
 
-	List<Point<byte[]>> grangeByRegion(byte[] key, LineString<byte[]> lineString);
+	List<Point<byte[]>> grangeByRegion(byte[] key, LineString<?> lineString);
 	
-	List<Point<String>> grangeByRegion(String key, Point<String> point);
+	List<Point<String>> grangeByRegion(String key, Point<?> point);
 
-	List<Point<byte[]>> grangeByRegion(byte[] key, Point<byte[]> point);
+	List<Point<byte[]>> grangeByRegion(byte[] key, Point<?> point);
 	
-	List<Point<String>> grangeByRegion(String key, Polygon<String> polygon, String pattern);
+	List<Point<String>> grangeByRegion(String key, Polygon<?> polygon, String pattern);
 
-	List<Point<byte[]>> grangeByRegion(byte[] key, Polygon<byte[]> polygon, byte[] pattern);
+	List<Point<byte[]>> grangeByRegion(byte[] key, Polygon<?> polygon, byte[] pattern);
 	
-	List<Point<String>> grangeByRegion(String key, LineString<String> lineString, String pattern);
+	List<Point<String>> grangeByRegion(String key, LineString<?> lineString, String pattern);
 
-	List<Point<byte[]>> grangeByRegion(byte[] key, LineString<byte[]> lineString, byte[] pattern);
+	List<Point<byte[]>> grangeByRegion(byte[] key, LineString<?> lineString, byte[] pattern);
 	
-	List<Point<String>> grangeByRegion(String key, Point<String> point, String pattern);
+	List<Point<String>> grangeByRegion(String key, Point<?> point, String pattern);
 
-	List<Point<byte[]>> grangeByRegion(byte[] key, Point<byte[]> point, byte[] pattern);
+	List<Point<byte[]>> grangeByRegion(byte[] key, Point<?> point, byte[] pattern);
 	
 	double distance(double dLat1, double dLon1, double dLat2, double dLon2);
 
 	/* Geography */
 
-	Long ggadd(String key, String member, String value, Polygon<String> polygon);
+	Long ggadd(String key, String member, String value, Polygon<?> polygon);
 
 	Long ggadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon);
 
-	Long ggadd(String key, String member, String value, LineString<String> lineString);
+	Long ggadd(String key, String member, String value, LineString<?> lineString);
 
 	Long ggadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString);
 
@@ -124,7 +124,7 @@ public interface GeoCommands {
 
 	List<Geometry<byte[]>> ggrange(byte[] key, long start, long stop);
 
-	Long ggadd(String key, String member, String value, Point<String> point);
+	Long ggadd(String key, String member, String value, Point<?> point);
 
 	Long ggadd(byte[] key, byte[] member, byte[] value, Point<?> point);
 

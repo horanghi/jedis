@@ -1,16 +1,6 @@
 package redis.clients.jedis;
 
 import static redis.clients.jedis.Protocol.toByteArray;
-import static redis.clients.jedis.Protocol.Command.GGADD;
-import static redis.clients.jedis.Protocol.Command.GRANGEBY;
-import static redis.clients.jedis.Protocol.GeoOptions.BY;
-import static redis.clients.jedis.Protocol.GeoOptions.LIMIT;
-import static redis.clients.jedis.Protocol.GeoOptions.MATCH;
-import static redis.clients.jedis.Protocol.GeoOptions.NR;
-import static redis.clients.jedis.Protocol.GeoOptions.WITHDISTANCE;
-import static redis.clients.jedis.Protocol.GeoOptions.WITHVALUES;
-import static redis.clients.jedis.Protocol.ORDERBY.ASC;
-import static redis.clients.jedis.Protocol.SCOPE.CONTAINS;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -982,42 +972,42 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void grangeByRegion(String key, Polygon<String> polygon) {
+	public void grangeByRegion(String key, Polygon<?> polygon) {
 		grangeByRegion(SafeEncoder.encode(key), polygon);
 	}
 
 	@Override
-	public void grangeByRegion(String key, LineString<String> lineString) {
+	public void grangeByRegion(String key, LineString<?> lineString) {
 		grangeByRegion(SafeEncoder.encode(key), lineString);
 	}
 
 	@Override
-	public void grangeByRegion(String key, Point<String> point) {
+	public void grangeByRegion(String key, Point<?> point) {
 		grangeByRegion(SafeEncoder.encode(key), point);
 	}
 
 	@Override
-	public void grangeByRegionWithMatch(String key, Polygon<String> polygon, String pattern) {
+	public void grangeByRegionWithMatch(String key, Polygon<?> polygon, String pattern) {
 		grangeByRegionWithMatch(SafeEncoder.encode(key), polygon, SafeEncoder.encode(pattern));
 	}
 
 	@Override
-	public void grangeByRegionWithMatch(String key, LineString<String> lineString, String pattern) {
+	public void grangeByRegionWithMatch(String key, LineString<?> lineString, String pattern) {
 		grangeByRegionWithMatch(SafeEncoder.encode(key), lineString, SafeEncoder.encode(pattern));
 	}
 
 	@Override
-	public void grangeByRegionWithMatch(String key, Point<String> point, String pattern) {
+	public void grangeByRegionWithMatch(String key, Point<?> point, String pattern) {
 		grangeByRegionWithMatch(SafeEncoder.encode(key), point, SafeEncoder.encode(pattern));
 	}
 
 	@Override
-	public void ggadd(String key, String member, String value, Polygon<String> polygon) {
+	public void ggadd(String key, String member, String value, Polygon<?> polygon) {
 		ggadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), polygon);
 	}
 
 	@Override
-	public void ggadd(String key, String member, String value, LineString<String> lineString) {
+	public void ggadd(String key, String member, String value, LineString<?> lineString) {
 		ggadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), lineString);
 	}
 
@@ -1033,22 +1023,22 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void ggadd(String key, String member, String value, Point<String> point) {
+	public void ggadd(String key, String member, String value, Point<?> point) {
 		ggadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), point);
 	}
 
 	@Override
-	public void ggupdate(String key, String member, Polygon<String> polygon) {
+	public void ggupdate(String key, String member, Polygon<?> polygon) {
 		ggupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), polygon);
 	}
 
 	@Override
-	public void ggupdate(String key, String member, LineString<String> lineString) {
+	public void ggupdate(String key, String member, LineString<?> lineString) {
 		ggupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), lineString);
 	}
 
 	@Override
-	public void ggupdate(String key, String member, Point<String> point) {
+	public void ggupdate(String key, String member, Point<?> point) {
 		ggupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), point);
 	}
 
@@ -1088,17 +1078,17 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void ggrelation(String key, Polygon<String> polygon) {
+	public void ggrelation(String key, Polygon<?> polygon) {
 		ggrelation(SafeEncoder.encode(key), polygon);
 	}
 
 	@Override
-	public void ggrelation(String key, LineString<String> lineString) {
+	public void ggrelation(String key, LineString<?> lineString) {
 		ggrelation(SafeEncoder.encode(key), lineString);
 	}
 
 	@Override
-	public void ggrelation(String key, Point<String> point) {
+	public void ggrelation(String key, Point<?> point) {
 		ggrelation(SafeEncoder.encode(key), point);
 	}
 

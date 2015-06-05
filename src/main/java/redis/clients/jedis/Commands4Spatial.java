@@ -35,17 +35,17 @@ public interface Commands4Spatial extends Commands {
 
 	void grangeByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern);
 
-	void grangeByRegion(String key, Polygon<String> polygon);
+	void grangeByRegion(String key, Polygon<?> polygon);
 	
-	void grangeByRegion(String key, LineString<String> lineString);
+	void grangeByRegion(String key, LineString<?> lineString);
 
-	void grangeByRegion(String key, Point<String> point);
+	void grangeByRegion(String key, Point<?> point);
 	
-	void grangeByRegionWithMatch(String key, Polygon<String> polygon, String pattern);
+	void grangeByRegionWithMatch(String key, Polygon<?> polygon, String pattern);
 	
-	void grangeByRegionWithMatch(String key, LineString<String> lineString, String pattern);
+	void grangeByRegionWithMatch(String key, LineString<?> lineString, String pattern);
 
-	void grangeByRegionWithMatch(String key, Point<String> point, String pattern);
+	void grangeByRegionWithMatch(String key, Point<?> point, String pattern);
 	
 	void grangeBy(String key, String bykey, String bymember);
 
@@ -56,17 +56,17 @@ public interface Commands4Spatial extends Commands {
 	void grangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern, SCOPE scope,
 			ORDERBY order);
 
-	void ggadd(String key, String member, String value, Polygon<String> polygon);
+	void ggadd(String key, String member, String value, Polygon<?> polygon);
 	
-	void ggadd(String key, String member, String value, LineString<String> lineString);
+	void ggadd(String key, String member, String value, LineString<?> lineString);
 	
-	void ggadd(String key, String member, String value, Point<String> point);
+	void ggadd(String key, String member, String value, Point<?> point);
 	
-	void ggupdate(String key, String member, Polygon<String> polygon);
+	void ggupdate(String key, String member, Polygon<?> polygon);
 
-	void ggupdate(String key, String member, LineString<String> lineString);
+	void ggupdate(String key, String member, LineString<?> lineString);
 
-	void ggupdate(String key, String member, Point<String> point);
+	void ggupdate(String key, String member, Point<?> point);
 
 	void ggrange(String key, long start, long stop);
 
@@ -80,11 +80,11 @@ public interface Commands4Spatial extends Commands {
 
 	void ggmget(String key, String[] members);
 
-	void ggrelation(String key, Polygon<String> polygon);
+	void ggrelation(String key, Polygon<?> polygon);
 
-	void ggrelation(String key, LineString<String> lineString);
+	void ggrelation(String key, LineString<?> lineString);
 
-	void ggrelation(String key, Point<String> point);
+	void ggrelation(String key, Point<?> point);
 	
 	void ggrelationBy(String key, String byKey, String byMember);
 

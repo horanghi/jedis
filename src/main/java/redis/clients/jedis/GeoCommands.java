@@ -32,21 +32,17 @@ public interface GeoCommands {
 	
 	Long gupdate(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] member);
 	
-	Long grangeBy(String key, String bykey, String bymember);
+	List<Point<String>> grangeBy(String key, String bykey, String bymember);
 
-	Long grangeBy(byte[] key, byte[] bykey, byte[] bymember);
+	List<Point<byte[]>> grangeBy(byte[] key, byte[] bykey, byte[] bymember);
 
-	Long grangeBy(String key, String bykey, String bymember, String pattern, long count);
+	List<Point<String>> grangeBy(String key, String bykey, String bymember, String pattern, long count);
 
-	Long grangeBy(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count);
+	List<Point<byte[]>> grangeBy(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count);
 
 	List<Point<String>> grangeByRadius(String key, double lat, double lon, long distance, UNITS unit);
 
 	List<Point<byte[]>> grangeByRadius(byte[] key, double lat, double lon, long distance, UNITS unit);
-
-	List<Point<String>> grangeByRadius(String key, double lat, double lon, long distance, UNITS unit, ORDERBY sort);
-
-	List<Point<byte[]>> grangeByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, ORDERBY sort);
 
 	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit);
 

@@ -205,14 +205,15 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	public void grangeBy(byte[] key, byte[] bykey, byte[] bymember) {
 		// GRANGEBY key BY bykey bymember CONTAINS|WITHIN [MATCH pattern] [NR|XR] [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset
 		// count]
-		sendCommand(GRANGEBY, key, BY.raw, bykey, bymember, WITHVALUES.raw);
+		sendCommand(GRANGEBY, key, BY.raw, bykey, bymember, CONTAINS.raw, NR.raw, WITHVALUES.raw, WITHDISTANCE.raw, ASC.raw);
 	}
 
 	@Override
 	public void grangeByWithMatch(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count) {
 		// GRANGEBY key BY bykey bymember CONTAINS|WITHIN [MATCH pattern] [NR|XR] [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset
 		// count]
-		sendCommand(GRANGEBY, key, BY.raw, bykey, bymember, MATCH.raw, pattern, WITHVALUES.raw, LIMIT.raw, toByteArray(count));
+		sendCommand(GRANGEBY, key, BY.raw, bykey, bymember, CONTAINS.raw, MATCH.raw, pattern, NR.raw, WITHVALUES.raw, WITHDISTANCE.raw,
+				ASC.raw, LIMIT.raw, toByteArray(0), toByteArray(count));
 	}
 
 	@Override

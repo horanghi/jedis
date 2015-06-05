@@ -1,6 +1,16 @@
 package redis.clients.jedis;
 
 import static redis.clients.jedis.Protocol.toByteArray;
+import static redis.clients.jedis.Protocol.Command.GGADD;
+import static redis.clients.jedis.Protocol.Command.GRANGEBY;
+import static redis.clients.jedis.Protocol.GeoOptions.BY;
+import static redis.clients.jedis.Protocol.GeoOptions.LIMIT;
+import static redis.clients.jedis.Protocol.GeoOptions.MATCH;
+import static redis.clients.jedis.Protocol.GeoOptions.NR;
+import static redis.clients.jedis.Protocol.GeoOptions.WITHDISTANCE;
+import static redis.clients.jedis.Protocol.GeoOptions.WITHVALUES;
+import static redis.clients.jedis.Protocol.ORDERBY.ASC;
+import static redis.clients.jedis.Protocol.SCOPE.CONTAINS;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -32,13 +32,13 @@ public interface Pipeline4Geo {
 	
 	Response<Long> gupdate(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] member);
 	
-	Response<Long> grangeBy(String key, String bykey, String bymember);
+	Response<List<Point<String>>> grangeBy(String key, String bykey, String bymember);
 
-	Response<Long> grangeBy(byte[] key, byte[] bykey, byte[] bymember);
+	Response<List<Point<byte[]>>> grangeBy(byte[] key, byte[] bykey, byte[] bymember);
 
-	Response<Long> grangeBy(String key, String bykey, String bymember, String pattern, long count);
+	Response<List<Point<String>>> grangeBy(String key, String bykey, String bymember, String pattern, long count);
 
-	Response<Long> grangeBy(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count);
+	Response<List<Point<byte[]>>> grangeBy(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count);
 	
 	Response<List<Point<String>>> grangeByRadius(String key, double lat, double lon, long distance, UNITS unit);
 

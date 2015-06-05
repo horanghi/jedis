@@ -351,6 +351,7 @@ public final class Protocol {
 		CLUSTER,
 		ASKING,
 		GADD,
+		GUPDATEBY,
 		GRANGEBYRADIUS,
 		GMEMBERVALUE,
 		GCARD,
@@ -359,7 +360,10 @@ public final class Protocol {
 		GMGET,
 		GNN,
 		GRANGEBYREGION, 
+		GRANGEBYREGIONBY, 
+		GRANGEBY,
 		GGADD,
+		GGUPDATEBY,
 		GGRANGE,
 		GGREVRANGE,
 		GGCARD,
@@ -367,6 +371,7 @@ public final class Protocol {
 		GGGET,
 		GGMGET,
 		GGRELATION,
+		GGRELATIONBY,
 		GGNN;
 
 		public final byte[] raw;
@@ -457,8 +462,9 @@ public final class Protocol {
 	}
 
 	public static enum GeoOptions {
-		// CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
+		// BY CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
+		BY,
 		RADIUS,
 		MATCH,
 		WITHVALUES,

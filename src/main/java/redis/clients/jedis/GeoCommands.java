@@ -23,6 +23,22 @@ public interface GeoCommands {
 	Long gadd(String key, double lat, double lon, long distance, UNITS unit, String member, String value);
 
 	Long gadd(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] member, byte[] value);
+	
+	Long gupdate(String key, double lat, double lon, String member);
+	
+	Long gupdate(byte[] key, double lat, double lon, byte[] member);
+
+	Long gupdate(String key, double lat, double lon, long distance, UNITS unit, String member);
+	
+	Long gupdate(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] member);
+	
+	Long grangeBy(String key, String bykey, String bymember);
+
+	Long grangeBy(byte[] key, byte[] bykey, byte[] bymember);
+
+	Long grangeBy(String key, String bykey, String bymember, String pattern, long count);
+
+	Long grangeBy(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count);
 
 	List<Point<String>> grangeByRadius(String key, double lat, double lon, long distance, UNITS unit);
 
@@ -40,17 +56,17 @@ public interface GeoCommands {
 	
 	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, SCOPE scope, ORDERBY order);
 
-	List<Point<String>> grangeByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern);
+	List<Point<String>> grangeByRadius(String key, double lat, double lon, long distance, UNITS unit, String pattern);
 
-	List<Point<byte[]>> grangeByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern);
+	List<Point<byte[]>> grangeByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern);
 
-	List<Circle<String>> grangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern);
+	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit, String pattern);
 
-	List<Circle<byte[]>> grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern);
+	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern);
 	
-	List<Circle<String>> grangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern, SCOPE ops, ORDERBY sort);
+	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit, String pattern, SCOPE ops, ORDERBY sort);
 
-	List<Circle<byte[]>> grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern, SCOPE ops, ORDERBY sort);
+	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern, SCOPE ops, ORDERBY sort);
 
 	Long gcard(String key);
 
@@ -74,8 +90,28 @@ public interface GeoCommands {
 
 	List<Point<String>> grangeByRegion(String key, Polygon<String> polygon);
 
-	List<Point<byte[]>> grangeByRegion(byte[] key, Polygon<?> polygon);
+	List<Point<byte[]>> grangeByRegion(byte[] key, Polygon<byte[]> polygon);
+	
+	List<Point<String>> grangeByRegion(String key, LineString<String> lineString);
 
+	List<Point<byte[]>> grangeByRegion(byte[] key, LineString<byte[]> lineString);
+	
+	List<Point<String>> grangeByRegion(String key, Point<String> point);
+
+	List<Point<byte[]>> grangeByRegion(byte[] key, Point<byte[]> point);
+	
+	List<Point<String>> grangeByRegion(String key, Polygon<String> polygon, String pattern);
+
+	List<Point<byte[]>> grangeByRegion(byte[] key, Polygon<byte[]> polygon, byte[] pattern);
+	
+	List<Point<String>> grangeByRegion(String key, LineString<String> lineString, String pattern);
+
+	List<Point<byte[]>> grangeByRegion(byte[] key, LineString<byte[]> lineString, byte[] pattern);
+	
+	List<Point<String>> grangeByRegion(String key, Point<String> point, String pattern);
+
+	List<Point<byte[]>> grangeByRegion(byte[] key, Point<byte[]> point, byte[] pattern);
+	
 	double distance(double dLat1, double dLon1, double dLat2, double dLon2);
 
 	/* Geography */
@@ -132,10 +168,24 @@ public interface GeoCommands {
 
 	List<Geometry<byte[]>> ggnn(byte[] key, double lat, double lon, long count);
 
-	List<Geometry<String>> ggnnWithMatch(String key, double lat, double lon, long count, String pattern);
+	List<Geometry<String>> ggnn(String key, double lat, double lon, long count, String pattern);
 
-	List<Geometry<byte[]>> ggnnWithMatch(byte[] key, double lat, double lon, long count, byte[] pattern);
+	List<Geometry<byte[]>> ggnn(byte[] key, double lat, double lon, long count, byte[] pattern);
 
-	
+	Long ggupdate(String key, String member, Point<String> point);
+
+	Long ggupdate(byte[] key, byte[] member, Point<?> point);
+
+	Long ggupdate(String key, String member, Polygon<String> polygon);
+
+	Long ggupdate(byte[] key, byte[] member, Polygon<?> polygon);
+
+	Long ggupdate(String key, String member, LineString<String> lineString);
+
+	Long ggupdate(byte[] key, byte[] member, LineString<?> lineString);
+
+	List<Geometry<String>> ggrelationBy(String key, String byKey, String byMember);
+
+	List<Geometry<byte[]>> ggrelationBy(byte[] key, byte[] byKey, byte[] byMember);
 
 }

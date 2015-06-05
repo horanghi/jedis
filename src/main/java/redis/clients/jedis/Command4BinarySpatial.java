@@ -9,16 +9,20 @@ import redis.clients.spatial.model.Polygon;
 
 public interface Command4BinarySpatial {
 
-	public void gadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
+	void gadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
 
-	public void gadd(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] member, byte[] value);
+	void gadd(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] member, byte[] value);
+
+	void gupdate(byte[] key, double lat, double lon, byte[] member);
+
+	void gupdate(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member);
 
 	void grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit);
-	
+
 	void grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, SCOPE scope, ORDERBY order);
 
 	void grangeByRadius(byte[] key, double lat, double lon, long distance, UNITS unit);
-	
+
 	void gcard(byte[] key);
 
 	void grem(byte[] key, byte[] member);
@@ -32,11 +36,25 @@ public interface Command4BinarySpatial {
 	void grangeByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern);
 
 	void grangeByRegion(byte[] key, Polygon<?> polygon);
+	
+	void grangeByRegion(byte[] key, LineString<?> lineString);
+
+	void grangeByRegion(byte[] key, Point<?> point);
+	
+	void grangeByRegionWithMatch(byte[] key, Polygon<?> polygon, byte[] pattern);
+	
+	void grangeByRegionWithMatch(byte[] key, LineString<?> lineString, byte[] pattern);
+
+	void grangeByRegionWithMatch(byte[] key, Point<?> point, byte[] pattern);
 
 	void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern);
 
 	void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern, SCOPE scope,
 			ORDERBY order);
+	
+	void grangeBy(byte[] key, byte[] bykey, byte[] bymember);
+
+	void grangeByWithMatch(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count);
 
 	void ggadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon);
 
@@ -62,10 +80,16 @@ public interface Command4BinarySpatial {
 
 	void ggrelation(byte[] key, Point<?> point);
 
+	void ggrelationBy(byte[] key, byte[] byKey, byte[] byMember);
+
 	void ggnn(byte[] key, double lat, double lon, long count);
 
 	void ggnnWithMatch(byte[] key, double lat, double lon, long count, byte[] pattern);
 
-	
+	void ggupdate(byte[] key, byte[] member, Polygon<?> polygon);
+
+	void ggupdate(byte[] key, byte[] member, Point<?> point);
+
+	void ggupdate(byte[] key, byte[] member, LineString<?> lineString);
 
 }

@@ -210,12 +210,12 @@ public class GeoPipeliningTest extends Assert {
 	@Test
 	public void pipelinegrangeCircleByRadiusWithMatch() throws UnsupportedEncodingException {
 		Pipeline p = jedis.pipelined();
-		p.grangeCircleByRadiusWithMatch(keyf, 0.1, 0.1, 1, M, "*");
-		p.grangeCircleByRadiusWithMatch(keyf, 0.1, 0.2, 1, M, "memkey7");
-		p.grangeCircleByRadiusWithMatch(keyf, 0.1, 0.3, 1, M, "?emkey8*");
-		p.grangeCircleByRadiusWithMatch(keyf, 0.1, 0.4, 1, M, "*memk?y9");
-		p.grangeCircleByRadiusWithMatch(keyf, 0.1, 0.5, 1, M, "*memkey10*");
-		p.grangeCircleByRadiusWithMatch(keyf, 0.1, 0.5, 1, M, "*memkey10*", SCOPE.CONTAINS, ORDERBY.ASC);
+		p.grangeCircleByRadius(keyf, 0.1, 0.1, 1, M, "*");
+		p.grangeCircleByRadius(keyf, 0.1, 0.2, 1, M, "memkey7");
+		p.grangeCircleByRadius(keyf, 0.1, 0.3, 1, M, "?emkey8*");
+		p.grangeCircleByRadius(keyf, 0.1, 0.4, 1, M, "*memk?y9");
+		p.grangeCircleByRadius(keyf, 0.1, 0.5, 1, M, "*memkey10*");
+		p.grangeCircleByRadius(keyf, 0.1, 0.5, 1, M, "*memkey10*", SCOPE.CONTAINS, ORDERBY.ASC);
 		List<Object> results = p.syncAndReturnAll();
 
 		assertEquals(6, results.size());
@@ -229,12 +229,12 @@ public class GeoPipeliningTest extends Assert {
 
 		assertTrue(((List<Circle<String>>) results.get(4)).get(0).equals(new Circle<String>(member5, 0.1, 0.5, 1, M, value)));
 
-		p.grangeCircleByRadiusWithMatch(keyb, 0.1, 0.1, 1, M, "*".getBytes());
-		p.grangeCircleByRadiusWithMatch(keyb, 0.1, 0.2, 1, M, "memkey7".getBytes());
-		p.grangeCircleByRadiusWithMatch(keyb, 0.1, 0.3, 1, M, "?emkey8*".getBytes());
-		p.grangeCircleByRadiusWithMatch(keyb, 0.1, 0.4, 1, M, "*memk?y9".getBytes());
-		p.grangeCircleByRadiusWithMatch(keyb, 0.1, 0.5, 1, M, "*memkey10*".getBytes());
-		p.grangeCircleByRadiusWithMatch(keyb, 0.1, 0.5, 1, M, "*memkey10*".getBytes(), SCOPE.CONTAINS, ORDERBY.ASC);
+		p.grangeCircleByRadius(keyb, 0.1, 0.1, 1, M, "*".getBytes());
+		p.grangeCircleByRadius(keyb, 0.1, 0.2, 1, M, "memkey7".getBytes());
+		p.grangeCircleByRadius(keyb, 0.1, 0.3, 1, M, "?emkey8*".getBytes());
+		p.grangeCircleByRadius(keyb, 0.1, 0.4, 1, M, "*memk?y9".getBytes());
+		p.grangeCircleByRadius(keyb, 0.1, 0.5, 1, M, "*memkey10*".getBytes());
+		p.grangeCircleByRadius(keyb, 0.1, 0.5, 1, M, "*memkey10*".getBytes(), SCOPE.CONTAINS, ORDERBY.ASC);
 		List<Object> resultsb = p.syncAndReturnAll();
 
 		assertEquals(6, results.size());
@@ -252,13 +252,13 @@ public class GeoPipeliningTest extends Assert {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void pipelinegrangeByRadiusWithMatch() throws UnsupportedEncodingException {
+	public void pipelinegrangeByRadiusMatch() throws UnsupportedEncodingException {
 		Pipeline p = jedis.pipelined();
-		p.grangeByRadiusWithMatch(keyf, 0.1, 0.1, 20, KM, "memkey1*");
-		p.grangeByRadiusWithMatch(keyf, 0.1, 0.2, 25, KM, "memkey2*");
-		p.grangeByRadiusWithMatch(keyf, 0.1, 0.3, 36, KM, "*memkey3");
-		p.grangeByRadiusWithMatch(keyf, 0.1, 0.4, 46, KM, "*memkey4*");
-		p.grangeByRadiusWithMatch(keyf, 0.1, 0.5, 57, KM, "memkey5**");
+		p.grangeByRadius(keyf, 0.1, 0.1, 20, KM, "memkey1*");
+		p.grangeByRadius(keyf, 0.1, 0.2, 25, KM, "memkey2*");
+		p.grangeByRadius(keyf, 0.1, 0.3, 36, KM, "*memkey3");
+		p.grangeByRadius(keyf, 0.1, 0.4, 46, KM, "*memkey4*");
+		p.grangeByRadius(keyf, 0.1, 0.5, 57, KM, "memkey5**");
 		List<Object> results = p.syncAndReturnAll();
 
 		assertEquals(5, results.size());
@@ -271,13 +271,13 @@ public class GeoPipeliningTest extends Assert {
 
 		assertTrue(((List<Point<String>>) results.get(4)).get(0).equals(new Point<String>(member5, 0, 0, value)));
 
-		p.grangeByRadiusWithMatch(keyb, 0.1, 0.1, 20, KM, "memkey1*".getBytes());
-		p.grangeByRadiusWithMatch(keyb, 0.1, 0.2, 25, KM, "memkey2*".getBytes());
-		p.grangeByRadiusWithMatch(keyb, 0.1, 0.3, 36, KM, "memkey3*".getBytes());
-		p.grangeByRadiusWithMatch(keyb, 0.1, 0.4, 46, KM, "memkey4".getBytes());
-		p.grangeByRadiusWithMatch(keyb, 0.1, 0.5, 57, KM, "memkey5**".getBytes());
+		p.grangeByRadius(keyb, 0.1, 0.1, 20, KM, "memkey1*".getBytes());
+		p.grangeByRadius(keyb, 0.1, 0.2, 25, KM, "memkey2*".getBytes());
+		p.grangeByRadius(keyb, 0.1, 0.3, 36, KM, "memkey3*".getBytes());
+		p.grangeByRadius(keyb, 0.1, 0.4, 46, KM, "memkey4".getBytes());
+		p.grangeByRadius(keyb, 0.1, 0.5, 57, KM, "memkey5**".getBytes());
 
-		p.grangeByRadiusWithMatch(keyb, 0.1, 0.5, 57, KM, "memkey6**".getBytes());
+		p.grangeByRadius(keyb, 0.1, 0.5, 57, KM, "memkey6**".getBytes());
 
 		List<Object> resultsb = p.syncAndReturnAll();
 

@@ -39,7 +39,7 @@ public class Geometry<T> implements Serializable, Comparable<T> {
 	public boolean equals(Object o) {
 		return this.equalsDeep((Geometry<T>) o);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public boolean equalsDeep(Geometry<T> o) {
 		try {

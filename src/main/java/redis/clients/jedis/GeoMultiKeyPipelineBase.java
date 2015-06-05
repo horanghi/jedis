@@ -76,42 +76,38 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<List<Point<String>>> grangeByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit,
-			String pattern) {
+	public Response<List<Point<String>>> grangeByRadius(String key, double lat, double lon, long distance, UNITS unit, String pattern) {
 		client.grangeByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
 		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Point<byte[]>>> grangeByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit,
-			byte[] pattern) {
+	public Response<List<Point<byte[]>>> grangeByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern) {
 		client.grangeByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Circle<String>>> grangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit,
-			String pattern) {
+	public Response<List<Circle<String>>> grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit, String pattern) {
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
 		return getResponse(BuilderFactory.SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Circle<byte[]>>> grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit,
-			byte[] pattern) {
+	public Response<List<Circle<byte[]>>> grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern) {
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Circle<String>>> grangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit,
+	public Response<List<Circle<String>>> grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit,
 			String pattern, SCOPE scope, ORDERBY order) {
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern, scope, order);
 		return getResponse(BuilderFactory.SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Circle<byte[]>>> grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit,
+	public Response<List<Circle<byte[]>>> grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit,
 			byte[] pattern, SCOPE scope, ORDERBY order) {
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern, scope, order);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
@@ -334,6 +330,19 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
+	public Response<List<Geometry<String>>> ggrelationBy(final String key, final String byKey, final String byMember) {
+		client.ggrelationBy(key, byKey, byMember);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+	
+	@Override
+	public Response<List<Geometry<byte[]>>> ggrelationBy(final byte[] key, final byte[] byKey, final byte[] byMember) {
+		client.ggrelationBy(key, byKey, byMember);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
+
+
+	@Override
 	public Response<List<Geometry<String>>> ggnn(final String key, final double lat, final double lon, final long count) {
 		client.ggnn(key, lat, lon, count);
 		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
@@ -346,16 +355,73 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<List<Geometry<String>>> ggnnWithMatch(final String key, final double lat, final double lon, final long count,
+	public Response<List<Geometry<String>>> ggnn(final String key, final double lat, final double lon, final long count,
 			final String pattern) {
 		client.ggnnWithMatch(key, lat, lon, count, pattern);
 		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
-	public Response<List<Geometry<byte[]>>> ggnnWithMatch(final byte[] key, final double lat, final double lon, final long count,
+	public Response<List<Geometry<byte[]>>> ggnn(final byte[] key, final double lat, final double lon, final long count,
 			final byte[] pattern) {
 		client.ggnnWithMatch(key, lat, lon, count, pattern);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
 	}
+
+	@Override
+	public Response<Long> gupdate(String key, double lat, double lon, String member) {
+		// TODO Auto-generated method stub
+		client.gupdate(key, lat, lon, member);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gupdate(byte[] key, double lat, double lon, byte[] member) {
+		// TODO Auto-generated method stub
+		client.gupdate(key, lat, lon, member);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gupdate(String key, double lat, double lon, long distance, UNITS unit, String member) {
+		// TODO Auto-generated method stub
+		client.gupdate(key, lat, lon, distance, unit, member);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gupdate(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] member) {
+		// TODO Auto-generated method stub
+		client.gupdate(key, lat, lon, distance, unit, member);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> grangeBy(String key, String bykey, String bymember) {
+		// TODO Auto-generated method stub
+		client.grangeBy(key, bykey, bymember);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> grangeBy(byte[] key, byte[] bykey, byte[] bymember) {
+		// TODO Auto-generated method stub
+		client.grangeBy(key, bykey, bymember);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> grangeBy(String key, String bykey, String bymember, String pattern, long count) {
+		// TODO Auto-generated method stub
+		client.grangeByWithMatch(key, bykey, bymember, pattern, count);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> grangeBy(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count) {
+		// TODO Auto-generated method stub
+		client.grangeByWithMatch(key, bykey, bymember, pattern, count);
+		return getResponse(BuilderFactory.LONG);
+	}
+
 }

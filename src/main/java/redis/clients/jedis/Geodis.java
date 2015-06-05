@@ -62,6 +62,35 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 		client.gadd(key, lat, lon, distance, unit, member, value);
 		return client.getIntegerReply();
 	}
+	
+	
+	@Override
+	public Long gupdate(final String key, double lat, double lon, final String member) {
+		checkIsInMulti();
+		client.gupdate(key, lat, lon, member);
+		return client.getIntegerReply();
+	}
+	
+	@Override
+	public Long gupdate(final byte[] key, double lat, double lon, final byte[] member) {
+		checkIsInMulti();
+		client.gupdate(key, lat, lon, member);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gupdate(final String key, double lat, double lon, long distance, UNITS unit, final String member) {
+		checkIsInMulti();
+		client.gupdate(key, lat, lon, member);
+		return client.getIntegerReply();
+	}
+	
+	@Override
+	public Long gupdate(final byte[] key, double lat, double lon, long distance, UNITS unit, final byte[] member) {
+		checkIsInMulti();
+		client.gupdate(key, lat, lon, member);
+		return client.getIntegerReply();
+	}
 
 	@Override
 	public List<Point<String>> grangeByRadius(final String key, final double lat, final double lon, final long distance, final UNITS unit) {
@@ -126,7 +155,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Point<String>> grangeByRadiusWithMatch(final String key, final double lat, final double lon, final long distance,
+	public List<Point<String>> grangeByRadius(final String key, final double lat, final double lon, final long distance,
 			final UNITS unit, final String pattern) {
 		checkIsInMulti();
 		client.grangeByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
@@ -134,7 +163,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Point<byte[]>> grangeByRadiusWithMatch(final byte[] key, final double lat, final double lon, final long distance,
+	public List<Point<byte[]>> grangeByRadius(final byte[] key, final double lat, final double lon, final long distance,
 			final UNITS unit, final byte[] pattern) {
 		checkIsInMulti();
 		client.grangeByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
@@ -142,7 +171,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle<String>> grangeCircleByRadiusWithMatch(final String key, final double lat, final double lon, final long distance,
+	public List<Circle<String>> grangeCircleByRadius(final String key, final double lat, final double lon, final long distance,
 			final UNITS unit, final String pattern) {
 		checkIsInMulti();
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
@@ -150,7 +179,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle<byte[]>> grangeCircleByRadiusWithMatch(final byte[] key, final double lat, final double lon, final long distance,
+	public List<Circle<byte[]>> grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long distance,
 			final UNITS unit, final byte[] pattern) {
 		checkIsInMulti();
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
@@ -158,7 +187,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle<String>> grangeCircleByRadiusWithMatch(final String key, final double lat, final double lon, final long distance,
+	public List<Circle<String>> grangeCircleByRadius(final String key, final double lat, final double lon, final long distance,
 			final UNITS unit, final String pattern, final SCOPE scope, final ORDERBY order) {
 		checkIsInMulti();
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern, scope, order);
@@ -166,7 +195,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle<byte[]>> grangeCircleByRadiusWithMatch(final byte[] key, final double lat, final double lon, final long distance,
+	public List<Circle<byte[]>> grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long distance,
 			final UNITS unit, final byte[] pattern, final SCOPE scope, final ORDERBY order) {
 		checkIsInMulti();
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern, scope, order);
@@ -252,9 +281,79 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Point<byte[]>> grangeByRegion(final byte[] key, final Polygon<?> polygon) {
+	public List<Point<byte[]>> grangeByRegion(final byte[] key, final Polygon<byte[]> polygon) {
 		checkIsInMulti();
 		client.grangeByRegion(key, polygon);
+		return client.getBinarySpatialMGETMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<String>> grangeByRegion(final String key, final LineString<String> lineString) {
+		checkIsInMulti();
+		client.grangeByRegion(key, lineString);
+		return client.getSpatialMGETMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> grangeByRegion(final byte[] key, final LineString<byte[]> lineString) {
+		checkIsInMulti();
+		client.grangeByRegion(key, lineString);
+		return client.getBinarySpatialMGETMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<String>> grangeByRegion(final String key, final Point<String> point) {
+		checkIsInMulti();
+		client.grangeByRegion(key, point);
+		return client.getSpatialMGETMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> grangeByRegion(final byte[] key, final Point<byte[]> point) {
+		checkIsInMulti();
+		client.grangeByRegion(key, point);
+		return client.getBinarySpatialMGETMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<String>> grangeByRegion(final String key, final Polygon<String> polygon, final String pattern) {
+		checkIsInMulti();
+		client.grangeByRegionWithMatch(key, polygon, pattern);
+		return client.getSpatialMGETMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> grangeByRegion(final byte[] key, final Polygon<byte[]> polygon, final byte[] pattern) {
+		checkIsInMulti();
+		client.grangeByRegionWithMatch(key, polygon, pattern);
+		return client.getBinarySpatialMGETMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<String>> grangeByRegion(final String key, final LineString<String> lineString, final String pattern) {
+		checkIsInMulti();
+		client.grangeByRegionWithMatch(key, lineString, pattern);
+		return client.getSpatialMGETMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> grangeByRegion(final byte[] key, final LineString<byte[]> lineString, final byte[] pattern) {
+		checkIsInMulti();
+		client.grangeByRegionWithMatch(key, lineString, pattern);
+		return client.getBinarySpatialMGETMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<String>> grangeByRegion(final String key, final Point<String> point, final String pattern) {
+		checkIsInMulti();
+		client.grangeByRegionWithMatch(key, point, pattern);
+		return client.getSpatialMGETMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> grangeByRegion(final byte[] key, final Point<byte[]> point, final byte[] pattern) {
+		checkIsInMulti();
+		client.grangeByRegionWithMatch(key, point, pattern);
 		return client.getBinarySpatialMGETMultiBulkReply();
 	}
 
@@ -293,16 +392,86 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public Long ggadd(final String key, final String member, final String value, final Point<String> point) {
+	public Long grangeBy(final String key, final String bykey, final String bymember) {
+		checkIsInMulti();
+		client.grangeBy(key, bykey, bymember);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long grangeBy(final byte[] key, final byte[] bykey, final byte[] bymember) {
+		checkIsInMulti();
+		client.grangeBy(key, bykey, bymember);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long grangeBy(final String key, final String bykey, final String bymember, final String pattern, final long count) {
+		checkIsInMulti();
+		client.grangeByWithMatch(key, bykey, bymember, pattern, count);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long grangeBy(final byte[] key, final byte[] bykey, final byte[] bymember,  final byte[] pattern,  final long count) {
+		checkIsInMulti();
+		client.grangeByWithMatch(key, bykey, bymember, pattern, count);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggadd(String key, String member, String value, Point<String> point) {
 		checkIsInMulti();
 		client.ggadd(key, member, value, point);
 		return client.getIntegerReply();
 	}
 
 	@Override
-	public Long ggadd(final byte[] key, final byte[] member, final byte[] value, final Point<?> point) {
+	public Long ggadd(byte[] key, byte[] member, byte[] value, Point<?> point) {
 		checkIsInMulti();
 		client.ggadd(key, member, value, point);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggupdate(final String key, final String member, final Point<String> point) {
+		checkIsInMulti();
+		client.ggupdate(key, member, point);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggupdate(final byte[] key, final byte[] member, final Point<?> point) {
+		checkIsInMulti();
+		client.ggupdate(key, member, point);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggupdate(final String key, final String member, final Polygon<String> polygon) {
+		checkIsInMulti();
+		client.ggupdate(key, member, polygon);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggupdate(final byte[] key, final byte[] member, final Polygon<?> polygon) {
+		checkIsInMulti();
+		client.ggupdate(key, member, polygon);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggupdate(final String key, final String member, final LineString<String> lineString) {
+		checkIsInMulti();
+		client.ggupdate(key, member, lineString);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggupdate(final byte[] key, final byte[] member, final LineString<?> lineString) {
+		checkIsInMulti();
+		client.ggupdate(key, member, lineString);
 		return client.getIntegerReply();
 	}
 
@@ -433,6 +602,20 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
+	public List<Geometry<String>> ggrelationBy(final String key, final String byKey, final String byMember) {
+		checkIsInMulti();
+		client.ggrelationBy(key, byKey, byMember);
+		return client.getSpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<byte[]>> ggrelationBy(final byte[] key, final byte[] byKey, final byte[] byMember) {
+		checkIsInMulti();
+		client.ggrelationBy(key, byKey, byMember);
+		return client.getBinarySpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
 	public List<Geometry<String>> ggnn(final String key, final double lat, final double lon, final long count) {
 		checkIsInMulti();
 		client.ggnn(key, lat, lon, count);
@@ -447,14 +630,14 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Geometry<String>> ggnnWithMatch(final String key, final double lat, final double lon, final long count, final String pattern) {
+	public List<Geometry<String>> ggnn(final String key, final double lat, final double lon, final long count, final String pattern) {
 		checkIsInMulti();
 		client.ggnnWithMatch(key, lat, lon, count, pattern);
 		return client.getSpatialMGETGEOMultiBulkReply();
 	}
 
 	@Override
-	public List<Geometry<byte[]>> ggnnWithMatch(final byte[] key, final double lat, final double lon, final long count, final byte[] pattern) {
+	public List<Geometry<byte[]>> ggnn(final byte[] key, final double lat, final double lon, final long count, final byte[] pattern) {
 		checkIsInMulti();
 		client.ggnnWithMatch(key, lat, lon, count, pattern);
 		return client.getBinarySpatialMGETGEOMultiBulkReply();

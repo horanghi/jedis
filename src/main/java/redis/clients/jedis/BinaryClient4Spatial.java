@@ -11,13 +11,18 @@ import static redis.clients.jedis.Protocol.Command.GGMGET;
 import static redis.clients.jedis.Protocol.Command.GGNN;
 import static redis.clients.jedis.Protocol.Command.GGRANGE;
 import static redis.clients.jedis.Protocol.Command.GGRELATION;
+import static redis.clients.jedis.Protocol.Command.GGRELATIONBY;
 import static redis.clients.jedis.Protocol.Command.GGREM;
 import static redis.clients.jedis.Protocol.Command.GGREVRANGE;
+import static redis.clients.jedis.Protocol.Command.GGUPDATEBY;
 import static redis.clients.jedis.Protocol.Command.GMGET;
 import static redis.clients.jedis.Protocol.Command.GNN;
+import static redis.clients.jedis.Protocol.Command.GRANGEBY;
 import static redis.clients.jedis.Protocol.Command.GRANGEBYRADIUS;
 import static redis.clients.jedis.Protocol.Command.GRANGEBYREGION;
 import static redis.clients.jedis.Protocol.Command.GREM;
+import static redis.clients.jedis.Protocol.Command.GUPDATEBY;
+import static redis.clients.jedis.Protocol.GeoOptions.BY;
 import static redis.clients.jedis.Protocol.GeoOptions.LIMIT;
 import static redis.clients.jedis.Protocol.GeoOptions.MATCH;
 import static redis.clients.jedis.Protocol.GeoOptions.NR;
@@ -55,6 +60,18 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 			final byte[] value) {
 		// GFADD key member value latitude longitude [RADIUS radius m|km]
 		sendCommand(GADD, key, member, value, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw);
+	}
+
+	@Override
+	public void gupdate(final byte[] key, final double lat, final double lon, final byte[] member) {
+		// GUPDATEBY key member latitude longitude [RADIUS radius m|km]
+		sendCommand(GUPDATEBY, key, member, toByteArray(lat), toByteArray(lon));
+	}
+
+	@Override
+	public void gupdate(final byte[] key, final double lat, final double lon, final long radius, final UNITS unit, final byte[] member) {
+		// GUPDATEBY key member latitude longitude [RADIUS radius m|km]
+		sendCommand(GUPDATEBY, key, member, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw);
 	}
 
 	@Override
@@ -150,6 +167,55 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
+	public void grangeByRegion(byte[] key, LineString<?> lineString) {
+		// GFRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
+		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
+		sendCommand(GRANGEBYREGION, key, lineString.getJsonByte(), WITHVALUES.raw);
+	}
+
+	@Override
+	public void grangeByRegion(byte[] key, Point<?> point) {
+		// GFRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
+		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
+		sendCommand(GRANGEBYREGION, key, point.getJsonByte(), WITHVALUES.raw);
+	}
+
+	@Override
+	public void grangeByRegionWithMatch(byte[] key, Polygon<?> polygon, byte[] pattern) {
+		// GFRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
+		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
+		sendCommand(GRANGEBYREGION, key, polygon.getJsonByte(), MATCH.raw, pattern, WITHVALUES.raw);
+	}
+
+	@Override
+	public void grangeByRegionWithMatch(byte[] key, LineString<?> lineString, byte[] pattern) {
+		// GFRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
+		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
+		sendCommand(GRANGEBYREGION, key, lineString.getJsonByte(), MATCH.raw, pattern, WITHVALUES.raw);
+	}
+
+	@Override
+	public void grangeByRegionWithMatch(byte[] key, Point<?> point, byte[] pattern) {
+		// GFRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
+		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
+		sendCommand(GRANGEBYREGION, key, point.getJsonByte(), MATCH.raw, pattern, WITHVALUES.raw);
+	}
+
+	@Override
+	public void grangeBy(byte[] key, byte[] bykey, byte[] bymember) {
+		// GRANGEBY key BY bykey bymember CONTAINS|WITHIN [MATCH pattern] [NR|XR] [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset
+		// count]
+		sendCommand(GRANGEBY, key, BY.raw, bykey, bymember, WITHVALUES.raw);
+	}
+
+	@Override
+	public void grangeByWithMatch(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count) {
+		// GRANGEBY key BY bykey bymember CONTAINS|WITHIN [MATCH pattern] [NR|XR] [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset
+		// count]
+		sendCommand(GRANGEBY, key, BY.raw, bykey, bymember, MATCH.raw, pattern, WITHVALUES.raw, LIMIT.raw, toByteArray(count));
+	}
+
+	@Override
 	public void ggadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon) {
 		// GGADD key member value geojson
 		sendCommand(GGADD, key, member, value, polygon.getJsonByte());
@@ -165,6 +231,24 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	public void ggadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString) {
 		// GGADD key member value geojson
 		sendCommand(GGADD, key, member, value, lineString.getJsonByte());
+	}
+
+	@Override
+	public void ggupdate(byte[] key, byte[] member, Polygon<?> polygon) {
+		// GGUPDATEBY key member geojson
+		sendCommand(GGUPDATEBY, key, member, polygon.getJsonByte());
+	}
+
+	@Override
+	public void ggupdate(byte[] key, byte[] member, Point<?> point) {
+		// GGUPDATEBY key member geojson
+		sendCommand(GGUPDATEBY, key, member, point.getJsonByte());
+	}
+
+	@Override
+	public void ggupdate(byte[] key, byte[] member, LineString<?> lineString) {
+		// GGUPDATEBY key member geojson
+		sendCommand(GGUPDATEBY, key, member, lineString.getJsonByte());
 	}
 
 	@Override
@@ -224,6 +308,12 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	public void ggrelation(byte[] key, Point<?> point) {
 		// GGRELATION mygg '{"type": "Polygon", "coordinates": [[[1,1], [1,-1], [-1,-1], [-1,1], [1,1]]]}' contains withvalues withgeojson
 		sendCommand(GGRELATION, key, point.getJsonByte(), CONTAINS.raw, WITHVALUES.raw, WITHGEOJSON.raw);
+	}
+
+	@Override
+	public void ggrelationBy(byte[] key, byte[] byKey, byte[] byMember) {
+		// GGRELATIONBY key BY bykey bymember CONTAINS|WITHIN [WITHVALUES] [WITHGEOJSON]
+		sendCommand(GGRELATIONBY, key, BY.raw, byKey, byMember, CONTAINS.raw, WITHVALUES.raw, WITHGEOJSON.raw);
 	}
 
 	@Override

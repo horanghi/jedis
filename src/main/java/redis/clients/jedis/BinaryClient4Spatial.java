@@ -56,10 +56,10 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void gadd(final byte[] key, final double lat, final double lon, final long distance, final UNITS unit, final byte[] member,
+	public void gadd(final byte[] key, final double lat, final double lon, final long radius, final UNITS unit, final byte[] member,
 			final byte[] value) {
 		// GFADD key member value latitude longitude [RADIUS radius m|km]
-		sendCommand(GADD, key, member, value, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw);
+		sendCommand(GADD, key, member, value, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw);
 	}
 
 	@Override
@@ -75,52 +75,52 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void grangeByRadius(final byte[] key, final double lat, final double lon, final long distance, final UNITS unit) {
+	public void grangeByRadius(final byte[] key, final double lat, final double lon, final long radius, final UNITS unit) {
 		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
-		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, CONTAINS.raw,
+		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw,
 				WITHVALUES.raw, WITHDISTANCE.raw, NR.raw, ASC.raw);
 	}
 
 	@Override
-	public void grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long distance, final UNITS unit) {
+	public void grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long radius, final UNITS unit) {
 		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
-		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, CONTAINS.raw,
+		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw,
 				WITHVALUES.raw, WITHDISTANCE.raw, XR.raw, ASC.raw);
 	}
 
 	@Override
-	public void grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long distance, final UNITS unit,
+	public void grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long radius, final UNITS unit,
 			final SCOPE scope, final ORDERBY order) {
 		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
-		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, scope.raw,
+		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, scope.raw,
 				WITHVALUES.raw, WITHDISTANCE.raw, XR.raw, order.raw);
 	}
 
 	@Override
-	public void grangeByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern) {
+	public void grangeByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern) {
 		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
-		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, CONTAINS.raw,
+		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw,
 				WITHVALUES.raw, WITHDISTANCE.raw, ASC.raw, NR.raw, MATCH.raw, pattern);
 	}
 
 	@Override
-	public void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern) {
+	public void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern) {
 		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
-		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, CONTAINS.raw,
+		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw,
 				WITHVALUES.raw, WITHDISTANCE.raw, ASC.raw, XR.raw, MATCH.raw, pattern);
 	}
 
 	@Override
-	public void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern, SCOPE scope,
+	public void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, SCOPE scope,
 			ORDERBY order) {
 		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
-		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(distance), unit.raw, scope.raw,
+		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, scope.raw,
 				WITHVALUES.raw, WITHDISTANCE.raw, order.raw, XR.raw, MATCH.raw, pattern);
 	}
 

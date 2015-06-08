@@ -20,17 +20,17 @@ public interface GeoCommands {
 
 	Long gadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
 
-	Long gadd(String key, double lat, double lon, long distance, UNITS unit, String member, String value);
+	Long gadd(String key, double lat, double lon, long radius, UNITS unit, String member, String value);
 
-	Long gadd(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] member, byte[] value);
+	Long gadd(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member, byte[] value);
 	
 	Long gupdate(String key, double lat, double lon, String member);
 	
 	Long gupdate(byte[] key, double lat, double lon, byte[] member);
 
-	Long gupdate(String key, double lat, double lon, long distance, UNITS unit, String member);
+	Long gupdate(String key, double lat, double lon, long radius, UNITS unit, String member);
 	
-	Long gupdate(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] member);
+	Long gupdate(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member);
 	
 	List<Point<String>> grangeBy(String key, String bykey, String bymember);
 
@@ -40,29 +40,29 @@ public interface GeoCommands {
 
 	List<Point<byte[]>> grangeBy(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count);
 
-	List<Point<String>> grangeByRadius(String key, double lat, double lon, long distance, UNITS unit);
+	List<Point<String>> grangeByRadius(String key, double lat, double lon, long radius, UNITS unit);
 
-	List<Point<byte[]>> grangeByRadius(byte[] key, double lat, double lon, long distance, UNITS unit);
+	List<Point<byte[]>> grangeByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
 
-	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit);
+	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit);
 
-	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit);
+	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
 	
-	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit, SCOPE scope, ORDERBY order);
+	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, SCOPE scope, ORDERBY order);
 	
-	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, SCOPE scope, ORDERBY order);
+	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, SCOPE scope, ORDERBY order);
 
-	List<Point<String>> grangeByRadius(String key, double lat, double lon, long distance, UNITS unit, String pattern);
+	List<Point<String>> grangeByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern);
 
-	List<Point<byte[]>> grangeByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern);
+	List<Point<byte[]>> grangeByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
 
-	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit, String pattern);
+	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern);
 
-	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern);
+	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
 	
-	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit, String pattern, SCOPE ops, ORDERBY sort);
+	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern, SCOPE ops, ORDERBY sort);
 
-	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern, SCOPE ops, ORDERBY sort);
+	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, SCOPE ops, ORDERBY sort);
 
 	Long gcard(String key);
 

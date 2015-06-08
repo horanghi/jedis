@@ -11,17 +11,17 @@ public interface Command4BinarySpatial {
 
 	void gadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
 
-	void gadd(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] member, byte[] value);
+	void gadd(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member, byte[] value);
 
 	void gupdate(byte[] key, double lat, double lon, byte[] member);
 
 	void gupdate(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member);
 
-	void grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit);
+	void grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
 
-	void grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, SCOPE scope, ORDERBY order);
+	void grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, SCOPE scope, ORDERBY order);
 
-	void grangeByRadius(byte[] key, double lat, double lon, long distance, UNITS unit);
+	void grangeByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
 
 	void gcard(byte[] key);
 
@@ -33,7 +33,7 @@ public interface Command4BinarySpatial {
 
 	void gnn(byte[] key, double lat, double lon, long count);
 
-	void grangeByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern);
+	void grangeByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
 
 	void grangeByRegion(byte[] key, Polygon<?> polygon);
 	
@@ -47,9 +47,9 @@ public interface Command4BinarySpatial {
 
 	void grangeByRegionWithMatch(byte[] key, Point<?> point, byte[] pattern);
 
-	void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern);
+	void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
 
-	void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern, SCOPE scope,
+	void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, SCOPE scope,
 			ORDERBY order);
 	
 	void grangeBy(byte[] key, byte[] bykey, byte[] bymember);

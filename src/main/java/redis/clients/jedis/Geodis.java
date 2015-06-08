@@ -48,140 +48,140 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public Long gadd(final String key, final double lat, final double lon, final long distance, final UNITS unit, final String member,
+	public Long gadd(final String key, final double lat, final double lon, final long radius, final UNITS unit, final String member,
 			final String value) {
 		checkIsInMulti();
-		client.gadd(key, lat, lon, distance, unit, member, value);
+		client.gadd(key, lat, lon, radius, unit, member, value);
 		return client.getIntegerReply();
 	}
 
 	@Override
-	public Long gadd(final byte[] key, final double lat, final double lon, final long distance, final UNITS unit, final byte[] member,
+	public Long gadd(final byte[] key, final double lat, final double lon, final long radius, final UNITS unit, final byte[] member,
 			final byte[] value) {
 		checkIsInMulti();
-		client.gadd(key, lat, lon, distance, unit, member, value);
+		client.gadd(key, lat, lon, radius, unit, member, value);
 		return client.getIntegerReply();
 	}
 
 	@Override
-	public Long gupdate(final String key, double lat, double lon, final String member) {
+	public Long gupdate(final String key, final double lat, final double lon, final String member) {
 		checkIsInMulti();
 		client.gupdate(key, lat, lon, member);
 		return client.getIntegerReply();
 	}
 
 	@Override
-	public Long gupdate(final byte[] key, double lat, double lon, final byte[] member) {
+	public Long gupdate(final byte[] key,final double lat,final double lon, final byte[] member) {
 		checkIsInMulti();
 		client.gupdate(key, lat, lon, member);
 		return client.getIntegerReply();
 	}
 
 	@Override
-	public Long gupdate(final String key, double lat, double lon, long distance, UNITS unit, final String member) {
+	public Long gupdate(final String key, double lat, double lon, long radius, UNITS unit, final String member) {
 		checkIsInMulti();
-		client.gupdate(key, lat, lon, distance, unit, member);
+		client.gupdate(key, lat, lon, radius, unit, member);
 		return client.getIntegerReply();
 	}
 
 	@Override
-	public Long gupdate(final byte[] key, double lat, double lon, long distance, UNITS unit, final byte[] member) {
+	public Long gupdate(final byte[] key, double lat, double lon, long radius, UNITS unit, final byte[] member) {
 		checkIsInMulti();
-		client.gupdate(key, lat, lon, member);
+		client.gupdate(key, lat, lon, radius, unit, member);
 		return client.getIntegerReply();
 	}
 
 	@Override
-	public List<Point<String>> grangeByRadius(final String key, final double lat, final double lon, final long distance, final UNITS unit) {
+	public List<Point<String>> grangeByRadius(final String key, final double lat, final double lon, final long radius, final UNITS unit) {
 		checkIsInMulti();
-		client.grangeByRadius(key, lat, lon, distance, unit);
+		client.grangeByRadius(key, lat, lon, radius, unit);
 		return client.getSpatialMultiBulkReply();
 	}
 
 	@Override
-	public List<Point<byte[]>> grangeByRadius(final byte[] key, final double lat, final double lon, final long distance, final UNITS unit) {
+	public List<Point<byte[]>> grangeByRadius(final byte[] key, final double lat, final double lon, final long radius, final UNITS unit) {
 		checkIsInMulti();
-		client.grangeByRadius(key, lat, lon, distance, unit);
+		client.grangeByRadius(key, lat, lon, radius, unit);
 		return client.getBinarySpatialMultiBulkReply();
 	}
 
 	@Override
-	public List<Circle<String>> grangeCircleByRadius(final String key, final double lat, final double lon, final long distance,
+	public List<Circle<String>> grangeCircleByRadius(final String key, final double lat, final double lon, final long radius,
 			final UNITS unit) {
 		checkIsInMulti();
-		client.grangeCircleByRadius(key, lat, lon, distance, unit);
+		client.grangeCircleByRadius(key, lat, lon, radius, unit);
 		return client.getSpatialCircleMultiBulkReply();
 	}
 
 	@Override
-	public List<Circle<byte[]>> grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long distance,
+	public List<Circle<byte[]>> grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long radius,
 			final UNITS unit) {
 		checkIsInMulti();
-		client.grangeCircleByRadius(key, lat, lon, distance, unit);
+		client.grangeCircleByRadius(key, lat, lon, radius, unit);
 		return client.getBinarySpatialCircleMultiBulkReply();
 	}
 
 	@Override
-	public List<Circle<String>> grangeCircleByRadius(final String key, final double lat, final double lon, final long distance,
+	public List<Circle<String>> grangeCircleByRadius(final String key, final double lat, final double lon, final long radius,
 			final UNITS unit, final SCOPE scope, final ORDERBY order) {
 		checkIsInMulti();
-		client.grangeCircleByRadius(key, lat, lon, distance, unit, scope, order);
+		client.grangeCircleByRadius(key, lat, lon, radius, unit, scope, order);
 		return client.getSpatialCircleMultiBulkReply();
 	}
 
 	@Override
-	public List<Circle<byte[]>> grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long distance,
+	public List<Circle<byte[]>> grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long radius,
 			final UNITS unit, final SCOPE scope, final ORDERBY order) {
 		checkIsInMulti();
-		client.grangeCircleByRadius(key, lat, lon, distance, unit, scope, order);
+		client.grangeCircleByRadius(key, lat, lon, radius, unit, scope, order);
 		return client.getBinarySpatialCircleMultiBulkReply();
 	}
 
 	@Override
-	public List<Point<String>> grangeByRadius(final String key, final double lat, final double lon, final long distance, final UNITS unit,
+	public List<Point<String>> grangeByRadius(final String key, final double lat, final double lon, final long radius, final UNITS unit,
 			final String pattern) {
 		checkIsInMulti();
-		client.grangeByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
+		client.grangeByRadiusWithMatch(key, lat, lon, radius, unit, pattern);
 		return client.getSpatialMultiBulkReply();
 	}
 
 	@Override
-	public List<Point<byte[]>> grangeByRadius(final byte[] key, final double lat, final double lon, final long distance, final UNITS unit,
+	public List<Point<byte[]>> grangeByRadius(final byte[] key, final double lat, final double lon, final long radius, final UNITS unit,
 			final byte[] pattern) {
 		checkIsInMulti();
-		client.grangeByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
+		client.grangeByRadiusWithMatch(key, lat, lon, radius, unit, pattern);
 		return client.getBinarySpatialMultiBulkReply();
 	}
 
 	@Override
-	public List<Circle<String>> grangeCircleByRadius(final String key, final double lat, final double lon, final long distance,
+	public List<Circle<String>> grangeCircleByRadius(final String key, final double lat, final double lon, final long radius,
 			final UNITS unit, final String pattern) {
 		checkIsInMulti();
-		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
+		client.grangeCircleByRadiusWithMatch(key, lat, lon, radius, unit, pattern);
 		return client.getSpatialCircleMultiBulkReply();
 	}
 
 	@Override
-	public List<Circle<byte[]>> grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long distance,
+	public List<Circle<byte[]>> grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long radius,
 			final UNITS unit, final byte[] pattern) {
 		checkIsInMulti();
-		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern);
+		client.grangeCircleByRadiusWithMatch(key, lat, lon, radius, unit, pattern);
 		return client.getBinarySpatialCircleMultiBulkReply();
 	}
 
 	@Override
-	public List<Circle<String>> grangeCircleByRadius(final String key, final double lat, final double lon, final long distance,
+	public List<Circle<String>> grangeCircleByRadius(final String key, final double lat, final double lon, final long radius,
 			final UNITS unit, final String pattern, final SCOPE scope, final ORDERBY order) {
 		checkIsInMulti();
-		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern, scope, order);
+		client.grangeCircleByRadiusWithMatch(key, lat, lon, radius, unit, pattern, scope, order);
 		return client.getSpatialCircleMultiBulkReply();
 	}
 
 	@Override
-	public List<Circle<byte[]>> grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long distance,
+	public List<Circle<byte[]>> grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long radius,
 			final UNITS unit, final byte[] pattern, final SCOPE scope, final ORDERBY order) {
 		checkIsInMulti();
-		client.grangeCircleByRadiusWithMatch(key, lat, lon, distance, unit, pattern, scope, order);
+		client.grangeCircleByRadiusWithMatch(key, lat, lon, radius, unit, pattern, scope, order);
 		return client.getBinarySpatialCircleMultiBulkReply();
 	}
 

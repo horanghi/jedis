@@ -11,17 +11,17 @@ public interface Commands4Spatial extends Commands {
 
 	void gadd(String key, double lat, double lon, String member, String value);
 
-	void gadd(String key, double lat, double lon, long distance, UNITS unit, String member, String value);
+	void gadd(String key, double lat, double lon, long radius, UNITS unit, String member, String value);
 	
 	void gupdate(String key, double lat, double lon, String member);
 
-	void gupdate(String key, double lat, double lon, long distance, UNITS unit, String member);
+	void gupdate(String key, double lat, double lon, long radius, UNITS unit, String member);
 
-	void grangeByRadius(String key, double lat, double lon, long distance, UNITS unit);
+	void grangeByRadius(String key, double lat, double lon, long radius, UNITS unit);
 	
-	void grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit);
+	void grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit);
 	
-	void grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit, SCOPE scope, ORDERBY order);
+	void grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, SCOPE scope, ORDERBY order);
 	
 	void gcard(String key);
 
@@ -33,7 +33,7 @@ public interface Commands4Spatial extends Commands {
 
 	void gnn(String key, double lat, double lon, long count);
 
-	void grangeByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern);
+	void grangeByRadiusWithMatch(String key, double lat, double lon, long radius, UNITS unit, String pattern);
 
 	void grangeByRegion(String key, Polygon<?> polygon);
 	
@@ -51,9 +51,9 @@ public interface Commands4Spatial extends Commands {
 
 	void grangeByWithMatch(String key, String bykey, String bymember, String pattern, long count);
 	
-	void grangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern);
+	void grangeCircleByRadiusWithMatch(String key, double lat, double lon, long radius, UNITS unit, String pattern);
 	
-	void grangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern, SCOPE scope,
+	void grangeCircleByRadiusWithMatch(String key, double lat, double lon, long radius, UNITS unit, String pattern, SCOPE scope,
 			ORDERBY order);
 
 	void ggadd(String key, String member, String value, Polygon<?> polygon);

@@ -417,7 +417,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public Long ggupdate(final String key, final String member, final Point<String> point) {
+	public Long ggupdate(final String key, final String member, final Point<?> point) {
 		checkIsInMulti();
 		client.ggupdate(key, member, point);
 		return client.getIntegerReply();
@@ -431,7 +431,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public Long ggupdate(final String key, final String member, final Polygon<String> polygon) {
+	public Long ggupdate(final String key, final String member, final Polygon<?> polygon) {
 		checkIsInMulti();
 		client.ggupdate(key, member, polygon);
 		return client.getIntegerReply();
@@ -445,7 +445,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public Long ggupdate(final String key, final String member, final LineString<String> lineString) {
+	public Long ggupdate(final String key, final String member, final LineString<?> lineString) {
 		checkIsInMulti();
 		client.ggupdate(key, member, lineString);
 		return client.getIntegerReply();
@@ -543,42 +543,42 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Geometry<String>> ggrelation(final String key, final Polygon<String> polygon) {
+	public List<Geometry<String>> ggrelation(final String key, final Polygon<?> polygon) {
 		checkIsInMulti();
 		client.ggrelation(key, polygon);
 		return client.getSpatialMGETGEOMultiBulkReply();
 	}
 
 	@Override
-	public List<Geometry<byte[]>> ggrelation(final byte[] key, final Polygon<byte[]> polygon) {
+	public List<Geometry<byte[]>> ggrelation(final byte[] key, final Polygon<?> polygon) {
 		checkIsInMulti();
 		client.ggrelation(key, polygon);
 		return client.getBinarySpatialMGETGEOMultiBulkReply();
 	}
 
 	@Override
-	public List<Geometry<String>> ggrelation(final String key, final LineString<String> lineString) {
+	public List<Geometry<String>> ggrelation(final String key, final LineString<?> lineString) {
 		checkIsInMulti();
 		client.ggrelation(key, lineString);
 		return client.getSpatialMGETGEOMultiBulkReply();
 	}
 
 	@Override
-	public List<Geometry<byte[]>> ggrelation(final byte[] key, final LineString<byte[]> lineString) {
+	public List<Geometry<byte[]>> ggrelation(final byte[] key, final LineString<?> lineString) {
 		checkIsInMulti();
 		client.ggrelation(key, lineString);
 		return client.getBinarySpatialMGETGEOMultiBulkReply();
 	}
 
 	@Override
-	public List<Geometry<String>> ggrelation(final String key, final Point<String> point) {
+	public List<Geometry<String>> ggrelation(final String key, final Point<?> point) {
 		checkIsInMulti();
 		client.ggrelation(key, point);
 		return client.getSpatialMGETGEOMultiBulkReply();
 	}
 
 	@Override
-	public List<Geometry<byte[]>> ggrelation(final byte[] key, final Point<byte[]> point) {
+	public List<Geometry<byte[]>> ggrelation(final byte[] key, final Point<?> point) {
 		checkIsInMulti();
 		client.ggrelation(key, point);
 		return client.getBinarySpatialMGETGEOMultiBulkReply();

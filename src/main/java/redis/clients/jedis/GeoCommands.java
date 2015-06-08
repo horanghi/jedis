@@ -148,17 +148,17 @@ public interface GeoCommands {
 
 	List<Geometry<byte[]>> ggmget(byte[] key, byte[]... members);
 
-	List<Geometry<String>> ggrelation(String key, Polygon<String> polygon);
+	List<Geometry<String>> ggrelation(String key, Polygon<?> polygon);
 
-	List<Geometry<byte[]>> ggrelation(byte[] key, Polygon<byte[]> polygon);
+	List<Geometry<byte[]>> ggrelation(byte[] key, Polygon<?> polygon);
 
-	List<Geometry<String>> ggrelation(String key, LineString<String> lineString);
+	List<Geometry<String>> ggrelation(String key, LineString<?> lineString);
 
-	List<Geometry<byte[]>> ggrelation(byte[] key, LineString<byte[]> lineString);
+	List<Geometry<byte[]>> ggrelation(byte[] key, LineString<?> lineString);
 
-	List<Geometry<String>> ggrelation(String key, Point<String> point);
+	List<Geometry<String>> ggrelation(String key, Point<?> point);
 
-	List<Geometry<byte[]>> ggrelation(byte[] key, Point<byte[]> point);
+	List<Geometry<byte[]>> ggrelation(byte[] key, Point<?> point);
 
 	List<Geometry<String>> ggnn(String key, double lat, double lon, long count);
 
@@ -168,15 +168,15 @@ public interface GeoCommands {
 
 	List<Geometry<byte[]>> ggnn(byte[] key, double lat, double lon, long count, byte[] pattern);
 
-	Long ggupdate(String key, String member, Point<String> point);
+	Long ggupdate(String key, String member, Point<?> point);
 
 	Long ggupdate(byte[] key, byte[] member, Point<?> point);
 
-	Long ggupdate(String key, String member, Polygon<String> polygon);
+	Long ggupdate(String key, String member, Polygon<?> polygon);
 
 	Long ggupdate(byte[] key, byte[] member, Polygon<?> polygon);
 
-	Long ggupdate(String key, String member, LineString<String> lineString);
+	Long ggupdate(String key, String member, LineString<?> lineString);
 
 	Long ggupdate(byte[] key, byte[] member, LineString<?> lineString);
 

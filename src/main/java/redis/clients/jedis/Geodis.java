@@ -71,7 +71,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public Long gupdate(final byte[] key,final double lat,final double lon, final byte[] member) {
+	public Long gupdate(final byte[] key, final double lat, final double lon, final byte[] member) {
 		checkIsInMulti();
 		client.gupdate(key, lat, lon, member);
 		return client.getIntegerReply();
@@ -309,6 +309,20 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	public List<Point<byte[]>> grangeByRegion(final byte[] key, final Polygon<?> polygon, final byte[] pattern) {
 		checkIsInMulti();
 		client.grangeByRegionWithMatch(key, polygon, pattern);
+		return client.getBinarySpatialMGETMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<String>> grangeByRegion(final String key, final Polygon<?> polygon, final String pattern, final long count) {
+		checkIsInMulti();
+		client.grangeByRegionWithMatch(key, polygon, pattern, count);
+		return client.getSpatialMGETMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> grangeByRegion(final byte[] key, final Polygon<?> polygon, final byte[] pattern, final long count) {
+		checkIsInMulti();
+		client.grangeByRegionWithMatch(key, polygon, pattern, count);
 		return client.getBinarySpatialMGETMultiBulkReply();
 	}
 

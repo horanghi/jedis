@@ -92,4 +92,6 @@ public interface Commands4Spatial extends Commands {
 
 	void ggnnWithMatch(String key, double lat, double lon, long count, String pattern);
 
+	void grangeByRegionWithMatch(String key, Polygon<?> polygon, String pattern, long count);
+
 }

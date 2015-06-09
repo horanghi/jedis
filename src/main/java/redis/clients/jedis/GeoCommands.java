@@ -184,4 +184,8 @@ public interface GeoCommands {
 
 	List<Geometry<byte[]>> ggrelationBy(byte[] key, byte[] byKey, byte[] byMember);
 
+	List<Point<String>> grangeByRegion(String key, Polygon<?> polygon, String pattern, long count);
+
+	List<Point<byte[]>> grangeByRegion(byte[] key, Polygon<?> polygon, byte[] pattern, long count);
+
 }

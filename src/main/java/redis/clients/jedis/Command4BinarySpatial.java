@@ -92,4 +92,6 @@ public interface Command4BinarySpatial {
 
 	void ggupdate(byte[] key, byte[] member, LineString<?> lineString);
 
+	void grangeByRegionWithMatch(byte[] key, Polygon<?> polygon, byte[] pattern, long count);
+
 }

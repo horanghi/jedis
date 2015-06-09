@@ -188,6 +188,14 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
+	public void grangeByRegionWithMatch(byte[] key, Polygon<?> polygon, byte[] pattern, long count) {
+		// GFRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
+		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
+		sendCommand(GRANGEBYREGION, key, polygon.getJsonByte(), MATCH.raw, pattern, WITHVALUES.raw, ASC.raw, LIMIT.raw, toByteArray(0),
+				toByteArray(count));
+	}
+
+	@Override
 	public void grangeByRegionWithMatch(byte[] key, LineString<?> lineString, byte[] pattern) {
 		// GFRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
 		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]

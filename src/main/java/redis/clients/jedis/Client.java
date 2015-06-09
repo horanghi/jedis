@@ -990,6 +990,11 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	public void grangeByRegionWithMatch(String key, Polygon<?> polygon, String pattern) {
 		grangeByRegionWithMatch(SafeEncoder.encode(key), polygon, SafeEncoder.encode(pattern));
 	}
+	
+	@Override
+	public void grangeByRegionWithMatch(String key, Polygon<?> polygon, String pattern, long count) {
+		grangeByRegionWithMatch(SafeEncoder.encode(key), polygon, SafeEncoder.encode(pattern), count);
+	}
 
 	@Override
 	public void grangeByRegionWithMatch(String key, LineString<?> lineString, String pattern) {

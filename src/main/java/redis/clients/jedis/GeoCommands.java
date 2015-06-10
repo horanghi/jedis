@@ -3,7 +3,7 @@ package redis.clients.jedis;
 import java.util.List;
 
 import redis.clients.jedis.Protocol.ORDERBY;
-import redis.clients.jedis.Protocol.SCOPE;
+import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Geometry;
@@ -48,9 +48,9 @@ public interface GeoCommands {
 
 	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
 	
-	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, SCOPE scope, ORDERBY order);
+	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, RELATION scope, ORDERBY order);
 	
-	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, SCOPE scope, ORDERBY order);
+	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, RELATION scope, ORDERBY order);
 
 	List<Point<String>> grangeByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern);
 
@@ -60,9 +60,9 @@ public interface GeoCommands {
 
 	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
 	
-	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern, SCOPE ops, ORDERBY sort);
+	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern, RELATION ops, ORDERBY sort);
 
-	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, SCOPE ops, ORDERBY sort);
+	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, RELATION ops, ORDERBY sort);
 
 	Long gcard(String key);
 

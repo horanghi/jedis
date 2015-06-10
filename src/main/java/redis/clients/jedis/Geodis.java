@@ -6,7 +6,7 @@ import static redis.clients.jedis.Protocol.UNITS.M;
 import java.net.URI;
 import java.util.List;
 
-import redis.clients.jedis.Protocol.SCOPE;
+import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
@@ -123,7 +123,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 
 	@Override
 	public List<Circle<String>> grangeCircleByRadius(final String key, final double lat, final double lon, final long radius,
-			final UNITS unit, final SCOPE scope, final ORDERBY order) {
+			final UNITS unit, final RELATION scope, final ORDERBY order) {
 		checkIsInMulti();
 		client.grangeCircleByRadius(key, lat, lon, radius, unit, scope, order);
 		return client.getSpatialCircleMultiBulkReply();
@@ -131,7 +131,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 
 	@Override
 	public List<Circle<byte[]>> grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long radius,
-			final UNITS unit, final SCOPE scope, final ORDERBY order) {
+			final UNITS unit, final RELATION scope, final ORDERBY order) {
 		checkIsInMulti();
 		client.grangeCircleByRadius(key, lat, lon, radius, unit, scope, order);
 		return client.getBinarySpatialCircleMultiBulkReply();
@@ -171,7 +171,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 
 	@Override
 	public List<Circle<String>> grangeCircleByRadius(final String key, final double lat, final double lon, final long radius,
-			final UNITS unit, final String pattern, final SCOPE scope, final ORDERBY order) {
+			final UNITS unit, final String pattern, final RELATION scope, final ORDERBY order) {
 		checkIsInMulti();
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, radius, unit, pattern, scope, order);
 		return client.getSpatialCircleMultiBulkReply();
@@ -179,7 +179,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 
 	@Override
 	public List<Circle<byte[]>> grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long radius,
-			final UNITS unit, final byte[] pattern, final SCOPE scope, final ORDERBY order) {
+			final UNITS unit, final byte[] pattern, final RELATION scope, final ORDERBY order) {
 		checkIsInMulti();
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, radius, unit, pattern, scope, order);
 		return client.getBinarySpatialCircleMultiBulkReply();

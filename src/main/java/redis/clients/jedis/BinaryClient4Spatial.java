@@ -32,9 +32,9 @@ import static redis.clients.jedis.Protocol.GeoOptions.WITHGEOJSON;
 import static redis.clients.jedis.Protocol.GeoOptions.WITHVALUES;
 import static redis.clients.jedis.Protocol.GeoOptions.XR;
 import static redis.clients.jedis.Protocol.ORDERBY.ASC;
-import static redis.clients.jedis.Protocol.SCOPE.CONTAINS;
+import static redis.clients.jedis.Protocol.RELATION.CONTAINS;
 import redis.clients.jedis.Protocol.ORDERBY;
-import redis.clients.jedis.Protocol.SCOPE;
+import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.LineString;
 import redis.clients.spatial.model.Point;
@@ -92,7 +92,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 
 	@Override
 	public void grangeCircleByRadius(final byte[] key, final double lat, final double lon, final long radius, final UNITS unit,
-			final SCOPE scope, final ORDERBY order) {
+			final RELATION scope, final ORDERBY order) {
 		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
 		sendCommand(GRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, scope.raw,
@@ -116,7 +116,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, SCOPE scope,
+	public void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, RELATION scope,
 			ORDERBY order) {
 		// GFRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]

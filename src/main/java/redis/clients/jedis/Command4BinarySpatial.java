@@ -1,7 +1,7 @@
 package redis.clients.jedis;
 
 import redis.clients.jedis.Protocol.ORDERBY;
-import redis.clients.jedis.Protocol.SCOPE;
+import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.LineString;
 import redis.clients.spatial.model.Point;
@@ -19,7 +19,7 @@ public interface Command4BinarySpatial {
 
 	void grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
 
-	void grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, SCOPE scope, ORDERBY order);
+	void grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, RELATION scope, ORDERBY order);
 
 	void grangeByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
 
@@ -49,7 +49,7 @@ public interface Command4BinarySpatial {
 
 	void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
 
-	void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, SCOPE scope,
+	void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, RELATION scope,
 			ORDERBY order);
 	
 	void grangeBy(byte[] key, byte[] bykey, byte[] bymember);

@@ -23,7 +23,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Protocol.ORDERBY;
-import redis.clients.jedis.Protocol.SCOPE;
+import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Geometry;
@@ -340,13 +340,13 @@ public class GeodisTest {
 		assertThat(geodis.gadd(key, 0, 0, 11, UNITS.M, member3, value), is(OKl));
 		assertThat(geodis.gadd(key, 0.0000002, 0, 30, UNITS.M, member4, value), is(OKl));
 		assertThat(geodis.grangeCircleByRadius(key, 0, 0, 10, UNITS.KM).size(), is(2));
-		List<Circle<String>> circles = geodis.grangeCircleByRadius(key, 0, 0, 100, UNITS.M, SCOPE.CONTAINS, ORDERBY.ASC);
+		List<Circle<String>> circles = geodis.grangeCircleByRadius(key, 0, 0, 100, UNITS.M, RELATION.CONTAINS, ORDERBY.ASC);
 		assertThat(circles.size(), is(2));
 		assertTrue(circles.get(0).getDistance() < circles.get(1).getDistance());
 		for (Circle<String> circle : circles) {
 			System.out.println(circle.toString());
 		}
-		List<Circle<String>> circles2 = geodis.grangeCircleByRadius(key, 0, 0, 10, UNITS.M, SCOPE.WITHIN, ORDERBY.DESC);
+		List<Circle<String>> circles2 = geodis.grangeCircleByRadius(key, 0, 0, 10, UNITS.M, RELATION.WITHIN, ORDERBY.DESC);
 		assertThat(circles2.size(), is(2));
 		assertTrue(circles2.get(0).getDistance() > circles2.get(1).getDistance());
 		for (Circle<String> circle : circles2) {
@@ -360,13 +360,13 @@ public class GeodisTest {
 		assertThat(geodis.gadd(key, 0, 0, 10, UNITS.M, member3, value), is(OKl));
 		assertThat(geodis.gadd(key, 0.0000002, 0, 30, UNITS.M, member4, value), is(OKl));
 		assertThat(geodis.grangeCircleByRadius(keyb, 0, 0, 50, UNITS.M).size(), is(2));
-		List<Circle<byte[]>> circlesb = geodis.grangeCircleByRadius(keyb, 0, 0, 50, UNITS.M, SCOPE.CONTAINS, ORDERBY.ASC);
+		List<Circle<byte[]>> circlesb = geodis.grangeCircleByRadius(keyb, 0, 0, 50, UNITS.M, RELATION.CONTAINS, ORDERBY.ASC);
 		assertThat(circlesb.size(), is(2));
 		assertTrue(circlesb.get(0).getDistance() < circlesb.get(1).getDistance());
 		for (Circle<byte[]> circle : circlesb) {
 			System.out.println(circle.toString());
 		}
-		List<Circle<byte[]>> circles2b = geodis.grangeCircleByRadius(keyb, 0, 0, 9, UNITS.M, SCOPE.WITHIN, ORDERBY.DESC);
+		List<Circle<byte[]>> circles2b = geodis.grangeCircleByRadius(keyb, 0, 0, 9, UNITS.M, RELATION.WITHIN, ORDERBY.DESC);
 		assertThat(circles2b.size(), is(2));
 		assertTrue(circles2b.get(0).getDistance() > circles2b.get(1).getDistance());
 
@@ -423,7 +423,7 @@ public class GeodisTest {
 		assertThat(geodis.gadd(key, 0, 0, 30, UNITS.M, member4, value), is(OKl));
 		assertThat(geodis.grangeCircleByRadius(key, 0, 0, 10, UNITS.M).size(), is(1));
 		assertThat(geodis.grangeCircleByRadius(key, 0, 0, 30, UNITS.KM).size(), is(2));
-		List<Circle<String>> circles = geodis.grangeCircleByRadius(key, 0, 0, 40, M, "*memkey4*", SCOPE.CONTAINS, ORDERBY.ASC);
+		List<Circle<String>> circles = geodis.grangeCircleByRadius(key, 0, 0, 40, M, "*memkey4*", RELATION.CONTAINS, ORDERBY.ASC);
 		assertThat(circles.size(), is(1));
 		geodis.del(key);
 
@@ -434,7 +434,7 @@ public class GeodisTest {
 		assertThat(geodis.gadd(keyb, 0, 0, 30, UNITS.M, member4b, valueb), is(OKl));
 		assertThat(geodis.grangeCircleByRadius(key, 0, 0, 10, UNITS.M).size(), is(1));
 		assertThat(geodis.grangeCircleByRadius(key, 0, 0, 30, UNITS.KM).size(), is(2));
-		List<Circle<byte[]>> circlesb = geodis.grangeCircleByRadius(keyb, 0, 0, 40, M, "*4*".getBytes(), SCOPE.CONTAINS, ORDERBY.ASC);
+		List<Circle<byte[]>> circlesb = geodis.grangeCircleByRadius(keyb, 0, 0, 40, M, "*4*".getBytes(), RELATION.CONTAINS, ORDERBY.ASC);
 		assertThat(circlesb.size(), is(1));
 		geodis.del(keyb);
 	}

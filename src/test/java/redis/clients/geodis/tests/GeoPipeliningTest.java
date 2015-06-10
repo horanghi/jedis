@@ -23,7 +23,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Protocol.ORDERBY;
-import redis.clients.jedis.Protocol.SCOPE;
+import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Response;
 import redis.clients.jedis.Tuple;
 import redis.clients.jedis.exceptions.JedisDataException;
@@ -215,7 +215,7 @@ public class GeoPipeliningTest extends Assert {
 		p.grangeCircleByRadius(keyf, 0.1, 0.3, 1, M, "?emkey8*");
 		p.grangeCircleByRadius(keyf, 0.1, 0.4, 1, M, "*memk?y9");
 		p.grangeCircleByRadius(keyf, 0.1, 0.5, 1, M, "*memkey10*");
-		p.grangeCircleByRadius(keyf, 0.1, 0.5, 1, M, "*memkey10*", SCOPE.CONTAINS, ORDERBY.ASC);
+		p.grangeCircleByRadius(keyf, 0.1, 0.5, 1, M, "*memkey10*", RELATION.CONTAINS, ORDERBY.ASC);
 		List<Object> results = p.syncAndReturnAll();
 
 		assertEquals(6, results.size());
@@ -234,7 +234,7 @@ public class GeoPipeliningTest extends Assert {
 		p.grangeCircleByRadius(keyb, 0.1, 0.3, 1, M, "?emkey8*".getBytes());
 		p.grangeCircleByRadius(keyb, 0.1, 0.4, 1, M, "*memk?y9".getBytes());
 		p.grangeCircleByRadius(keyb, 0.1, 0.5, 1, M, "*memkey10*".getBytes());
-		p.grangeCircleByRadius(keyb, 0.1, 0.5, 1, M, "*memkey10*".getBytes(), SCOPE.CONTAINS, ORDERBY.ASC);
+		p.grangeCircleByRadius(keyb, 0.1, 0.5, 1, M, "*memkey10*".getBytes(), RELATION.CONTAINS, ORDERBY.ASC);
 		List<Object> resultsb = p.syncAndReturnAll();
 
 		assertEquals(6, results.size());
@@ -851,7 +851,7 @@ public class GeoPipeliningTest extends Assert {
 		p.grangeCircleByRadius(keyf, 0.1, 0.3, 1, M);
 		p.grangeCircleByRadius(keyf, 0.1, 0.4, 1, M);
 		p.grangeCircleByRadius(keyf, 0.1, 0.5, 1, M);
-		p.grangeCircleByRadius(keyf, 0.1, 0.5, 1, M, SCOPE.CONTAINS, ORDERBY.ASC);
+		p.grangeCircleByRadius(keyf, 0.1, 0.5, 1, M, RELATION.CONTAINS, ORDERBY.ASC);
 		List<Object> results = p.syncAndReturnAll();
 
 		assertEquals(6, results.size());
@@ -879,7 +879,7 @@ public class GeoPipeliningTest extends Assert {
 		pb.grangeCircleByRadius(keyb, 0.1, 0.3, 1, M);
 		pb.grangeCircleByRadius(keyb, 0.1, 0.4, 1, M);
 		pb.grangeCircleByRadius(keyb, 0.1, 0.5, 1, M);
-		pb.grangeCircleByRadius(keyb, 0.1, 0.5, 1, M, SCOPE.CONTAINS, ORDERBY.ASC);
+		pb.grangeCircleByRadius(keyb, 0.1, 0.5, 1, M, RELATION.CONTAINS, ORDERBY.ASC);
 		
 		
 		List<Object> resultsb = pb.syncAndReturnAll();

@@ -3,7 +3,7 @@ package redis.clients.jedis;
 import java.util.List;
 
 import redis.clients.jedis.Protocol.ORDERBY;
-import redis.clients.jedis.Protocol.SCOPE;
+import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Geometry;
@@ -62,14 +62,14 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<List<Circle<String>>> grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, SCOPE scope,
+	public Response<List<Circle<String>>> grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, RELATION scope,
 			ORDERBY order) {
 		client.grangeCircleByRadius(key, lat, lon, radius, unit, scope, order);
 		return getResponse(BuilderFactory.SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Circle<byte[]>>> grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, SCOPE scope,
+	public Response<List<Circle<byte[]>>> grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, RELATION scope,
 			ORDERBY order) {
 		client.grangeCircleByRadius(key, lat, lon, radius, unit, scope, order);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
@@ -101,14 +101,14 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 
 	@Override
 	public Response<List<Circle<String>>> grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit,
-			String pattern, SCOPE scope, ORDERBY order) {
+			String pattern, RELATION scope, ORDERBY order) {
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, radius, unit, pattern, scope, order);
 		return getResponse(BuilderFactory.SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
 	public Response<List<Circle<byte[]>>> grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit,
-			byte[] pattern, SCOPE scope, ORDERBY order) {
+			byte[] pattern, RELATION scope, ORDERBY order) {
 		client.grangeCircleByRadiusWithMatch(key, lat, lon, radius, unit, pattern, scope, order);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}

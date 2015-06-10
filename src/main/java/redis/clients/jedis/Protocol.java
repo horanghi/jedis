@@ -441,12 +441,12 @@ public final class Protocol {
 		}
 	}
 	
-	public static enum SCOPE {
+	public static enum RELATION {
 		CONTAINS("contains"), WITHIN("within");
 
 		public final byte[] raw;
 
-		SCOPE(String option) {
+		RELATION(String option) {
 			raw = SafeEncoder.encode(this.name());
 		}
 	}

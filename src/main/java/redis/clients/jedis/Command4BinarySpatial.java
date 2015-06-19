@@ -9,52 +9,52 @@ import redis.clients.spatial.model.Polygon;
 
 public interface Command4BinarySpatial {
 
-	void gadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
+	void gpadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
 
-	void gadd(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member, byte[] value);
+	void gpadd(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member, byte[] value);
 
-	void gupdate(byte[] key, double lat, double lon, byte[] member);
+	void gpupdate(byte[] key, double lat, double lon, byte[] member);
 
-	void gupdate(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member);
+	void gpupdate(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member);
 
-	void grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
+	void gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
 
-	void grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, RELATION scope, ORDERBY order);
+	void gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, RELATION scope, ORDERBY order);
 
-	void grangeByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
+	void gprangeByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
 
-	void gcard(byte[] key);
+	void gpcard(byte[] key);
 
-	void grem(byte[] key, byte[] member);
+	void gprem(byte[] key, byte[] member);
 
-	void gget(byte[] key, byte[] member);
+	void gpget(byte[] key, byte[] member);
 
-	void gmget(byte[] key, byte[]... members);
+	void gpmget(byte[] key, byte[]... members);
 
-	void gnn(byte[] key, double lat, double lon, long count);
+	void gpnn(byte[] key, double lat, double lon, long count);
 
-	void grangeByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
+	void gprangeByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
 
-	void grangeByRegion(byte[] key, Polygon<?> polygon);
+	void gprangeByRegion(byte[] key, Polygon<?> polygon);
 	
-	void grangeByRegion(byte[] key, LineString<?> lineString);
+	void gprangeByRegion(byte[] key, LineString<?> lineString);
 
-	void grangeByRegion(byte[] key, Point<?> point);
+	void gprangeByRegion(byte[] key, Point<?> point);
 	
-	void grangeByRegionWithMatch(byte[] key, Polygon<?> polygon, byte[] pattern);
+	void gprangeByRegionWithMatch(byte[] key, Polygon<?> polygon, byte[] pattern);
 	
-	void grangeByRegionWithMatch(byte[] key, LineString<?> lineString, byte[] pattern);
+	void gprangeByRegionWithMatch(byte[] key, LineString<?> lineString, byte[] pattern);
 
-	void grangeByRegionWithMatch(byte[] key, Point<?> point, byte[] pattern);
+	void gprangeByRegionWithMatch(byte[] key, Point<?> point, byte[] pattern);
 
-	void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
+	void gprangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
 
-	void grangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, RELATION scope,
+	void gprangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, RELATION scope,
 			ORDERBY order);
 	
-	void grangeBy(byte[] key, byte[] bykey, byte[] bymember);
+	void gprangeBy(byte[] key, byte[] bykey, byte[] bymember);
 
-	void grangeByWithMatch(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count);
+	void gprangeByWithMatch(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count);
 
 	void ggadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon);
 
@@ -92,6 +92,6 @@ public interface Command4BinarySpatial {
 
 	void ggupdate(byte[] key, byte[] member, LineString<?> lineString);
 
-	void grangeByRegionWithMatch(byte[] key, Polygon<?> polygon, byte[] pattern, long count);
+	void gprangeByRegionWithMatch(byte[] key, Polygon<?> polygon, byte[] pattern, long count);
 
 }

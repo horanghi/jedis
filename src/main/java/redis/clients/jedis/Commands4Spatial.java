@@ -9,52 +9,54 @@ import redis.clients.spatial.model.Polygon;
 
 public interface Commands4Spatial extends Commands {
 
-	void gadd(String key, double lat, double lon, String member, String value);
+	void gpadd(String key, double lat, double lon, String member, String value);
 
-	void gadd(String key, double lat, double lon, long radius, UNITS unit, String member, String value);
+	void gpadd(String key, double lat, double lon, long radius, UNITS unit, String member, String value);
 	
-	void gupdate(String key, double lat, double lon, String member);
+	void gpupdate(String key, double lat, double lon, String member);
 
-	void gupdate(String key, double lat, double lon, long radius, UNITS unit, String member);
+	void gpupdate(String key, double lat, double lon, long radius, UNITS unit, String member);
 
-	void grangeByRadius(String key, double lat, double lon, long radius, UNITS unit);
+	void gprangeByRadius(String key, double lat, double lon, long radius, UNITS unit);
 	
-	void grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit);
+	void gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit);
 	
-	void grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, RELATION scope, ORDERBY order);
+	void gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, RELATION scope, ORDERBY order);
 	
-	void gcard(String key);
+	void gpcard(String key);
 
-	void grem(String key, String member);
+	void gprem(String key, String member);
 
-	void gget(String key, String member);
+	void gpget(String key, String member);
 	
-	void gmget(String key, String[] members);
+	void gpmget(String key, String[] members);
 
-	void gnn(String key, double lat, double lon, long count);
+	void gpnn(String key, double lat, double lon, long count);
 
-	void grangeByRadiusWithMatch(String key, double lat, double lon, long radius, UNITS unit, String pattern);
+	void gprangeByRadiusWithMatch(String key, double lat, double lon, long radius, UNITS unit, String pattern);
 
-	void grangeByRegion(String key, Polygon<?> polygon);
+	void gprangeByRegion(String key, Polygon<?> polygon);
 	
-	void grangeByRegion(String key, LineString<?> lineString);
+	void gprangeByRegion(String key, LineString<?> lineString);
 
-	void grangeByRegion(String key, Point<?> point);
+	void gprangeByRegion(String key, Point<?> point);
 	
-	void grangeByRegionWithMatch(String key, Polygon<?> polygon, String pattern);
+	void gprangeByRegionWithMatch(String key, Polygon<?> polygon, String pattern);
 	
-	void grangeByRegionWithMatch(String key, LineString<?> lineString, String pattern);
+	void gprangeByRegionWithMatch(String key, LineString<?> lineString, String pattern);
 
-	void grangeByRegionWithMatch(String key, Point<?> point, String pattern);
+	void gprangeByRegionWithMatch(String key, Point<?> point, String pattern);
 	
-	void grangeBy(String key, String bykey, String bymember);
+	void gprangeBy(String key, String bykey, String bymember);
 
-	void grangeByWithMatch(String key, String bykey, String bymember, String pattern, long count);
+	void gprangeByWithMatch(String key, String bykey, String bymember, String pattern, long count);
 	
-	void grangeCircleByRadiusWithMatch(String key, double lat, double lon, long radius, UNITS unit, String pattern);
+	void gprangeCircleByRadiusWithMatch(String key, double lat, double lon, long radius, UNITS unit, String pattern);
 	
-	void grangeCircleByRadiusWithMatch(String key, double lat, double lon, long radius, UNITS unit, String pattern, RELATION scope,
+	void gprangeCircleByRadiusWithMatch(String key, double lat, double lon, long radius, UNITS unit, String pattern, RELATION scope,
 			ORDERBY order);
+	
+	void gprangeByRegionWithMatch(String key, Polygon<?> polygon, String pattern, long count);
 
 	void ggadd(String key, String member, String value, Polygon<?> polygon);
 	
@@ -92,6 +94,6 @@ public interface Commands4Spatial extends Commands {
 
 	void ggnnWithMatch(String key, double lat, double lon, long count, String pattern);
 
-	void grangeByRegionWithMatch(String key, Polygon<?> polygon, String pattern, long count);
+	
 
 }

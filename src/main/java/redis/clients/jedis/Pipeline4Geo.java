@@ -16,83 +16,83 @@ import redis.clients.spatial.model.Polygon;
  */
 public interface Pipeline4Geo {
 
-	Response<Long> gadd(String key, double lat, double lon, String member, String value);
+	Response<Long> gpadd(String key, double lat, double lon, String member, String value);
 
-	Response<Long> gadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
+	Response<Long> gpadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
 
-	Response<Long> gadd(String key, double lat, double lon, long distance, UNITS unit, String member, String value);
+	Response<Long> gpadd(String key, double lat, double lon, long distance, UNITS unit, String member, String value);
 
-	Response<Long> gadd(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] member, byte[] value);
+	Response<Long> gpadd(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] member, byte[] value);
 
-	Response<Long> gupdate(String key, double lat, double lon, String member);
+	Response<Long> gpupdate(String key, double lat, double lon, String member);
 	
-	Response<Long> gupdate(byte[] key, double lat, double lon, byte[] member);
+	Response<Long> gpupdate(byte[] key, double lat, double lon, byte[] member);
 
-	Response<Long> gupdate(String key, double lat, double lon, long distance, UNITS unit, String member);
+	Response<Long> gpupdate(String key, double lat, double lon, long distance, UNITS unit, String member);
 	
-	Response<Long> gupdate(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] member);
+	Response<Long> gpupdate(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] member);
 	
-	Response<List<Point<String>>> grangeBy(String key, String bykey, String bymember);
+	Response<List<Point<String>>> gprangeBy(String key, String bykey, String bymember);
 
-	Response<List<Point<byte[]>>> grangeBy(byte[] key, byte[] bykey, byte[] bymember);
+	Response<List<Point<byte[]>>> gprangeBy(byte[] key, byte[] bykey, byte[] bymember);
 
-	Response<List<Point<String>>> grangeBy(String key, String bykey, String bymember, String pattern, long count);
+	Response<List<Point<String>>> gprangeBy(String key, String bykey, String bymember, String pattern, long count);
 
-	Response<List<Point<byte[]>>> grangeBy(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count);
+	Response<List<Point<byte[]>>> gprangeBy(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count);
 	
-	Response<List<Point<String>>> grangeByRadius(String key, double lat, double lon, long distance, UNITS unit);
+	Response<List<Point<String>>> gprangeByRadius(String key, double lat, double lon, long distance, UNITS unit);
 
-	Response<List<Point<byte[]>>> grangeByRadius(byte[] key, double lat, double lon, long distance, UNITS unit);
+	Response<List<Point<byte[]>>> gprangeByRadius(byte[] key, double lat, double lon, long distance, UNITS unit);
 
-	Response<List<Circle<String>>> grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit);
+	Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit);
 
-	Response<List<Circle<byte[]>>> grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit);
+	Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit);
 
-	Response<List<Circle<String>>> grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit, RELATION scope,
+	Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit, RELATION scope,
 			ORDERBY order);
 
-	Response<List<Circle<byte[]>>> grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, RELATION scope,
+	Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, RELATION scope,
 			ORDERBY order);
 
-	Response<List<Point<String>>> grangeByRadius(String key, double lat, double lon, long distance, UNITS unit, String pattern);
+	Response<List<Point<String>>> gprangeByRadius(String key, double lat, double lon, long distance, UNITS unit, String pattern);
 
-	Response<List<Point<byte[]>>> grangeByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern);
+	Response<List<Point<byte[]>>> gprangeByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern);
 
-	Response<List<Circle<String>>> grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit,
+	Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit,
 			String pattern);
 
-	Response<List<Circle<byte[]>>> grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit,
+	Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit,
 			byte[] pattern);
 
-	Response<List<Circle<String>>> grangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit,
+	Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit,
 			String pattern, RELATION scope, ORDERBY order);
 
-	Response<List<Circle<byte[]>>> grangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit,
+	Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit,
 			byte[] pattern, RELATION scope, ORDERBY order);
 
-	Response<Long> gcard(String key);
+	Response<Long> gpcard(String key);
 
-	Response<Long> gcard(byte[] key);
+	Response<Long> gpcard(byte[] key);
 
-	Response<Long> grem(String key, String member);
+	Response<Long> gprem(String key, String member);
 
-	Response<Long> grem(byte[] key, byte[] member);
+	Response<Long> gprem(byte[] key, byte[] member);
 
-	Response<Point<String>> gget(String key, String member);
+	Response<Point<String>> gpget(String key, String member);
 
-	Response<Point<byte[]>> gget(byte[] key, byte[] member);
+	Response<Point<byte[]>> gpget(byte[] key, byte[] member);
 
-	Response<List<Point<String>>> gmget(String key, String... members);
+	Response<List<Point<String>>> gpmget(String key, String... members);
 
-	Response<List<Point<byte[]>>> gmget(byte[] key, byte[]... members);
+	Response<List<Point<byte[]>>> gpmget(byte[] key, byte[]... members);
 
-	Response<List<Point<String>>> gnn(String key, double lat, double lon, long count);
+	Response<List<Point<String>>> gpnn(String key, double lat, double lon, long count);
 
-	Response<List<Point<byte[]>>> gnn(byte[] key, double lat, double lon, long count);
+	Response<List<Point<byte[]>>> gpnn(byte[] key, double lat, double lon, long count);
 
-	Response<List<Point<String>>> grangeByRegion(String key, Polygon<?> polygon);
+	Response<List<Point<String>>> gprangeByRegion(String key, Polygon<?> polygon);
 
-	Response<List<Point<byte[]>>> grangeByRegion(byte[] key, Polygon<?> polygon);
+	Response<List<Point<byte[]>>> gprangeByRegion(byte[] key, Polygon<?> polygon);
 
 	Response<Long> ggadd(String key, String member, String value, Polygon<?> polygon);
 

@@ -16,97 +16,101 @@ import redis.clients.spatial.model.Polygon;
  */
 public interface GeoCommands {
 
-	Long gadd(String key, double lat, double lon, String member, String value);
+	Long gpadd(String key, double lat, double lon, String member, String value);
 
-	Long gadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
+	Long gpadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
 
-	Long gadd(String key, double lat, double lon, long radius, UNITS unit, String member, String value);
+	Long gpadd(String key, double lat, double lon, long radius, UNITS unit, String member, String value);
 
-	Long gadd(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member, byte[] value);
+	Long gpadd(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member, byte[] value);
 	
-	Long gupdate(String key, double lat, double lon, String member);
+	Long gpupdate(String key, double lat, double lon, String member);
 	
-	Long gupdate(byte[] key, double lat, double lon, byte[] member);
+	Long gpupdate(byte[] key, double lat, double lon, byte[] member);
 
-	Long gupdate(String key, double lat, double lon, long radius, UNITS unit, String member);
+	Long gpupdate(String key, double lat, double lon, long radius, UNITS unit, String member);
 	
-	Long gupdate(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member);
+	Long gpupdate(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member);
 	
-	List<Point<String>> grangeBy(String key, String bykey, String bymember);
+	List<Point<String>> gprangeBy(String key, String bykey, String bymember);
 
-	List<Point<byte[]>> grangeBy(byte[] key, byte[] bykey, byte[] bymember);
+	List<Point<byte[]>> gprangeBy(byte[] key, byte[] bykey, byte[] bymember);
 
-	List<Point<String>> grangeBy(String key, String bykey, String bymember, String pattern, long count);
+	List<Point<String>> gprangeBy(String key, String bykey, String bymember, String pattern, long count);
 
-	List<Point<byte[]>> grangeBy(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count);
+	List<Point<byte[]>> gprangeBy(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count);
 
-	List<Point<String>> grangeByRadius(String key, double lat, double lon, long radius, UNITS unit);
+	List<Point<String>> gprangeByRadius(String key, double lat, double lon, long radius, UNITS unit);
 
-	List<Point<byte[]>> grangeByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
+	List<Point<byte[]>> gprangeByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
 
-	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit);
+	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit);
 
-	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
+	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
 	
-	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, RELATION scope, ORDERBY order);
+	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, RELATION scope, ORDERBY order);
 	
-	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, RELATION scope, ORDERBY order);
+	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, RELATION scope, ORDERBY order);
 
-	List<Point<String>> grangeByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern);
+	List<Point<String>> gprangeByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern);
 
-	List<Point<byte[]>> grangeByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
+	List<Point<byte[]>> gprangeByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
 
-	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern);
+	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern);
 
-	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
+	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
 	
-	List<Circle<String>> grangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern, RELATION ops, ORDERBY sort);
+	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern, RELATION ops, ORDERBY sort);
 
-	List<Circle<byte[]>> grangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, RELATION ops, ORDERBY sort);
+	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, RELATION ops, ORDERBY sort);
 
-	Long gcard(String key);
+	Long gpcard(String key);
 
-	Long gcard(byte[] key);
+	Long gpcard(byte[] key);
 
-	Long grem(String key, String member);
+	Long gprem(String key, String member);
 
-	Long grem(byte[] key, byte[] member);
+	Long gprem(byte[] key, byte[] member);
 
-	Point<String> gget(String key, String member);
+	Point<String> gpget(String key, String member);
 
-	Point<byte[]> gget(byte[] key, byte[] member);
+	Point<byte[]> gpget(byte[] key, byte[] member);
 
-	List<Point<String>> gmget(String key, String... members);
+	List<Point<String>> gpmget(String key, String... members);
 
-	List<Point<byte[]>> gmget(byte[] key, byte[]... members);
+	List<Point<byte[]>> gpmget(byte[] key, byte[]... members);
 
-	List<Point<String>> gnn(String key, double lat, double lon, long count);
+	List<Point<String>> gpnn(String key, double lat, double lon, long count);
 
-	List<Point<byte[]>> gnn(byte[] key, double lat, double lon, long count);
+	List<Point<byte[]>> gpnn(byte[] key, double lat, double lon, long count);
 
-	List<Point<String>> grangeByRegion(String key, Polygon<?> polygon);
+	List<Point<String>> gprangeByRegion(String key, Polygon<?> polygon);
 
-	List<Point<byte[]>> grangeByRegion(byte[] key, Polygon<?> polygon);
+	List<Point<byte[]>> gprangeByRegion(byte[] key, Polygon<?> polygon);
 	
-	List<Point<String>> grangeByRegion(String key, LineString<?> lineString);
+	List<Point<String>> gprangeByRegion(String key, LineString<?> lineString);
 
-	List<Point<byte[]>> grangeByRegion(byte[] key, LineString<?> lineString);
+	List<Point<byte[]>> gprangeByRegion(byte[] key, LineString<?> lineString);
 	
-	List<Point<String>> grangeByRegion(String key, Point<?> point);
+	List<Point<String>> gprangeByRegion(String key, Point<?> point);
 
-	List<Point<byte[]>> grangeByRegion(byte[] key, Point<?> point);
+	List<Point<byte[]>> gprangeByRegion(byte[] key, Point<?> point);
 	
-	List<Point<String>> grangeByRegion(String key, Polygon<?> polygon, String pattern);
+	List<Point<String>> gprangeByRegion(String key, Polygon<?> polygon, String pattern);
 
-	List<Point<byte[]>> grangeByRegion(byte[] key, Polygon<?> polygon, byte[] pattern);
+	List<Point<byte[]>> gprangeByRegion(byte[] key, Polygon<?> polygon, byte[] pattern);
 	
-	List<Point<String>> grangeByRegion(String key, LineString<?> lineString, String pattern);
+	List<Point<String>> gprangeByRegion(String key, LineString<?> lineString, String pattern);
 
-	List<Point<byte[]>> grangeByRegion(byte[] key, LineString<?> lineString, byte[] pattern);
+	List<Point<byte[]>> gprangeByRegion(byte[] key, LineString<?> lineString, byte[] pattern);
 	
-	List<Point<String>> grangeByRegion(String key, Point<?> point, String pattern);
+	List<Point<String>> gprangeByRegion(String key, Point<?> point, String pattern);
 
-	List<Point<byte[]>> grangeByRegion(byte[] key, Point<?> point, byte[] pattern);
+	List<Point<byte[]>> gprangeByRegion(byte[] key, Point<?> point, byte[] pattern);
+	
+	List<Point<String>> gprangeByRegion(String key, Polygon<?> polygon, String pattern, long count);
+
+	List<Point<byte[]>> gprangeByRegion(byte[] key, Polygon<?> polygon, byte[] pattern, long count);
 	
 	double distance(double dLat1, double dLon1, double dLat2, double dLon2);
 
@@ -184,8 +188,6 @@ public interface GeoCommands {
 
 	List<Geometry<byte[]>> ggrelationBy(byte[] key, byte[] byKey, byte[] byMember);
 
-	List<Point<String>> grangeByRegion(String key, Polygon<?> polygon, String pattern, long count);
 
-	List<Point<byte[]>> grangeByRegion(byte[] key, Polygon<?> polygon, byte[] pattern, long count);
 
 }

@@ -889,121 +889,121 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 
 	// Spatial methods =================================================================
 	@Override
-	public void gadd(final String key, final double lat, final double lon, final String member, final String value) {
-		gadd(SafeEncoder.encode(key), lat, lon, 0, UNITS.M, SafeEncoder.encode(member), SafeEncoder.encode(value));
+	public void gpadd(final String key, final double lat, final double lon, final String member, final String value) {
+		gpadd(SafeEncoder.encode(key), lat, lon, 0, UNITS.M, SafeEncoder.encode(member), SafeEncoder.encode(value));
 	}
 
 	@Override
-	public void gadd(final String key, final double lat, final double lon, final long distance, final UNITS unit, final String member,
+	public void gpadd(final String key, final double lat, final double lon, final long distance, final UNITS unit, final String member,
 			final String value) {
-		gadd(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(member), SafeEncoder.encode(value));
+		gpadd(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(member), SafeEncoder.encode(value));
 	}
 
 	@Override
-	public void gupdate(final String key, final double lat, final double lon, final String member) {
-		gupdate(SafeEncoder.encode(key), lat, lon, SafeEncoder.encode(member));
+	public void gpupdate(final String key, final double lat, final double lon, final String member) {
+		gpupdate(SafeEncoder.encode(key), lat, lon, SafeEncoder.encode(member));
 	}
 
 	@Override
-	public void gupdate(final String key, final double lat, final double lon, final long distance, final UNITS unit, final String member) {
-		gupdate(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(member));
+	public void gpupdate(final String key, final double lat, final double lon, final long distance, final UNITS unit, final String member) {
+		gpupdate(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(member));
 	}
 
 	@Override
-	public void grangeByRadius(final String key, final double lat, final double lon, final long distance, final UNITS unit) {
-		grangeByRadius(SafeEncoder.encode(key), lat, lon, distance, unit);
+	public void gprangeByRadius(final String key, final double lat, final double lon, final long distance, final UNITS unit) {
+		gprangeByRadius(SafeEncoder.encode(key), lat, lon, distance, unit);
 	}
 
 	@Override
-	public void grangeCircleByRadius(final String key, final double lat, final double lon, final long distance, final UNITS unit) {
-		grangeCircleByRadius(SafeEncoder.encode(key), lat, lon, distance, unit);
+	public void gprangeCircleByRadius(final String key, final double lat, final double lon, final long distance, final UNITS unit) {
+		gprangeCircleByRadius(SafeEncoder.encode(key), lat, lon, distance, unit);
 	}
 
 	@Override
-	public void grangeCircleByRadius(final String key, final double lat, final double lon, final long distance, final UNITS unit,
+	public void gprangeCircleByRadius(final String key, final double lat, final double lon, final long distance, final UNITS unit,
 			final RELATION scope, final ORDERBY order) {
-		grangeCircleByRadius(SafeEncoder.encode(key), lat, lon, distance, unit, scope, order);
+		gprangeCircleByRadius(SafeEncoder.encode(key), lat, lon, distance, unit, scope, order);
 	}
 
 	@Override
-	public void gcard(final String key) {
-		gcard(SafeEncoder.encode(key));
+	public void gpcard(final String key) {
+		gpcard(SafeEncoder.encode(key));
 	}
 
 	@Override
-	public void grem(final String key, final String member) {
-		grem(SafeEncoder.encode(key), SafeEncoder.encode(member));
+	public void gprem(final String key, final String member) {
+		gprem(SafeEncoder.encode(key), SafeEncoder.encode(member));
 	}
 
 	@Override
-	public void gget(final String key, final String member) {
-		gget(SafeEncoder.encode(key), SafeEncoder.encode(member));
+	public void gpget(final String key, final String member) {
+		gpget(SafeEncoder.encode(key), SafeEncoder.encode(member));
 	}
 
 	@Override
-	public void gmget(final String key, final String[] members) {
+	public void gpmget(final String key, final String[] members) {
 		byte[][] mlist = new byte[members.length][];
 		int idx = 0;
 		for (String member : members) {
 			mlist[idx++] = SafeEncoder.encode(member);
 		}
-		gmget(SafeEncoder.encode(key), mlist);
+		gpmget(SafeEncoder.encode(key), mlist);
 	}
 
 	@Override
-	public void gnn(final String key, final double lat, final double lon, final long count) {
-		gnn(SafeEncoder.encode(key), lat, lon, count);
+	public void gpnn(final String key, final double lat, final double lon, final long count) {
+		gpnn(SafeEncoder.encode(key), lat, lon, count);
 	}
 
 	@Override
-	public void grangeByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern) {
-		grangeByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern));
+	public void gprangeByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern) {
+		gprangeByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern));
 	}
 
 	@Override
-	public void grangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern) {
-		grangeCircleByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern));
+	public void gprangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern) {
+		gprangeCircleByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern));
 	}
 
 	@Override
-	public void grangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern, RELATION scope,
+	public void gprangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern, RELATION scope,
 			ORDERBY order) {
-		grangeCircleByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern), scope, order);
+		gprangeCircleByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern), scope, order);
 	}
 
 	@Override
-	public void grangeByRegion(String key, Polygon<?> polygon) {
-		grangeByRegion(SafeEncoder.encode(key), polygon);
+	public void gprangeByRegion(String key, Polygon<?> polygon) {
+		gprangeByRegion(SafeEncoder.encode(key), polygon);
 	}
 
 	@Override
-	public void grangeByRegion(String key, LineString<?> lineString) {
-		grangeByRegion(SafeEncoder.encode(key), lineString);
+	public void gprangeByRegion(String key, LineString<?> lineString) {
+		gprangeByRegion(SafeEncoder.encode(key), lineString);
 	}
 
 	@Override
-	public void grangeByRegion(String key, Point<?> point) {
-		grangeByRegion(SafeEncoder.encode(key), point);
+	public void gprangeByRegion(String key, Point<?> point) {
+		gprangeByRegion(SafeEncoder.encode(key), point);
 	}
 
 	@Override
-	public void grangeByRegionWithMatch(String key, Polygon<?> polygon, String pattern) {
-		grangeByRegionWithMatch(SafeEncoder.encode(key), polygon, SafeEncoder.encode(pattern));
+	public void gprangeByRegionWithMatch(String key, Polygon<?> polygon, String pattern) {
+		gprangeByRegionWithMatch(SafeEncoder.encode(key), polygon, SafeEncoder.encode(pattern));
 	}
 	
 	@Override
-	public void grangeByRegionWithMatch(String key, Polygon<?> polygon, String pattern, long count) {
-		grangeByRegionWithMatch(SafeEncoder.encode(key), polygon, SafeEncoder.encode(pattern), count);
+	public void gprangeByRegionWithMatch(String key, Polygon<?> polygon, String pattern, long count) {
+		gprangeByRegionWithMatch(SafeEncoder.encode(key), polygon, SafeEncoder.encode(pattern), count);
 	}
 
 	@Override
-	public void grangeByRegionWithMatch(String key, LineString<?> lineString, String pattern) {
-		grangeByRegionWithMatch(SafeEncoder.encode(key), lineString, SafeEncoder.encode(pattern));
+	public void gprangeByRegionWithMatch(String key, LineString<?> lineString, String pattern) {
+		gprangeByRegionWithMatch(SafeEncoder.encode(key), lineString, SafeEncoder.encode(pattern));
 	}
 
 	@Override
-	public void grangeByRegionWithMatch(String key, Point<?> point, String pattern) {
-		grangeByRegionWithMatch(SafeEncoder.encode(key), point, SafeEncoder.encode(pattern));
+	public void gprangeByRegionWithMatch(String key, Point<?> point, String pattern) {
+		gprangeByRegionWithMatch(SafeEncoder.encode(key), point, SafeEncoder.encode(pattern));
 	}
 
 	@Override
@@ -1017,13 +1017,13 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void grangeBy(String key, String bykey, String bymember) {
-		grangeBy(SafeEncoder.encode(key), SafeEncoder.encode(bykey), SafeEncoder.encode(bymember));
+	public void gprangeBy(String key, String bykey, String bymember) {
+		gprangeBy(SafeEncoder.encode(key), SafeEncoder.encode(bykey), SafeEncoder.encode(bymember));
 	}
 
 	@Override
-	public void grangeByWithMatch(String key, String bykey, String bymember, String pattern, long count) {
-		grangeByWithMatch(SafeEncoder.encode(key), SafeEncoder.encode(bykey), SafeEncoder.encode(bymember), SafeEncoder.encode(pattern),
+	public void gprangeByWithMatch(String key, String bykey, String bymember, String pattern, long count) {
+		gprangeByWithMatch(SafeEncoder.encode(key), SafeEncoder.encode(bykey), SafeEncoder.encode(bymember), SafeEncoder.encode(pattern),
 				count);
 	}
 

@@ -30,7 +30,7 @@ public class POIGenerator {
 	}
 
 	private void getTest() {
-		Iterator<Point<String>> result = jedis.grangeByRadius(key, 37.56322, 127.01508, 100, UNITS.KM, "*").iterator();
+		Iterator<Point<String>> result = jedis.gprangeByRadius(key, 37.56322, 127.01508, 100, UNITS.KM, "*").iterator();
 		while(result.hasNext()){
 			Point<String> p = result.next();
 			System.out.println(p.getMember() + ", lat :"+ p.getX() + ", lot :" + p.getY() + ", values :"+ p.getValue());
@@ -120,7 +120,7 @@ public class POIGenerator {
 		String address = JsonPath.read(jo, "$.address");
 		memberKey = "poi_id:"+poi_id+"|name:" + name + "|address:" + address + "|category:" + category;
 		System.out.println(key +", "+ lat+", "+ lot+", "+ memberKey+", "+ jo.toJSONString());
-		jedis.gadd(key, lat, lot, memberKey, jo.toJSONString());
+		jedis.gpadd(key, lat, lot, memberKey, jo.toJSONString());
 	}
 	
 }

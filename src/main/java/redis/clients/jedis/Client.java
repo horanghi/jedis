@@ -900,13 +900,13 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gpupdate(final String key, final double lat, final double lon, final String member) {
-		gpupdate(SafeEncoder.encode(key), lat, lon, SafeEncoder.encode(member));
+	public void gpupdate(final String key, final String member, final double lat, final double lon) {
+		gpupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), lat, lon);
 	}
 
 	@Override
-	public void gpupdate(final String key, final double lat, final double lon, final long distance, final UNITS unit, final String member) {
-		gpupdate(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(member));
+	public void gpupdate(final String key, final String member, final double lat, final double lon, final long distance, final UNITS unit) {
+		gpupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), lat, lon, distance, unit);
 	}
 
 	@Override
@@ -966,8 +966,8 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gprangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern, RELATION scope,
-			ORDERBY order) {
+	public void gprangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern,
+			RELATION scope, ORDERBY order) {
 		gprangeCircleByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern), scope, order);
 	}
 
@@ -990,7 +990,7 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	public void gprangeByRegionWithMatch(String key, Polygon<?> polygon, String pattern) {
 		gprangeByRegionWithMatch(SafeEncoder.encode(key), polygon, SafeEncoder.encode(pattern));
 	}
-	
+
 	@Override
 	public void gprangeByRegionWithMatch(String key, Polygon<?> polygon, String pattern, long count) {
 		gprangeByRegionWithMatch(SafeEncoder.encode(key), polygon, SafeEncoder.encode(pattern), count);

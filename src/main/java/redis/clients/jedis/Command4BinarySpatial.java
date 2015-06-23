@@ -13,9 +13,9 @@ public interface Command4BinarySpatial {
 
 	void gpadd(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member, byte[] value);
 
-	void gpupdate(byte[] key, double lat, double lon, byte[] member);
+	void gpupdate(byte[] key, byte[] member, double lat, double lon);
 
-	void gpupdate(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member);
+	void gpupdate(byte[] key, byte[] member, double lat, double lon, long radius, UNITS unit);
 
 	void gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
 
@@ -36,13 +36,13 @@ public interface Command4BinarySpatial {
 	void gprangeByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
 
 	void gprangeByRegion(byte[] key, Polygon<?> polygon);
-	
+
 	void gprangeByRegion(byte[] key, LineString<?> lineString);
 
 	void gprangeByRegion(byte[] key, Point<?> point);
-	
+
 	void gprangeByRegionWithMatch(byte[] key, Polygon<?> polygon, byte[] pattern);
-	
+
 	void gprangeByRegionWithMatch(byte[] key, LineString<?> lineString, byte[] pattern);
 
 	void gprangeByRegionWithMatch(byte[] key, Point<?> point, byte[] pattern);
@@ -51,7 +51,7 @@ public interface Command4BinarySpatial {
 
 	void gprangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, RELATION scope,
 			ORDERBY order);
-	
+
 	void gprangeBy(byte[] key, byte[] bykey, byte[] bymember);
 
 	void gprangeByWithMatch(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count);

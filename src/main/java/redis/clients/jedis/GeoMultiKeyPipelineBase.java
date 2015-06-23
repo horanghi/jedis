@@ -62,15 +62,15 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, RELATION scope,
-			ORDERBY order) {
+	public Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit,
+			RELATION scope, ORDERBY order) {
 		client.gprangeCircleByRadius(key, lat, lon, radius, unit, scope, order);
 		return getResponse(BuilderFactory.SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, RELATION scope,
-			ORDERBY order) {
+	public Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit,
+			RELATION scope, ORDERBY order) {
 		client.gprangeCircleByRadius(key, lat, lon, radius, unit, scope, order);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
@@ -368,26 +368,26 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<Long> gpupdate(String key, double lat, double lon, String member) {
-		client.gpupdate(key, lat, lon, member);
+	public Response<Long> gpupdate(String key, String member, double lat, double lon) {
+		client.gpupdate(key, member, lat, lon);
 		return getResponse(BuilderFactory.LONG);
 	}
 
 	@Override
-	public Response<Long> gpupdate(byte[] key, double lat, double lon, byte[] member) {
-		client.gpupdate(key, lat, lon, member);
+	public Response<Long> gpupdate(byte[] key, byte[] member, double lat, double lon) {
+		client.gpupdate(key, member, lat, lon);
 		return getResponse(BuilderFactory.LONG);
 	}
 
 	@Override
-	public Response<Long> gpupdate(String key, double lat, double lon, long radius, UNITS unit, String member) {
-		client.gpupdate(key, lat, lon, radius, unit, member);
+	public Response<Long> gpupdate(String key, String member, double lat, double lon, long radius, UNITS unit) {
+		client.gpupdate(key, member, lat, lon, radius, unit);
 		return getResponse(BuilderFactory.LONG);
 	}
 
 	@Override
-	public Response<Long> gpupdate(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member) {
-		client.gpupdate(key, lat, lon, radius, unit, member);
+	public Response<Long> gpupdate(byte[] key, byte[] member, double lat, double lon, long radius, UNITS unit) {
+		client.gpupdate(key, member, lat, lon, radius, unit);
 		return getResponse(BuilderFactory.LONG);
 	}
 

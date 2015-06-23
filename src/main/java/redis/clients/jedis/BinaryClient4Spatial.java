@@ -63,13 +63,13 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void gpupdate(final byte[] key, final double lat, final double lon, final byte[] member) {
+	public void gpupdate(final byte[] key, final byte[] member, final double lat, final double lon) {
 		// GUPDATEBY key member latitude longitude [RADIUS radius m|km]
 		sendCommand(GPUPDATEBY, key, member, toByteArray(lat), toByteArray(lon));
 	}
 
 	@Override
-	public void gpupdate(final byte[] key, final double lat, final double lon, final long radius, final UNITS unit, final byte[] member) {
+	public void gpupdate(final byte[] key, final byte[] member, final double lat, final double lon, final long radius, final UNITS unit) {
 		// GUPDATEBY key member latitude longitude [RADIUS radius m|km]
 		sendCommand(GPUPDATEBY, key, member, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw);
 	}

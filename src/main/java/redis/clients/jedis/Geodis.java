@@ -64,30 +64,30 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public Long gpupdate(final String key, final double lat, final double lon, final String member) {
+	public Long gpupdate(final String key, final String member, final double lat, final double lon) {
 		checkIsInMulti();
-		client.gpupdate(key, lat, lon, member);
+		client.gpupdate(key, member, lat, lon);
 		return client.getIntegerReply();
 	}
 
 	@Override
-	public Long gpupdate(final byte[] key, final double lat, final double lon, final byte[] member) {
+	public Long gpupdate(final byte[] key, final byte[] member, final double lat, final double lon) {
 		checkIsInMulti();
-		client.gpupdate(key, lat, lon, member);
+		client.gpupdate(key, member, lat, lon);
 		return client.getIntegerReply();
 	}
 
 	@Override
-	public Long gpupdate(final String key, double lat, double lon, long radius, UNITS unit, final String member) {
+	public Long gpupdate(final String key, final String member, double lat, double lon, long radius, UNITS unit) {
 		checkIsInMulti();
-		client.gpupdate(key, lat, lon, radius, unit, member);
+		client.gpupdate(key, member, lat, lon, radius, unit);
 		return client.getIntegerReply();
 	}
 
 	@Override
-	public Long gpupdate(final byte[] key, double lat, double lon, long radius, UNITS unit, final byte[] member) {
+	public Long gpupdate(final byte[] key, final byte[] member, double lat, double lon, long radius, UNITS unit) {
 		checkIsInMulti();
-		client.gpupdate(key, lat, lon, radius, unit, member);
+		client.gpupdate(key, member, lat, lon, radius, unit);
 		return client.getIntegerReply();
 	}
 

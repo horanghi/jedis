@@ -23,15 +23,15 @@ public interface GeoCommands {
 	Long gpadd(String key, double lat, double lon, long radius, UNITS unit, String member, String value);
 
 	Long gpadd(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member, byte[] value);
-	
-	Long gpupdate(String key, double lat, double lon, String member);
-	
-	Long gpupdate(byte[] key, double lat, double lon, byte[] member);
 
-	Long gpupdate(String key, double lat, double lon, long radius, UNITS unit, String member);
-	
-	Long gpupdate(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member);
-	
+	Long gpupdate(String key, String member, double lat, double lon);
+
+	Long gpupdate(byte[] key, byte[] member, double lat, double lon);
+
+	Long gpupdate(String key, String member, double lat, double lon, long radius, UNITS unit);
+
+	Long gpupdate(byte[] key, byte[] member, double lat, double lon, long radius, UNITS unit);
+
 	List<Point<String>> gprangeBy(String key, String bykey, String bymember);
 
 	List<Point<byte[]>> gprangeBy(byte[] key, byte[] bykey, byte[] bymember);
@@ -47,9 +47,9 @@ public interface GeoCommands {
 	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit);
 
 	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
-	
+
 	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, RELATION scope, ORDERBY order);
-	
+
 	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, RELATION scope, ORDERBY order);
 
 	List<Point<String>> gprangeByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern);
@@ -59,10 +59,12 @@ public interface GeoCommands {
 	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern);
 
 	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
-	
-	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern, RELATION ops, ORDERBY sort);
 
-	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, RELATION ops, ORDERBY sort);
+	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern, RELATION ops,
+			ORDERBY sort);
+
+	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, RELATION ops,
+			ORDERBY sort);
 
 	Long gpcard(String key);
 
@@ -87,31 +89,31 @@ public interface GeoCommands {
 	List<Point<String>> gprangeByRegion(String key, Polygon<?> polygon);
 
 	List<Point<byte[]>> gprangeByRegion(byte[] key, Polygon<?> polygon);
-	
+
 	List<Point<String>> gprangeByRegion(String key, LineString<?> lineString);
 
 	List<Point<byte[]>> gprangeByRegion(byte[] key, LineString<?> lineString);
-	
+
 	List<Point<String>> gprangeByRegion(String key, Point<?> point);
 
 	List<Point<byte[]>> gprangeByRegion(byte[] key, Point<?> point);
-	
+
 	List<Point<String>> gprangeByRegion(String key, Polygon<?> polygon, String pattern);
 
 	List<Point<byte[]>> gprangeByRegion(byte[] key, Polygon<?> polygon, byte[] pattern);
-	
+
 	List<Point<String>> gprangeByRegion(String key, LineString<?> lineString, String pattern);
 
 	List<Point<byte[]>> gprangeByRegion(byte[] key, LineString<?> lineString, byte[] pattern);
-	
+
 	List<Point<String>> gprangeByRegion(String key, Point<?> point, String pattern);
 
 	List<Point<byte[]>> gprangeByRegion(byte[] key, Point<?> point, byte[] pattern);
-	
+
 	List<Point<String>> gprangeByRegion(String key, Polygon<?> polygon, String pattern, long count);
 
 	List<Point<byte[]>> gprangeByRegion(byte[] key, Polygon<?> polygon, byte[] pattern, long count);
-	
+
 	double distance(double dLat1, double dLon1, double dLat2, double dLon2);
 
 	/* Geography */
@@ -187,7 +189,5 @@ public interface GeoCommands {
 	List<Geometry<String>> ggrelationBy(String key, String byKey, String byMember);
 
 	List<Geometry<byte[]>> ggrelationBy(byte[] key, byte[] byKey, byte[] byMember);
-
-
 
 }

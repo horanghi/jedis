@@ -509,6 +509,7 @@ public class GeodisTest {
 		Point<String> point5 = new Point<String>(0, -1);
 		Point<String> point1_1 = new Point<String>(member1, 0, 0, value);
 		Point<String> point1_2 = new Point<String>(member2, 0, 0, value + "1");
+		Point<String> point1_3 = new Point<String>(member3, 0, 0, null);
 
 		assertTrue(point1.equals(point2)); // x,y만 비교
 		assertFalse(point1.equals(point3));// x,y만 비교
@@ -516,6 +517,8 @@ public class GeodisTest {
 		assertFalse(point1.equals(point5));// x,y만 비교
 		assertTrue(point1.equals(point1_1)); // x,y만 비교
 		assertTrue(point1_1.equals(point1_2)); // x,y만 비교
+		assertTrue(point1_1.equals(point1_3)); // x,y만 비교
+		assertTrue(point1_3.equals(point1_1)); // x,y만 비교
 
 		assertThat(point1, is(point2)); // x,y만 비교
 		assertThat(point1, not(point3));// x,y만 비교
@@ -523,8 +526,22 @@ public class GeodisTest {
 		assertThat(point1, not(point5));// x,y만 비교
 		assertThat(point1, is(point1_1)); // x,y만 비교
 		assertThat(point1_1, is(point1_2)); // x,y만 비교
+		assertThat(point1_1, is(point1_3)); // x,y만 비교
+		assertThat(point1_3, is(point1_1)); // x,y만 비교
 
-		assertTrue(((Geometry) point1_1).equals((Geometry) point1_2)); // x,y만 비교
+		assertTrue(((Point) point1_1).equals((Point) point1_2)); // x,y만 비교
+		assertThat(((Point) point1_1), is((Point) point1_2)); // assertThat is 비교상으로 equals 만 사용.
+		assertFalse(((Point) point1_1).equalsDeep((Point) point1_2)); // x,y, member, value 비교
+		
+		assertFalse(((Point) point1_1).equalsDeep((Point) point1_3)); // x,y, member, value 비교
+		assertFalse(((Point) point1_3).equalsDeep((Point) point1_1)); // x,y, member, value 비교
+
+		assertTrue(((Geometry) point1_1).equals(point1_2)); // x,y만 비교
+		assertThat(((Geometry) point1_1), is((Geometry) point1_2)); // assertThat is 비교상으로 equals 만 사용.
+		assertFalse(((Geometry) point1_1).equalsDeep(point1_2)); // x,y, member, value 비교
+		
+		assertFalse(((Geometry) point1_1).equalsDeep((Geometry) point1_3)); // x,y, member, value 비교
+		assertFalse(((Geometry) point1_3).equalsDeep((Geometry) point1_1)); // x,y, member, value 비교
 
 		Circle<String> circle1 = new Circle<String>(member1, 0, 0, 10, M, value);
 		Circle<String> circle2 = new Circle<String>(member2, 0, 0, 10, M, value);
@@ -532,11 +549,23 @@ public class GeodisTest {
 		Circle<String> circle4 = new Circle<String>(member1, 0, 0, 40, M, value);
 		Circle<String> circle1_1 = new Circle<String>(member1, 0, 0, 10, M, value);
 		Circle<String> circle1_2 = new Circle<String>(member2, 0, 0, 10, M, value + "1");
+		Circle<String> circle1_3 = new Circle<String>(member1, 0, 0, 10, M, value);
+		Circle<String> circle1_4 = new Circle<String>(member1, 0, 0, 10, M, null);
+		Circle<String> circle1_5 = new Circle<String>(member1, 0, 0, 10, M, null);
 
 		assertTrue(circle1.equals(circle2)); // x,y, radius 비교
 		assertFalse(circle1.equals(circle3));// x,y, radius 비교
 		assertFalse(circle1.equals(circle4));// x,y, radius 비교
 		assertTrue(circle1_1.equals(circle1_2)); // x,y, radius 비교
+		assertTrue(circle1_1.equals(circle1_4)); // x,y, radius 비교
+		assertTrue(circle1_4.equals(circle1_1)); // x,y, radius 비교
+		
+		assertFalse(circle1_1.equalsDeep(circle1_2)); // x,y, radius, value 비교 // result : false
+		assertTrue(circle1_1.equalsDeep(circle1_3)); // x,y, radius, value 비교 // result : true
+		assertFalse(circle1_1.equalsDeep(circle1_4)); // x,y, radius, value 비교 // result : true
+		assertFalse(circle1_4.equalsDeep(circle1_1)); // x,y, radius, value 비교 // result : true
+		
+		assertTrue(circle1_4.equalsDeep(circle1_5)); // x,y, radius, value 비교 // result : true
 
 		// [1,1], [1,-1], [-1,-1], [-1,1], [1,1]
 		Polygon<String> polygon1 = new Polygon<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),

@@ -39,19 +39,28 @@ public class Geometry<T> implements Serializable, Comparable<T> {
 	public boolean equals(Object o) {
 		return this.equalsDeep((Geometry<T>) o);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public boolean equalsDeep(Geometry<T> o) {
 		try {
 			if (this.member instanceof String) {
 				Geometry<String> other = (Geometry<String>) o;
 				if (this.member.equals(other.getMember())) {
-					return true;
+					if(this.value == null && other.getValue() == null){
+						return true;
+					}else if (this.value != null && this.value.equals(other.getValue())) {
+						return true;
+					}
+
 				}
 			} else {
 				Geometry<byte[]> other = (Geometry<byte[]>) o;
 				if (Arrays.equals(((Geometry<byte[]>) this).getMember(), ((Geometry<byte[]>) other).getMember())) {
-					return true;
+					if(this.value == null && other.getValue() == null){
+						return true;
+					}else if (this.value != null && Arrays.equals(((Geometry<byte[]>) this).getValue(), ((Geometry<byte[]>) other).getValue())) {
+						return true;
+					}
 				}
 			}
 			return false;

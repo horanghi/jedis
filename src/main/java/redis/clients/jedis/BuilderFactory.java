@@ -459,6 +459,66 @@ public class BuilderFactory {
 		}
 
 	};
+	
+	public static final Builder<List<Point<String>>> SPATIAL_BOUNDARY_LIST = new Builder<List<Point<String>>>() {
+		@SuppressWarnings("unchecked")
+		public List<Point<String>> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			final List<Point<String>> result = new ArrayList<Point<String>>(l.size());
+			Iterator<byte[]> iterator = l.iterator();
+
+			while (iterator.hasNext()) {
+				byte[] fistValue = iterator.next();
+				if (fistValue == null) {
+					iterator.next();
+					iterator.next();
+					continue;
+				}
+				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				result.add(new Point<String>(x, y));
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "List<Point<String>>";
+		}
+
+	};
+	
+	public static final Builder<List<Point<byte[]>>> BYTE_SPATIAL_BOUNDARY_LIST = new Builder<List<Point<byte[]>>>() {
+		@SuppressWarnings("unchecked")
+		public List<Point<byte[]>> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			final List<Point<byte[]>> result = new ArrayList<Point<byte[]>>(l.size());
+			Iterator<byte[]> iterator = l.iterator();
+
+			while (iterator.hasNext()) {
+				byte[] fistValue = iterator.next();
+				if (fistValue == null) {
+					iterator.next();
+					iterator.next();
+					continue;
+				}
+				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				result.add(new Point<byte[]>(x, y));
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "List<Point<byte[]>>";
+		}
+
+	};
 
 	public static final Builder<Point<String>> SPATIAL_GPOINT = new Builder<Point<String>>() {
 		@SuppressWarnings("unchecked")

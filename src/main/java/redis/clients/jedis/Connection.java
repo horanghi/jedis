@@ -210,6 +210,14 @@ public class Connection implements Closeable {
 	public List<Point<String>> getSpatialMultiBulkReply() {
 		return BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
 	}
+	
+	public List<Point<String>> getSpatialBoundaryReply() {
+		return BuilderFactory.SPATIAL_BOUNDARY_LIST.build(getBinaryMultiBulkReply());
+	}
+	
+	public List<Point<byte[]>> getBinarySpatialBoundaryReply() {
+		return BuilderFactory.BYTE_SPATIAL_BOUNDARY_LIST.build(getBinaryMultiBulkReply());
+	}
 
 	public List<Point<byte[]>> getBinarySpatialMultiBulkReply() {
 		return BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());

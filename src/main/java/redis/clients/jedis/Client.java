@@ -1112,4 +1112,120 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 		ggnnWithMatch(SafeEncoder.encode(key), lat, lon, count, SafeEncoder.encode(pattern));
 	}
 
+	/*Geometry */
+
+	@Override
+	public void gmsetBoundary(String key, double minx, double miny, double maxx, double maxy) {
+		gmsetBoundary(SafeEncoder.encode(key), minx, miny, maxx, maxy);
+	}
+
+	@Override
+	public void gmgetBoundary(String key) {
+		gmgetBoundary(SafeEncoder.encode(key));
+	}
+
+	@Override
+	public void gmrebuildBoundary(String key, double minx, double miny, double maxx, double maxy) {
+		gmrebuildBoundary(SafeEncoder.encode(key), minx, miny, maxx, maxy);
+	}
+
+	@Override
+	public void gmadd(String key, String member, String value, Polygon<?> polygon) {
+		gmadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), polygon);
+	}
+
+	@Override
+	public void gmadd(String key, String member, String value, LineString<?> lineString) {
+		gmadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), lineString);
+	}
+
+	@Override
+	public void gmadd(String key, String member, String value, Point<?> point) {
+		gmadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), point);
+	}
+
+	@Override
+	public void gmadd(String key, double x, double y, String member, String value) {
+		gmadd(SafeEncoder.encode(key), x, y, SafeEncoder.encode(member), SafeEncoder.encode(value));
+	}
+
+	@Override
+	public void gmupdate(String key, String member, Polygon<?> polygon) {
+		gmupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), polygon);
+	}
+
+	@Override
+	public void gmupdate(String key, String member, LineString<?> lineString) {
+		gmupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), lineString);
+	}
+
+	@Override
+	public void gmupdate(String key, String member, Point<?> point) {
+		gmupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), point);
+	}
+
+	@Override
+	public void gmrange(final String key, final long start, final long stop) {
+		gmrange(SafeEncoder.encode(key), start, stop);
+	}
+
+	@Override
+	public void gmrevrange(String key, long start, long stop) {
+		gmrevrange(SafeEncoder.encode(key), start, stop);
+	}
+
+	@Override
+	public void gmcard(String key) {
+		gmcard(SafeEncoder.encode(key));
+	}
+
+	@Override
+	public void gmrem(String key, String member) {
+		gmrem(SafeEncoder.encode(key), SafeEncoder.encode(member));
+	}
+
+	@Override
+	public void gmget(final String key, final String member) {
+		gmget(SafeEncoder.encode(key), SafeEncoder.encode(member));
+	}
+
+	@Override
+	public void gmmget(final String key, final String[] members) {
+		byte[][] mlist = new byte[members.length][];
+		int idx = 0;
+		for (String member : members) {
+			mlist[idx++] = SafeEncoder.encode(member);
+		}
+		gmmget(SafeEncoder.encode(key), mlist);
+	}
+
+	@Override
+	public void gmrelation(String key, Polygon<?> polygon) {
+		gmrelation(SafeEncoder.encode(key), polygon);
+	}
+
+	@Override
+	public void gmrelation(String key, LineString<?> lineString) {
+		gmrelation(SafeEncoder.encode(key), lineString);
+	}
+
+	@Override
+	public void gmrelation(String key, Point<?> point) {
+		gmrelation(SafeEncoder.encode(key), point);
+	}
+
+	@Override
+	public void gmrelationBy(String key, String byKey, String byMember) {
+		gmrelationBy(SafeEncoder.encode(key), SafeEncoder.encode(byKey), SafeEncoder.encode(byMember));
+	}
+
+	@Override
+	public void gmnn(String key, double lat, double lon, long count) {
+		gmnn(SafeEncoder.encode(key), lat, lon, count);
+	}
+
+	public void gmnnWithMatch(String key, double lat, double lon, long count, String pattern) {
+		gmnnWithMatch(SafeEncoder.encode(key), lat, lon, count, SafeEncoder.encode(pattern));
+	}
+
 }

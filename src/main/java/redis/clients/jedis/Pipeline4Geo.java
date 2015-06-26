@@ -152,4 +152,77 @@ public interface Pipeline4Geo {
 
 	Response<List<Geometry<byte[]>>> ggnn(byte[] key, double lat, double lon, long count, byte[] pattern);
 
+	// Geometry
+
+	Response<String> gmsetBoundary(String key, double minx, double miny, double maxx, double maxy);
+
+	Response<String> gmsetBoundary(byte[] key, double minx, double miny, double maxx, double maxy);
+
+	Response<List<Point<String>>> gmgetBoundary(String key);
+
+	Response<List<Point<byte[]>>> gmgetBoundary(byte[] key);
+
+	Response<String> gmrebuildBoundary(String key, double minx, double miny, double maxx, double maxy);
+
+	Response<String> gmrebuildBoundary(byte[] key, double minx, double miny, double maxx, double maxy);
+
+	Response<Long> gmadd(String key, String member, String value, Polygon<?> polygon);
+
+	Response<Long> gmadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon);
+
+	Response<Long> gmadd(String key, String member, String value, LineString<?> lineString);
+
+	Response<Long> gmadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString);
+
+	Response<List<Geometry<String>>> gmrange(String key, long start, long stop);
+
+	Response<List<Geometry<byte[]>>> gmrange(byte[] key, long start, long stop);
+
+	Response<Long> gmadd(String key, String member, String value, Point<?> point);
+
+	Response<Long> gmadd(byte[] key, byte[] member, byte[] value, Point<?> point);
+
+	Response<List<Geometry<String>>> gmrevrange(String key, long start, long stop);
+
+	Response<List<Geometry<byte[]>>> gmrevrange(byte[] key, long start, long stop);
+
+	Response<Long> gmcard(String key);
+
+	Response<Long> gmcard(byte[] key);
+
+	Response<Long> gmrem(String key, String member);
+
+	Response<Long> gmrem(byte[] key, byte[] member);
+
+	Response<Geometry<String>> gmget(String key, String member);
+
+	Response<Geometry<byte[]>> gmget(byte[] key, byte[] member);
+
+	Response<List<Geometry<String>>> gmmget(String key, String[] members);
+
+	Response<List<Geometry<byte[]>>> gmmget(byte[] key, byte[][] members);
+
+	Response<List<Geometry<String>>> gmrelation(String key, Polygon<?> polygon);
+
+	Response<List<Geometry<byte[]>>> gmrelation(byte[] key, Polygon<?> polygon);
+
+	Response<List<Geometry<String>>> gmrelation(String key, LineString<?> lineString);
+
+	Response<List<Geometry<byte[]>>> gmrelation(byte[] key, LineString<?> lineString);
+
+	Response<List<Geometry<String>>> gmrelation(String key, Point<?> point);
+
+	Response<List<Geometry<byte[]>>> gmrelation(byte[] key, Point<?> point);
+
+	Response<List<Geometry<String>>> gmrelationBy(String key, String byKey, String byMember);
+
+	Response<List<Geometry<byte[]>>> gmrelationBy(byte[] key, byte[] byKey, byte[] byMember);
+
+	Response<List<Geometry<String>>> gmnn(String key, double lat, double lon, long count);
+
+	Response<List<Geometry<byte[]>>> gmnn(byte[] key, double lat, double lon, long count);
+
+	Response<List<Geometry<String>>> gmnn(String key, double lat, double lon, long count, String pattern);
+
+	Response<List<Geometry<byte[]>>> gmnn(byte[] key, double lat, double lon, long count, byte[] pattern);
 }

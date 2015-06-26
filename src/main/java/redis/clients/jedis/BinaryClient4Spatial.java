@@ -1,11 +1,8 @@
 package redis.clients.jedis;
 
 import static redis.clients.jedis.Protocol.toByteArray;
-import static redis.clients.jedis.Protocol.Command.GPADD;
-import static redis.clients.jedis.Protocol.Command.GPCARD;
 import static redis.clients.jedis.Protocol.Command.GGADD;
 import static redis.clients.jedis.Protocol.Command.GGCARD;
-import static redis.clients.jedis.Protocol.Command.GPGET;
 import static redis.clients.jedis.Protocol.Command.GGGET;
 import static redis.clients.jedis.Protocol.Command.GGMGET;
 import static redis.clients.jedis.Protocol.Command.GGNN;
@@ -15,6 +12,23 @@ import static redis.clients.jedis.Protocol.Command.GGRELATIONBY;
 import static redis.clients.jedis.Protocol.Command.GGREM;
 import static redis.clients.jedis.Protocol.Command.GGREVRANGE;
 import static redis.clients.jedis.Protocol.Command.GGUPDATEBY;
+import static redis.clients.jedis.Protocol.Command.GMADD;
+import static redis.clients.jedis.Protocol.Command.GMCARD;
+import static redis.clients.jedis.Protocol.Command.GMGET;
+import static redis.clients.jedis.Protocol.Command.GMGETBOUNDARY;
+import static redis.clients.jedis.Protocol.Command.GMMGET;
+import static redis.clients.jedis.Protocol.Command.GMNN;
+import static redis.clients.jedis.Protocol.Command.GMRANGE;
+import static redis.clients.jedis.Protocol.Command.GMREBUILDBOUNDARY;
+import static redis.clients.jedis.Protocol.Command.GMRELATION;
+import static redis.clients.jedis.Protocol.Command.GMRELATIONBY;
+import static redis.clients.jedis.Protocol.Command.GMREM;
+import static redis.clients.jedis.Protocol.Command.GMREVRANGE;
+import static redis.clients.jedis.Protocol.Command.GMSETBOUNDARY;
+import static redis.clients.jedis.Protocol.Command.GMUPDATEBY;
+import static redis.clients.jedis.Protocol.Command.GPADD;
+import static redis.clients.jedis.Protocol.Command.GPCARD;
+import static redis.clients.jedis.Protocol.Command.GPGET;
 import static redis.clients.jedis.Protocol.Command.GPMGET;
 import static redis.clients.jedis.Protocol.Command.GPNN;
 import static redis.clients.jedis.Protocol.Command.GPRANGEBY;
@@ -335,6 +349,142 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	public void ggnnWithMatch(final byte[] key, final double lat, final double lon, final long count, final byte[] pattern) {
 		// ggnn mygg 0 0 limit 2 match hello* withvalues withdistance withgeojson
 		sendCommand(GGNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(count), MATCH.raw, pattern, WITHVALUES.raw,
+				WITHGEOJSON.raw);
+	}
+
+	// Geometry
+
+	@Override
+	public void gmsetBoundary(byte[] key, double minx, double miny, double maxx, double maxy) {
+		sendCommand(GMSETBOUNDARY, key, toByteArray(minx), toByteArray(miny), toByteArray(maxx), toByteArray(maxy));
+	}
+
+	@Override
+	public void gmgetBoundary(byte[] key) {
+		sendCommand(GMGETBOUNDARY, key);
+	}
+
+	@Override
+	public void gmrebuildBoundary(byte[] key, double minx, double miny, double maxx, double maxy) {
+		sendCommand(GMREBUILDBOUNDARY, toByteArray(minx), toByteArray(miny), toByteArray(maxx), toByteArray(maxy));
+	}
+
+	@Override
+	public void gmadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon) {
+		// GMADD key member value geojson
+		sendCommand(GMADD, key, member, value, polygon.getJsonByte());
+	}
+
+	@Override
+	public void gmadd(byte[] key, byte[] member, byte[] value, Point<?> point) {
+		// GMADD key member value geojson
+		sendCommand(GMADD, key, member, value, point.getJsonByte());
+	}
+
+	public void gmadd(byte[] key, double x, double y, byte[] member, byte[] value) {
+		// GMADD key member value geojson
+		sendCommand(GMADD, key, member, value, new Point<byte[]>(x, y).getJsonByte());
+	}
+
+	@Override
+	public void gmadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString) {
+		// GMADD key member value geojson
+		sendCommand(GMADD, key, member, value, lineString.getJsonByte());
+	}
+
+	@Override
+	public void gmupdate(byte[] key, byte[] member, Polygon<?> polygon) {
+		// GMUPDATEBY key member geojson
+		sendCommand(GMUPDATEBY, key, member, polygon.getJsonByte());
+	}
+
+	@Override
+	public void gmupdate(byte[] key, byte[] member, Point<?> point) {
+		// GMUPDATEBY key member geojson
+		sendCommand(GMUPDATEBY, key, member, point.getJsonByte());
+	}
+
+	@Override
+	public void gmupdate(byte[] key, byte[] member, LineString<?> lineString) {
+		// GMUPDATEBY key member geojson
+		sendCommand(GMUPDATEBY, key, member, lineString.getJsonByte());
+	}
+
+	@Override
+	public void gmrange(byte[] key, long start, long stop) {
+		// GMADD key member value geojson
+		sendCommand(GMRANGE, key, toByteArray(start), toByteArray(stop), WITHVALUES.raw);
+	}
+
+	@Override
+	public void gmrevrange(byte[] key, long start, long stop) {
+		// GMADD key member value geojson
+		sendCommand(GMREVRANGE, key, toByteArray(start), toByteArray(stop), WITHVALUES.raw);
+	}
+
+	@Override
+	public void gmcard(byte[] key) {
+		sendCommand(GMCARD, key);
+	}
+
+	@Override
+	public void gmrem(byte[] key, byte[] member) {
+		sendCommand(GMREM, key, member);
+	}
+
+	@Override
+	public void gmget(byte[] key, byte[] member) {
+		// GMGET key member / GGMGET key member [member ...]
+		sendCommand(GMGET, key, member);
+
+	}
+
+	@Override
+	public void gmmget(final byte[] key, final byte[][] members) {
+		// GMGET key member / GGMGET key member [member ...]
+		int len = members.length;
+		byte[][] bargs = new byte[len + 1][];
+		bargs[0] = key;
+		for (int i = 0; i < len; ++i) {
+			bargs[i + 1] = members[i];
+		}
+		sendCommand(GMMGET, bargs);
+	}
+
+	@Override
+	public void gmrelation(byte[] key, Polygon<?> polygon) {
+		// GMRELATION mygg '{"type": "Polygon", "coordinates": [[[1,1], [1,-1], [-1,-1], [-1,1], [1,1]]]}' contains withvalues withgeojson
+		sendCommand(GMRELATION, key, polygon.getJsonByte(), CONTAINS.raw, WITHVALUES.raw, WITHGEOJSON.raw);
+	}
+
+	@Override
+	public void gmrelation(byte[] key, LineString<?> lineString) {
+		// GMRELATION mygg '{"type": "Polygon", "coordinates": [[[1,1], [1,-1], [-1,-1], [-1,1], [1,1]]]}' contains withvalues withgeojson
+		sendCommand(GMRELATION, key, lineString.getJsonByte(), CONTAINS.raw, WITHVALUES.raw, WITHGEOJSON.raw);
+	}
+
+	@Override
+	public void gmrelation(byte[] key, Point<?> point) {
+		// GMRELATION mygg '{"type": "Polygon", "coordinates": [[[1,1], [1,-1], [-1,-1], [-1,1], [1,1]]]}' contains withvalues withgeojson
+		sendCommand(GMRELATION, key, point.getJsonByte(), CONTAINS.raw, WITHVALUES.raw, WITHGEOJSON.raw);
+	}
+
+	@Override
+	public void gmrelationBy(byte[] key, byte[] byKey, byte[] byMember) {
+		// GMRELATIONBY key BY bykey bymember CONTAINS|WITHIN [WITHVALUES] [WITHGEOJSON]
+		sendCommand(GMRELATIONBY, key, BY.raw, byKey, byMember, CONTAINS.raw, WITHVALUES.raw, WITHGEOJSON.raw);
+	}
+
+	@Override
+	public void gmnn(final byte[] key, final double lat, final double lon, final long count) {
+		// GMnn mygg 0 0 limit 2 withvalues withdistance withgeojson
+		sendCommand(GMNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(count), WITHVALUES.raw, WITHGEOJSON.raw);
+	}
+
+	@Override
+	public void gmnnWithMatch(final byte[] key, final double lat, final double lon, final long count, final byte[] pattern) {
+		// GMnn mygg 0 0 limit 2 match hello* withvalues withdistance withgeojson
+		sendCommand(GMNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(count), MATCH.raw, pattern, WITHVALUES.raw,
 				WITHGEOJSON.raw);
 	}
 }

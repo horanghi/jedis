@@ -640,4 +640,315 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 		return client.getBinarySpatialMGETGEOMultiBulkReply();
 	}
 
+	/* Geometry */
+
+	@Override
+	public String gmsetBoundary(final String key, final double minx, final double miny, final double maxx, final double maxy) {
+		checkIsInMulti();
+		client.gmsetBoundary(key, minx, miny, maxx, maxy);
+		return client.getStatusCodeReply();
+	}
+
+	@Override
+	public String gmsetBoundary(final byte[] key, final double minx, final double miny, final double maxx, final double maxy) {
+		checkIsInMulti();
+		client.gmsetBoundary(key, minx, miny, maxx, maxy);
+		return client.getStatusCodeReply();
+	}
+
+	@Override
+	public List<Point<String>> gmgetBoundary(final String key) {
+		checkIsInMulti();
+		client.gmgetBoundary(key);
+		return client.getSpatialBoundaryReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> gmgetBoundary(final byte[] key) {
+		checkIsInMulti();
+		client.gmgetBoundary(key);
+		return client.getBinarySpatialBoundaryReply();
+	}
+
+	@Override
+	public String gmrebuildBoundary(final String key, final double minx, final double miny, final double maxx, final double maxy) {
+		checkIsInMulti();
+		client.gmrebuildBoundary(key, minx, miny, maxx, maxy);
+		return client.getStatusCodeReply();
+	}
+
+	@Override
+	public String gmrebuildBoundary(final byte[] key, final double minx, final double miny, final double maxx, final double maxy) {
+		checkIsInMulti();
+		client.gmrebuildBoundary(key, minx, miny, maxx, maxy);
+		return client.getStatusCodeReply();
+
+	}
+
+	@Override
+	public Long gmadd(final String key, final String member, final String value, final Polygon<?> polygon) {
+		checkIsInMulti();
+		client.gmadd(key, member, value, polygon);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gmadd(final byte[] key, final byte[] member, final byte[] value, final Polygon<?> polygon) {
+		checkIsInMulti();
+		client.gmadd(key, member, value, polygon);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gmadd(final String key, final String member, final String value, final LineString<?> lineString) {
+		checkIsInMulti();
+		client.gmadd(key, member, value, lineString);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gmadd(final byte[] key, final byte[] member, final byte[] value, final LineString<?> lineString) {
+		checkIsInMulti();
+		client.gmadd(key, member, value, lineString);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gmadd(final String key, String member, final String value, final Point<?> point) {
+		checkIsInMulti();
+		client.gmadd(key, member, value, point);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gmadd(final byte[] key, final byte[] member, final byte[] value, final Point<?> point) {
+		checkIsInMulti();
+		client.gmadd(key, member, value, point);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gmadd(final String key, final double x, final double y, final String member, final String value) {
+		checkIsInMulti();
+		client.gmadd(key, x, y, member, value);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gmadd(final byte[] key, final double x, final double y, final byte[] member, final byte[] value) {
+		checkIsInMulti();
+		client.gmadd(key, x, y, member, value);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gmupdate(final String key, final String member, final Point<?> point) {
+		checkIsInMulti();
+		client.gmupdate(key, member, point);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gmupdate(final byte[] key, final byte[] member, final Point<?> point) {
+		checkIsInMulti();
+		client.gmupdate(key, member, point);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gmupdate(final String key, final String member, final Polygon<?> polygon) {
+		checkIsInMulti();
+		client.gmupdate(key, member, polygon);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gmupdate(final byte[] key, final byte[] member, final Polygon<?> polygon) {
+		checkIsInMulti();
+		client.gmupdate(key, member, polygon);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gmupdate(final String key, final String member, final LineString<?> lineString) {
+		checkIsInMulti();
+		client.gmupdate(key, member, lineString);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gmupdate(final byte[] key, final byte[] member, final LineString<?> lineString) {
+		checkIsInMulti();
+		client.gmupdate(key, member, lineString);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public List<Geometry<String>> gmrange(final String key, final long start, final long stop) {
+		checkIsInMulti();
+		client.gmrange(key, start, stop);
+		return client.getSpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<byte[]>> gmrange(final byte[] key, final long start, final long stop) {
+		checkIsInMulti();
+		client.gmrange(key, start, stop);
+		return client.getBinarySpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<String>> gmrevrange(final String key, final long start, final long stop) {
+		checkIsInMulti();
+		client.gmrevrange(key, start, stop);
+		return client.getSpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<byte[]>> gmrevrange(final byte[] key, final long start, final long stop) {
+		checkIsInMulti();
+		client.gmrevrange(key, start, stop);
+		return client.getBinarySpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public Long gmcard(final String key) {
+		checkIsInMulti();
+		client.gmcard(key);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gmcard(final byte[] key) {
+		checkIsInMulti();
+		client.gmcard(key);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gmrem(final String key, final String member) {
+		checkIsInMulti();
+		client.gmrem(key, member);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gmrem(final byte[] key, final byte[] member) {
+		checkIsInMulti();
+		client.gmrem(key, member);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Geometry<String> gmget(final String key, final String member) {
+		checkIsInMulti();
+		client.gmget(key, member);
+		return client.getSpatialGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public Geometry<byte[]> gmget(final byte[] key, final byte[] member) {
+		checkIsInMulti();
+		client.gmget(key, member);
+		return client.getBinarySpatialGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<String>> gmmget(final String key, final String... members) {
+		checkIsInMulti();
+		client.gmmget(key, members);
+		return client.getSpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<byte[]>> gmmget(final byte[] key, final byte[]... members) {
+		checkIsInMulti();
+		client.gmmget(key, members);
+		return client.getBinarySpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<String>> gmrelation(final String key, final Polygon<?> polygon) {
+		checkIsInMulti();
+		client.gmrelation(key, polygon);
+		return client.getSpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<byte[]>> gmrelation(final byte[] key, final Polygon<?> polygon) {
+		checkIsInMulti();
+		client.gmrelation(key, polygon);
+		return client.getBinarySpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<String>> gmrelation(final String key, final LineString<?> lineString) {
+		checkIsInMulti();
+		client.gmrelation(key, lineString);
+		return client.getSpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<byte[]>> gmrelation(final byte[] key, final LineString<?> lineString) {
+		checkIsInMulti();
+		client.gmrelation(key, lineString);
+		return client.getBinarySpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<String>> gmrelation(final String key, final Point<?> point) {
+		checkIsInMulti();
+		client.gmrelation(key, point);
+		return client.getSpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<byte[]>> gmrelation(final byte[] key, final Point<?> point) {
+		checkIsInMulti();
+		client.gmrelation(key, point);
+		return client.getBinarySpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<String>> gmrelationBy(final String key, final String byKey, final String byMember) {
+		checkIsInMulti();
+		client.gmrelationBy(key, byKey, byMember);
+		return client.getSpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<byte[]>> gmrelationBy(final byte[] key, final byte[] byKey, final byte[] byMember) {
+		checkIsInMulti();
+		client.gmrelationBy(key, byKey, byMember);
+		return client.getBinarySpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<String>> gmnn(final String key, final double lat, final double lon, final long count) {
+		checkIsInMulti();
+		client.gmnn(key, lat, lon, count);
+		return client.getSpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<byte[]>> gmnn(final byte[] key, final double lat, final double lon, final long count) {
+		checkIsInMulti();
+		client.gmnn(key, lat, lon, count);
+		return client.getBinarySpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<String>> gmnn(final String key, final double lat, final double lon, final long count, final String pattern) {
+		checkIsInMulti();
+		client.gmnnWithMatch(key, lat, lon, count, pattern);
+		return client.getSpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<byte[]>> gmnn(final byte[] key, final double lat, final double lon, final long count, final byte[] pattern) {
+		checkIsInMulti();
+		client.gmnnWithMatch(key, lat, lon, count, pattern);
+		return client.getBinarySpatialMGETGEOMultiBulkReply();
+	}
+
 }

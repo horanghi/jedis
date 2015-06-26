@@ -359,8 +359,8 @@ public final class Protocol {
 		GPGET,
 		GPMGET,
 		GPNN,
-		GPRANGEBYREGION, 
-		GPRANGEBYREGIONBY, 
+		GPRANGEBYREGION,
+		GPRANGEBYREGIONBY,
 		GPRANGEBY,
 		GGADD,
 		GGUPDATEBY,
@@ -372,7 +372,21 @@ public final class Protocol {
 		GGMGET,
 		GGRELATION,
 		GGRELATIONBY,
-		GGNN;
+		GGNN,
+		GMSETBOUNDARY,
+		GMGETBOUNDARY,
+		GMREBUILDBOUNDARY,
+		GMADD,
+		GMUPDATEBY,
+		GMRANGE,
+		GMREVRANGE,
+		GMCARD,
+		GMREM,
+		GMGET,
+		GMMGET,
+		GMRELATION,
+		GMRELATIONBY,
+		GMNN, ;
 
 		public final byte[] raw;
 
@@ -440,7 +454,7 @@ public final class Protocol {
 			raw = SafeEncoder.encode(unit);
 		}
 	}
-	
+
 	public static enum RELATION {
 		CONTAINS("contains"), WITHIN("within");
 
@@ -450,7 +464,7 @@ public final class Protocol {
 			raw = SafeEncoder.encode(this.name());
 		}
 	}
-	
+
 	public static enum ORDERBY {
 		ASC("asc"), DESC("desc");
 
@@ -470,7 +484,8 @@ public final class Protocol {
 		WITHVALUES,
 		WITHDISTANCE,
 		WITHGEOJSON,
-		XR,NR,
+		XR,
+		NR,
 		LIMIT;
 
 		public final byte[] raw;
@@ -485,7 +500,7 @@ public final class Protocol {
 		Type() {
 		}
 	}
-	
+
 	@ToString
 	public static enum OPCl {
 		OOP("{"), OP("["), CO(","), CL("]"), CCL("}");

@@ -38,6 +38,54 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
+	public Response<Long> gpupdate(String key, String member, double lat, double lon) {
+		client.gpupdate(key, member, lat, lon);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gpupdate(byte[] key, byte[] member, double lat, double lon) {
+		client.gpupdate(key, member, lat, lon);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gpupdate(String key, String member, double lat, double lon, long radius, UNITS unit) {
+		client.gpupdate(key, member, lat, lon, radius, unit);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gpupdate(byte[] key, byte[] member, double lat, double lon, long radius, UNITS unit) {
+		client.gpupdate(key, member, lat, lon, radius, unit);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<List<Point<String>>> gprangeBy(String key, String bykey, String bymember) {
+		client.gprangeBy(key, bykey, bymember);
+		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST);
+	}
+
+	@Override
+	public Response<List<Point<byte[]>>> gprangeBy(byte[] key, byte[] bykey, byte[] bymember) {
+		client.gprangeBy(key, bykey, bymember);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST);
+	}
+
+	@Override
+	public Response<List<Point<String>>> gprangeBy(String key, String bykey, String bymember, String pattern, long count) {
+		client.gprangeByWithMatch(key, bykey, bymember, pattern, count);
+		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST);
+	}
+
+	@Override
+	public Response<List<Point<byte[]>>> gprangeBy(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count) {
+		client.gprangeByWithMatch(key, bykey, bymember, pattern, count);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST);
+	}
+
+	@Override
 	public Response<List<Point<String>>> gprangeByRadius(String key, double lat, double lon, long radius, UNITS unit) {
 		client.gprangeByRadius(key, lat, lon, radius, unit);
 		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST);
@@ -367,52 +415,224 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
 	}
 
+	/* Geometry */
+
 	@Override
-	public Response<Long> gpupdate(String key, String member, double lat, double lon) {
-		client.gpupdate(key, member, lat, lon);
+	public Response<String> gmsetBoundary(String key, double minx, double miny, double maxx, double maxy) {
+		client.gmsetBoundary(key, minx, miny, maxx, maxy);
+		return getResponse(BuilderFactory.STRING);
+	}
+
+	@Override
+	public Response<String> gmsetBoundary(byte[] key, double minx, double miny, double maxx, double maxy) {
+		client.gmsetBoundary(key, minx, miny, maxx, maxy);
+		return getResponse(BuilderFactory.STRING);
+	}
+
+	@Override
+	public Response<List<Point<String>>> gmgetBoundary(String key) {
+		client.gmgetBoundary(key);
+		return getResponse(BuilderFactory.SPATIAL_BOUNDARY_LIST);
+	}
+
+	@Override
+	public Response<List<Point<byte[]>>> gmgetBoundary(byte[] key) {
+		client.gmgetBoundary(key);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_BOUNDARY_LIST);
+	}
+
+	@Override
+	public Response<String> gmrebuildBoundary(String key, double minx, double miny, double maxx, double maxy) {
+		client.gmrebuildBoundary(key, minx, miny, maxx, maxy);
+		return getResponse(BuilderFactory.STRING);
+	}
+
+	@Override
+	public Response<String> gmrebuildBoundary(byte[] key, double minx, double miny, double maxx, double maxy) {
+		client.gmrebuildBoundary(key, minx, miny, maxx, maxy);
+		return getResponse(BuilderFactory.STRING);
+	}
+
+	@Override
+	public Response<Long> gmadd(String key, String member, String value, Polygon<?> polygon) {
+		client.gmadd(key, member, value, polygon);
 		return getResponse(BuilderFactory.LONG);
 	}
 
 	@Override
-	public Response<Long> gpupdate(byte[] key, byte[] member, double lat, double lon) {
-		client.gpupdate(key, member, lat, lon);
+	public Response<Long> gmadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon) {
+		client.gmadd(key, member, value, polygon);
 		return getResponse(BuilderFactory.LONG);
 	}
 
 	@Override
-	public Response<Long> gpupdate(String key, String member, double lat, double lon, long radius, UNITS unit) {
-		client.gpupdate(key, member, lat, lon, radius, unit);
+	public Response<Long> gmadd(String key, String member, String value, LineString<?> lineString) {
+		client.gmadd(key, member, value, lineString);
 		return getResponse(BuilderFactory.LONG);
 	}
 
 	@Override
-	public Response<Long> gpupdate(byte[] key, byte[] member, double lat, double lon, long radius, UNITS unit) {
-		client.gpupdate(key, member, lat, lon, radius, unit);
+	public Response<Long> gmadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString) {
+		client.gmadd(key, member, value, lineString);
 		return getResponse(BuilderFactory.LONG);
 	}
 
 	@Override
-	public Response<List<Point<String>>> gprangeBy(String key, String bykey, String bymember) {
-		client.gprangeBy(key, bykey, bymember);
-		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST);
+	public Response<List<Geometry<String>>> gmrange(String key, long start, long stop) {
+		client.gmrange(key, start, stop);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
-	public Response<List<Point<byte[]>>> gprangeBy(byte[] key, byte[] bykey, byte[] bymember) {
-		client.gprangeBy(key, bykey, bymember);
-		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST);
+	public Response<List<Geometry<byte[]>>> gmrange(byte[] key, long start, long stop) {
+		client.gmrange(key, start, stop);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
-	public Response<List<Point<String>>> gprangeBy(String key, String bykey, String bymember, String pattern, long count) {
-		client.gprangeByWithMatch(key, bykey, bymember, pattern, count);
-		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST);
+	public Response<Long> gmadd(String key, String member, String value, Point<?> point) {
+		client.gmadd(key, member, value, point);
+		return getResponse(BuilderFactory.LONG);
 	}
 
 	@Override
-	public Response<List<Point<byte[]>>> gprangeBy(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count) {
-		client.gprangeByWithMatch(key, bykey, bymember, pattern, count);
-		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST);
+	public Response<Long> gmadd(byte[] key, byte[] member, byte[] value, Point<?> point) {
+		client.gmadd(key, member, value, point);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> gmrevrange(String key, long start, long stop) {
+		client.gmrevrange(key, start, stop);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> gmrevrange(byte[] key, long start, long stop) {
+		client.gmrevrange(key, start, stop);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<Long> gmcard(String key) {
+		client.gmcard(key);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gmcard(byte[] key) {
+		client.gmcard(key);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gmrem(String key, String member) {
+		client.gmrem(key, member);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gmrem(byte[] key, byte[] member) {
+		client.gmrem(key, member);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Geometry<String>> gmget(String key, String member) {
+		client.gmget(key, member);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY);
+	}
+
+	@Override
+	public Response<Geometry<byte[]>> gmget(byte[] key, byte[] member) {
+		client.gmget(key, member);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> gmmget(String key, String... members) {
+		client.gmmget(key, members);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> gmmget(byte[] key, byte[]... members) {
+		client.gmmget(key, members);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> gmrelation(final String key, final Polygon<?> polygon) {
+		client.gmrelation(key, polygon);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> gmrelation(final byte[] key, final Polygon<?> polygon) {
+		client.gmrelation(key, polygon);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> gmrelation(final String key, final LineString<?> lineString) {
+		client.gmrelation(key, lineString);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> gmrelation(final byte[] key, final LineString<?> lineString) {
+		client.gmrelation(key, lineString);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> gmrelation(final String key, final Point<?> point) {
+		client.gmrelation(key, point);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> gmrelation(final byte[] key, final Point<?> point) {
+		client.gmrelation(key, point);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> gmrelationBy(final String key, final String byKey, final String byMember) {
+		client.gmrelationBy(key, byKey, byMember);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> gmrelationBy(final byte[] key, final byte[] byKey, final byte[] byMember) {
+		client.gmrelationBy(key, byKey, byMember);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> gmnn(final String key, final double lat, final double lon, final long count) {
+		client.gmnn(key, lat, lon, count);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> gmnn(final byte[] key, final double lat, final double lon, final long count) {
+		client.gmnn(key, lat, lon, count);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> gmnn(final String key, final double lat, final double lon, final long count,
+			final String pattern) {
+		client.gmnnWithMatch(key, lat, lon, count, pattern);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> gmnn(final byte[] key, final double lat, final double lon, final long count,
+			final byte[] pattern) {
+		client.gmnnWithMatch(key, lat, lon, count, pattern);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
 	}
 
 }

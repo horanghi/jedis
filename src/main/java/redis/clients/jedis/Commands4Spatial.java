@@ -94,4 +94,52 @@ public interface Commands4Spatial extends Commands {
 
 	void ggnnWithMatch(String key, double lat, double lon, long count, String pattern);
 
+	//TODO
+	
+	void gmsetBoundary(String key, double minx, double miny, double maxx, double maxy);
+	
+	void gmgetBoundary(String key);
+
+	void gmrebuildBoundary(String key, double minx, double miny, double maxx, double maxy);
+	
+	void gmadd(String key, String member, String value, Polygon<?> polygon);
+
+	void gmadd(String key, String member, String value, LineString<?> lineString);
+
+	void gmadd(String key, String member, String value, Point<?> point);
+	
+	void gmadd(String key, double x, double y, String member, String value);
+
+	void gmupdate(String key, String member, Polygon<?> polygon);
+
+	void gmupdate(String key, String member, LineString<?> lineString);
+
+	void gmupdate(String key, String member, Point<?> point);
+
+	void gmrange(String key, long start, long stop);
+
+	void gmrevrange(String key, long start, long stop);
+
+	void gmcard(String key);
+
+	void gmrem(String key, String member);
+
+	void gmget(String key, String member);
+
+	void gmmget(String key, String[] members);
+
+	void gmrelation(String key, Polygon<?> polygon);
+
+	void gmrelation(String key, LineString<?> lineString);
+
+	void gmrelation(String key, Point<?> point);
+
+	void gmrelationBy(String key, String byKey, String byMember);
+
+	void gmnn(String key, double lat, double lon, long count);
+
+	void gmnnWithMatch(String key, double lat, double lon, long count, String pattern);
+
+
+
 }

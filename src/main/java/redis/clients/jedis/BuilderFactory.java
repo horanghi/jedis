@@ -459,7 +459,7 @@ public class BuilderFactory {
 		}
 
 	};
-	
+
 	public static final Builder<List<Point<String>>> SPATIAL_BOUNDARY_LIST = new Builder<List<Point<String>>>() {
 		@SuppressWarnings("unchecked")
 		public List<Point<String>> build(Object data) {
@@ -470,7 +470,7 @@ public class BuilderFactory {
 			final List<Point<String>> result = new ArrayList<Point<String>>(l.size());
 			Iterator<byte[]> iterator = l.iterator();
 
-			while (iterator.hasNext()) {
+			if (iterator.hasNext()) {
 				double minx = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				double miny = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				double maxx = Double.valueOf(SafeEncoder.encode(iterator.next()));
@@ -486,7 +486,7 @@ public class BuilderFactory {
 		}
 
 	};
-	
+
 	public static final Builder<List<Point<byte[]>>> BYTE_SPATIAL_BOUNDARY_LIST = new Builder<List<Point<byte[]>>>() {
 		@SuppressWarnings("unchecked")
 		public List<Point<byte[]>> build(Object data) {

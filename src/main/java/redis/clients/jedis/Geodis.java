@@ -671,17 +671,17 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public String gmrebuildBoundary(final String key, final double minx, final double miny, final double maxx, final double maxy) {
+	public Long gmrebuildBoundary(final String key, final double minx, final double miny, final double maxx, final double maxy) {
 		checkIsInMulti();
 		client.gmrebuildBoundary(key, minx, miny, maxx, maxy);
-		return client.getStatusCodeReply();
+		return client.getIntegerReply();
 	}
 
 	@Override
-	public String gmrebuildBoundary(final byte[] key, final double minx, final double miny, final double maxx, final double maxy) {
+	public Long gmrebuildBoundary(final byte[] key, final double minx, final double miny, final double maxx, final double maxy) {
 		checkIsInMulti();
 		client.gmrebuildBoundary(key, minx, miny, maxx, maxy);
-		return client.getStatusCodeReply();
+		return client.getIntegerReply();
 
 	}
 

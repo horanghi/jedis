@@ -200,9 +200,9 @@ public interface GeoCommands {
 	
 	List<Point<byte[]>> gmgetBoundary (byte[] key);
 	
-	String gmrebuildBoundary (String key, double minx, double miny, double maxx, double maxy);
+	Long gmrebuildBoundary (String key, double minx, double miny, double maxx, double maxy);
 	
-	String gmrebuildBoundary (byte[] key, double minx, double miny, double maxx, double maxy);
+	Long gmrebuildBoundary (byte[] key, double minx, double miny, double maxx, double maxy);
 
 	Long gmadd(String key, String member, String value, Polygon<?> polygon);
 

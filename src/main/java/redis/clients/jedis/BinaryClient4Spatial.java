@@ -366,7 +366,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 
 	@Override
 	public void gmrebuildBoundary(byte[] key, double minx, double miny, double maxx, double maxy) {
-		sendCommand(GMREBUILDBOUNDARY, toByteArray(minx), toByteArray(miny), toByteArray(maxx), toByteArray(maxy));
+		sendCommand(GMREBUILDBOUNDARY, key, toByteArray(minx), toByteArray(miny), toByteArray(maxx), toByteArray(maxy));
 	}
 
 	@Override

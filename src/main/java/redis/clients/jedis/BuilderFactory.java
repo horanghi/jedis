@@ -471,15 +471,12 @@ public class BuilderFactory {
 			Iterator<byte[]> iterator = l.iterator();
 
 			while (iterator.hasNext()) {
-				byte[] fistValue = iterator.next();
-				if (fistValue == null) {
-					iterator.next();
-					iterator.next();
-					continue;
-				}
-				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
-				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
-				result.add(new Point<String>(x, y));
+				double minx = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double miny = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double maxx = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double maxy = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				result.add(new Point<String>(minx, miny));
+				result.add(new Point<String>(maxx, maxy));
 			}
 			return result;
 		}
@@ -500,16 +497,13 @@ public class BuilderFactory {
 			final List<Point<byte[]>> result = new ArrayList<Point<byte[]>>(l.size());
 			Iterator<byte[]> iterator = l.iterator();
 
-			while (iterator.hasNext()) {
-				byte[] fistValue = iterator.next();
-				if (fistValue == null) {
-					iterator.next();
-					iterator.next();
-					continue;
-				}
-				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
-				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
-				result.add(new Point<byte[]>(x, y));
+			if (iterator.hasNext()) {
+				double minx = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double miny = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double maxx = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double maxy = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				result.add(new Point<byte[]>(minx, miny));
+				result.add(new Point<byte[]>(maxx, maxy));
 			}
 			return result;
 		}

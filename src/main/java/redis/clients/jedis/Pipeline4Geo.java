@@ -92,6 +92,8 @@ public interface Pipeline4Geo {
 
 	Response<List<Point<byte[]>>> gprangeByRegion(byte[] key, Polygon<?> polygon);
 
+	/* Geography */
+
 	Response<Long> ggadd(String key, String member, String value, Polygon<?> polygon);
 
 	Response<Long> ggadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon);
@@ -152,7 +154,7 @@ public interface Pipeline4Geo {
 
 	Response<List<Geometry<byte[]>>> ggnn(byte[] key, double lat, double lon, long count, byte[] pattern);
 
-	// Geometry
+	/* Geometry */
 
 	Response<String> gmsetBoundary(String key, double minx, double miny, double maxx, double maxy);
 
@@ -162,9 +164,9 @@ public interface Pipeline4Geo {
 
 	Response<List<Point<byte[]>>> gmgetBoundary(byte[] key);
 
-	Response<String> gmrebuildBoundary(String key, double minx, double miny, double maxx, double maxy);
+	Response<Long> gmrebuildBoundary(String key, double minx, double miny, double maxx, double maxy);
 
-	Response<String> gmrebuildBoundary(byte[] key, double minx, double miny, double maxx, double maxy);
+	Response<Long> gmrebuildBoundary(byte[] key, double minx, double miny, double maxx, double maxy);
 
 	Response<Long> gmadd(String key, String member, String value, Polygon<?> polygon);
 

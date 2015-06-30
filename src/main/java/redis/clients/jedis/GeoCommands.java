@@ -73,7 +73,7 @@ public interface GeoCommands {
 	Long gprem(String key, String member);
 
 	Long gprem(byte[] key, byte[] member);
-
+	
 	Point<String> gpget(String key, String member);
 
 	Point<byte[]> gpget(byte[] key, byte[] member);
@@ -114,7 +114,7 @@ public interface GeoCommands {
 
 	List<Point<byte[]>> gprangeByRegion(byte[] key, Polygon<?> polygon, byte[] pattern, long count);
 
-	double distance(double dLat1, double dLon1, double dLat2, double dLon2);
+	double gpdistance(double dLat1, double dLon1, double dLat2, double dLon2);
 
 	/* Geography */
 
@@ -191,6 +191,8 @@ public interface GeoCommands {
 	List<Geometry<byte[]>> ggrelationBy(byte[] key, byte[] byKey, byte[] byMember);
 
 	/* Geometry */
+	
+	double gmdistance(double x1, double y1, double x2, double y2);
 	
 	String gmsetBoundary (String key, double minx, double miny, double maxx, double maxy);
 	

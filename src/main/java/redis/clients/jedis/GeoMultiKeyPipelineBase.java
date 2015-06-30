@@ -442,15 +442,15 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<String> gmrebuildBoundary(String key, double minx, double miny, double maxx, double maxy) {
+	public Response<Long> gmrebuildBoundary(String key, double minx, double miny, double maxx, double maxy) {
 		client.gmrebuildBoundary(key, minx, miny, maxx, maxy);
-		return getResponse(BuilderFactory.STRING);
+		return getResponse(BuilderFactory.LONG);
 	}
 
 	@Override
-	public Response<String> gmrebuildBoundary(byte[] key, double minx, double miny, double maxx, double maxy) {
+	public Response<Long> gmrebuildBoundary(byte[] key, double minx, double miny, double maxx, double maxy) {
 		client.gmrebuildBoundary(key, minx, miny, maxx, maxy);
-		return getResponse(BuilderFactory.STRING);
+		return getResponse(BuilderFactory.LONG);
 	}
 
 	@Override

@@ -334,7 +334,7 @@ public class GeodisTest {
 	@Test
 	public void testgaddnGradiusForCircleEXT() {
 		geodis.del(key);
-		System.out.println(geodis.distance(0.0000001, 0, 0.0000002, 0));
+		System.out.println(geodis.gpdistance(0.0000001, 0, 0.0000002, 0));
 		assertThat(geodis.gpadd(key, 0, 0, member1, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, member2, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, 11, UNITS.M, member3, value), is(OKl));
@@ -807,7 +807,7 @@ public class GeodisTest {
 	 */
 	@Test
 	public void testDistance() {
-		System.out.println(geodis.distance(33.50674337041539, 126.49184109764144, 33.3586056496444, 126.53189806385355));
+		System.out.println(geodis.gpdistance(33.50674337041539, 126.49184109764144, 33.3586056496444, 126.53189806385355));
 		// 36.36770178
 		// 127.40182709999999
 	}

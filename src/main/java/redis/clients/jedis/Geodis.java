@@ -355,7 +355,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public double distance(final double dLat1, final double dLon1, final double dLat2, final double dLon2) {
+	public double gpdistance(final double dLat1, final double dLon1, final double dLat2, final double dLon2) {
 		// d = |ax1 + by1 + c | / sqrt(a^2 + b^2)
 		return Math.acos(Math.sin(dLat1) * Math.sin(dLat2) + Math.cos(dLat1) * Math.cos(dLat2) * Math.cos(dLon1 - dLon2));
 	}
@@ -641,6 +641,11 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	/* Geometry */
+	
+	@Override
+	public double gmdistance(double x1, double y1, double x2, double y2) {
+		return Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
+	}
 
 	@Override
 	public String gmsetBoundary(final String key, final double minx, final double miny, final double maxx, final double maxy) {

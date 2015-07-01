@@ -220,11 +220,11 @@ public interface Pipeline4Geo {
 
 	Response<List<Geometry<byte[]>>> gmrelationBy(byte[] key, byte[] byKey, byte[] byMember);
 
-	Response<List<Geometry<String>>> gmnn(String key, double lat, double lon, long count);
+	Response<List<Geometry<String>>> gmnn(String key, double x, double y, long count);
 
-	Response<List<Geometry<byte[]>>> gmnn(byte[] key, double lat, double lon, long count);
+	Response<List<Geometry<byte[]>>> gmnn(byte[] key, double x, double y, long count);
 
-	Response<List<Geometry<String>>> gmnn(String key, double lat, double lon, long count, String pattern);
+	Response<List<Geometry<String>>> gmnn(String key, double x, double y, long count, String pattern);
 
-	Response<List<Geometry<byte[]>>> gmnn(byte[] key, double lat, double lon, long count, byte[] pattern);
+	Response<List<Geometry<byte[]>>> gmnn(byte[] key, double x, double y, long count, byte[] pattern);
 }

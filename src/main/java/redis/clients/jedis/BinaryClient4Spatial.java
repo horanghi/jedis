@@ -476,15 +476,15 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void gmnn(final byte[] key, final double lat, final double lon, final long count) {
+	public void gmnn(final byte[] key, final double x, final double y, final long count) {
 		// GMnn mygg 0 0 limit 2 withvalues withdistance withgeojson
-		sendCommand(GMNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(count), WITHVALUES.raw, WITHGEOJSON.raw);
+		sendCommand(GMNN, key, toByteArray(x), toByteArray(y), LIMIT.raw, toByteArray(count), WITHVALUES.raw, WITHGEOJSON.raw);
 	}
 
 	@Override
-	public void gmnnWithMatch(final byte[] key, final double lat, final double lon, final long count, final byte[] pattern) {
+	public void gmnnWithMatch(final byte[] key, final double x, final double y, final long count, final byte[] pattern) {
 		// GMnn mygg 0 0 limit 2 match hello* withvalues withdistance withgeojson
-		sendCommand(GMNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(count), MATCH.raw, pattern, WITHVALUES.raw,
+		sendCommand(GMNN, key, toByteArray(x), toByteArray(y), LIMIT.raw, toByteArray(count), MATCH.raw, pattern, WITHVALUES.raw,
 				WITHGEOJSON.raw);
 	}
 }

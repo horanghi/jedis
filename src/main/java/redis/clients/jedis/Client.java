@@ -1220,12 +1220,13 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gmnn(String key, double lat, double lon, long count) {
-		gmnn(SafeEncoder.encode(key), lat, lon, count);
+	public void gmnn(String key, double x, double y, long count) {
+		gmnn(SafeEncoder.encode(key), x, y, count);
 	}
 
-	public void gmnnWithMatch(String key, double lat, double lon, long count, String pattern) {
-		gmnnWithMatch(SafeEncoder.encode(key), lat, lon, count, SafeEncoder.encode(pattern));
+	@Override
+	public void gmnnWithMatch(String key, double x, double y, long count, String pattern) {
+		gmnnWithMatch(SafeEncoder.encode(key), x, y, count, SafeEncoder.encode(pattern));
 	}
 
 }

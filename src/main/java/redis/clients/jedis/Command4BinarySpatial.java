@@ -128,9 +128,9 @@ public interface Command4BinarySpatial {
 
 	void gmrelationBy(byte[] key, byte[] byKey, byte[] byMember);
 
-	void gmnn(byte[] key, double lat, double lon, long count);
+	void gmnn(byte[] key, double x, double y, long count);
 
-	void gmnnWithMatch(byte[] key, double lat, double lon, long count, byte[] pattern);
+	void gmnnWithMatch(byte[] key, double x, double y, long count, byte[] pattern);
 
 	void gmupdate(byte[] key, byte[] member, Polygon<?> polygon);
 

@@ -218,9 +218,9 @@ public interface GeoCommands {
 
 	Long gmadd(byte[] key, byte[] member, byte[] value, Point<?> point);
 	
-	Long gmadd(String key, double lat, double lon, String member, String value);
+	Long gmadd(String key, double x, double y, String member, String value);
 
-	Long gmadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
+	Long gmadd(byte[] key, double x, double y, byte[] member, byte[] value);
 	
 	List<Geometry<String>> gmrange(String key, long start, long stop);
 
@@ -258,13 +258,13 @@ public interface GeoCommands {
 
 	List<Geometry<byte[]>> gmrelation(byte[] key, Point<?> point);
 
-	List<Geometry<String>> gmnn(String key, double lat, double lon, long count);
+	List<Geometry<String>> gmnn(String key, double x, double y, long count);
 
-	List<Geometry<byte[]>> gmnn(byte[] key, double lat, double lon, long count);
+	List<Geometry<byte[]>> gmnn(byte[] key, double x, double y, long count);
 
-	List<Geometry<String>> gmnn(String key, double lat, double lon, long count, String pattern);
+	List<Geometry<String>> gmnn(String key, double x, double y, long count, String pattern);
 
-	List<Geometry<byte[]>> gmnn(byte[] key, double lat, double lon, long count, byte[] pattern);
+	List<Geometry<byte[]>> gmnn(byte[] key, double x, double y, long count, byte[] pattern);
 
 	Long gmupdate(String key, String member, Point<?> point);
 

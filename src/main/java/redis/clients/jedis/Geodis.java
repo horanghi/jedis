@@ -936,23 +936,23 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Geometry<byte[]>> gmnn(final byte[] key, final double lat, final double lon, final long count) {
+	public List<Geometry<byte[]>> gmnn(final byte[] key, final double x, final double y, final long count) {
 		checkIsInMulti();
-		client.gmnn(key, lat, lon, count);
+		client.gmnn(key, x, y, count);
 		return client.getBinarySpatialMGETGEOMultiBulkReply();
 	}
 
 	@Override
-	public List<Geometry<String>> gmnn(final String key, final double lat, final double lon, final long count, final String pattern) {
+	public List<Geometry<String>> gmnn(final String key, final double x, final double y, final long count, final String pattern) {
 		checkIsInMulti();
-		client.gmnnWithMatch(key, lat, lon, count, pattern);
+		client.gmnnWithMatch(key, x, y, count, pattern);
 		return client.getSpatialMGETGEOMultiBulkReply();
 	}
 
 	@Override
-	public List<Geometry<byte[]>> gmnn(final byte[] key, final double lat, final double lon, final long count, final byte[] pattern) {
+	public List<Geometry<byte[]>> gmnn(final byte[] key, final double x, final double y, final long count, final byte[] pattern) {
 		checkIsInMulti();
-		client.gmnnWithMatch(key, lat, lon, count, pattern);
+		client.gmnnWithMatch(key, x, y, count, pattern);
 		return client.getBinarySpatialMGETGEOMultiBulkReply();
 	}
 

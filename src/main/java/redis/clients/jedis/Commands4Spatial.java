@@ -32,6 +32,8 @@ public interface Commands4Spatial extends Commands {
 	void gpmget(String key, String[] members);
 
 	void gpnn(String key, double lat, double lon, long count);
+	
+	void gpnn(String key, double lat, double lon, long count, String pattern);
 
 	void gprangeByRadiusWithMatch(String key, double lat, double lon, long radius, UNITS unit, String pattern);
 
@@ -139,7 +141,5 @@ public interface Commands4Spatial extends Commands {
 	void gmnn(String key, double lat, double lon, long count);
 
 	void gmnnWithMatch(String key, double lat, double lon, long count, String pattern);
-
-
 
 }

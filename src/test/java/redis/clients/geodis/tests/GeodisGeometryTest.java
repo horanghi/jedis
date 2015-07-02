@@ -106,7 +106,7 @@ public class GeodisGeometryTest {
 		assertTrue(geodis.gmgetBoundary("horanghi").isEmpty()); // not created
 		assertThat(geodis.gmrebuildBoundary("horanghi", 0, 0, 1, 1), is(0l)); // not applied
 		assertTrue(geodis.gmgetBoundary("horanghi").isEmpty()); // not created
-		
+
 		assertTrue(geodis.gmgetBoundary("horanghi".getBytes()).isEmpty()); // not created
 		assertThat(geodis.gmrebuildBoundary("horanghi".getBytes(), 0, 0, 1, 1), is(0l)); // not applied
 		assertTrue(geodis.gmgetBoundary("horanghi".getBytes()).isEmpty()); // not created
@@ -387,6 +387,28 @@ public class GeodisGeometryTest {
 		}
 
 		assertThat(geoms.size(), is(2));
+	}
+
+	@Test
+	public void testgmaddngmnn() {
+		assertThat(geodis.gmadd(keyb, 0, 0, member1b, valueb), is(OKl));
+		assertThat(geodis.gmadd(keyb, 1, 1, member2b, valueb), is(OKl));
+		assertThat(geodis.gmadd(key, 2, 2, member3, value), is(OKl));
+		assertThat(geodis.gmadd(key, 3, 3, member4, value), is(OKl));
+
+		assertThat(geodis.gmnn(keyb, 4, 4, 2).size(), is(2));
+		assertThat(geodis.gmnn(keyb, 4, 4, 3).size(), is(3));
+	}
+
+	@Test
+	public void testgmaddngmnnpattern() {
+		assertThat(geodis.gmadd(keyb, 0, 0, member1b, valueb), is(OKl));
+		assertThat(geodis.gmadd(keyb, 1, 1, member2b, valueb), is(OKl));
+		assertThat(geodis.gmadd(key, 2, 2, member3, value), is(OKl));
+		assertThat(geodis.gmadd(key, 3, 3, member4, value), is(OKl));
+
+		assertThat(geodis.gmnn(key, 4, 4, 2, "memkey*").size(), is(2));
+		assertThat(geodis.gmnn(key, 4, 4, 3, "memkey*").size(), is(3));
 	}
 
 }

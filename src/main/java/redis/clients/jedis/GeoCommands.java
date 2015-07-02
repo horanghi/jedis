@@ -85,6 +85,10 @@ public interface GeoCommands {
 	List<Point<String>> gpnn(String key, double lat, double lon, long count);
 
 	List<Point<byte[]>> gpnn(byte[] key, double lat, double lon, long count);
+	
+	List<Point<String>> gpnn(String key, double lat, double lon, long count, String pattern);
+
+	List<Point<byte[]>> gpnn(byte[] key, double lat, double lon, long count, byte[] pattern);
 
 	List<Point<String>> gprangeByRegion(String key, Polygon<?> polygon);
 
@@ -281,4 +285,5 @@ public interface GeoCommands {
 	List<Geometry<String>> gmrelationBy(String key, String byKey, String byMember);
 
 	List<Geometry<byte[]>> gmrelationBy(byte[] key, byte[] byKey, byte[] byMember);
+
 }

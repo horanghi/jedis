@@ -226,6 +226,20 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 		client.gpnn(key, lat, lon, count);
 		return client.getBinarySpatialMultiBulkReply();
 	}
+	
+	@Override
+	public List<Point<String>> gpnn(final String key, final double lat, final double lon, final long count, final String pattern) {
+		checkIsInMulti();
+		client.gpnn(key, lat, lon, count, pattern);
+		return client.getSpatialMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> gpnn(final byte[] key, final double lat, final double lon, final long count, final byte[] pattern) {
+		checkIsInMulti();
+		client.gpnn(key, lat, lon, count, pattern);
+		return client.getBinarySpatialMultiBulkReply();
+	}
 
 	@Override
 	public Point<String> gpget(final String key, final String member) {
@@ -932,28 +946,28 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	public List<Geometry<String>> gmnn(final String key, final double lat, final double lon, final long count) {
 		checkIsInMulti();
 		client.gmnn(key, lat, lon, count);
-		return client.getSpatialMGETGEOMultiBulkReply();
+		return client.getSpatialMGETGEOWithDistanceMultiWBulkReply();
 	}
 
 	@Override
 	public List<Geometry<byte[]>> gmnn(final byte[] key, final double x, final double y, final long count) {
 		checkIsInMulti();
 		client.gmnn(key, x, y, count);
-		return client.getBinarySpatialMGETGEOMultiBulkReply();
+		return client.getBinarySpatialMGETGEOWithDistanceMultiBulkReply();
 	}
 
 	@Override
 	public List<Geometry<String>> gmnn(final String key, final double x, final double y, final long count, final String pattern) {
 		checkIsInMulti();
 		client.gmnnWithMatch(key, x, y, count, pattern);
-		return client.getSpatialMGETGEOMultiBulkReply();
+		return client.getSpatialMGETGEOWithDistanceMultiWBulkReply();
 	}
 
 	@Override
 	public List<Geometry<byte[]>> gmnn(final byte[] key, final double x, final double y, final long count, final byte[] pattern) {
 		checkIsInMulti();
 		client.gmnnWithMatch(key, x, y, count, pattern);
-		return client.getBinarySpatialMGETGEOMultiBulkReply();
+		return client.getBinarySpatialMGETGEOWithDistanceMultiBulkReply();
 	}
 
 }

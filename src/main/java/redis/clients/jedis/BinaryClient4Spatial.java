@@ -174,6 +174,13 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
+	public void gpnn(final byte[] key, final double lat, final double lon, final long count, final byte[] pattern) {
+		// GPNN key latitude longitude LIMIT count [MATCH pattern] [NR|XR] [WITHVALUES] [WITHDISTANCE]
+		sendCommand(GPNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(count), MATCH.raw, pattern, NR.raw,
+				WITHVALUES.raw, WITHDISTANCE.raw);
+	}
+
+	@Override
 	public void gprangeByRegion(byte[] key, Polygon<?> polygon) {
 		// GPRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
 		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
@@ -478,13 +485,14 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	@Override
 	public void gmnn(final byte[] key, final double x, final double y, final long count) {
 		// GMnn mygg 0 0 limit 2 withvalues withdistance withgeojson
-		sendCommand(GMNN, key, toByteArray(x), toByteArray(y), LIMIT.raw, toByteArray(count), WITHVALUES.raw, WITHGEOJSON.raw);
+		sendCommand(GMNN, key, toByteArray(x), toByteArray(y), LIMIT.raw, toByteArray(count), WITHVALUES.raw, WITHDISTANCE.raw,
+				WITHGEOJSON.raw);
 	}
 
 	@Override
 	public void gmnnWithMatch(final byte[] key, final double x, final double y, final long count, final byte[] pattern) {
 		// GMnn mygg 0 0 limit 2 match hello* withvalues withdistance withgeojson
 		sendCommand(GMNN, key, toByteArray(x), toByteArray(y), LIMIT.raw, toByteArray(count), MATCH.raw, pattern, WITHVALUES.raw,
-				WITHGEOJSON.raw);
+				WITHDISTANCE.raw, WITHGEOJSON.raw);
 	}
 }

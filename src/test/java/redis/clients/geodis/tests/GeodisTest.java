@@ -24,6 +24,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.RELATION;
+import redis.clients.jedis.Protocol.Type;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Geometry;
@@ -76,6 +77,12 @@ public class GeodisTest {
 	@After
 	public void tearDown() throws Exception {
 		geodisPool.returnResource(geodis);
+	}
+	
+	@Test
+	public void testEqualsType(){
+		assertTrue(Type.POINT == Type.POINT);
+		assertTrue(Type.POINT.equals(Type.POINT));
 	}
 
 	@SuppressWarnings("rawtypes")

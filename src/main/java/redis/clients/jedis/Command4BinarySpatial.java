@@ -32,6 +32,8 @@ public interface Command4BinarySpatial {
 	void gpmget(byte[] key, byte[]... members);
 
 	void gpnn(byte[] key, double lat, double lon, long count);
+	
+	void gpnn(byte[] key, double lat, double lon, long count, byte[] pattern);
 
 	void gprangeByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
 

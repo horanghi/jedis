@@ -954,6 +954,11 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	public void gpnn(final String key, final double lat, final double lon, final long count) {
 		gpnn(SafeEncoder.encode(key), lat, lon, count);
 	}
+	
+	@Override
+	public void gpnn(final String key, final double lat, final double lon, final long count, final String pattern) {
+		gpnn(SafeEncoder.encode(key), lat, lon, count, SafeEncoder.encode(pattern));
+	}
 
 	@Override
 	public void gprangeByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern) {

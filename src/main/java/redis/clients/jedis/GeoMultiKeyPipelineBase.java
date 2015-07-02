@@ -222,6 +222,18 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
+	public Response<List<Point<String>>> gpnn(String key, double lat, double lon, long count, String pattern) {
+		client.gpnn(key, lat, lon, count, pattern);
+		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST);
+	}
+
+	@Override
+	public Response<List<Point<byte[]>>> gpnn(byte[] key, double lat, double lon, long count, byte[] pattern) {
+		client.gpnn(key, lat, lon, count, pattern);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST);
+	}
+
+	@Override
 	public Response<List<Point<String>>> gprangeByRegion(String key, Polygon<?> polygon) {
 		client.gprangeByRegion(key, polygon);
 		return getResponse(BuilderFactory.SPATIAL_GPOINT_LIST);
@@ -441,7 +453,6 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 		return getResponse(BuilderFactory.BYTE_SPATIAL_BOUNDARY_LIST);
 	}
 
-
 	@Override
 	public Response<Long> gmrebuildBoundary(String key, double minx, double miny, double maxx, double maxy) {
 		client.gmrebuildBoundary(key, minx, miny, maxx, maxy);
@@ -623,15 +634,13 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<List<Geometry<String>>> gmnn(final String key, final double x, final double y, final long count,
-			final String pattern) {
+	public Response<List<Geometry<String>>> gmnn(final String key, final double x, final double y, final long count, final String pattern) {
 		client.gmnnWithMatch(key, x, y, count, pattern);
 		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
-	public Response<List<Geometry<byte[]>>> gmnn(final byte[] key, final double x, final double y, final long count,
-			final byte[] pattern) {
+	public Response<List<Geometry<byte[]>>> gmnn(final byte[] key, final double x, final double y, final long count, final byte[] pattern) {
 		client.gmnnWithMatch(key, x, y, count, pattern);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
 	}

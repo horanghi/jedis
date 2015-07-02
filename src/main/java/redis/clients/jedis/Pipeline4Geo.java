@@ -87,6 +87,10 @@ public interface Pipeline4Geo {
 	Response<List<Point<String>>> gpnn(String key, double lat, double lon, long count);
 
 	Response<List<Point<byte[]>>> gpnn(byte[] key, double lat, double lon, long count);
+	
+	Response<List<Point<String>>> gpnn(String key, double lat, double lon, long count, String pattern);
+
+	Response<List<Point<byte[]>>> gpnn(byte[] key, double lat, double lon, long count, byte[] pattern);
 
 	Response<List<Point<String>>> gprangeByRegion(String key, Polygon<?> polygon);
 
@@ -227,4 +231,5 @@ public interface Pipeline4Geo {
 	Response<List<Geometry<String>>> gmnn(String key, double x, double y, long count, String pattern);
 
 	Response<List<Geometry<byte[]>>> gmnn(byte[] key, double x, double y, long count, byte[] pattern);
+
 }

@@ -184,35 +184,35 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	public void gprangeByRegion(byte[] key, Polygon<?> polygon) {
 		// GPRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
 		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
-		sendCommand(GPRANGEBYREGION, key, polygon.getJsonByte(), WITHVALUES.raw);
+		sendCommand(GPRANGEBYREGION, key, polygon.getJsonByte(), NR.raw, WITHVALUES.raw);
 	}
 
 	@Override
 	public void gprangeByRegion(byte[] key, LineString<?> lineString) {
 		// GPRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
 		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
-		sendCommand(GPRANGEBYREGION, key, lineString.getJsonByte(), WITHVALUES.raw);
+		sendCommand(GPRANGEBYREGION, key, lineString.getJsonByte(), NR.raw, WITHVALUES.raw);
 	}
 
 	@Override
 	public void gprangeByRegion(byte[] key, Point<?> point) {
 		// GPRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
 		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
-		sendCommand(GPRANGEBYREGION, key, point.getJsonByte(), WITHVALUES.raw);
+		sendCommand(GPRANGEBYREGION, key, point.getJsonByte(), NR.raw, WITHVALUES.raw);
 	}
 
 	@Override
 	public void gprangeByRegionWithMatch(byte[] key, Polygon<?> polygon, byte[] pattern) {
 		// GPRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
 		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
-		sendCommand(GPRANGEBYREGION, key, polygon.getJsonByte(), MATCH.raw, pattern, WITHVALUES.raw);
+		sendCommand(GPRANGEBYREGION, key, polygon.getJsonByte(), MATCH.raw, pattern, NR.raw, WITHVALUES.raw);
 	}
 
 	@Override
 	public void gprangeByRegionWithMatch(byte[] key, Polygon<?> polygon, byte[] pattern, long count) {
 		// GPRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
 		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
-		sendCommand(GPRANGEBYREGION, key, polygon.getJsonByte(), MATCH.raw, pattern, WITHVALUES.raw, ASC.raw, LIMIT.raw, toByteArray(0),
+		sendCommand(GPRANGEBYREGION, key, polygon.getJsonByte(), MATCH.raw, pattern, NR.raw, WITHVALUES.raw, ASC.raw, LIMIT.raw, toByteArray(0),
 				toByteArray(count));
 	}
 
@@ -220,14 +220,14 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	public void gprangeByRegionWithMatch(byte[] key, LineString<?> lineString, byte[] pattern) {
 		// GPRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
 		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
-		sendCommand(GPRANGEBYREGION, key, lineString.getJsonByte(), MATCH.raw, pattern, WITHVALUES.raw);
+		sendCommand(GPRANGEBYREGION, key, lineString.getJsonByte(), MATCH.raw, pattern, NR.raw, WITHVALUES.raw);
 	}
 
 	@Override
 	public void gprangeByRegionWithMatch(byte[] key, Point<?> point, byte[] pattern) {
 		// GPRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
 		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
-		sendCommand(GPRANGEBYREGION, key, point.getJsonByte(), MATCH.raw, pattern, WITHVALUES.raw);
+		sendCommand(GPRANGEBYREGION, key, point.getJsonByte(), MATCH.raw, pattern, NR.raw, WITHVALUES.raw);
 	}
 
 	@Override

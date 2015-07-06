@@ -70,7 +70,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void gpadd(final byte[] key, final double lat, final double lon, final long radius, final UNITS unit, final byte[] member,
+	public void gpadd(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit, final byte[] member,
 			final byte[] value) {
 		// GPADD key member value latitude longitude [RADIUS radius m|km]
 		sendCommand(GPADD, key, member, value, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw);
@@ -83,13 +83,13 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void gpupdate(final byte[] key, final byte[] member, final double lat, final double lon, final long radius, final UNITS unit) {
+	public void gpupdate(final byte[] key, final byte[] member, final double lat, final double lon, final double radius, final UNITS unit) {
 		// GUPDATEBY key member latitude longitude [RADIUS radius m|km]
 		sendCommand(GPUPDATEBY, key, member, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw);
 	}
 
 	@Override
-	public void gprangeByRadius(final byte[] key, final double lat, final double lon, final long radius, final UNITS unit) {
+	public void gprangeByRadius(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit) {
 		// GPRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
 		sendCommand(GPRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw,
@@ -97,7 +97,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void gprangeCircleByRadius(final byte[] key, final double lat, final double lon, final long radius, final UNITS unit) {
+	public void gprangeCircleByRadius(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit) {
 		// GPRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
 		sendCommand(GPRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw,
@@ -105,7 +105,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void gprangeCircleByRadius(final byte[] key, final double lat, final double lon, final long radius, final UNITS unit,
+	public void gprangeCircleByRadius(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit,
 			final RELATION scope, final ORDERBY order) {
 		// GPRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
@@ -114,7 +114,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void gprangeByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern) {
+	public void gprangeByRadiusWithMatch(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern) {
 		// GPRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
 		sendCommand(GPRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw,
@@ -122,7 +122,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void gprangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern) {
+	public void gprangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern) {
 		// GPRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
 		sendCommand(GPRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw,
@@ -130,8 +130,8 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void gprangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, RELATION scope,
-			ORDERBY order) {
+	public void gprangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern,
+			RELATION scope, ORDERBY order) {
 		// GPRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
 		sendCommand(GPRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, scope.raw,
@@ -212,8 +212,8 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	public void gprangeByRegionWithMatch(byte[] key, Polygon<?> polygon, byte[] pattern, long count) {
 		// GPRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
 		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
-		sendCommand(GPRANGEBYREGION, key, polygon.getJsonByte(), MATCH.raw, pattern, NR.raw, WITHVALUES.raw, ASC.raw, LIMIT.raw, toByteArray(0),
-				toByteArray(count));
+		sendCommand(GPRANGEBYREGION, key, polygon.getJsonByte(), MATCH.raw, pattern, NR.raw, WITHVALUES.raw, ASC.raw, LIMIT.raw,
+				toByteArray(0), toByteArray(count));
 	}
 
 	@Override

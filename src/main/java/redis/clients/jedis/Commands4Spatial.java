@@ -11,17 +11,17 @@ public interface Commands4Spatial extends Commands {
 
 	void gpadd(String key, double lat, double lon, String member, String value);
 
-	void gpadd(String key, double lat, double lon, long radius, UNITS unit, String member, String value);
+	void gpadd(String key, double lat, double lon, double radius, UNITS unit, String member, String value);
 
 	void gpupdate(String key, String member, double lat, double lon);
 
-	void gpupdate(String key, String member, double lat, double lon, long radius, UNITS unit);
+	void gpupdate(String key, String member, double lat, double lon, double radius, UNITS unit);
 
-	void gprangeByRadius(String key, double lat, double lon, long radius, UNITS unit);
+	void gprangeByRadius(String key, double lat, double lon, double radius, UNITS unit);
 
-	void gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit);
+	void gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit);
 
-	void gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, RELATION scope, ORDERBY order);
+	void gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit, RELATION scope, ORDERBY order);
 
 	void gpcard(String key);
 
@@ -35,7 +35,7 @@ public interface Commands4Spatial extends Commands {
 	
 	void gpnn(String key, double lat, double lon, long count, String pattern);
 
-	void gprangeByRadiusWithMatch(String key, double lat, double lon, long radius, UNITS unit, String pattern);
+	void gprangeByRadiusWithMatch(String key, double lat, double lon, double radius, UNITS unit, String pattern);
 
 	void gprangeByRegion(String key, Polygon<?> polygon);
 
@@ -53,9 +53,9 @@ public interface Commands4Spatial extends Commands {
 
 	void gprangeByWithMatch(String key, String bykey, String bymember, String pattern, long count);
 
-	void gprangeCircleByRadiusWithMatch(String key, double lat, double lon, long radius, UNITS unit, String pattern);
+	void gprangeCircleByRadiusWithMatch(String key, double lat, double lon, double radius, UNITS unit, String pattern);
 
-	void gprangeCircleByRadiusWithMatch(String key, double lat, double lon, long radius, UNITS unit, String pattern, RELATION scope,
+	void gprangeCircleByRadiusWithMatch(String key, double lat, double lon, double radius, UNITS unit, String pattern, RELATION scope,
 			ORDERBY order);
 
 	void gprangeByRegionWithMatch(String key, Polygon<?> polygon, String pattern, long count);

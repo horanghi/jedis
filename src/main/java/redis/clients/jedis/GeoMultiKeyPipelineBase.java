@@ -26,13 +26,13 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<Long> gpadd(String key, double lat, double lon, long radius, UNITS unit, String member, String value) {
+	public Response<Long> gpadd(String key, double lat, double lon, double radius, UNITS unit, String member, String value) {
 		client.gpadd(key, lat, lon, radius, unit, member, value);
 		return getResponse(BuilderFactory.LONG);
 	}
 
 	@Override
-	public Response<Long> gpadd(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member, byte[] value) {
+	public Response<Long> gpadd(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] member, byte[] value) {
 		client.gpadd(key, lat, lon, radius, unit, member, value);
 		return getResponse(BuilderFactory.LONG);
 	}
@@ -50,13 +50,13 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<Long> gpupdate(String key, String member, double lat, double lon, long radius, UNITS unit) {
+	public Response<Long> gpupdate(String key, String member, double lat, double lon, double radius, UNITS unit) {
 		client.gpupdate(key, member, lat, lon, radius, unit);
 		return getResponse(BuilderFactory.LONG);
 	}
 
 	@Override
-	public Response<Long> gpupdate(byte[] key, byte[] member, double lat, double lon, long radius, UNITS unit) {
+	public Response<Long> gpupdate(byte[] key, byte[] member, double lat, double lon, double radius, UNITS unit) {
 		client.gpupdate(key, member, lat, lon, radius, unit);
 		return getResponse(BuilderFactory.LONG);
 	}
@@ -86,76 +86,76 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<List<Point<String>>> gprangeByRadius(String key, double lat, double lon, long radius, UNITS unit) {
+	public Response<List<Point<String>>> gprangeByRadius(String key, double lat, double lon, double radius, UNITS unit) {
 		client.gprangeByRadius(key, lat, lon, radius, unit);
 		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Point<byte[]>>> gprangeByRadius(byte[] key, double lat, double lon, long radius, UNITS unit) {
+	public Response<List<Point<byte[]>>> gprangeByRadius(byte[] key, double lat, double lon, double radius, UNITS unit) {
 		client.gprangeByRadius(key, lat, lon, radius, unit);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit) {
+	public Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit) {
 		client.gprangeCircleByRadius(key, lat, lon, radius, unit);
 		return getResponse(BuilderFactory.SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit) {
+	public Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit) {
 		client.gprangeCircleByRadius(key, lat, lon, radius, unit);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit,
+	public Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit,
 			RELATION scope, ORDERBY order) {
 		client.gprangeCircleByRadius(key, lat, lon, radius, unit, scope, order);
 		return getResponse(BuilderFactory.SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit,
+	public Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit,
 			RELATION scope, ORDERBY order) {
 		client.gprangeCircleByRadius(key, lat, lon, radius, unit, scope, order);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Point<String>>> gprangeByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern) {
+	public Response<List<Point<String>>> gprangeByRadius(String key, double lat, double lon, double radius, UNITS unit, String pattern) {
 		client.gprangeByRadiusWithMatch(key, lat, lon, radius, unit, pattern);
 		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Point<byte[]>>> gprangeByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern) {
+	public Response<List<Point<byte[]>>> gprangeByRadius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern) {
 		client.gprangeByRadiusWithMatch(key, lat, lon, radius, unit, pattern);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern) {
+	public Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit, String pattern) {
 		client.gprangeCircleByRadiusWithMatch(key, lat, lon, radius, unit, pattern);
 		return getResponse(BuilderFactory.SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern) {
+	public Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern) {
 		client.gprangeCircleByRadiusWithMatch(key, lat, lon, radius, unit, pattern);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit,
+	public Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit,
 			String pattern, RELATION scope, ORDERBY order) {
 		client.gprangeCircleByRadiusWithMatch(key, lat, lon, radius, unit, pattern, scope, order);
 		return getResponse(BuilderFactory.SPATIAL_GCIRCLE_WITHDISTANCE_LIST);
 	}
 
 	@Override
-	public Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit,
+	public Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit,
 			byte[] pattern, RELATION scope, ORDERBY order) {
 		client.gprangeCircleByRadiusWithMatch(key, lat, lon, radius, unit, pattern, scope, order);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GCIRCLE_WITHDISTANCE_LIST);

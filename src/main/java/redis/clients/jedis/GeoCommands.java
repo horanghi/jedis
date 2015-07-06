@@ -20,17 +20,17 @@ public interface GeoCommands {
 
 	Long gpadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
 
-	Long gpadd(String key, double lat, double lon, long radius, UNITS unit, String member, String value);
+	Long gpadd(String key, double lat, double lon, double radius, UNITS unit, String member, String value);
 
-	Long gpadd(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member, byte[] value);
+	Long gpadd(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] member, byte[] value);
 
 	Long gpupdate(String key, String member, double lat, double lon);
 
 	Long gpupdate(byte[] key, byte[] member, double lat, double lon);
 
-	Long gpupdate(String key, String member, double lat, double lon, long radius, UNITS unit);
+	Long gpupdate(String key, String member, double lat, double lon, double radius, UNITS unit);
 
-	Long gpupdate(byte[] key, byte[] member, double lat, double lon, long radius, UNITS unit);
+	Long gpupdate(byte[] key, byte[] member, double lat, double lon, double radius, UNITS unit);
 
 	List<Point<String>> gprangeBy(String key, String bykey, String bymember);
 
@@ -40,30 +40,30 @@ public interface GeoCommands {
 
 	List<Point<byte[]>> gprangeBy(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count);
 
-	List<Point<String>> gprangeByRadius(String key, double lat, double lon, long radius, UNITS unit);
+	List<Point<String>> gprangeByRadius(String key, double lat, double lon, double radius, UNITS unit);
 
-	List<Point<byte[]>> gprangeByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
+	List<Point<byte[]>> gprangeByRadius(byte[] key, double lat, double lon, double radius, UNITS unit);
 
-	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit);
+	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit);
 
-	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
+	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit);
 
-	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, RELATION scope, ORDERBY order);
+	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit, RELATION scope, ORDERBY order);
 
-	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, RELATION scope, ORDERBY order);
+	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit, RELATION scope, ORDERBY order);
 
-	List<Point<String>> gprangeByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern);
+	List<Point<String>> gprangeByRadius(String key, double lat, double lon, double radius, UNITS unit, String pattern);
 
-	List<Point<byte[]>> gprangeByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
+	List<Point<byte[]>> gprangeByRadius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
 
-	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern);
+	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit, String pattern);
 
-	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
+	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
 
-	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, long radius, UNITS unit, String pattern, RELATION ops,
+	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit, String pattern, RELATION ops,
 			ORDERBY sort);
 
-	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, RELATION ops,
+	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern, RELATION ops,
 			ORDERBY sort);
 
 	Long gpcard(String key);

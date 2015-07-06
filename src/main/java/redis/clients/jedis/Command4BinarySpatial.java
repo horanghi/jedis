@@ -11,17 +11,17 @@ public interface Command4BinarySpatial {
 
 	void gpadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
 
-	void gpadd(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] member, byte[] value);
+	void gpadd(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] member, byte[] value);
 
 	void gpupdate(byte[] key, byte[] member, double lat, double lon);
 
-	void gpupdate(byte[] key, byte[] member, double lat, double lon, long radius, UNITS unit);
+	void gpupdate(byte[] key, byte[] member, double lat, double lon, double radius, UNITS unit);
 
-	void gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
+	void gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit);
 
-	void gprangeCircleByRadius(byte[] key, double lat, double lon, long radius, UNITS unit, RELATION scope, ORDERBY order);
+	void gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit, RELATION scope, ORDERBY order);
 
-	void gprangeByRadius(byte[] key, double lat, double lon, long radius, UNITS unit);
+	void gprangeByRadius(byte[] key, double lat, double lon, double radius, UNITS unit);
 
 	void gpcard(byte[] key);
 
@@ -35,7 +35,7 @@ public interface Command4BinarySpatial {
 	
 	void gpnn(byte[] key, double lat, double lon, long count, byte[] pattern);
 
-	void gprangeByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
+	void gprangeByRadiusWithMatch(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
 
 	void gprangeByRegion(byte[] key, Polygon<?> polygon);
 
@@ -49,9 +49,9 @@ public interface Command4BinarySpatial {
 
 	void gprangeByRegionWithMatch(byte[] key, Point<?> point, byte[] pattern);
 
-	void gprangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern);
+	void gprangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
 
-	void gprangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, long radius, UNITS unit, byte[] pattern, RELATION scope,
+	void gprangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern, RELATION scope,
 			ORDERBY order);
 
 	void gprangeBy(byte[] key, byte[] bykey, byte[] bymember);

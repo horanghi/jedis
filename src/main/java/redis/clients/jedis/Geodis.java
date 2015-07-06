@@ -48,7 +48,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public Long gpadd(final String key, final double lat, final double lon, final long radius, final UNITS unit, final String member,
+	public Long gpadd(final String key, final double lat, final double lon, final double radius, final UNITS unit, final String member,
 			final String value) {
 		checkIsInMulti();
 		client.gpadd(key, lat, lon, radius, unit, member, value);
@@ -56,7 +56,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public Long gpadd(final byte[] key, final double lat, final double lon, final long radius, final UNITS unit, final byte[] member,
+	public Long gpadd(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit, final byte[] member,
 			final byte[] value) {
 		checkIsInMulti();
 		client.gpadd(key, lat, lon, radius, unit, member, value);
@@ -78,35 +78,35 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public Long gpupdate(final String key, final String member, double lat, double lon, long radius, UNITS unit) {
+	public Long gpupdate(final String key, final String member, double lat, double lon, double radius, UNITS unit) {
 		checkIsInMulti();
 		client.gpupdate(key, member, lat, lon, radius, unit);
 		return client.getIntegerReply();
 	}
 
 	@Override
-	public Long gpupdate(final byte[] key, final byte[] member, double lat, double lon, long radius, UNITS unit) {
+	public Long gpupdate(final byte[] key, final byte[] member, double lat, double lon, double radius, UNITS unit) {
 		checkIsInMulti();
 		client.gpupdate(key, member, lat, lon, radius, unit);
 		return client.getIntegerReply();
 	}
 
 	@Override
-	public List<Point<String>> gprangeByRadius(final String key, final double lat, final double lon, final long radius, final UNITS unit) {
+	public List<Point<String>> gprangeByRadius(final String key, final double lat, final double lon, final double radius, final UNITS unit) {
 		checkIsInMulti();
 		client.gprangeByRadius(key, lat, lon, radius, unit);
 		return client.getSpatialMultiBulkReply();
 	}
 
 	@Override
-	public List<Point<byte[]>> gprangeByRadius(final byte[] key, final double lat, final double lon, final long radius, final UNITS unit) {
+	public List<Point<byte[]>> gprangeByRadius(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit) {
 		checkIsInMulti();
 		client.gprangeByRadius(key, lat, lon, radius, unit);
 		return client.getBinarySpatialMultiBulkReply();
 	}
 
 	@Override
-	public List<Circle<String>> gprangeCircleByRadius(final String key, final double lat, final double lon, final long radius,
+	public List<Circle<String>> gprangeCircleByRadius(final String key, final double lat, final double lon, final double radius,
 			final UNITS unit) {
 		checkIsInMulti();
 		client.gprangeCircleByRadius(key, lat, lon, radius, unit);
@@ -114,7 +114,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle<byte[]>> gprangeCircleByRadius(final byte[] key, final double lat, final double lon, final long radius,
+	public List<Circle<byte[]>> gprangeCircleByRadius(final byte[] key, final double lat, final double lon, final double radius,
 			final UNITS unit) {
 		checkIsInMulti();
 		client.gprangeCircleByRadius(key, lat, lon, radius, unit);
@@ -122,7 +122,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle<String>> gprangeCircleByRadius(final String key, final double lat, final double lon, final long radius,
+	public List<Circle<String>> gprangeCircleByRadius(final String key, final double lat, final double lon, final double radius,
 			final UNITS unit, final RELATION scope, final ORDERBY order) {
 		checkIsInMulti();
 		client.gprangeCircleByRadius(key, lat, lon, radius, unit, scope, order);
@@ -130,7 +130,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle<byte[]>> gprangeCircleByRadius(final byte[] key, final double lat, final double lon, final long radius,
+	public List<Circle<byte[]>> gprangeCircleByRadius(final byte[] key, final double lat, final double lon, final double radius,
 			final UNITS unit, final RELATION scope, final ORDERBY order) {
 		checkIsInMulti();
 		client.gprangeCircleByRadius(key, lat, lon, radius, unit, scope, order);
@@ -138,7 +138,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Point<String>> gprangeByRadius(final String key, final double lat, final double lon, final long radius, final UNITS unit,
+	public List<Point<String>> gprangeByRadius(final String key, final double lat, final double lon, final double radius, final UNITS unit,
 			final String pattern) {
 		checkIsInMulti();
 		client.gprangeByRadiusWithMatch(key, lat, lon, radius, unit, pattern);
@@ -146,7 +146,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Point<byte[]>> gprangeByRadius(final byte[] key, final double lat, final double lon, final long radius, final UNITS unit,
+	public List<Point<byte[]>> gprangeByRadius(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit,
 			final byte[] pattern) {
 		checkIsInMulti();
 		client.gprangeByRadiusWithMatch(key, lat, lon, radius, unit, pattern);
@@ -154,7 +154,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle<String>> gprangeCircleByRadius(final String key, final double lat, final double lon, final long radius,
+	public List<Circle<String>> gprangeCircleByRadius(final String key, final double lat, final double lon, final double radius,
 			final UNITS unit, final String pattern) {
 		checkIsInMulti();
 		client.gprangeCircleByRadiusWithMatch(key, lat, lon, radius, unit, pattern);
@@ -162,7 +162,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle<byte[]>> gprangeCircleByRadius(final byte[] key, final double lat, final double lon, final long radius,
+	public List<Circle<byte[]>> gprangeCircleByRadius(final byte[] key, final double lat, final double lon, final double radius,
 			final UNITS unit, final byte[] pattern) {
 		checkIsInMulti();
 		client.gprangeCircleByRadiusWithMatch(key, lat, lon, radius, unit, pattern);
@@ -170,7 +170,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle<String>> gprangeCircleByRadius(final String key, final double lat, final double lon, final long radius,
+	public List<Circle<String>> gprangeCircleByRadius(final String key, final double lat, final double lon, final double radius,
 			final UNITS unit, final String pattern, final RELATION scope, final ORDERBY order) {
 		checkIsInMulti();
 		client.gprangeCircleByRadiusWithMatch(key, lat, lon, radius, unit, pattern, scope, order);
@@ -178,7 +178,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle<byte[]>> gprangeCircleByRadius(final byte[] key, final double lat, final double lon, final long radius,
+	public List<Circle<byte[]>> gprangeCircleByRadius(final byte[] key, final double lat, final double lon, final double radius,
 			final UNITS unit, final byte[] pattern, final RELATION scope, final ORDERBY order) {
 		checkIsInMulti();
 		client.gprangeCircleByRadiusWithMatch(key, lat, lon, radius, unit, pattern, scope, order);

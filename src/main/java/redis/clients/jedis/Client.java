@@ -894,9 +894,9 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gpadd(final String key, final double lat, final double lon, final long distance, final UNITS unit, final String member,
+	public void gpadd(final String key, final double lat, final double lon, final double radius, final UNITS unit, final String member,
 			final String value) {
-		gpadd(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(member), SafeEncoder.encode(value));
+		gpadd(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(member), SafeEncoder.encode(value));
 	}
 
 	@Override
@@ -905,24 +905,24 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gpupdate(final String key, final String member, final double lat, final double lon, final long distance, final UNITS unit) {
-		gpupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), lat, lon, distance, unit);
+	public void gpupdate(final String key, final String member, final double lat, final double lon, final double radius, final UNITS unit) {
+		gpupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), lat, lon, radius, unit);
 	}
 
 	@Override
-	public void gprangeByRadius(final String key, final double lat, final double lon, final long distance, final UNITS unit) {
-		gprangeByRadius(SafeEncoder.encode(key), lat, lon, distance, unit);
+	public void gprangeByRadius(final String key, final double lat, final double lon, final double radius, final UNITS unit) {
+		gprangeByRadius(SafeEncoder.encode(key), lat, lon, radius, unit);
 	}
 
 	@Override
-	public void gprangeCircleByRadius(final String key, final double lat, final double lon, final long distance, final UNITS unit) {
-		gprangeCircleByRadius(SafeEncoder.encode(key), lat, lon, distance, unit);
+	public void gprangeCircleByRadius(final String key, final double lat, final double lon, final double radius, final UNITS unit) {
+		gprangeCircleByRadius(SafeEncoder.encode(key), lat, lon, radius, unit);
 	}
 
 	@Override
-	public void gprangeCircleByRadius(final String key, final double lat, final double lon, final long distance, final UNITS unit,
+	public void gprangeCircleByRadius(final String key, final double lat, final double lon, final double radius, final UNITS unit,
 			final RELATION scope, final ORDERBY order) {
-		gprangeCircleByRadius(SafeEncoder.encode(key), lat, lon, distance, unit, scope, order);
+		gprangeCircleByRadius(SafeEncoder.encode(key), lat, lon, radius, unit, scope, order);
 	}
 
 	@Override
@@ -961,19 +961,19 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gprangeByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern) {
-		gprangeByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern));
+	public void gprangeByRadiusWithMatch(String key, double lat, double lon, double radius, UNITS unit, String pattern) {
+		gprangeByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(pattern));
 	}
 
 	@Override
-	public void gprangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern) {
-		gprangeCircleByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern));
+	public void gprangeCircleByRadiusWithMatch(String key, double lat, double lon, double radius, UNITS unit, String pattern) {
+		gprangeCircleByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(pattern));
 	}
 
 	@Override
-	public void gprangeCircleByRadiusWithMatch(String key, double lat, double lon, long distance, UNITS unit, String pattern,
+	public void gprangeCircleByRadiusWithMatch(String key, double lat, double lon, double radius, UNITS unit, String pattern,
 			RELATION scope, ORDERBY order) {
-		gprangeCircleByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, distance, unit, SafeEncoder.encode(pattern), scope, order);
+		gprangeCircleByRadiusWithMatch(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(pattern), scope, order);
 	}
 
 	@Override

@@ -20,17 +20,17 @@ public interface Pipeline4Geo {
 
 	Response<Long> gpadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
 
-	Response<Long> gpadd(String key, double lat, double lon, long distance, UNITS unit, String member, String value);
+	Response<Long> gpadd(String key, double lat, double lon, double radius, UNITS unit, String member, String value);
 
-	Response<Long> gpadd(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] member, byte[] value);
+	Response<Long> gpadd(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] member, byte[] value);
 
 	Response<Long> gpupdate(String key, String member, double lat, double lon);
 
 	Response<Long> gpupdate(byte[] key, byte[] member, double lat, double lon);
 
-	Response<Long> gpupdate(String key, String member, double lat, double lon, long distance, UNITS unit);
+	Response<Long> gpupdate(String key, String member, double lat, double lon, double radius, UNITS unit);
 
-	Response<Long> gpupdate(byte[] key, byte[] member, double lat, double lon, long distance, UNITS unit);
+	Response<Long> gpupdate(byte[] key, byte[] member, double lat, double lon, double radius, UNITS unit);
 
 	Response<List<Point<String>>> gprangeBy(String key, String bykey, String bymember);
 
@@ -40,32 +40,32 @@ public interface Pipeline4Geo {
 
 	Response<List<Point<byte[]>>> gprangeBy(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count);
 
-	Response<List<Point<String>>> gprangeByRadius(String key, double lat, double lon, long distance, UNITS unit);
+	Response<List<Point<String>>> gprangeByRadius(String key, double lat, double lon, double radius, UNITS unit);
 
-	Response<List<Point<byte[]>>> gprangeByRadius(byte[] key, double lat, double lon, long distance, UNITS unit);
+	Response<List<Point<byte[]>>> gprangeByRadius(byte[] key, double lat, double lon, double radius, UNITS unit);
 
-	Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit);
+	Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit);
 
-	Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit);
+	Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit);
 
-	Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit, RELATION scope,
+	Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit, RELATION scope,
 			ORDERBY order);
 
-	Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, RELATION scope,
+	Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit, RELATION scope,
 			ORDERBY order);
 
-	Response<List<Point<String>>> gprangeByRadius(String key, double lat, double lon, long distance, UNITS unit, String pattern);
+	Response<List<Point<String>>> gprangeByRadius(String key, double lat, double lon, double radius, UNITS unit, String pattern);
 
-	Response<List<Point<byte[]>>> gprangeByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern);
+	Response<List<Point<byte[]>>> gprangeByRadius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
 
-	Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit, String pattern);
+	Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit, String pattern);
 
-	Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern);
+	Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
 
-	Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, long distance, UNITS unit, String pattern,
+	Response<List<Circle<String>>> gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit, String pattern,
 			RELATION scope, ORDERBY order);
 
-	Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, long distance, UNITS unit, byte[] pattern,
+	Response<List<Circle<byte[]>>> gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern,
 			RELATION scope, ORDERBY order);
 
 	Response<Long> gpcard(String key);

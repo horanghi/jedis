@@ -2,18 +2,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -21,11 +11,10 @@ import org.junit.Test;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Protocol.UNITS;
-import redis.clients.jedis.exceptions.JedisDataException;
+import redis.clients.jedis.Response;
 import redis.clients.spatial.model.Point;
-
-import com.jayway.jsonpath.JsonPath;
 
 public class SampleGeodis {
 
@@ -39,14 +28,15 @@ public class SampleGeodis {
 	String member5 = "memkey5";
 	String value = "{ \"Hello\" : \"world\" }";
 
-	List<Point<String>> opoints = Arrays.asList(new Point<String>(member1, 0, 0, value), new Point<String>(member2, 1, 1, value));
+	List<Point<String>> opoints = Arrays.asList(new Point<String>(member1, 0, 0, value), new Point<String>(member2, 1, 1, value),
+			new Point<String>(member3, 2, 2, value));
 
 	Long OKl = 1l;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		// spatial redis
-		pool = new JedisPool("172.19.114.201", 19006);
+		pool = new JedisPool("172.19.114.202", 19006);
 
 	}
 
@@ -88,38 +78,101 @@ public class SampleGeodis {
 	@Test
 	public void testgaddngrange02() {
 		Jedis geodis = pool.getResource();
-		
-		try{
-			//clean
+
+		try {
+			// clean
 			geodis.del(key);
-			
-			//save POI
+
+			// save POI
 			assertThat(geodis.gpadd(key, 0, 0, member1, value), is(OKl));
 			assertThat(geodis.gpadd(key, 1, 1, member2, value), is(OKl));
 			assertThat(geodis.gpadd(key, 2, 2, member3, value), is(OKl));
-			
-			double distance = geodis.gpdistance(0, 0, 2, 2);
-			
-			System.out.println(distance); //1.3967406199581829
-			
-//			List<Point<String>> points = geodis.gprangeByRadius(key, 0.0, 0.0, 2, UNITS.M);
-			
-			//select 
-			List<Point<String>> points = geodis.gprangeByRadius(key, 0, 0, distance - 0.0000000000000001, UNITS.M);
-//			
-//			//assert
+
+			double distance = geodis.gpdistance(0, 0, 1, 1);
+
+			// select
+			List<Point<String>> points = geodis.gprangeByRadius(key, 0, 0, distance, UNITS.M);
+
+			// assert
+			assertThat(points.size(), is(1));
 			for (Point<String> point : points) {
-				assertTrue(opoints.contains(point)); //assert contain ?
+				assertTrue(opoints.contains(point)); // assert contain ?
 			}
-			
-			//clean
+
+			distance = geodis.gpdistance(0, 0, 2, 2);
+
+			points = geodis.gprangeByRadius(key, 0, 0, distance, UNITS.M);
+
+			// assert
+			assertThat(points.size(), is(2));
+			for (Point<String> point : points) {
+				assertTrue(opoints.contains(point)); // assert contain ?
+			}
+
+			distance = geodis.gpdistance(0, 0, 3, 3);
+
+			points = geodis.gprangeByRadius(key, 0, 0, distance, UNITS.M);
+
+			// assert
+			assertThat(points.size(), is(3));
+			for (Point<String> point : points) {
+				assertTrue(opoints.contains(point)); // assert contain ?
+			}
+
+			// clean
 			geodis.del(key);
-			
+
 			pool.returnResource(geodis);
-		}catch(Exception e){
+		} catch (Exception e) {
 			pool.returnBrokenResource(geodis);
 		}
-		
 	}
 
+	@Test
+	public void testpipeline() {
+		Jedis geodis = pool.getResource();
+
+		try {
+			// clean
+			geodis.del(key);
+			Pipeline pl = geodis.pipelined();
+
+			double distance1 = geodis.gpdistance(0, 0, 1, 1);
+			double distance2 = geodis.gpdistance(0, 0, 2, 2);
+
+			// save POI
+			pl.gpadd(key, 0, 0, member1, value);
+			pl.gpadd(key, 1, 1, member2, value);
+			pl.gpadd(key, 2, 2, member3, value);
+
+			// select
+			Response<List<Point<String>>> rpoints1 = pl.gprangeByRadius(key, 0, 0, distance1, UNITS.M);
+			Response<List<Point<String>>> rpoints2 = pl.gprangeByRadius(key, 0, 0, distance2, UNITS.M);
+
+			pl.sync();
+
+			List<Point<String>> points = rpoints1.get();
+
+			// assert
+			assertThat(points.size(), is(1));
+			for (Point<String> point : points) {
+				assertTrue(opoints.contains(point)); // assert contain ?
+			}
+
+			List<Point<String>> points2 = rpoints2.get();
+
+			// assert
+			assertThat(points2.size(), is(2));
+			for (Point<String> point : points2) {
+				assertTrue(opoints.contains(point)); 
+			}
+
+			// clean
+			geodis.del(key);
+
+			pool.returnResource(geodis);
+		} catch (Exception e) {
+			pool.returnBrokenResource(geodis);
+		}
+	}
 }

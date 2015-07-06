@@ -226,7 +226,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 		client.gpnn(key, lat, lon, count);
 		return client.getBinarySpatialMultiBulkReply();
 	}
-	
+
 	@Override
 	public List<Point<String>> gpnn(final String key, final double lat, final double lon, final long count, final String pattern) {
 		checkIsInMulti();
@@ -369,9 +369,16 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public double gpdistance(final double dLat1, final double dLon1, final double dLat2, final double dLon2) {
-		// d = |ax1 + by1 + c | / sqrt(a^2 + b^2)
-		return Math.acos(Math.sin(dLat1) * Math.sin(dLat2) + Math.cos(dLat1) * Math.cos(dLat2) * Math.cos(dLon1 - dLon2));
+	public double gpdistance(final double lat1, final double lng1, final double lat2, final double lng2) {
+		double earthRadius = 6371000; // meters
+		double dLat = Math.toRadians(lat2 - lat1);
+		double dLng = Math.toRadians(lng2 - lng1);
+		double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+				* Math.sin(dLng / 2) * Math.sin(dLng / 2);
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		float dist = (float) (earthRadius * c);
+
+		return dist;
 	}
 
 	@Override
@@ -655,7 +662,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	/* Geometry */
-	
+
 	@Override
 	public double gmdistance(double x1, double y1, double x2, double y2) {
 		return Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));

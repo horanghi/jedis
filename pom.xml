@@ -10,7 +10,7 @@
 	<packaging>jar</packaging>
 	<groupId>com.skplanet.plandas</groupId>
 	<artifactId>geodis</artifactId>
-	<version>0.8.3-SNAPSHOT</version>
+	<version>0.8.3</version>
 	<name>Geodis</name>
 	<description>Geodis is a blazingly small Geo-Redis java client.</description>
 	<url>https://github.com/xetorthio/jedis</url>
@@ -189,6 +189,28 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.4.2</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>fully.qualified.MainClass</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<!-- <plugin> <artifactId>maven-deploy-plugin</artifactId> <version>2.8.1</version> 
 				<configuration> <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository> 

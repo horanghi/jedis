@@ -488,6 +488,30 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 		client.gmadd(key, member, value, lineString);
 		return getResponse(BuilderFactory.LONG);
 	}
+	
+	@Override
+	public Response<Long> gmadd(String key, String member, String value, Point<?> point) {
+		client.gmadd(key, member, value, point);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gmadd(byte[] key, byte[] member, byte[] value, Point<?> point) {
+		client.gmadd(key, member, value, point);
+		return getResponse(BuilderFactory.LONG);
+	}
+	
+	@Override
+	public Response<Long> gmadd(String key, double x, double y, String member, String value ) {
+		client.gmadd(key, member, value, new Point<String>(x, y));
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gmadd(byte[] key, double x, double y,  byte[] member, byte[] value) {
+		client.gmadd(key, member, value, new Point<byte[]>(x, y));
+		return getResponse(BuilderFactory.LONG);
+	}
 
 	@Override
 	public Response<List<Geometry<String>>> gmrange(String key, long start, long stop) {
@@ -499,18 +523,6 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	public Response<List<Geometry<byte[]>>> gmrange(byte[] key, long start, long stop) {
 		client.gmrange(key, start, stop);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
-	}
-
-	@Override
-	public Response<Long> gmadd(String key, String member, String value, Point<?> point) {
-		client.gmadd(key, member, value, point);
-		return getResponse(BuilderFactory.LONG);
-	}
-
-	@Override
-	public Response<Long> gmadd(byte[] key, byte[] member, byte[] value, Point<?> point) {
-		client.gmadd(key, member, value, point);
-		return getResponse(BuilderFactory.LONG);
 	}
 
 	@Override

@@ -105,14 +105,18 @@ public interface Pipeline4Geo {
 	Response<Long> ggadd(String key, String member, String value, LineString<?> lineString);
 
 	Response<Long> ggadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString);
+	
+	Response<Long> ggadd(String key, String member, String value, Point<?> point);
+
+	Response<Long> ggadd(byte[] key, byte[] member, byte[] value, Point<?> point);
+	
+	Response<Long> gmadd(String key, double x, double y, String member, String value);
+
+	Response<Long> gmadd(byte[] key, double x, double y, byte[] member, byte[] value);
 
 	Response<List<Geometry<String>>> ggrange(String key, long start, long stop);
 
 	Response<List<Geometry<byte[]>>> ggrange(byte[] key, long start, long stop);
-
-	Response<Long> ggadd(String key, String member, String value, Point<?> point);
-
-	Response<Long> ggadd(byte[] key, byte[] member, byte[] value, Point<?> point);
 
 	Response<List<Geometry<String>>> ggrevrange(String key, long start, long stop);
 
@@ -231,5 +235,7 @@ public interface Pipeline4Geo {
 	Response<List<Geometry<String>>> gmnn(String key, double x, double y, long count, String pattern);
 
 	Response<List<Geometry<byte[]>>> gmnn(byte[] key, double x, double y, long count, byte[] pattern);
+
+
 
 }

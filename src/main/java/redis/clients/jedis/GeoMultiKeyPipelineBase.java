@@ -624,25 +624,25 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	@Override
 	public Response<List<Geometry<String>>> gmnn(final String key, final double x, final double y, final long count) {
 		client.gmnn(key, x, y, count);
-		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_WITHDISTANCE_LIST);
 	}
 
 	@Override
 	public Response<List<Geometry<byte[]>>> gmnn(final byte[] key, final double x, final double y, final long count) {
 		client.gmnn(key, x, y, count);
-		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_WITHDISTANCE_LIST);
 	}
 
 	@Override
 	public Response<List<Geometry<String>>> gmnn(final String key, final double x, final double y, final long count, final String pattern) {
 		client.gmnnWithMatch(key, x, y, count, pattern);
-		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_WITHDISTANCE_LIST);
 	}
 
 	@Override
 	public Response<List<Geometry<byte[]>>> gmnn(final byte[] key, final double x, final double y, final long count, final byte[] pattern) {
 		client.gmnnWithMatch(key, x, y, count, pattern);
-		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_WITHDISTANCE_LIST);
 	}
 
 }

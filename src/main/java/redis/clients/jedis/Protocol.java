@@ -386,7 +386,12 @@ public final class Protocol {
 		GMMGET,
 		GMRELATION,
 		GMRELATIONBY,
-		GMNN, ;
+		GMNN, 
+		
+		GPEXISTS,
+		GGEXISTS,
+		GMEXISTS,
+		;
 
 		public final byte[] raw;
 

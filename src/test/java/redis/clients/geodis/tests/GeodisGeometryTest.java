@@ -183,6 +183,11 @@ public class GeodisGeometryTest {
 		assertThat(geodis.gmadd(key, 10, 10, member1, value), is(OKl));
 		assertThat(geodis.gmadd(key, 10, 12, member2, value), is(OKl));
 		assertThat(geodis.gmadd(key, 10, 13, member3, value), is(OKl));
+		
+		assertThat(geodis.gmexists(key, member1), is(1l));
+		assertThat(geodis.gmexists(key, member2), is(1l));
+		assertThat(geodis.gmexists(key, "horanghi"), is(0l));
+		
 		assertThat(
 				geodis.gmrelation(
 						key,
@@ -213,6 +218,11 @@ public class GeodisGeometryTest {
 		assertThat(geodis.gmadd(keyb, 10, 10, member1b, valueb), is(OKl));
 		assertThat(geodis.gmadd(keyb, 10, 12, member2b, valueb), is(OKl));
 		assertThat(geodis.gmadd(keyb, 10, 13, member3b, valueb), is(OKl));
+		
+		assertThat(geodis.gmexists(keyb, member1b), is(1l));
+		assertThat(geodis.gmexists(keyb, member2b), is(1l));
+		assertThat(geodis.gmexists(keyb, "horanghi".getBytes()), is(0l));
+		
 		assertThat(
 				geodis.gmrelation(
 						keyb,

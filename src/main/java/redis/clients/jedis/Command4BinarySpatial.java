@@ -32,7 +32,7 @@ public interface Command4BinarySpatial {
 	void gpmget(byte[] key, byte[]... members);
 
 	void gpnn(byte[] key, double lat, double lon, long count);
-	
+
 	void gpnn(byte[] key, double lat, double lon, long count, byte[] pattern);
 
 	void gprangeByRadiusWithMatch(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
@@ -97,13 +97,13 @@ public interface Command4BinarySpatial {
 	void gprangeByRegionWithMatch(byte[] key, Polygon<?> polygon, byte[] pattern, long count);
 
 	// Gemotry
-	
+
 	void gmsetBoundary(byte[] key, double minx, double miny, double maxx, double maxy);
 
 	void gmgetBoundary(byte[] key);
 
 	void gmrebuildBoundary(byte[] key, double minx, double miny, double maxx, double maxy);
-	
+
 	void gmadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon);
 
 	void gmadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString);
@@ -139,5 +139,11 @@ public interface Command4BinarySpatial {
 	void gmupdate(byte[] key, byte[] member, Point<?> point);
 
 	void gmupdate(byte[] key, byte[] member, LineString<?> lineString);
+
+	void gpexists(byte[] key, byte[] member);
+
+	void ggexists(byte[] key, byte[] member);
+
+	void gmexists(byte[] key, byte[] member);
 
 }

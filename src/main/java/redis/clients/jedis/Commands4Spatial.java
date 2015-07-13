@@ -142,4 +142,10 @@ public interface Commands4Spatial extends Commands {
 
 	void gmnnWithMatch(String key, double lat, double lon, long count, String pattern);
 
+	void gpexists(String key, String member);
+	
+	void ggexists(String key, String member);
+	
+	void gmexists(String key, String member);
+
 }

@@ -236,6 +236,20 @@ public interface Pipeline4Geo {
 
 	Response<List<Geometry<byte[]>>> gmnn(byte[] key, double x, double y, long count, byte[] pattern);
 
+	Response<Long> gpexists(String key, String member);
+	
+	Response<Long> gpexists(byte[] key, byte[] member);
+	
+	Response<Long> ggexists(String key, String member);
+	
+	Response<Long> ggexists(byte[] key, byte[] member);
+	
+	Response<Long> gmexists(String key, String member);
+	
+	Response<Long> gmexists(byte[] key, byte[] member);
+
+	
+
 
 
 }

@@ -3,6 +3,7 @@ package redis.clients.jedis;
 import static redis.clients.jedis.Protocol.toByteArray;
 import static redis.clients.jedis.Protocol.Command.GGADD;
 import static redis.clients.jedis.Protocol.Command.GGCARD;
+import static redis.clients.jedis.Protocol.Command.GGEXISTS;
 import static redis.clients.jedis.Protocol.Command.GGGET;
 import static redis.clients.jedis.Protocol.Command.GGMGET;
 import static redis.clients.jedis.Protocol.Command.GGNN;
@@ -14,6 +15,7 @@ import static redis.clients.jedis.Protocol.Command.GGREVRANGE;
 import static redis.clients.jedis.Protocol.Command.GGUPDATEBY;
 import static redis.clients.jedis.Protocol.Command.GMADD;
 import static redis.clients.jedis.Protocol.Command.GMCARD;
+import static redis.clients.jedis.Protocol.Command.GMEXISTS;
 import static redis.clients.jedis.Protocol.Command.GMGET;
 import static redis.clients.jedis.Protocol.Command.GMGETBOUNDARY;
 import static redis.clients.jedis.Protocol.Command.GMMGET;
@@ -28,6 +30,7 @@ import static redis.clients.jedis.Protocol.Command.GMSETBOUNDARY;
 import static redis.clients.jedis.Protocol.Command.GMUPDATEBY;
 import static redis.clients.jedis.Protocol.Command.GPADD;
 import static redis.clients.jedis.Protocol.Command.GPCARD;
+import static redis.clients.jedis.Protocol.Command.GPEXISTS;
 import static redis.clients.jedis.Protocol.Command.GPGET;
 import static redis.clients.jedis.Protocol.Command.GPMGET;
 import static redis.clients.jedis.Protocol.Command.GPNN;
@@ -494,5 +497,20 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		// GMnn mygg 0 0 limit 2 match hello* withvalues withdistance withgeojson
 		sendCommand(GMNN, key, toByteArray(x), toByteArray(y), LIMIT.raw, toByteArray(count), MATCH.raw, pattern, WITHVALUES.raw,
 				WITHDISTANCE.raw, WITHGEOJSON.raw);
+	}
+
+	@Override
+	public void gpexists(final byte[] key, final byte[] member) {
+		sendCommand(GPEXISTS, key, member);
+	}
+
+	@Override
+	public void ggexists(final byte[] key, final byte[] member) {
+		sendCommand(GGEXISTS, key, member);
+	}
+
+	@Override
+	public void gmexists(final byte[] key, final byte[] member) {
+		sendCommand(GMEXISTS, key, member);
 	}
 }

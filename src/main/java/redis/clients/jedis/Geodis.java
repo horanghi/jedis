@@ -977,4 +977,48 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 		return client.getBinarySpatialMGETGEOWithDistanceMultiBulkReply();
 	}
 
+	// ETC
+	
+	@Override
+	public Long gpexists(String key, String member) {
+		checkIsInMulti();
+		client.gpexists(key, member);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gpexists(byte[] key, byte[] member) {
+		checkIsInMulti();
+		client.gpexists(key, member);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggexists(String key, String member) {
+		checkIsInMulti();
+		client.ggexists(key, member);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggexists(byte[] key, byte[] member) {
+		checkIsInMulti();
+		client.ggexists(key, member);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gmexists(String key, String member) {
+		checkIsInMulti();
+		client.gmexists(key, member);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long gmexists(byte[] key, byte[] member) {
+		checkIsInMulti();
+		client.gmexists(key, member);
+		return client.getIntegerReply();
+	}
+
 }

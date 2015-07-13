@@ -78,9 +78,9 @@ public class GeodisTest {
 	public void tearDown() throws Exception {
 		geodisPool.returnResource(geodis);
 	}
-	
+
 	@Test
-	public void testEqualsType(){
+	public void testEqualsType() {
 		assertTrue(Type.POINT == Type.POINT);
 		assertTrue(Type.POINT.equals(Type.POINT));
 	}
@@ -163,6 +163,11 @@ public class GeodisTest {
 			assertTrue(point.equals(opoints[idx++]));
 			System.out.println(point.toString());
 		}
+
+		assertThat(geodis.gpexists(key, member1), is(1l));
+		assertThat(geodis.gpexists(key, member2), is(1l));
+		assertThat(geodis.gpexists(key, "horanghi"), is(0l));
+
 		geodis.del(key);
 
 		geodis.del(keyb);
@@ -173,6 +178,11 @@ public class GeodisTest {
 		for (Point<byte[]> point : Pointsb) {
 			System.out.println(point.toString());
 		}
+
+		assertThat(geodis.gpexists(keyb, member1b), is(1l));
+		assertThat(geodis.gpexists(keyb, member2b), is(1l));
+		assertThat(geodis.gpexists(keyb, "horanghi".getBytes()), is(0l));
+
 		geodis.del(keyb);
 	}
 
@@ -280,6 +290,7 @@ public class GeodisTest {
 			p.equalsDeep(ps.get(idx));
 			System.out.println(p.toString());
 		}
+
 		geodis.del(key);
 
 		geodis.del(keyb);
@@ -319,6 +330,10 @@ public class GeodisTest {
 		assertThat(geodis.gprangeBy(key, keyGG, member3, "*1*", 2).size(), is(1));
 		List<Point<String>> points = geodis.gprangeBy(key, keyGG, member3, "*1*", 2);
 		assertThat(points.get(0), is(new Point<String>(member1, 0, 0, value)));
+
+		assertThat(geodis.ggexists(keyGG, member3), is(1l));
+		assertThat(geodis.ggexists(keyGG, "horanghi"), is(0l));
+
 		geodis.del(key);
 
 		geodis.del(keyb);
@@ -332,6 +347,9 @@ public class GeodisTest {
 		assertThat(geodis.gprangeBy(keyb, keyGG.getBytes(), member3b, "*2*".getBytes(), 2).size(), is(1));
 		List<Point<byte[]>> pointsb = geodis.gprangeBy(keyb, keyGG.getBytes(), member3b, "*2*".getBytes(), 2);
 		assertThat(pointsb.get(0), is(new Point<byte[]>(member2b, 0, 0, valueb)));
+
+		assertThat(geodis.ggexists(keyGG.getBytes(), member3b), is(1l));
+		assertThat(geodis.ggexists(keyGG.getBytes(), "horanghi".getBytes()), is(0l));
 
 		geodis.del(keyb);
 		geodis.del(keyGG);
@@ -539,14 +557,14 @@ public class GeodisTest {
 		assertTrue(((Point) point1_1).equals((Point) point1_2)); // x,y만 비교
 		assertThat(((Point) point1_1), is((Point) point1_2)); // assertThat is 비교상으로 equals 만 사용.
 		assertFalse(((Point) point1_1).equalsDeep((Point) point1_2)); // x,y, member, value 비교
-		
+
 		assertFalse(((Point) point1_1).equalsDeep((Point) point1_3)); // x,y, member, value 비교
 		assertFalse(((Point) point1_3).equalsDeep((Point) point1_1)); // x,y, member, value 비교
 
 		assertTrue(((Geometry) point1_1).equals(point1_2)); // x,y만 비교
 		assertThat(((Geometry) point1_1), is((Geometry) point1_2)); // assertThat is 비교상으로 equals 만 사용.
 		assertFalse(((Geometry) point1_1).equalsDeep(point1_2)); // x,y, member, value 비교
-		
+
 		assertFalse(((Geometry) point1_1).equalsDeep((Geometry) point1_3)); // x,y, member, value 비교
 		assertFalse(((Geometry) point1_3).equalsDeep((Geometry) point1_1)); // x,y, member, value 비교
 
@@ -566,12 +584,12 @@ public class GeodisTest {
 		assertTrue(circle1_1.equals(circle1_2)); // x,y, radius 비교
 		assertTrue(circle1_1.equals(circle1_4)); // x,y, radius 비교
 		assertTrue(circle1_4.equals(circle1_1)); // x,y, radius 비교
-		
+
 		assertFalse(circle1_1.equalsDeep(circle1_2)); // x,y, radius, value 비교 // result : false
 		assertTrue(circle1_1.equalsDeep(circle1_3)); // x,y, radius, value 비교 // result : true
 		assertFalse(circle1_1.equalsDeep(circle1_4)); // x,y, radius, value 비교 // result : true
 		assertFalse(circle1_4.equalsDeep(circle1_1)); // x,y, radius, value 비교 // result : true
-		
+
 		assertTrue(circle1_4.equalsDeep(circle1_5)); // x,y, radius, value 비교 // result : true
 
 		// [1,1], [1,-1], [-1,-1], [-1,1], [1,1]

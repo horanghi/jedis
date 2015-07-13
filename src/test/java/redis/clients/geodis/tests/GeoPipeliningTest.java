@@ -183,7 +183,7 @@ public class GeoPipeliningTest extends Assert {
 		p.gpget(keyf, member11);
 		List<Object> results = p.syncAndReturnAll();
 
-		assertEquals(7, results.size());
+		assertEquals(9, results.size());
 		System.out.println(((List<Circle<String>>) results.get(0)).get(0));
 		assertTrue(((List<Circle<String>>) results.get(0)).get(0).getMember().equals(member6));
 		assertTrue(((List<Circle<String>>) results.get(1)).get(0).getMember().equals(member7));
@@ -196,9 +196,9 @@ public class GeoPipeliningTest extends Assert {
 		assertThat((Long) results.get(5), is(OKl));
 		Point<String> pp00 = new Point<String>(member11, 0, 0, value);
 		assertThat((Point<String>) results.get(6), is(pp00));
-		assertThat((Long) results.get(5), is(OKl));
+		assertThat((Long) results.get(7), is(OKl));
 		Point<String> pp11 = new Point<String>(member11, 10, 10, value);
-		assertThat((Point<String>) results.get(6), is(pp11));
+		assertThat((Point<String>) results.get(8), is(pp11));
 		
 		p.gprangeCircleByRadius(keyb, 0.1, 0.1, 1, M);
 		p.gprangeCircleByRadius(keyb, 0.1, 0.2, 1, M);
@@ -207,7 +207,7 @@ public class GeoPipeliningTest extends Assert {
 		p.gprangeCircleByRadius(keyb, 0.1, 0.5, 1, M);
 		List<Object> resultsb = p.syncAndReturnAll();
 
-		assertEquals(7, results.size());
+		assertEquals(9, results.size());
 		System.out.println(((List<Circle<byte[]>>) resultsb.get(0)).get(0));
 		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(0)).get(0).getMember()).equals(member6));
 		assertTrue(new String(((List<Circle<byte[]>>) resultsb.get(1)).get(0).getMember()).equals(member7));

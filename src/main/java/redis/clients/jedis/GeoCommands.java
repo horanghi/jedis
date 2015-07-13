@@ -15,6 +15,10 @@ import redis.clients.spatial.model.Polygon;
  * Common interface for sharded and non-sharded Jedis
  */
 public interface GeoCommands {
+	
+	Long gpexists(String key, String member);
+	
+	Long gpexists(byte[] key, byte[] member);
 
 	Long gpadd(String key, double lat, double lon, String member, String value);
 
@@ -121,6 +125,10 @@ public interface GeoCommands {
 	double gpdistance(double dLat1, double dLon1, double dLat2, double dLon2);
 
 	/* Geography */
+	
+	Long ggexists(String key, String member);
+	
+	Long ggexists(byte[] key, byte[] member);
 
 	Long ggadd(String key, String member, String value, Polygon<?> polygon);
 
@@ -195,6 +203,10 @@ public interface GeoCommands {
 	List<Geometry<byte[]>> ggrelationBy(byte[] key, byte[] byKey, byte[] byMember);
 
 	/* Geometry */
+	
+	Long gmexists(String key, String member);
+	
+	Long gmexists(byte[] key, byte[] member);
 	
 	double gmdistance(double x1, double y1, double x2, double y2);
 	

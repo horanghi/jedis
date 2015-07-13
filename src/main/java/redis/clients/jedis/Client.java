@@ -954,7 +954,7 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	public void gpnn(final String key, final double lat, final double lon, final long count) {
 		gpnn(SafeEncoder.encode(key), lat, lon, count);
 	}
-	
+
 	@Override
 	public void gpnn(final String key, final double lat, final double lon, final long count, final String pattern) {
 		gpnn(SafeEncoder.encode(key), lat, lon, count, SafeEncoder.encode(pattern));
@@ -1232,6 +1232,21 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	@Override
 	public void gmnnWithMatch(String key, double x, double y, long count, String pattern) {
 		gmnnWithMatch(SafeEncoder.encode(key), x, y, count, SafeEncoder.encode(pattern));
+	}
+
+	@Override
+	public void gpexists(String key, String member) {
+		gpexists(SafeEncoder.encode(key), SafeEncoder.encode(member));
+	}
+	
+	@Override
+	public void ggexists(String key, String member) {
+		ggexists(SafeEncoder.encode(key), SafeEncoder.encode(member));
+	}
+	
+	@Override
+	public void gmexists(String key, String member) {
+		gmexists(SafeEncoder.encode(key), SafeEncoder.encode(member));
 	}
 
 }

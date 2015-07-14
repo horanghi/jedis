@@ -370,7 +370,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 
 	@Override
 	public double gpdistance(final double lat1, final double lng1, final double lat2, final double lng2) {
-		double earthRadius = 6371000; // meters
+		double earthRadius = 6378137; // meters (EPSG 3785)
 		double dLat = Math.toRadians(lat2 - lat1);
 		double dLng = Math.toRadians(lng2 - lng1);
 		double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))

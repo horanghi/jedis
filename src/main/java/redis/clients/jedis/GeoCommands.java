@@ -15,18 +15,28 @@ import redis.clients.spatial.model.Polygon;
  * Common interface for sharded and non-sharded Jedis
  */
 public interface GeoCommands {
-	
+
 	Long gpexists(String key, String member);
-	
+
 	Long gpexists(byte[] key, byte[] member);
 
 	Long gpadd(String key, double lat, double lon, String member, String value);
 
 	Long gpadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
 
+	Long gpadd(String key, double lat, double lon, String member, String value, double score);
+
+	Long gpadd(byte[] key, double lat, double lon, byte[] member, byte[] value, double score);
+
 	Long gpadd(String key, double lat, double lon, double radius, UNITS unit, String member, String value);
 
 	Long gpadd(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] member, byte[] value);
+
+	Long gpadd(String key, double lat, double lon, double radius, UNITS unit, String member, String value, double score);
+
+	Long gpadd(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] member, byte[] value, double score);
+
+	// gpupdate
 
 	Long gpupdate(String key, String member, double lat, double lon);
 
@@ -36,39 +46,137 @@ public interface GeoCommands {
 
 	Long gpupdate(byte[] key, byte[] member, double lat, double lon, double radius, UNITS unit);
 
-	List<Point<String>> gprangeBy(String key, String bykey, String bymember);
+	// gpradius
 
-	List<Point<byte[]>> gprangeBy(byte[] key, byte[] bykey, byte[] bymember);
+	List<Point<String>> gpradius(String key, double lat, double lon, double radius, UNITS unit);
 
-	List<Point<String>> gprangeBy(String key, String bykey, String bymember, String pattern, long count);
+	List<Point<byte[]>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit);
 
-	List<Point<byte[]>> gprangeBy(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count);
+	List<Point<String>> gpradius(String key, double lat, double lon, double radius, UNITS unit, String pattern);
 
-	List<Point<String>> gprangeByRadius(String key, double lat, double lon, double radius, UNITS unit);
+	List<Point<byte[]>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
 
-	List<Point<byte[]>> gprangeByRadius(byte[] key, double lat, double lon, double radius, UNITS unit);
+	List<Point<String>> gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max, String pattern);
 
-	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit);
+	List<Point<byte[]>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max, byte[] pattern);
 
-	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit);
+	List<Point<String>> gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max, ORDERBY order);
 
-	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit, RELATION scope, ORDERBY order);
+	List<Point<byte[]>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max, ORDERBY order);
 
-	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit, RELATION scope, ORDERBY order);
+	List<Point<String>> gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max, String pattern,
+			long offset, long count, ORDERBY order);
 
-	List<Point<String>> gprangeByRadius(String key, double lat, double lon, double radius, UNITS unit, String pattern);
+	List<Point<byte[]>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max, byte[] pattern,
+			long offset, long count, ORDERBY order);
 
-	List<Point<byte[]>> gprangeByRadius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
+	// gpcircle
 
-	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit, String pattern);
+	List<Circle<String>> gpcircle(String key, double lat, double lon, double radius, UNITS unit);
 
-	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
+	List<Circle<byte[]>> gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit);
 
-	List<Circle<String>> gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit, String pattern, RELATION ops,
-			ORDERBY sort);
+	List<Circle<String>> gpcircle(String key, double lat, double lon, double radius, UNITS unit, RELATION scope, ORDERBY order);
 
-	List<Circle<byte[]>> gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern, RELATION ops,
-			ORDERBY sort);
+	List<Circle<byte[]>> gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, RELATION scope, ORDERBY order);
+
+	List<Circle<String>> gpcircle(String key, double lat, double lon, double radius, UNITS unit, String pattern);
+
+	List<Circle<byte[]>> gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
+
+	List<Circle<String>> gpcircle(String key, double lat, double lon, double radius, UNITS unit, String pattern, RELATION ops, ORDERBY sort);
+
+	List<Circle<byte[]>> gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern, RELATION ops, ORDERBY sort);
+
+	// gpradiusByMember
+
+	List<Point<String>> gpradiusByMember(String key, String bykey, String bymember);
+
+	List<Point<byte[]>> gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember);
+
+	List<Point<String>> gpradiusByMember(String key, String bykey, String bymember, String pattern);
+
+	List<Point<byte[]>> gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern);
+
+	List<Point<String>> gpradiusByMember(String key, String bykey, String bymember, String min, String max, String pattern);
+
+	List<Point<byte[]>> gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern);
+
+	List<Point<String>> gpradiusByMember(String key, String bykey, String bymember, String min, String max, String pattern, long offset,
+			long count, ORDERBY order);
+
+	List<Point<byte[]>> gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern, long offset,
+			long count, ORDERBY order);
+
+	// gpregionByMember
+
+	List<Point<String>> gpregionByMember(String key, String bykey, String bymember);
+
+	List<Point<byte[]>> gpregionByMember(byte[] key, byte[] bykey, byte[] bymember);
+
+	List<Point<String>> gpregionByMember(String key, String bykey, String bymember, String pattern);
+
+	List<Point<byte[]>> gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern);
+
+	List<Point<String>> gpregionByMember(String key, String bykey, String bymember, String min, String max, String pattern);
+
+	List<Point<byte[]>> gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern);
+
+	List<Point<String>> gpregionByMember(String key, String bykey, String bymember, String min, String max, String pattern, long offset,
+			long count, ORDERBY order);
+
+	List<Point<byte[]>> gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern, long offset,
+			long count, ORDERBY order);
+
+	// gpnn
+
+	List<Point<String>> gpnn(String key, double lat, double lon, long offset, long count);
+
+	List<Point<byte[]>> gpnn(byte[] key, double lat, double lon, long offset, long count);
+
+	List<Point<String>> gpnn(String key, double lat, double lon, long offset, long count, String pattern);
+
+	List<Point<byte[]>> gpnn(byte[] key, double lat, double lon, long offset, long count, byte[] pattern);
+
+	List<Point<String>> gpnn(String key, double lat, double lon, long offset, long count, String pattern, String min, String max,
+			ORDERBY order);
+
+	List<Point<byte[]>> gpnn(byte[] key, double lat, double lon, long offset, long count, byte[] pattern, byte[] min, byte[] max,
+			ORDERBY order);
+
+	// gpregion
+
+	List<Point<String>> gpregion(String key, Polygon<?> polygon);
+
+	List<Point<byte[]>> gpregion(byte[] key, Polygon<?> polygon);
+
+	List<Point<String>> gpregion(String key, LineString<?> lineString);
+
+	List<Point<byte[]>> gpregion(byte[] key, LineString<?> lineString);
+
+	List<Point<String>> gpregion(String key, Point<?> point);
+
+	List<Point<byte[]>> gpregion(byte[] key, Point<?> point);
+
+	List<Point<String>> gpregion(String key, Polygon<?> polygon, String pattern);
+
+	List<Point<byte[]>> gpregion(byte[] key, Polygon<?> polygon, byte[] pattern);
+
+	List<Point<String>> gpregion(String key, LineString<?> lineString, String pattern);
+
+	List<Point<byte[]>> gpregion(byte[] key, LineString<?> lineString, byte[] pattern);
+
+	List<Point<String>> gpregion(String key, Point<?> point, String pattern);
+
+	List<Point<byte[]>> gpregion(byte[] key, Point<?> point, byte[] pattern);
+
+	List<Point<String>> gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String pattern);
+
+	List<Point<byte[]>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count, byte[] pattern);
+
+	List<Point<String>> gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count, String pattern);
+
+	List<Point<byte[]>> gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, long offset, long count, byte[] pattern);
 
 	Long gpcard(String key);
 
@@ -77,7 +185,7 @@ public interface GeoCommands {
 	Long gprem(String key, String member);
 
 	Long gprem(byte[] key, byte[] member);
-	
+
 	Point<String> gpget(String key, String member);
 
 	Point<byte[]> gpget(byte[] key, byte[] member);
@@ -86,48 +194,12 @@ public interface GeoCommands {
 
 	List<Point<byte[]>> gpmget(byte[] key, byte[]... members);
 
-	List<Point<String>> gpnn(String key, double lat, double lon, long count);
-
-	List<Point<byte[]>> gpnn(byte[] key, double lat, double lon, long count);
-	
-	List<Point<String>> gpnn(String key, double lat, double lon, long count, String pattern);
-
-	List<Point<byte[]>> gpnn(byte[] key, double lat, double lon, long count, byte[] pattern);
-
-	List<Point<String>> gprangeByRegion(String key, Polygon<?> polygon);
-
-	List<Point<byte[]>> gprangeByRegion(byte[] key, Polygon<?> polygon);
-
-	List<Point<String>> gprangeByRegion(String key, LineString<?> lineString);
-
-	List<Point<byte[]>> gprangeByRegion(byte[] key, LineString<?> lineString);
-
-	List<Point<String>> gprangeByRegion(String key, Point<?> point);
-
-	List<Point<byte[]>> gprangeByRegion(byte[] key, Point<?> point);
-
-	List<Point<String>> gprangeByRegion(String key, Polygon<?> polygon, String pattern);
-
-	List<Point<byte[]>> gprangeByRegion(byte[] key, Polygon<?> polygon, byte[] pattern);
-
-	List<Point<String>> gprangeByRegion(String key, LineString<?> lineString, String pattern);
-
-	List<Point<byte[]>> gprangeByRegion(byte[] key, LineString<?> lineString, byte[] pattern);
-
-	List<Point<String>> gprangeByRegion(String key, Point<?> point, String pattern);
-
-	List<Point<byte[]>> gprangeByRegion(byte[] key, Point<?> point, byte[] pattern);
-
-	List<Point<String>> gprangeByRegion(String key, Polygon<?> polygon, String pattern, long count);
-
-	List<Point<byte[]>> gprangeByRegion(byte[] key, Polygon<?> polygon, byte[] pattern, long count);
-
 	double gpdistance(double dLat1, double dLon1, double dLat2, double dLon2);
 
 	/* Geography */
-	
+
 	Long ggexists(String key, String member);
-	
+
 	Long ggexists(byte[] key, byte[] member);
 
 	Long ggadd(String key, String member, String value, Polygon<?> polygon);
@@ -198,29 +270,29 @@ public interface GeoCommands {
 
 	Long ggupdate(byte[] key, byte[] member, LineString<?> lineString);
 
-	List<Geometry<String>> ggrelationBy(String key, String byKey, String byMember);
+	List<Geometry<String>> ggrelationByMember(String key, String byKey, String byMember);
 
-	List<Geometry<byte[]>> ggrelationBy(byte[] key, byte[] byKey, byte[] byMember);
+	List<Geometry<byte[]>> ggrelationByMember(byte[] key, byte[] byKey, byte[] byMember);
 
 	/* Geometry */
-	
+
 	Long gmexists(String key, String member);
-	
+
 	Long gmexists(byte[] key, byte[] member);
-	
+
 	double gmdistance(double x1, double y1, double x2, double y2);
-	
-	String gmsetBoundary (String key, double minx, double miny, double maxx, double maxy);
-	
-	String gmsetBoundary (byte[] key, double minx, double miny, double maxx, double maxy);
-	
-	List<Point<String>> gmgetBoundary (String key);
-	
-	List<Point<byte[]>> gmgetBoundary (byte[] key);
-	
-	Long gmrebuildBoundary (String key, double minx, double miny, double maxx, double maxy);
-	
-	Long gmrebuildBoundary (byte[] key, double minx, double miny, double maxx, double maxy);
+
+	String gmsetBoundary(String key, double minx, double miny, double maxx, double maxy);
+
+	String gmsetBoundary(byte[] key, double minx, double miny, double maxx, double maxy);
+
+	List<Point<String>> gmgetBoundary(String key);
+
+	List<Point<byte[]>> gmgetBoundary(byte[] key);
+
+	Long gmrebuildBoundary(String key, double minx, double miny, double maxx, double maxy);
+
+	Long gmrebuildBoundary(byte[] key, double minx, double miny, double maxx, double maxy);
 
 	Long gmadd(String key, String member, String value, Polygon<?> polygon);
 
@@ -233,11 +305,11 @@ public interface GeoCommands {
 	Long gmadd(String key, String member, String value, Point<?> point);
 
 	Long gmadd(byte[] key, byte[] member, byte[] value, Point<?> point);
-	
+
 	Long gmadd(String key, double x, double y, String member, String value);
 
 	Long gmadd(byte[] key, double x, double y, byte[] member, byte[] value);
-	
+
 	List<Geometry<String>> gmrange(String key, long start, long stop);
 
 	List<Geometry<byte[]>> gmrange(byte[] key, long start, long stop);
@@ -294,8 +366,8 @@ public interface GeoCommands {
 
 	Long gmupdate(byte[] key, byte[] member, LineString<?> lineString);
 
-	List<Geometry<String>> gmrelationBy(String key, String byKey, String byMember);
+	List<Geometry<String>> gmrelationByMember(String key, String byKey, String byMember);
 
-	List<Geometry<byte[]>> gmrelationBy(byte[] key, byte[] byKey, byte[] byMember);
+	List<Geometry<byte[]>> gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember);
 
 }

@@ -9,19 +9,94 @@ import redis.clients.spatial.model.Polygon;
 
 public interface Command4BinarySpatial {
 
+	void gpexists(byte[] key, byte[] member);
+
 	void gpadd(byte[] key, double lat, double lon, byte[] member, byte[] value);
 
+	void gpadd(byte[] key, double lat, double lon, byte[] member, byte[] value, double score);
+
 	void gpadd(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] member, byte[] value);
+
+	void gpadd(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] member, byte[] value, double score);
+
+	// gpupdate
 
 	void gpupdate(byte[] key, byte[] member, double lat, double lon);
 
 	void gpupdate(byte[] key, byte[] member, double lat, double lon, double radius, UNITS unit);
 
-	void gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit);
+	// gpradius
 
-	void gprangeCircleByRadius(byte[] key, double lat, double lon, double radius, UNITS unit, RELATION scope, ORDERBY order);
+	void gpradius(byte[] key, double lat, double lon, double radius, UNITS unit);
 
-	void gprangeByRadius(byte[] key, double lat, double lon, double radius, UNITS unit);
+	void gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
+
+	void gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max, byte[] pattern);
+
+	void gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max, ORDERBY order);
+
+	void gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max, byte[] pattern, long offset,
+			long count, ORDERBY order);
+
+	// gpcircle
+
+	void gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit);
+
+	void gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, RELATION scope, ORDERBY order);
+
+	void gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
+
+	void gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern, RELATION ops, ORDERBY sort);
+
+	// gpradiusByMember
+
+	void gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember);
+
+	void gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern);
+
+	void gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern);
+
+	void gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern, long offset, long count,
+			ORDERBY order);
+
+	// gpregionByMember
+
+	void gpregionByMember(byte[] key, byte[] bykey, byte[] bymember);
+
+	void gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern);
+
+	void gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern);
+
+	void gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern, long offset, long count,
+			ORDERBY order);
+
+	// gpnn
+
+	void gpnn(byte[] key, double lat, double lon, long offset, long count);
+
+	void gpnn(byte[] key, double lat, double lon, long offset, long count, byte[] pattern);
+
+	void gpnn(byte[] key, double lat, double lon, long offset, long count, byte[] pattern, byte[] min, byte[] max);
+
+	void gpnn(byte[] key, double lat, double lon, long offset, long count, byte[] pattern, byte[] min, byte[] max, ORDERBY order);
+
+	// gpregion
+
+	void gpregion(byte[] key, Polygon<?> polygon);
+
+	void gpregion(byte[] key, LineString<?> lineString);
+
+	void gpregion(byte[] key, Point<?> point);
+
+	void gpregion(byte[] key, Polygon<?> polygon, byte[] pattern);
+
+	void gpregion(byte[] key, LineString<?> lineString, byte[] pattern);
+
+	void gpregion(byte[] key, Point<?> point, byte[] pattern);
+
+	void gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count, byte[] pattern);
+
+	void gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, long offset, long count, byte[] pattern);
 
 	void gpcard(byte[] key);
 
@@ -31,32 +106,9 @@ public interface Command4BinarySpatial {
 
 	void gpmget(byte[] key, byte[]... members);
 
-	void gpnn(byte[] key, double lat, double lon, long count);
+	/* Geography */
 
-	void gpnn(byte[] key, double lat, double lon, long count, byte[] pattern);
-
-	void gprangeByRadiusWithMatch(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
-
-	void gprangeByRegion(byte[] key, Polygon<?> polygon);
-
-	void gprangeByRegion(byte[] key, LineString<?> lineString);
-
-	void gprangeByRegion(byte[] key, Point<?> point);
-
-	void gprangeByRegionWithMatch(byte[] key, Polygon<?> polygon, byte[] pattern);
-
-	void gprangeByRegionWithMatch(byte[] key, LineString<?> lineString, byte[] pattern);
-
-	void gprangeByRegionWithMatch(byte[] key, Point<?> point, byte[] pattern);
-
-	void gprangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
-
-	void gprangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern, RELATION scope,
-			ORDERBY order);
-
-	void gprangeBy(byte[] key, byte[] bykey, byte[] bymember);
-
-	void gprangeByWithMatch(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count);
+	void ggexists(byte[] key, byte[] member);
 
 	void ggadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon);
 
@@ -74,7 +126,7 @@ public interface Command4BinarySpatial {
 
 	void ggget(byte[] key, byte[] member);
 
-	void ggmget(byte[] key, byte[][] members);
+	void ggmget(byte[] key, byte[]... members);
 
 	void ggrelation(byte[] key, Polygon<?> polygon);
 
@@ -82,21 +134,21 @@ public interface Command4BinarySpatial {
 
 	void ggrelation(byte[] key, Point<?> point);
 
-	void ggrelationBy(byte[] key, byte[] byKey, byte[] byMember);
-
 	void ggnn(byte[] key, double lat, double lon, long count);
 
-	void ggnnWithMatch(byte[] key, double lat, double lon, long count, byte[] pattern);
-
-	void ggupdate(byte[] key, byte[] member, Polygon<?> polygon);
+	void ggnn(byte[] key, double lat, double lon, long count, byte[] pattern);
 
 	void ggupdate(byte[] key, byte[] member, Point<?> point);
 
+	void ggupdate(byte[] key, byte[] member, Polygon<?> polygon);
+
 	void ggupdate(byte[] key, byte[] member, LineString<?> lineString);
 
-	void gprangeByRegionWithMatch(byte[] key, Polygon<?> polygon, byte[] pattern, long count);
+	void ggrelationByMember(byte[] key, byte[] byKey, byte[] byMember);
 
-	// Gemotry
+	/* Geometry */
+
+	void gmexists(byte[] key, byte[] member);
 
 	void gmsetBoundary(byte[] key, double minx, double miny, double maxx, double maxy);
 
@@ -108,9 +160,11 @@ public interface Command4BinarySpatial {
 
 	void gmadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString);
 
-	void gmrange(byte[] key, long start, long stop);
-
 	void gmadd(byte[] key, byte[] member, byte[] value, Point<?> point);
+
+	void gmadd(byte[] key, double x, double y, byte[] member, byte[] value);
+
+	void gmrange(byte[] key, long start, long stop);
 
 	void gmrevrange(byte[] key, long start, long stop);
 
@@ -120,7 +174,7 @@ public interface Command4BinarySpatial {
 
 	void gmget(byte[] key, byte[] member);
 
-	void gmmget(byte[] key, byte[][] members);
+	void gmmget(byte[] key, byte[]... members);
 
 	void gmrelation(byte[] key, Polygon<?> polygon);
 
@@ -128,22 +182,15 @@ public interface Command4BinarySpatial {
 
 	void gmrelation(byte[] key, Point<?> point);
 
-	void gmrelationBy(byte[] key, byte[] byKey, byte[] byMember);
-
 	void gmnn(byte[] key, double x, double y, long count);
 
-	void gmnnWithMatch(byte[] key, double x, double y, long count, byte[] pattern);
-
-	void gmupdate(byte[] key, byte[] member, Polygon<?> polygon);
+	void gmnn(byte[] key, double x, double y, long count, byte[] pattern);
 
 	void gmupdate(byte[] key, byte[] member, Point<?> point);
 
+	void gmupdate(byte[] key, byte[] member, Polygon<?> polygon);
+
 	void gmupdate(byte[] key, byte[] member, LineString<?> lineString);
 
-	void gpexists(byte[] key, byte[] member);
-
-	void ggexists(byte[] key, byte[] member);
-
-	void gmexists(byte[] key, byte[] member);
-
+	void gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember);
 }

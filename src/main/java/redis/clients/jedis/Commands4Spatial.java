@@ -9,19 +9,92 @@ import redis.clients.spatial.model.Polygon;
 
 public interface Commands4Spatial extends Commands {
 
+	void gpexists(String key, String member);
+
 	void gpadd(String key, double lat, double lon, String member, String value);
 
+	void gpadd(String key, double lat, double lon, String member, String value, double score);
+
 	void gpadd(String key, double lat, double lon, double radius, UNITS unit, String member, String value);
+
+	void gpadd(String key, double lat, double lon, double radius, UNITS unit, String member, String value, double score);
+
+	// gpupdate
 
 	void gpupdate(String key, String member, double lat, double lon);
 
 	void gpupdate(String key, String member, double lat, double lon, double radius, UNITS unit);
 
-	void gprangeByRadius(String key, double lat, double lon, double radius, UNITS unit);
+	// gpradius
 
-	void gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit);
+	void gpradius(String key, double lat, double lon, double radius, UNITS unit);
 
-	void gprangeCircleByRadius(String key, double lat, double lon, double radius, UNITS unit, RELATION scope, ORDERBY order);
+	void gpradius(String key, double lat, double lon, double radius, UNITS unit, String pattern);
+
+	void gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max, String pattern);
+
+	void gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max, ORDERBY order);
+
+	void gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max, String pattern, long offset,
+			long count, ORDERBY order);
+
+	// gpcircle
+
+	void gpcircle(String key, double lat, double lon, double radius, UNITS unit);
+
+	void gpcircle(String key, double lat, double lon, double radius, UNITS unit, RELATION scope, ORDERBY order);
+
+	void gpcircle(String key, double lat, double lon, double radius, UNITS unit, String pattern);
+
+	void gpcircle(String key, double lat, double lon, double radius, UNITS unit, String pattern, RELATION ops, ORDERBY sort);
+
+	// gpradiusByMember
+
+	void gpradiusByMember(String key, String bykey, String bymember);
+
+	void gpradiusByMember(String key, String bykey, String bymember, String pattern);
+
+	void gpradiusByMember(String key, String bykey, String bymember, String min, String max, String pattern);
+
+	void gpradiusByMember(String key, String bykey, String bymember, String min, String max, String pattern, long offset, long count,
+			ORDERBY order);
+
+	// gpregionByMember
+
+	void gpregionByMember(String key, String bykey, String bymember);
+
+	void gpregionByMember(String key, String bykey, String bymember, String pattern);
+
+	void gpregionByMember(String key, String bykey, String bymember, String min, String max, String pattern);
+
+	void gpregionByMember(String key, String bykey, String bymember, String min, String max, String pattern, long offset, long count,
+			ORDERBY order);
+
+	// gpnn
+
+	void gpnn(String key, double lat, double lon, long offset, long count);
+
+	void gpnn(String key, double lat, double lon, long offset, long count, String pattern);
+
+	void gpnn(String key, double lat, double lon, long offset, long count, String pattern, String min, String max, ORDERBY order);
+
+	// gpregion
+
+	void gpregion(String key, Polygon<?> polygon);
+
+	void gpregion(String key, LineString<?> lineString);
+
+	void gpregion(String key, Point<?> point);
+
+	void gpregion(String key, Polygon<?> polygon, String pattern);
+
+	void gpregion(String key, LineString<?> lineString, String pattern);
+
+	void gpregion(String key, Point<?> point, String pattern);
+
+	void gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String pattern);
+
+	void gpregion(String key, LineString<?> polygon, String min, String max, long offset, long count, String pattern);
 
 	void gpcard(String key);
 
@@ -29,50 +102,19 @@ public interface Commands4Spatial extends Commands {
 
 	void gpget(String key, String member);
 
-	void gpmget(String key, String[] members);
+	void gpmget(String key, String... members);
 
-	void gpnn(String key, double lat, double lon, long count);
-	
-	void gpnn(String key, double lat, double lon, long count, String pattern);
+	/* Geography */
 
-	void gprangeByRadiusWithMatch(String key, double lat, double lon, double radius, UNITS unit, String pattern);
-
-	void gprangeByRegion(String key, Polygon<?> polygon);
-
-	void gprangeByRegion(String key, LineString<?> lineString);
-
-	void gprangeByRegion(String key, Point<?> point);
-
-	void gprangeByRegionWithMatch(String key, Polygon<?> polygon, String pattern);
-
-	void gprangeByRegionWithMatch(String key, LineString<?> lineString, String pattern);
-
-	void gprangeByRegionWithMatch(String key, Point<?> point, String pattern);
-
-	void gprangeBy(String key, String bykey, String bymember);
-
-	void gprangeByWithMatch(String key, String bykey, String bymember, String pattern, long count);
-
-	void gprangeCircleByRadiusWithMatch(String key, double lat, double lon, double radius, UNITS unit, String pattern);
-
-	void gprangeCircleByRadiusWithMatch(String key, double lat, double lon, double radius, UNITS unit, String pattern, RELATION scope,
-			ORDERBY order);
-
-	void gprangeByRegionWithMatch(String key, Polygon<?> polygon, String pattern, long count);
+	void ggexists(String key, String member);
 
 	void ggadd(String key, String member, String value, Polygon<?> polygon);
 
 	void ggadd(String key, String member, String value, LineString<?> lineString);
 
-	void ggadd(String key, String member, String value, Point<?> point);
-
-	void ggupdate(String key, String member, Polygon<?> polygon);
-
-	void ggupdate(String key, String member, LineString<?> lineString);
-
-	void ggupdate(String key, String member, Point<?> point);
-
 	void ggrange(String key, long start, long stop);
+
+	void ggadd(String key, String member, String value, Point<?> point);
 
 	void ggrevrange(String key, long start, long stop);
 
@@ -82,7 +124,7 @@ public interface Commands4Spatial extends Commands {
 
 	void ggget(String key, String member);
 
-	void ggmget(String key, String[] members);
+	void ggmget(String key, String... members);
 
 	void ggrelation(String key, Polygon<?> polygon);
 
@@ -90,33 +132,35 @@ public interface Commands4Spatial extends Commands {
 
 	void ggrelation(String key, Point<?> point);
 
-	void ggrelationBy(String key, String byKey, String byMember);
-
 	void ggnn(String key, double lat, double lon, long count);
 
-	void ggnnWithMatch(String key, double lat, double lon, long count, String pattern);
+	void ggnn(String key, double lat, double lon, long count, String pattern);
 
-	//TODO
-	
+	void ggupdate(String key, String member, Point<?> point);
+
+	void ggupdate(String key, String member, Polygon<?> polygon);
+
+	void ggupdate(String key, String member, LineString<?> lineString);
+
+	void ggrelationByMember(String key, String byKey, String byMember);
+
+	/* Geometry */
+
+	void gmexists(String key, String member);
+
 	void gmsetBoundary(String key, double minx, double miny, double maxx, double maxy);
-	
+
 	void gmgetBoundary(String key);
 
 	void gmrebuildBoundary(String key, double minx, double miny, double maxx, double maxy);
-	
+
 	void gmadd(String key, String member, String value, Polygon<?> polygon);
 
 	void gmadd(String key, String member, String value, LineString<?> lineString);
 
 	void gmadd(String key, String member, String value, Point<?> point);
-	
+
 	void gmadd(String key, double x, double y, String member, String value);
-
-	void gmupdate(String key, String member, Polygon<?> polygon);
-
-	void gmupdate(String key, String member, LineString<?> lineString);
-
-	void gmupdate(String key, String member, Point<?> point);
 
 	void gmrange(String key, long start, long stop);
 
@@ -128,7 +172,7 @@ public interface Commands4Spatial extends Commands {
 
 	void gmget(String key, String member);
 
-	void gmmget(String key, String[] members);
+	void gmmget(String key, String... members);
 
 	void gmrelation(String key, Polygon<?> polygon);
 
@@ -136,16 +180,16 @@ public interface Commands4Spatial extends Commands {
 
 	void gmrelation(String key, Point<?> point);
 
-	void gmrelationBy(String key, String byKey, String byMember);
+	void gmnn(String key, double x, double y, long count);
 
-	void gmnn(String key, double lat, double lon, long count);
+	void gmnn(String key, double x, double y, long count, String pattern);
 
-	void gmnnWithMatch(String key, double lat, double lon, long count, String pattern);
+	void gmupdate(String key, String member, Point<?> point);
 
-	void gpexists(String key, String member);
-	
-	void ggexists(String key, String member);
-	
-	void gmexists(String key, String member);
+	void gmupdate(String key, String member, Polygon<?> polygon);
+
+	void gmupdate(String key, String member, LineString<?> lineString);
+
+	void gmrelationByMember(String key, String byKey, String byMember);
 
 }

@@ -58,7 +58,7 @@ public class SampleGeodis {
 			assertThat(geodis.gpadd(key, 1, 1, member2, value), is(OKl));
 
 			// select
-			List<Point<String>> Points = geodis.gprangeByRadius(key, 0, 0, 100, UNITS.M);
+			List<Point<String>> Points = geodis.gpradius(key, 0, 0, 100, UNITS.M);
 
 			// assert
 			for (Point<String> point : Points) {
@@ -91,7 +91,7 @@ public class SampleGeodis {
 			double distance = geodis.gpdistance(0, 0, 1, 1);
 
 			// select
-			List<Point<String>> points = geodis.gprangeByRadius(key, 0, 0, distance, UNITS.M);
+			List<Point<String>> points = geodis.gpradius(key, 0, 0, distance, UNITS.M);
 
 			// assert
 			assertThat(points.size(), is(1));
@@ -101,7 +101,7 @@ public class SampleGeodis {
 
 			distance = geodis.gpdistance(0, 0, 2, 2);
 
-			points = geodis.gprangeByRadius(key, 0, 0, distance, UNITS.M);
+			points = geodis.gpradius(key, 0, 0, distance, UNITS.M);
 
 			// assert
 			assertThat(points.size(), is(2));
@@ -111,7 +111,7 @@ public class SampleGeodis {
 
 			distance = geodis.gpdistance(0, 0, 3, 3);
 
-			points = geodis.gprangeByRadius(key, 0, 0, distance, UNITS.M);
+			points = geodis.gpradius(key, 0, 0, distance, UNITS.M);
 
 			// assert
 			assertThat(points.size(), is(3));
@@ -146,8 +146,8 @@ public class SampleGeodis {
 			pl.gpadd(key, 2, 2, member3, value);
 
 			// select
-			Response<List<Point<String>>> rpoints1 = pl.gprangeByRadius(key, 0, 0, distance1, UNITS.M);
-			Response<List<Point<String>>> rpoints2 = pl.gprangeByRadius(key, 0, 0, distance2, UNITS.M);
+			Response<List<Point<String>>> rpoints1 = pl.gpradius(key, 0, 0, distance1, UNITS.M);
+			Response<List<Point<String>>> rpoints2 = pl.gpradius(key, 0, 0, distance2, UNITS.M);
 
 			pl.sync();
 

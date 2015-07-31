@@ -9,7 +9,7 @@ import static redis.clients.jedis.Protocol.Command.GGMGET;
 import static redis.clients.jedis.Protocol.Command.GGNN;
 import static redis.clients.jedis.Protocol.Command.GGRANGE;
 import static redis.clients.jedis.Protocol.Command.GGRELATION;
-import static redis.clients.jedis.Protocol.Command.GGRELATIONBY;
+import static redis.clients.jedis.Protocol.Command.GGRELATIONBYMEMBER;
 import static redis.clients.jedis.Protocol.Command.GGREM;
 import static redis.clients.jedis.Protocol.Command.GGREVRANGE;
 import static redis.clients.jedis.Protocol.Command.GGUPDATEBY;
@@ -23,7 +23,7 @@ import static redis.clients.jedis.Protocol.Command.GMNN;
 import static redis.clients.jedis.Protocol.Command.GMRANGE;
 import static redis.clients.jedis.Protocol.Command.GMREBUILDBOUNDARY;
 import static redis.clients.jedis.Protocol.Command.GMRELATION;
-import static redis.clients.jedis.Protocol.Command.GMRELATIONBY;
+import static redis.clients.jedis.Protocol.Command.GMRELATIONBYMEMBER;
 import static redis.clients.jedis.Protocol.Command.GMREM;
 import static redis.clients.jedis.Protocol.Command.GMREVRANGE;
 import static redis.clients.jedis.Protocol.Command.GMSETBOUNDARY;
@@ -34,9 +34,10 @@ import static redis.clients.jedis.Protocol.Command.GPEXISTS;
 import static redis.clients.jedis.Protocol.Command.GPGET;
 import static redis.clients.jedis.Protocol.Command.GPMGET;
 import static redis.clients.jedis.Protocol.Command.GPNN;
-import static redis.clients.jedis.Protocol.Command.GPRANGEBY;
-import static redis.clients.jedis.Protocol.Command.GPRANGEBYRADIUS;
-import static redis.clients.jedis.Protocol.Command.GPRANGEBYREGION;
+import static redis.clients.jedis.Protocol.Command.GPRADIUS;
+import static redis.clients.jedis.Protocol.Command.GPRADIUSBYMEMBER;
+import static redis.clients.jedis.Protocol.Command.GPREGION;
+import static redis.clients.jedis.Protocol.Command.GPREGIONBYMEMBER;
 import static redis.clients.jedis.Protocol.Command.GPREM;
 import static redis.clients.jedis.Protocol.Command.GPUPDATEBY;
 import static redis.clients.jedis.Protocol.GeoOptions.BY;
@@ -44,11 +45,13 @@ import static redis.clients.jedis.Protocol.GeoOptions.LIMIT;
 import static redis.clients.jedis.Protocol.GeoOptions.MATCH;
 import static redis.clients.jedis.Protocol.GeoOptions.NR;
 import static redis.clients.jedis.Protocol.GeoOptions.RADIUS;
+import static redis.clients.jedis.Protocol.GeoOptions.SCORE;
 import static redis.clients.jedis.Protocol.GeoOptions.WITHDISTANCE;
 import static redis.clients.jedis.Protocol.GeoOptions.WITHGEOJSON;
+import static redis.clients.jedis.Protocol.GeoOptions.WITHSCORES;
 import static redis.clients.jedis.Protocol.GeoOptions.WITHVALUES;
 import static redis.clients.jedis.Protocol.GeoOptions.XR;
-import static redis.clients.jedis.Protocol.ORDERBY.ASC;
+import static redis.clients.jedis.Protocol.ORDERBY.DISTANCE_ASC;
 import static redis.clients.jedis.Protocol.RELATION.CONTAINS;
 import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.RELATION;
@@ -68,8 +71,18 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void gpadd(byte[] key, double latitude, double longitude, byte[] member, byte[] value) {
+	public void gpexists(final byte[] key, final byte[] member) {
+		sendCommand(GPEXISTS, key, member);
+	}
+
+	@Override
+	public void gpadd(final byte[] key, final double latitude, final double longitude, final byte[] member, final byte[] value) {
 		gpadd(key, latitude, longitude, 0, UNITS.M, member, value);
+	}
+
+	@Override
+	public void gpadd(final byte[] key, final double latitude, final double longitude, final byte[] member, final byte[] value, double score) {
+		gpadd(key, latitude, longitude, 0, UNITS.M, member, value, score);
 	}
 
 	@Override
@@ -78,6 +91,16 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		// GPADD key member value latitude longitude [RADIUS radius m|km]
 		sendCommand(GPADD, key, member, value, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw);
 	}
+
+	@Override
+	public void gpadd(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit, final byte[] member,
+			final byte[] value, final double score) {
+		// GPADD key member value latitude longitude [SCORE score] [RADIUS radius m|km]
+		sendCommand(GPADD, key, member, value, toByteArray(lat), toByteArray(lon), SCORE.raw, toByteArray(score), RADIUS.raw,
+				toByteArray(radius), unit.raw);
+	}
+
+	// gpupdate
 
 	@Override
 	public void gpupdate(final byte[] key, final byte[] member, final double lat, final double lon) {
@@ -91,54 +114,419 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		sendCommand(GPUPDATEBY, key, member, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw);
 	}
 
+	// gpradius
+
 	@Override
-	public void gprangeByRadius(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit) {
-		// GPRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
-		// [LIMIT offset count]
-		sendCommand(GPRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw,
-				WITHVALUES.raw, WITHDISTANCE.raw, NR.raw, ASC.raw);
+	public void gpradius(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit) {
+		/*
+		* GPRADIUS key latitude longitude
+		*          [RADIUS radius m|km] [CONTAINS|WITHIN]
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [LIMIT offset count]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw,
+				WITHVALUES.raw, WITHDISTANCE.raw, NR.raw, DISTANCE_ASC.raw0, DISTANCE_ASC.raw1, DISTANCE_ASC.raw2);
 	}
 
 	@Override
-	public void gprangeCircleByRadius(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit) {
-		// GPRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
-		// [LIMIT offset count]
-		sendCommand(GPRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw,
-				WITHVALUES.raw, WITHDISTANCE.raw, XR.raw, ASC.raw);
+	public void gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern) {
+		/*
+		* GPRADIUS key latitude longitude
+		*          [RADIUS radius m|km] [CONTAINS|WITHIN]
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [LIMIT offset count]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw,
+				WITHVALUES.raw, WITHDISTANCE.raw, DISTANCE_ASC.raw0, DISTANCE_ASC.raw1, DISTANCE_ASC.raw2, NR.raw, MATCH.raw, pattern);
 	}
 
 	@Override
-	public void gprangeCircleByRadius(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit,
+	public void gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max, byte[] pattern) {
+		/*
+		* GPRADIUS key latitude longitude
+		*          [RADIUS radius m|km] [CONTAINS|WITHIN]
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [LIMIT offset count]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw, SCORE.raw,
+				min, max, WITHVALUES.raw, WITHSCORES.raw, WITHDISTANCE.raw, DISTANCE_ASC.raw0, DISTANCE_ASC.raw1, DISTANCE_ASC.raw2,
+				NR.raw, MATCH.raw, pattern);
+	}
+
+	@Override
+	public void gpradius(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit, final byte[] min,
+			final byte[] max, final ORDERBY order) {
+		/*
+		* GPRADIUS key latitude longitude
+		*          [RADIUS radius m|km] [CONTAINS|WITHIN]
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [LIMIT offset count]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw, SCORE.raw,
+				min, max, WITHVALUES.raw, WITHSCORES.raw, WITHDISTANCE.raw, NR.raw, order.raw0, order.raw1, order.raw2);
+	}
+
+	@Override
+	public void gpradius(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit, final byte[] min,
+			final byte[] max, final byte[] pattern, final long offset, final long count, final ORDERBY order) {
+		/*
+		* GPRADIUS key latitude longitude
+		*          [RADIUS radius m|km] [CONTAINS|WITHIN]
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [LIMIT offset count]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw, SCORE.raw,
+				min, max, LIMIT.raw, toByteArray(offset), toByteArray(count), MATCH.raw, pattern, WITHVALUES.raw, WITHSCORES.raw,
+				WITHDISTANCE.raw, NR.raw, order.raw0, order.raw1, order.raw2);
+	}
+
+	// gpcircle
+
+	@Override
+	public void gpcircle(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit) {
+		/*
+		* GPRADIUS key latitude longitude
+		*          [RADIUS radius m|km] [CONTAINS|WITHIN]
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [LIMIT offset count]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw,
+				WITHVALUES.raw, WITHDISTANCE.raw, XR.raw, DISTANCE_ASC.raw0, DISTANCE_ASC.raw1, DISTANCE_ASC.raw2);
+	}
+
+	@Override
+	public void gpcircle(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit, final RELATION scope,
+			final ORDERBY order) {
+		/*
+		* GPRADIUS key latitude longitude
+		*          [RADIUS radius m|km] [CONTAINS|WITHIN]
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [LIMIT offset count]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, scope.raw,
+				WITHVALUES.raw, WITHDISTANCE.raw, XR.raw, order.raw0, order.raw1, order.raw2);
+	}
+
+	@Override
+	public void gpcircle(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit, final byte[] pattern) {
+		/*
+		* GPRADIUS key latitude longitude
+		*          [RADIUS radius m|km] [CONTAINS|WITHIN]
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [LIMIT offset count]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw,
+				WITHVALUES.raw, WITHDISTANCE.raw, DISTANCE_ASC.raw0, DISTANCE_ASC.raw1, DISTANCE_ASC.raw2, XR.raw, MATCH.raw, pattern);
+	}
+
+	@Override
+	public void gpcircle(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit, final byte[] pattern,
 			final RELATION scope, final ORDERBY order) {
-		// GPRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
-		// [LIMIT offset count]
-		sendCommand(GPRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, scope.raw,
-				WITHVALUES.raw, WITHDISTANCE.raw, XR.raw, order.raw);
+		/*
+		* GPRADIUS key latitude longitude
+		*          [RADIUS radius m|km] [CONTAINS|WITHIN]
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [LIMIT offset count]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, scope.raw,
+				WITHVALUES.raw, WITHDISTANCE.raw, order.raw0, order.raw1, order.raw2, XR.raw, MATCH.raw, pattern);
+	}
+
+	// gpradiusByMember
+
+	public void gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember) {
+		/*
+		* GPRADIUSBYMEMBER key BY key member
+		*                  [CP latitude longitude]
+		*                  [MATCH pattern] [SCORE min max] [NR|XR]
+		*                  [ORDERBY SCORE|DIST ASC|DESC]
+		*                  [LIMIT offset count]
+		*                  [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPRADIUSBYMEMBER, key, BY.raw, bykey, bymember, NR.raw, WITHVALUES.raw, WITHDISTANCE.raw, DISTANCE_ASC.raw0,
+				DISTANCE_ASC.raw1, DISTANCE_ASC.raw2);
+	}
+
+	public void gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern) {
+		/*
+		* GPRADIUSBYMEMBER key BY key member
+		*                  [CP latitude longitude]
+		*                  [MATCH pattern] [SCORE min max] [NR|XR]
+		*                  [ORDERBY SCORE|DIST ASC|DESC]
+		*                  [LIMIT offset count]
+		*                  [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPRADIUSBYMEMBER, key, BY.raw, bykey, bymember, MATCH.raw, pattern, NR.raw, WITHVALUES.raw, WITHDISTANCE.raw,
+				DISTANCE_ASC.raw0, DISTANCE_ASC.raw1, DISTANCE_ASC.raw2);
+	}
+
+	public void gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern) {
+		/*
+		* GPRADIUSBYMEMBER key BY key member
+		*                  [CP latitude longitude]
+		*                  [MATCH pattern] [SCORE min max] [NR|XR]
+		*                  [ORDERBY SCORE|DIST ASC|DESC]
+		*                  [LIMIT offset count]
+		*                  [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPRADIUSBYMEMBER, key, BY.raw, bykey, bymember, SCORE.raw, min, max, MATCH.raw, pattern, NR.raw, WITHVALUES.raw,
+				WITHVALUES.raw, WITHSCORES.raw, DISTANCE_ASC.raw0, DISTANCE_ASC.raw1, DISTANCE_ASC.raw2);
+	}
+
+	public void gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern, long offset,
+			long count, ORDERBY order) {
+		/*
+		* GPRADIUSBYMEMBER key BY key member
+		*                  [CP latitude longitude]
+		*                  [MATCH pattern] [SCORE min max] [NR|XR]
+		*                  [ORDERBY SCORE|DIST ASC|DESC]
+		*                  [LIMIT offset count]
+		*                  [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPRADIUSBYMEMBER, key, BY.raw, bykey, bymember, SCORE.raw, min, max, MATCH.raw, pattern, NR.raw, WITHVALUES.raw,
+				WITHSCORES.raw, WITHDISTANCE.raw, LIMIT.raw, toByteArray(offset), toByteArray(count), DISTANCE_ASC.raw0, DISTANCE_ASC.raw1,
+				DISTANCE_ASC.raw2);
+	}
+
+	// gpregionByMember
+
+	@Override
+	public void gpregionByMember(byte[] key, byte[] bykey, byte[] bymember) {
+		/*
+		* GPREGIONBYMEMBER key BY key member
+		*                  [CP latitude longitude]
+		*                  [MATCH pattern] [SCORE min max] [NR|XR]
+		*                  [ORDERBY SCORE|DIST ASC|DESC]
+		*                  [LIMIT offset count]
+		*                  [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPREGIONBYMEMBER, key, BY.raw, bykey, bymember, NR.raw, WITHVALUES.raw, WITHDISTANCE.raw, DISTANCE_ASC.raw0,
+				DISTANCE_ASC.raw1, DISTANCE_ASC.raw2);
 	}
 
 	@Override
-	public void gprangeByRadiusWithMatch(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern) {
-		// GPRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
-		// [LIMIT offset count]
-		sendCommand(GPRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw,
-				WITHVALUES.raw, WITHDISTANCE.raw, ASC.raw, NR.raw, MATCH.raw, pattern);
+	public void gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern) {
+		/*
+		* GPREGIONBYMEMBER key BY key member
+		*                  [CP latitude longitude]
+		*                  [MATCH pattern] [SCORE min max] [NR|XR]
+		*                  [ORDERBY SCORE|DIST ASC|DESC]
+		*                  [LIMIT offset count]
+		*                  [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPREGIONBYMEMBER, key, BY.raw, bykey, bymember, MATCH.raw, pattern, NR.raw, WITHVALUES.raw, WITHDISTANCE.raw,
+				DISTANCE_ASC.raw0, DISTANCE_ASC.raw1, DISTANCE_ASC.raw2);
 	}
 
 	@Override
-	public void gprangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern) {
-		// GPRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
-		// [LIMIT offset count]
-		sendCommand(GPRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw,
-				WITHVALUES.raw, WITHDISTANCE.raw, ASC.raw, XR.raw, MATCH.raw, pattern);
+	public void gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, final byte[] min, final byte[] max, final byte[] pattern) {
+		/*
+		* GPREGIONBYMEMBER key BY key member
+		*                  [CP latitude longitude]
+		*                  [MATCH pattern] [SCORE min max] [NR|XR]
+		*                  [ORDERBY SCORE|DIST ASC|DESC]
+		*                  [LIMIT offset count]
+		*                  [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPREGIONBYMEMBER, key, BY.raw, bykey, bymember, SCORE.raw, min, max, MATCH.raw, pattern, NR.raw,
+				WITHVALUES.raw, WITHSCORES.raw, DISTANCE_ASC.raw0, DISTANCE_ASC.raw1, DISTANCE_ASC.raw2);
 	}
 
 	@Override
-	public void gprangeCircleByRadiusWithMatch(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern,
-			RELATION scope, ORDERBY order) {
-		// GPRANGEBYRADIUS key latitude longitude RADIUS radius m|km CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
-		// [LIMIT offset count]
-		sendCommand(GPRANGEBYRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, scope.raw,
-				WITHVALUES.raw, WITHDISTANCE.raw, order.raw, XR.raw, MATCH.raw, pattern);
+	public void gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern, long offset,
+			long count, ORDERBY order) {
+		/*
+		* GPREGIONBYMEMBER key BY key member
+		*                  [CP latitude longitude]
+		*                  [MATCH pattern] [SCORE min max] [NR|XR]
+		*                  [ORDERBY SCORE|DIST ASC|DESC]
+		*                  [LIMIT offset count]
+		*                  [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPREGIONBYMEMBER, key, BY.raw, bykey, bymember, SCORE.raw, min, max, MATCH.raw, pattern, NR.raw, WITHVALUES.raw,
+				WITHSCORES.raw, WITHDISTANCE.raw, LIMIT.raw, toByteArray(offset), toByteArray(count), DISTANCE_ASC.raw0, DISTANCE_ASC.raw1,
+				DISTANCE_ASC.raw2);
+	}
+
+	// gpnn
+
+	@Override
+	public void gpnn(final byte[] key, final double lat, final double lon, final long offset, final long count) {
+		/*
+		* GPNN key latitude longitude LIMIT offset count
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(offset), toByteArray(count), NR.raw,
+				WITHVALUES.raw, WITHDISTANCE.raw);
+	}
+
+	@Override
+	public void gpnn(final byte[] key, final double lat, final double lon, final long offset, final long count, final byte[] pattern) {
+		/*
+		* GPNN key latitude longitude LIMIT offset count
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(offset), toByteArray(count), MATCH.raw, pattern,
+				NR.raw, WITHVALUES.raw, WITHDISTANCE.raw, DISTANCE_ASC.raw0, DISTANCE_ASC.raw1, DISTANCE_ASC.raw2);
+	}
+
+	@Override
+	public void gpnn(final byte[] key, final double lat, final double lon, final long offset, final long count, final byte[] pattern,
+			final byte[] min, final byte[] max) {
+		/*
+		* GPNN key latitude longitude LIMIT offset count
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(offset), toByteArray(count), MATCH.raw, pattern,
+				SCORE.raw, min, max, NR.raw, WITHVALUES.raw, WITHSCORES.raw, WITHDISTANCE.raw, DISTANCE_ASC.raw0, DISTANCE_ASC.raw1,
+				DISTANCE_ASC.raw2);
+	}
+
+	@Override
+	public void gpnn(final byte[] key, final double lat, final double lon, final long offset, final long count, final byte[] pattern,
+			final byte[] min, final byte[] max, ORDERBY order) {
+		/*
+		* GPNN key latitude longitude LIMIT offset count
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(offset), toByteArray(count), MATCH.raw, pattern,
+				SCORE.raw, min, max, MATCH.raw, pattern, NR.raw, WITHVALUES.raw, WITHSCORES.raw, WITHDISTANCE.raw, order.raw0, order.raw1,
+				order.raw2);
+	}
+
+	// gpregion
+
+	@Override
+	public void gpregion(byte[] key, Polygon<?> polygon) {
+		/*
+		* GPREGION key geojson
+		*          [CP latitude longitude]
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [LIMIT offset count]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPREGION, key, polygon.getJsonByte(), NR.raw, WITHVALUES.raw);
+	}
+
+	@Override
+	public void gpregion(byte[] key, LineString<?> lineString) {
+		/*
+		* GPREGION key geojson
+		*          [CP latitude longitude]
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [LIMIT offset count]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPREGION, key, lineString.getJsonByte(), NR.raw, WITHVALUES.raw);
+	}
+
+	@Override
+	public void gpregion(byte[] key, Point<?> point) {
+		/*
+		* GPREGION key geojson
+		*          [CP latitude longitude]
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [LIMIT offset count]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPREGION, key, point.getJsonByte(), NR.raw, WITHVALUES.raw);
+	}
+
+	@Override
+	public void gpregion(byte[] key, Polygon<?> polygon, byte[] pattern) {
+		/*
+		* GPREGION key geojson
+		*          [CP latitude longitude]
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [LIMIT offset count]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPREGION, key, polygon.getJsonByte(), MATCH.raw, pattern, NR.raw, WITHVALUES.raw);
+	}
+
+	@Override
+	public void gpregion(byte[] key, LineString<?> lineString, byte[] pattern) {
+		/*
+		* GPREGION key geojson
+		*          [CP latitude longitude]
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [LIMIT offset count]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPREGION, key, lineString.getJsonByte(), MATCH.raw, pattern, NR.raw, WITHVALUES.raw);
+	}
+
+	@Override
+	public void gpregion(byte[] key, Point<?> point, byte[] pattern) {
+		/*
+		* GPREGION key geojson
+		*          [CP latitude longitude]
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [LIMIT offset count]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPREGION, key, point.getJsonByte(), MATCH.raw, pattern, NR.raw, WITHVALUES.raw);
+	}
+
+	@Override
+	public void gpregion(byte[] key, Polygon<?> polygon, final byte[] min, final byte[] max, final long offset, long count, byte[] pattern) {
+		/*
+		* GPREGION key geojson
+		*          [CP latitude longitude]
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [LIMIT offset count]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPREGION, key, polygon.getJsonByte(), MATCH.raw, pattern, SCORE.raw, min, max, NR.raw, WITHVALUES.raw, WITHSCORES.raw,
+				LIMIT.raw, toByteArray(offset), toByteArray(count), DISTANCE_ASC.raw0, DISTANCE_ASC.raw1, DISTANCE_ASC.raw2);
+	}
+
+	@Override
+	public void gpregion(byte[] key, LineString<?> lineString, final byte[] min, final byte[] max, final long offset, long count,
+			byte[] pattern) {
+		/*
+		* GPREGION key geojson
+		*          [CP latitude longitude]
+		*          [MATCH pattern] [SCORE min max] [NR|XR]
+		*          [ORDERBY SCORE|DIST ASC|DESC]
+		*          [LIMIT offset count]
+		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPREGION, key, lineString.getJsonByte(), MATCH.raw, pattern, SCORE.raw, min, max, NR.raw, WITHVALUES.raw,
+				WITHSCORES.raw, LIMIT.raw, toByteArray(offset), toByteArray(count), DISTANCE_ASC.raw0, DISTANCE_ASC.raw1, DISTANCE_ASC.raw2);
 	}
 
 	public void gpcard(final byte[] key) {
@@ -168,84 +556,6 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 			bargs[i + 1] = members[i];
 		}
 		sendCommand(GPMGET, bargs);
-	}
-
-	@Override
-	public void gpnn(final byte[] key, final double lat, final double lon, final long count) {
-		// GPNN key latitude longitude LIMIT count [MATCH pattern] [NR|XR] [WITHVALUES] [WITHDISTANCE]
-		sendCommand(GPNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(count), NR.raw, WITHVALUES.raw, WITHDISTANCE.raw);
-	}
-
-	@Override
-	public void gpnn(final byte[] key, final double lat, final double lon, final long count, final byte[] pattern) {
-		// GPNN key latitude longitude LIMIT count [MATCH pattern] [NR|XR] [WITHVALUES] [WITHDISTANCE]
-		sendCommand(GPNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(count), MATCH.raw, pattern, NR.raw,
-				WITHVALUES.raw, WITHDISTANCE.raw);
-	}
-
-	@Override
-	public void gprangeByRegion(byte[] key, Polygon<?> polygon) {
-		// GPRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
-		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
-		sendCommand(GPRANGEBYREGION, key, polygon.getJsonByte(), NR.raw, WITHVALUES.raw);
-	}
-
-	@Override
-	public void gprangeByRegion(byte[] key, LineString<?> lineString) {
-		// GPRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
-		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
-		sendCommand(GPRANGEBYREGION, key, lineString.getJsonByte(), NR.raw, WITHVALUES.raw);
-	}
-
-	@Override
-	public void gprangeByRegion(byte[] key, Point<?> point) {
-		// GPRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
-		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
-		sendCommand(GPRANGEBYREGION, key, point.getJsonByte(), NR.raw, WITHVALUES.raw);
-	}
-
-	@Override
-	public void gprangeByRegionWithMatch(byte[] key, Polygon<?> polygon, byte[] pattern) {
-		// GPRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
-		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
-		sendCommand(GPRANGEBYREGION, key, polygon.getJsonByte(), MATCH.raw, pattern, NR.raw, WITHVALUES.raw);
-	}
-
-	@Override
-	public void gprangeByRegionWithMatch(byte[] key, Polygon<?> polygon, byte[] pattern, long count) {
-		// GPRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
-		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
-		sendCommand(GPRANGEBYREGION, key, polygon.getJsonByte(), MATCH.raw, pattern, NR.raw, WITHVALUES.raw, ASC.raw, LIMIT.raw,
-				toByteArray(0), toByteArray(count));
-	}
-
-	@Override
-	public void gprangeByRegionWithMatch(byte[] key, LineString<?> lineString, byte[] pattern) {
-		// GPRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
-		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
-		sendCommand(GPRANGEBYREGION, key, lineString.getJsonByte(), MATCH.raw, pattern, NR.raw, WITHVALUES.raw);
-	}
-
-	@Override
-	public void gprangeByRegionWithMatch(byte[] key, Point<?> point, byte[] pattern) {
-		// GPRANGEBYREGION key geojson_region [CP latitude longitude] [MATCH pattern][NR|XR]
-		// [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset count]
-		sendCommand(GPRANGEBYREGION, key, point.getJsonByte(), MATCH.raw, pattern, NR.raw, WITHVALUES.raw);
-	}
-
-	@Override
-	public void gprangeBy(byte[] key, byte[] bykey, byte[] bymember) {
-		// GRANGEBY key BY bykey bymember CONTAINS|WITHIN [MATCH pattern] [NR|XR] [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset
-		// count]
-		sendCommand(GPRANGEBY, key, BY.raw, bykey, bymember, CONTAINS.raw, NR.raw, WITHVALUES.raw, WITHDISTANCE.raw, ASC.raw);
-	}
-
-	@Override
-	public void gprangeByWithMatch(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern, long count) {
-		// GRANGEBY key BY bykey bymember CONTAINS|WITHIN [MATCH pattern] [NR|XR] [WITHVALUES] [WITHDISTANCE] [ASC|DESC] [LIMIT offset
-		// count]
-		sendCommand(GPRANGEBY, key, BY.raw, bykey, bymember, CONTAINS.raw, MATCH.raw, pattern, NR.raw, WITHVALUES.raw, WITHDISTANCE.raw,
-				ASC.raw, LIMIT.raw, toByteArray(0), toByteArray(count));
 	}
 
 	@Override
@@ -344,9 +654,9 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void ggrelationBy(byte[] key, byte[] byKey, byte[] byMember) {
+	public void ggrelationByMember(byte[] key, byte[] byKey, byte[] byMember) {
 		// GGRELATIONBY key BY bykey bymember CONTAINS|WITHIN [WITHVALUES] [WITHGEOJSON]
-		sendCommand(GGRELATIONBY, key, BY.raw, byKey, byMember, CONTAINS.raw, WITHVALUES.raw, WITHGEOJSON.raw);
+		sendCommand(GGRELATIONBYMEMBER, key, BY.raw, byKey, byMember, CONTAINS.raw, WITHVALUES.raw, WITHGEOJSON.raw);
 	}
 
 	@Override
@@ -356,7 +666,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void ggnnWithMatch(final byte[] key, final double lat, final double lon, final long count, final byte[] pattern) {
+	public void ggnn(final byte[] key, final double lat, final double lon, final long count, final byte[] pattern) {
 		// ggnn mygg 0 0 limit 2 match hello* withvalues withdistance withgeojson
 		sendCommand(GGNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(count), MATCH.raw, pattern, WITHVALUES.raw,
 				WITHGEOJSON.raw);
@@ -480,9 +790,9 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void gmrelationBy(byte[] key, byte[] byKey, byte[] byMember) {
+	public void gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember) {
 		// GMRELATIONBY key BY bykey bymember CONTAINS|WITHIN [WITHVALUES] [WITHGEOJSON]
-		sendCommand(GMRELATIONBY, key, BY.raw, byKey, byMember, CONTAINS.raw, WITHVALUES.raw, WITHGEOJSON.raw);
+		sendCommand(GMRELATIONBYMEMBER, key, BY.raw, byKey, byMember, CONTAINS.raw, WITHVALUES.raw, WITHGEOJSON.raw);
 	}
 
 	@Override
@@ -493,15 +803,10 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void gmnnWithMatch(final byte[] key, final double x, final double y, final long count, final byte[] pattern) {
+	public void gmnn(final byte[] key, final double x, final double y, final long count, final byte[] pattern) {
 		// GMnn mygg 0 0 limit 2 match hello* withvalues withdistance withgeojson
 		sendCommand(GMNN, key, toByteArray(x), toByteArray(y), LIMIT.raw, toByteArray(count), MATCH.raw, pattern, WITHVALUES.raw,
 				WITHDISTANCE.raw, WITHGEOJSON.raw);
-	}
-
-	@Override
-	public void gpexists(final byte[] key, final byte[] member) {
-		sendCommand(GPEXISTS, key, member);
 	}
 
 	@Override

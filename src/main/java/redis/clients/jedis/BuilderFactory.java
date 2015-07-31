@@ -18,6 +18,9 @@ import redis.clients.util.GEOMETRY;
 import redis.clients.util.SafeEncoder;
 
 public class BuilderFactory {
+
+	private static final String NAN = "nan";
+
 	public static final Builder<Double> DOUBLE = new Builder<Double>() {
 		public Double build(Object data) {
 			String asString = STRING.build(data);
@@ -274,6 +277,7 @@ public class BuilderFactory {
 					iterator.next();
 					iterator.next();
 					iterator.next();
+					iterator.next();
 					continue;
 				}
 				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
@@ -291,6 +295,85 @@ public class BuilderFactory {
 		}
 	};
 
+	public static final Builder<List<Point<String>>> SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LIST = new Builder<List<Point<String>>>() {
+		@SuppressWarnings("unchecked")
+		public List<Point<String>> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			final List<Point<String>> result = new ArrayList<Point<String>>(l.size());
+			Iterator<byte[]> iterator = l.iterator();
+			while (iterator.hasNext()) {
+				String fistValue = SafeEncoder.encode(iterator.next());
+				if (fistValue == null) {
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					continue;
+				}
+				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				iterator.next(); // radius
+				String value = SafeEncoder.encode(iterator.next());
+				String strScore = SafeEncoder.encode(iterator.next());
+				if (isNaN(strScore)) {
+					double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
+					result.add(new Point<String>(fistValue, x, y, value, distance));
+				} else {
+					double score = Double.valueOf(strScore);
+					double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
+					result.add(new Point<String>(fistValue, x, y, value, score, distance));
+				}
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "List<Point<String>>";
+		}
+	};
+
+	public static final Builder<List<Point<byte[]>>> BYTE_SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LIST = new Builder<List<Point<byte[]>>>() {
+		@SuppressWarnings("unchecked")
+		public List<Point<byte[]>> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			final List<Point<byte[]>> result = new ArrayList<Point<byte[]>>(l.size());
+			Iterator<byte[]> iterator = l.iterator();
+			while (iterator.hasNext()) {
+				byte[] fistValue = iterator.next();
+				if (fistValue == null) {
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					continue;
+				}
+				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				iterator.next(); // radius
+				byte[] value = iterator.next();
+				String strScore = SafeEncoder.encode(iterator.next());
+				if (isNaN(strScore)) {
+					double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
+					result.add(new Point<byte[]>(fistValue, x, y, value, distance));
+				} else {
+					double score = Double.valueOf(strScore);
+					double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
+					result.add(new Point<byte[]>(fistValue, x, y, value, distance, score));
+				}
+			}
+			return result;
+		}
+	};
+
 	public static final Builder<List<Point<byte[]>>> BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST = new Builder<List<Point<byte[]>>>() {
 		@SuppressWarnings("unchecked")
 		public List<Point<byte[]>> build(Object data) {
@@ -303,6 +386,7 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
+					iterator.next();
 					iterator.next();
 					iterator.next();
 					iterator.next();
@@ -410,6 +494,7 @@ public class BuilderFactory {
 					iterator.next();
 					iterator.next();
 					iterator.next();
+					iterator.next();
 					continue;
 				}
 				String member = SafeEncoder.encode(fistValue);
@@ -444,6 +529,7 @@ public class BuilderFactory {
 					iterator.next();
 					iterator.next();
 					iterator.next();
+					iterator.next();
 					continue;
 				}
 				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
@@ -451,6 +537,88 @@ public class BuilderFactory {
 				iterator.next(); // radius
 				byte[] value = iterator.next();
 				result.add(new Point<byte[]>(fistValue, x, y, value, 0));
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "List<Point<byte[]>>";
+		}
+
+	};
+
+	public static final Builder<List<Point<String>>> SPATIAL_GPOINT_WITHSCORE_LIST = new Builder<List<Point<String>>>() {
+		@SuppressWarnings("unchecked")
+		public List<Point<String>> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			final List<Point<String>> result = new ArrayList<Point<String>>(l.size());
+			Iterator<byte[]> iterator = l.iterator();
+
+			while (iterator.hasNext()) {
+				byte[] fistValue = iterator.next();
+				if (fistValue == null) {
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					continue;
+				}
+				String member = SafeEncoder.encode(fistValue);
+				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				iterator.next(); // radius
+				String value = SafeEncoder.encode(iterator.next());
+				String strScore = SafeEncoder.encode(iterator.next());
+				if (isNaN(strScore)) {
+					result.add(new Point<String>(member, x, y, value, null, 0));
+				} else {
+					double score = Double.valueOf(strScore);
+					result.add(new Point<String>(member, x, y, value, score, 0));
+				}
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "List<Point<String>>";
+		}
+
+	};
+	public static final Builder<List<Point<byte[]>>> BYTE_SPATIAL_GPOINT_WITHSCORE_LIST = new Builder<List<Point<byte[]>>>() {
+		public List<Point<byte[]>> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			@SuppressWarnings("unchecked")
+			List<byte[]> l = (List<byte[]>) data;
+			final List<Point<byte[]>> result = new ArrayList<Point<byte[]>>(l.size());
+			Iterator<byte[]> iterator = l.iterator();
+
+			while (iterator.hasNext()) {
+				byte[] fistValue = iterator.next();
+				if (fistValue == null) {
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					iterator.next();
+					continue;
+				}
+				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				iterator.next(); // radius
+				byte[] value = iterator.next();
+				String strScore = SafeEncoder.encode(iterator.next());
+				if (isNaN(strScore)) {
+					result.add(new Point<byte[]>(fistValue, x, y, value, 0));
+				} else {
+					double score = Double.valueOf(strScore);
+					result.add(new Point<byte[]>(fistValue, x, y, value, score, 0));
+				}
 			}
 			return result;
 		}
@@ -779,4 +947,11 @@ public class BuilderFactory {
 		}
 
 	};
+
+	protected static boolean isNaN(String strScore) {
+		if (NAN.equals(strScore)) {
+			return true;
+		}
+		return false;
+	}
 }

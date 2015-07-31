@@ -69,7 +69,7 @@ public class GeoPipeliningTest extends Assert {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		geodisPool = new JedisPool("172.19.114.201", 19006);
+		geodisPool = new JedisPool("172.19.114.202", 19006);
 	}
 
 	@AfterClass
@@ -123,11 +123,11 @@ public class GeoPipeliningTest extends Assert {
 		jedis.gpadd(keyf, 0.1, 0.5, member5, value);
 
 		Pipeline p = jedis.pipelined();
-		p.gprangeByRadius(keyf, 0.1, 0.1, 1, M);
-		p.gprangeByRadius(keyf, 0.1, 0.2, 1, M);
-		p.gprangeByRadius(keyf, 0.1, 0.3, 1, M);
-		p.gprangeByRadius(keyf, 0.1, 0.4, 1, M);
-		p.gprangeByRadius(keyf, 0.1, 0.5, 1, M);
+		p.gpradius(keyf, 0.1, 0.1, 1, M);
+		p.gpradius(keyf, 0.1, 0.2, 1, M);
+		p.gpradius(keyf, 0.1, 0.3, 1, M);
+		p.gpradius(keyf, 0.1, 0.4, 1, M);
+		p.gpradius(keyf, 0.1, 0.5, 1, M);
 		List<Object> results = p.syncAndReturnAll();
 
 		assertEquals(5, results.size());
@@ -145,11 +145,11 @@ public class GeoPipeliningTest extends Assert {
 
 		assertTrue(((List<Point<String>>) results.get(4)).get(0).equals(new Point<String>(member5, 0.1, 0.5, value)));
 
-		p.gprangeByRadius(keyb, 0.1, 0.1, 1, M);
-		p.gprangeByRadius(keyb, 0.1, 0.2, 1, M);
-		p.gprangeByRadius(keyb, 0.1, 0.3, 1, M);
-		p.gprangeByRadius(keyb, 0.1, 0.4, 1, M);
-		p.gprangeByRadius(keyb, 0.1, 0.5, 1, M);
+		p.gpradius(keyb, 0.1, 0.1, 1, M);
+		p.gpradius(keyb, 0.1, 0.2, 1, M);
+		p.gpradius(keyb, 0.1, 0.3, 1, M);
+		p.gpradius(keyb, 0.1, 0.4, 1, M);
+		p.gpradius(keyb, 0.1, 0.5, 1, M);
 		List<Object> resultsb = p.syncAndReturnAll();
 
 		assertEquals(5, results.size());
@@ -172,11 +172,11 @@ public class GeoPipeliningTest extends Assert {
 	@Test
 	public void pipelinegrangeCircleByRadius() throws UnsupportedEncodingException {
 		Pipeline p = jedis.pipelined();
-		p.gprangeCircleByRadius(keyf, 0.1, 0.1, 1, M);
-		p.gprangeCircleByRadius(keyf, 0.1, 0.2, 1, M);
-		p.gprangeCircleByRadius(keyf, 0.1, 0.3, 1, M);
-		p.gprangeCircleByRadius(keyf, 0.1, 0.4, 1, M);
-		p.gprangeCircleByRadius(keyf, 0.1, 0.5, 1, M);
+		p.gpcircle(keyf, 0.1, 0.1, 1, M);
+		p.gpcircle(keyf, 0.1, 0.2, 1, M);
+		p.gpcircle(keyf, 0.1, 0.3, 1, M);
+		p.gpcircle(keyf, 0.1, 0.4, 1, M);
+		p.gpcircle(keyf, 0.1, 0.5, 1, M);
 		p.gpupdate(keyf, member11, 0, 0);
 		p.gpget(keyf, member11);
 		p.gpupdate(keyf, member11, 10, 10, 1, M);
@@ -199,12 +199,12 @@ public class GeoPipeliningTest extends Assert {
 		assertThat((Long) results.get(7), is(OKl));
 		Point<String> pp11 = new Point<String>(member11, 10, 10, value);
 		assertThat((Point<String>) results.get(8), is(pp11));
-		
-		p.gprangeCircleByRadius(keyb, 0.1, 0.1, 1, M);
-		p.gprangeCircleByRadius(keyb, 0.1, 0.2, 1, M);
-		p.gprangeCircleByRadius(keyb, 0.1, 0.3, 1, M);
-		p.gprangeCircleByRadius(keyb, 0.1, 0.4, 1, M);
-		p.gprangeCircleByRadius(keyb, 0.1, 0.5, 1, M);
+
+		p.gpcircle(keyb, 0.1, 0.1, 1, M);
+		p.gpcircle(keyb, 0.1, 0.2, 1, M);
+		p.gpcircle(keyb, 0.1, 0.3, 1, M);
+		p.gpcircle(keyb, 0.1, 0.4, 1, M);
+		p.gpcircle(keyb, 0.1, 0.5, 1, M);
 		List<Object> resultsb = p.syncAndReturnAll();
 
 		assertEquals(9, results.size());
@@ -223,12 +223,12 @@ public class GeoPipeliningTest extends Assert {
 	@Test
 	public void pipelinegrangeCircleByRadiusWithMatch() throws UnsupportedEncodingException {
 		Pipeline p = jedis.pipelined();
-		p.gprangeCircleByRadius(keyf, 0.1, 0.1, 1, M, "*");
-		p.gprangeCircleByRadius(keyf, 0.1, 0.2, 1, M, "memkey7");
-		p.gprangeCircleByRadius(keyf, 0.1, 0.3, 1, M, "?emkey8*");
-		p.gprangeCircleByRadius(keyf, 0.1, 0.4, 1, M, "*memk?y9");
-		p.gprangeCircleByRadius(keyf, 0.1, 0.5, 1, M, "*memkey10*");
-		p.gprangeCircleByRadius(keyf, 0.1, 0.5, 1, M, "*memkey10*", RELATION.CONTAINS, ORDERBY.ASC);
+		p.gpcircle(keyf, 0.1, 0.1, 1, M, "*");
+		p.gpcircle(keyf, 0.1, 0.2, 1, M, "memkey7");
+		p.gpcircle(keyf, 0.1, 0.3, 1, M, "?emkey8*");
+		p.gpcircle(keyf, 0.1, 0.4, 1, M, "*memk?y9");
+		p.gpcircle(keyf, 0.1, 0.5, 1, M, "*memkey10*");
+		p.gpcircle(keyf, 0.1, 0.5, 1, M, "*memkey10*", RELATION.CONTAINS, ORDERBY.DISTANCE_ASC);
 		List<Object> results = p.syncAndReturnAll();
 
 		assertEquals(6, results.size());
@@ -242,12 +242,12 @@ public class GeoPipeliningTest extends Assert {
 
 		assertTrue(((List<Circle<String>>) results.get(4)).get(0).equals(new Circle<String>(member5, 0.1, 0.5, 1, M, value)));
 
-		p.gprangeCircleByRadius(keyb, 0.1, 0.1, 1, M, "*".getBytes());
-		p.gprangeCircleByRadius(keyb, 0.1, 0.2, 1, M, "memkey7".getBytes());
-		p.gprangeCircleByRadius(keyb, 0.1, 0.3, 1, M, "?emkey8*".getBytes());
-		p.gprangeCircleByRadius(keyb, 0.1, 0.4, 1, M, "*memk?y9".getBytes());
-		p.gprangeCircleByRadius(keyb, 0.1, 0.5, 1, M, "*memkey10*".getBytes());
-		p.gprangeCircleByRadius(keyb, 0.1, 0.5, 1, M, "*memkey10*".getBytes(), RELATION.CONTAINS, ORDERBY.ASC);
+		p.gpcircle(keyb, 0.1, 0.1, 1, M, "*".getBytes());
+		p.gpcircle(keyb, 0.1, 0.2, 1, M, "memkey7".getBytes());
+		p.gpcircle(keyb, 0.1, 0.3, 1, M, "?emkey8*".getBytes());
+		p.gpcircle(keyb, 0.1, 0.4, 1, M, "*memk?y9".getBytes());
+		p.gpcircle(keyb, 0.1, 0.5, 1, M, "*memkey10*".getBytes());
+		p.gpcircle(keyb, 0.1, 0.5, 1, M, "*memkey10*".getBytes(), RELATION.CONTAINS, ORDERBY.DISTANCE_ASC);
 		List<Object> resultsb = p.syncAndReturnAll();
 
 		assertEquals(6, results.size());
@@ -267,11 +267,11 @@ public class GeoPipeliningTest extends Assert {
 	@Test
 	public void pipelinegrangeByRadiusMatch() throws UnsupportedEncodingException {
 		Pipeline p = jedis.pipelined();
-		p.gprangeByRadius(keyf, 0.1, 0.1, 20, KM, "memkey1*");
-		p.gprangeByRadius(keyf, 0.1, 0.2, 25, KM, "memkey2*");
-		p.gprangeByRadius(keyf, 0.1, 0.3, 36, KM, "*memkey3");
-		p.gprangeByRadius(keyf, 0.1, 0.4, 46, KM, "*memkey4*");
-		p.gprangeByRadius(keyf, 0.1, 0.5, 57, KM, "memkey5**");
+		p.gpradius(keyf, 0.1, 0.1, 20, KM, "memkey1*");
+		p.gpradius(keyf, 0.1, 0.2, 25, KM, "memkey2*");
+		p.gpradius(keyf, 0.1, 0.3, 36, KM, "*memkey3");
+		p.gpradius(keyf, 0.1, 0.4, 46, KM, "*memkey4*");
+		p.gpradius(keyf, 0.1, 0.5, 57, KM, "memkey5**");
 		List<Object> results = p.syncAndReturnAll();
 
 		assertEquals(5, results.size());
@@ -284,13 +284,13 @@ public class GeoPipeliningTest extends Assert {
 
 		assertTrue(((List<Point<String>>) results.get(4)).get(0).equals(new Point<String>(member5, 0, 0, value)));
 
-		p.gprangeByRadius(keyb, 0.1, 0.1, 20, KM, "memkey1*".getBytes());
-		p.gprangeByRadius(keyb, 0.1, 0.2, 25, KM, "memkey2*".getBytes());
-		p.gprangeByRadius(keyb, 0.1, 0.3, 36, KM, "memkey3*".getBytes());
-		p.gprangeByRadius(keyb, 0.1, 0.4, 46, KM, "memkey4".getBytes());
-		p.gprangeByRadius(keyb, 0.1, 0.5, 57, KM, "memkey5**".getBytes());
+		p.gpradius(keyb, 0.1, 0.1, 20, KM, "memkey1*".getBytes());
+		p.gpradius(keyb, 0.1, 0.2, 25, KM, "memkey2*".getBytes());
+		p.gpradius(keyb, 0.1, 0.3, 36, KM, "memkey3*".getBytes());
+		p.gpradius(keyb, 0.1, 0.4, 46, KM, "memkey4".getBytes());
+		p.gpradius(keyb, 0.1, 0.5, 57, KM, "memkey5**".getBytes());
 
-		p.gprangeByRadius(keyb, 0.1, 0.5, 57, KM, "memkey6**".getBytes());
+		p.gpradius(keyb, 0.1, 0.5, 57, KM, "memkey6**".getBytes());
 
 		List<Object> resultsb = p.syncAndReturnAll();
 
@@ -318,11 +318,11 @@ public class GeoPipeliningTest extends Assert {
 		jedis.gpadd(keyf, 0, 0.05, member5, value);
 
 		Pipeline p = jedis.pipelined();
-		p.gpnn(keyf, 0, 0.1, 1);
-		p.gpnn(keyf, 0, 0.2, 2);
-		p.gpnn(keyf, 0, 0.3, 3);
-		p.gpnn(keyf, 0, 0.4, 4);
-		p.gpnn(keyf, 0, 0.5, 2);
+		p.gpnn(keyf, 0, 0.1, 0, 1);
+		p.gpnn(keyf, 0, 0.2, 0, 2);
+		p.gpnn(keyf, 0, 0.3, 0, 3);
+		p.gpnn(keyf, 0, 0.4, 0, 4);
+		p.gpnn(keyf, 0, 0.5, 0, 2);
 		List<Object> results = p.syncAndReturnAll();
 
 		assertEquals(5, results.size());
@@ -376,11 +376,11 @@ public class GeoPipeliningTest extends Assert {
 		jedis.gpadd(keyb, 0, 0.05, member5b, valueb);
 
 		Pipeline pb = jedis.pipelined();
-		pb.gpnn(keyb, 0, 0.1, 1);
-		pb.gpnn(keyb, 0, 0.2, 2);
-		pb.gpnn(keyb, 0, 0.3, 3);
-		pb.gpnn(keyb, 0, 0.4, 4);
-		pb.gpnn(keyb, 0, 0.5, 2);
+		pb.gpnn(keyb, 0, 0.1, 0, 1);
+		pb.gpnn(keyb, 0, 0.2, 0, 2);
+		pb.gpnn(keyb, 0, 0.3, 0, 3);
+		pb.gpnn(keyb, 0, 0.4, 0, 4);
+		pb.gpnn(keyb, 0, 0.5, 0, 2);
 		List<Object> resultsb = pb.syncAndReturnAll();
 
 		assertEquals(5, resultsb.size());
@@ -441,11 +441,11 @@ public class GeoPipeliningTest extends Assert {
 		p.sync();
 
 		Pipeline p2 = jedis.pipelined();
-		p2.gpnn(keyf, 0, 0.1, 1);
-		p2.gpnn(keyf, 0, 0.2, 2);
-		p2.gpnn(keyf, 0, 0.3, 3);
-		p2.gpnn(keyf, 0, 0.4, 4);
-		p2.gpnn(keyf, 0, 0.5, 2);
+		p2.gpnn(keyf, 0, 0.1, 0, 1);
+		p2.gpnn(keyf, 0, 0.2, 0, 2);
+		p2.gpnn(keyf, 0, 0.3, 0, 3);
+		p2.gpnn(keyf, 0, 0.4, 0, 4);
+		p2.gpnn(keyf, 0, 0.5, 0, 2);
 		List<Object> results = p2.syncAndReturnAll();
 
 		assertEquals(5, results.size());
@@ -457,6 +457,7 @@ public class GeoPipeliningTest extends Assert {
 		Point<String> mm5 = new Point<String>(member5, 0, 0.05, value);
 
 		assertTrue(((List<Point<String>>) results.get(0)).contains(mm5));
+		System.out.println(((List<Point<String>>) results.get(1)).size());
 		assertTrue(((List<Point<String>>) results.get(1)).contains(mm5));
 		assertTrue(((List<Point<String>>) results.get(1)).contains(mm4));
 		assertTrue(((List<Point<String>>) results.get(2)).contains(mm5));
@@ -501,11 +502,11 @@ public class GeoPipeliningTest extends Assert {
 		pb.sync();
 
 		Pipeline p2b = jedis.pipelined();
-		p2b.gpnn(keyb, 0, 0.1, 1);
-		p2b.gpnn(keyb, 0, 0.2, 2);
-		p2b.gpnn(keyb, 0, 0.3, 3);
-		p2b.gpnn(keyb, 0, 0.4, 4);
-		p2b.gpnn(keyb, 0, 0.5, 2);
+		p2b.gpnn(keyb, 0, 0.1, 0, 1);
+		p2b.gpnn(keyb, 0, 0.2, 0, 2);
+		p2b.gpnn(keyb, 0, 0.3, 0, 3);
+		p2b.gpnn(keyb, 0, 0.4, 0, 4);
+		p2b.gpnn(keyb, 0, 0.5, 0, 2);
 		List<Object> resultsb = p2b.syncAndReturnAll();
 
 		assertEquals(5, resultsb.size());
@@ -595,7 +596,7 @@ public class GeoPipeliningTest extends Assert {
 		assertThat((Point<String>) ((List<Geometry<String>>) results.get(2)).get(2), is(mm3));
 		assertThat((Polygon<String>) ((List<Geometry<String>>) results.get(2)).get(3), is(mm4));
 		assertThat((LineString<String>) ((List<Geometry<String>>) results.get(2)).get(4), is(mm5));
-		
+
 		assertThat(((List<Geometry<String>>) results.get(3)).size(), is(5));
 		assertThat((Point<String>) ((List<Geometry<String>>) results.get(3)).get(0), is(mm1));
 		assertThat((Point<String>) ((List<Geometry<String>>) results.get(3)).get(1), is(mm2));
@@ -616,7 +617,7 @@ public class GeoPipeliningTest extends Assert {
 		assertThat((Point<String>) ((List<Geometry<String>>) results.get(2)).get(2), is(mm3e));
 		assertThat((Polygon<String>) ((List<Geometry<String>>) results.get(2)).get(3), is(mm4e));
 		assertThat((LineString<String>) ((List<Geometry<String>>) results.get(2)).get(4), is(mm5e));
-		
+
 		assertThat(((List<Geometry<String>>) results.get(3)).size(), is(5));
 		assertThat((Point<String>) ((List<Geometry<String>>) results.get(3)).get(0), is(mm1e));
 		assertThat((Point<String>) ((List<Geometry<String>>) results.get(3)).get(1), is(mm2e));
@@ -670,7 +671,7 @@ public class GeoPipeliningTest extends Assert {
 		assertThat((Point<byte[]>) ((List<Geometry<byte[]>>) results.get(2)).get(2), is(mm3));
 		assertThat((Polygon<byte[]>) ((List<Geometry<byte[]>>) results.get(2)).get(3), is(mm4));
 		assertThat((LineString<byte[]>) ((List<Geometry<byte[]>>) results.get(2)).get(4), is(mm5));
-		
+
 		assertThat(((List<Geometry<byte[]>>) results.get(3)).size(), is(5));
 		assertThat((Point<byte[]>) ((List<Geometry<byte[]>>) results.get(3)).get(0), is(mm1));
 		assertThat((Point<byte[]>) ((List<Geometry<byte[]>>) results.get(3)).get(1), is(mm2));
@@ -691,7 +692,7 @@ public class GeoPipeliningTest extends Assert {
 		assertThat((Point<byte[]>) ((List<Geometry<byte[]>>) results.get(2)).get(2), is(mm3e));
 		assertThat((Polygon<byte[]>) ((List<Geometry<byte[]>>) results.get(2)).get(3), is(mm4e));
 		assertThat((LineString<byte[]>) ((List<Geometry<byte[]>>) results.get(2)).get(4), is(mm5e));
-		
+
 		assertThat(((List<Geometry<byte[]>>) results.get(3)).size(), is(5));
 		assertThat((Point<byte[]>) ((List<Geometry<byte[]>>) results.get(3)).get(0), is(mm1e));
 		assertThat((Point<byte[]>) ((List<Geometry<byte[]>>) results.get(3)).get(1), is(mm2e));
@@ -701,8 +702,7 @@ public class GeoPipeliningTest extends Assert {
 
 		jedis.del(keyb);
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void pipelinegaddgcardgrem() throws UnsupportedEncodingException {
@@ -718,10 +718,10 @@ public class GeoPipeliningTest extends Assert {
 
 		Pipeline p2 = jedis.pipelined();
 		p2.gpcard(keyf);
-		p2.gpnn(keyf, 0, 0.2, 2);
-		p2.gpnn(keyf, 0, 0.3, 3);
-		p2.gpnn(keyf, 0, 0.4, 4);
-		p2.gpnn(keyf, 0, 0.5, 2);
+		p2.gpnn(keyf, 0, 0.2, 0, 2);
+		p2.gpnn(keyf, 0, 0.3, 0, 3);
+		p2.gpnn(keyf, 0, 0.4, 0, 4);
+		p2.gpnn(keyf, 0, 0.5, 0, 2);
 		List<Object> results = p2.syncAndReturnAll();
 
 		assertEquals(5, results.size());
@@ -787,10 +787,10 @@ public class GeoPipeliningTest extends Assert {
 
 		Pipeline p2b = jedis.pipelined();
 		p2b.gpcard(keyf);
-		p2b.gpnn(keyb, 0, 0.2, 2);
-		p2b.gpnn(keyb, 0, 0.3, 3);
-		p2b.gpnn(keyb, 0, 0.4, 4);
-		p2b.gpnn(keyb, 0, 0.5, 2);
+		p2b.gpnn(keyb, 0, 0.2, 0, 2);
+		p2b.gpnn(keyb, 0, 0.3, 0, 3);
+		p2b.gpnn(keyb, 0, 0.4, 0, 4);
+		p2b.gpnn(keyb, 0, 0.5, 0, 2);
 		List<Object> resultsb = p2b.syncAndReturnAll();
 
 		assertEquals(5, resultsb.size());
@@ -859,12 +859,12 @@ public class GeoPipeliningTest extends Assert {
 		p.sync();
 
 		p = jedis.pipelined();
-		p.gprangeCircleByRadius(keyf, 0.1, 0.1, 1, M);
-		p.gprangeCircleByRadius(keyf, 0.1, 0.2, 1, M);
-		p.gprangeCircleByRadius(keyf, 0.1, 0.3, 1, M);
-		p.gprangeCircleByRadius(keyf, 0.1, 0.4, 1, M);
-		p.gprangeCircleByRadius(keyf, 0.1, 0.5, 1, M);
-		p.gprangeCircleByRadius(keyf, 0.1, 0.5, 1, M, RELATION.CONTAINS, ORDERBY.ASC);
+		p.gpcircle(keyf, 0.1, 0.1, 1, M);
+		p.gpcircle(keyf, 0.1, 0.2, 1, M);
+		p.gpcircle(keyf, 0.1, 0.3, 1, M);
+		p.gpcircle(keyf, 0.1, 0.4, 1, M);
+		p.gpcircle(keyf, 0.1, 0.5, 1, M);
+		p.gpcircle(keyf, 0.1, 0.5, 1, M, RELATION.CONTAINS, ORDERBY.DISTANCE_ASC);
 		List<Object> results = p.syncAndReturnAll();
 
 		assertEquals(6, results.size());
@@ -887,14 +887,13 @@ public class GeoPipeliningTest extends Assert {
 		pb.sync();
 
 		pb = jedis.pipelined();
-		pb.gprangeCircleByRadius(keyb, 0.1, 0.1, 1, M);
-		pb.gprangeCircleByRadius(keyb, 0.1, 0.2, 1, M);
-		pb.gprangeCircleByRadius(keyb, 0.1, 0.3, 1, M);
-		pb.gprangeCircleByRadius(keyb, 0.1, 0.4, 1, M);
-		pb.gprangeCircleByRadius(keyb, 0.1, 0.5, 1, M);
-		pb.gprangeCircleByRadius(keyb, 0.1, 0.5, 1, M, RELATION.CONTAINS, ORDERBY.ASC);
-		
-		
+		pb.gpcircle(keyb, 0.1, 0.1, 1, M);
+		pb.gpcircle(keyb, 0.1, 0.2, 1, M);
+		pb.gpcircle(keyb, 0.1, 0.3, 1, M);
+		pb.gpcircle(keyb, 0.1, 0.4, 1, M);
+		pb.gpcircle(keyb, 0.1, 0.5, 1, M);
+		pb.gpcircle(keyb, 0.1, 0.5, 1, M, RELATION.CONTAINS, ORDERBY.DISTANCE_ASC);
+
 		List<Object> resultsb = pb.syncAndReturnAll();
 
 		assertEquals(6, results.size());

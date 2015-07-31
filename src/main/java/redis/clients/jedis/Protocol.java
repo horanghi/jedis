@@ -352,16 +352,15 @@ public final class Protocol {
 		ASKING,
 		GPADD,
 		GPUPDATEBY,
-		GPRANGEBYRADIUS,
-		GPMEMBERVALUE,
+		GPRADIUS,
 		GPCARD,
 		GPREM,
 		GPGET,
 		GPMGET,
 		GPNN,
-		GPRANGEBYREGION,
-		GPRANGEBYREGIONBY,
-		GPRANGEBY,
+		GPREGION,
+		GPRADIUSBYMEMBER,
+		GPREGIONBYMEMBER,
 		GGADD,
 		GGUPDATEBY,
 		GGRANGE,
@@ -371,7 +370,7 @@ public final class Protocol {
 		GGGET,
 		GGMGET,
 		GGRELATION,
-		GGRELATIONBY,
+		GGRELATIONBYMEMBER,
 		GGNN,
 		GMSETBOUNDARY,
 		GMGETBOUNDARY,
@@ -385,13 +384,12 @@ public final class Protocol {
 		GMGET,
 		GMMGET,
 		GMRELATION,
-		GMRELATIONBY,
-		GMNN, 
-		
+		GMRELATIONBYMEMBER,
+		GMNN,
+
 		GPEXISTS,
 		GGEXISTS,
-		GMEXISTS,
-		;
+		GMEXISTS, ;
 
 		public final byte[] raw;
 
@@ -451,7 +449,7 @@ public final class Protocol {
 	}
 
 	public static enum UNITS {
-		M("m"), KM("km");
+		M("m"), KM("km"), FEET("ft"), MILES("mi");
 
 		public final byte[] raw;
 
@@ -471,12 +469,19 @@ public final class Protocol {
 	}
 
 	public static enum ORDERBY {
-		ASC("asc"), DESC("desc");
+		SCORE_ASC("orderby", "score", "asc"),
+		SCORE_DESC("orderby", "score", "desc"),
+		DISTANCE_ASC("orderby", "dist", "asc"),
+		DISTANCE_DESC("orderby", "dist", "desc");
 
-		public final byte[] raw;
+		public final byte[] raw0;
+		public final byte[] raw1;
+		public final byte[] raw2;
 
-		ORDERBY(String option) {
-			raw = SafeEncoder.encode(this.name());
+		ORDERBY(String order, String opt1, String opt2) {
+			raw0 = SafeEncoder.encode(order);
+			raw1 = SafeEncoder.encode(opt1);
+			raw2 = SafeEncoder.encode(opt2);
 		}
 	}
 
@@ -486,7 +491,9 @@ public final class Protocol {
 		BY,
 		RADIUS,
 		MATCH,
+		SCORE,
 		WITHVALUES,
+		WITHSCORES,
 		WITHDISTANCE,
 		WITHGEOJSON,
 		XR,

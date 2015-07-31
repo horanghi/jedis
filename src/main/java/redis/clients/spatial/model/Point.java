@@ -21,6 +21,8 @@ public class Point<T> extends Geometry<T> implements Comparable<T> {
 	final private double x;
 	@Getter
 	final private double y;
+
+	private Double score = null;
 	@Setter
 	@Getter
 	private double distance;
@@ -46,9 +48,25 @@ public class Point<T> extends Geometry<T> implements Comparable<T> {
 		this.distance = distance;
 	}
 
+	public Point(T member, double x, double y, T value, Double score, double distance) {
+		super(member, value);
+		this.x = x;
+		this.y = y;
+		this.score = score;
+		this.distance = distance;
+	}
+
 	@Override
 	public Type getType() {
 		return this.type;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
+	}
+
+	public Double getScore() {
+		return this.score;
 	}
 
 	@SuppressWarnings("unchecked")

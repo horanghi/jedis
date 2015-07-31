@@ -56,7 +56,7 @@ public class GeoPipleliningGeometryTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		// gcontainer
-		geodisPool = new JedisPool("172.19.114.201", 19006);
+		geodisPool = new JedisPool("172.19.114.202", 19006);
 	}
 
 	@AfterClass
@@ -114,7 +114,7 @@ public class GeoPipleliningGeometryTest {
 		assertThat(((Long) results.get(1)), is(0l));
 		assertThat(((Long) results.get(2)), is(0l));
 		assertThat(((Long) results.get(3)), is(OKl));
-		assertThat(((String) results.get(4)), is("OK"));
+		assertThat(new String((byte[])results.get(4)), is("OK"));
 
 		assertThat(((List<Point<String>>) results.get(5)).get(0), is(new Point<String>(-100, -100)));
 		assertThat(((List<Point<String>>) results.get(5)).get(1), is(new Point<String>(100, 100)));
@@ -559,9 +559,9 @@ public class GeoPipleliningGeometryTest {
 		p.gmadd(kkb, member4, value, linestr);
 		p.gmadd(kkb, member5, value, point1);
 
-		p.gmrelationBy(key, kkb, member3);
-		p.gmrelationBy(key, kkb, member4);
-		p.gmrelationBy(key, kkb, member5);
+		p.gmrelationByMember(key, kkb, member3);
+		p.gmrelationByMember(key, kkb, member4);
+		p.gmrelationByMember(key, kkb, member5);
 		p.gmcard(key);
 		p.gmcard(kkb);
 		p.gmrem(key, member1);
@@ -670,9 +670,9 @@ public class GeoPipleliningGeometryTest {
 		p.gmadd(kkbb, member4b, valueb, linestr);
 		p.gmadd(kkbb, member5b, valueb, point1);
 
-		p.gmrelationBy(keyb, kkbb, member3b);
-		p.gmrelationBy(keyb, kkbb, member4b);
-		p.gmrelationBy(keyb, kkbb, member5b);
+		p.gmrelationByMember(keyb, kkbb, member3b);
+		p.gmrelationByMember(keyb, kkbb, member4b);
+		p.gmrelationByMember(keyb, kkbb, member5b);
 		p.gmcard(keyb);
 		p.gmcard(kkbb);
 		p.gmrem(keyb, member1b);

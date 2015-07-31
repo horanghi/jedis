@@ -26,6 +26,7 @@ import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.Type;
 import redis.clients.jedis.Protocol.UNITS;
+import redis.clients.jedis.tests.benchmark.GetSetBenchmark;
 import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Geometry;
 import redis.clients.spatial.model.LineString;
@@ -60,7 +61,7 @@ public class GeodisTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		// spatial redis
-		geodisPool = new JedisPool("172.19.114.201", 19006);
+		geodisPool = new JedisPool("172.19.114.202", 19006);
 
 	}
 
@@ -147,21 +148,57 @@ public class GeodisTest {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
-	public void testgaddnGradiusDetail() {
+	public void testGpaddnGpradius00() {
 		geodis.del(key);
-		String[] members = { member1, member2 };
-		String[] values = { value, value };
-		Point<String>[] opoints = new Point[] { new Point(member1, 0, 0, value), new Point(member2, 0, 0, value) };
+		String[] members = { member1, member2, member3, member4 };
+		String[] values = { value, value, value, value };
+		Point<String>[] opoints = new Point[] { new Point(member1, 0, 0, value), new Point(member2, 0, 0, value),
+				new Point(member3, 10, 11, value), new Point(member4, 10, 11, value) };
 		assertThat(geodis.gpadd(key, 0, 0, member1, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, member2, value), is(OKl));
-		assertThat(geodis.gprangeByRadius(key, 0, 0, 10, UNITS.KM).size(), is(2));
-		List<Point<String>> Points = geodis.gprangeByRadius(key, 0, 0, 100, UNITS.M);
+		assertThat(geodis.gpadd(key, 10, 11, member3, value, 1), is(OKl));
+		assertThat(geodis.gpadd(key, 10, 11, member4, value, 10), is(OKl));
+		assertThat(geodis.gpadd(key, 10, 11, member5, value, 12), is(OKl));
+		assertThat(geodis.gpradius(key, 0, 0, 10, UNITS.KM).size(), is(2));
+		List<Point<String>> Points = geodis.gpradius(key, 0, 0, 100, UNITS.M);
 		int idx = 0;
 		for (Point<String> point : Points) {
 			assertTrue(point.getMember().equals(members[idx]));
 			assertTrue(point.getValue().equals(values[idx]));
 			assertTrue(point.equals(opoints[idx++]));
-			System.out.println(point.toString());
+		}
+
+		List<Point<String>> ppoints = geodis.gpradius(key, 10, 11, 100, UNITS.M, "1", "11", ORDERBY.DISTANCE_ASC);
+		assertThat(ppoints.size(), is(2));
+		idx = 2;
+		for (Point<String> point : ppoints) {
+			assertTrue(point.getMember().equals(members[idx]));
+			assertTrue(point.getValue().equals(values[idx]));
+			assertTrue(point.equals(opoints[idx++]));
+			assertNotNull(point.getScore());
+			assertTrue(point.getScore() > 0);
+			assertTrue(point.getScore() <= 11);
+		}
+
+		ppoints = geodis.gpradius(key, 10, 11, 100, UNITS.M, "1", "11", "*", 0, 5, ORDERBY.DISTANCE_ASC);
+		assertThat(ppoints.size(), is(2));
+		idx = 2;
+		for (Point<String> point : ppoints) {
+			assertTrue(point.getMember().equals(members[idx]));
+			assertTrue(point.getValue().equals(values[idx]));
+			assertTrue(point.equals(opoints[idx++]));
+			assertNotNull(point.getScore());
+			assertTrue(point.getScore() > 0);
+			assertTrue(point.getScore() <= 11);
+		}
+
+		ppoints = geodis.gpradius(key, 10, 11, 100, UNITS.M, "memkey3*");
+		assertThat(ppoints.size(), is(1));
+		for (Point<String> point : ppoints) {
+			assertTrue(point.getMember().equals(members[2]));
+			assertTrue(point.getValue().equals(values[2]));
+			assertTrue(point.equals(opoints[2]));
+			assertNull(point.getScore());
 		}
 
 		assertThat(geodis.gpexists(key, member1), is(1l));
@@ -173,10 +210,18 @@ public class GeodisTest {
 		geodis.del(keyb);
 		assertThat(geodis.gpadd(keyb, 0, 0, member1b, valueb), is(OKl));
 		assertThat(geodis.gpadd(keyb, 0, 0, member2b, valueb), is(OKl));
-		assertThat(geodis.gprangeByRadius(keyb, 0, 0, 10, UNITS.KM).size(), is(2));
-		List<Point<byte[]>> Pointsb = geodis.gprangeByRadius(keyb, 0, 0, 100, UNITS.M);
+		assertThat(geodis.gpadd(keyb, 10, 11, member3b, valueb, 1), is(OKl));
+		assertThat(geodis.gpadd(keyb, 10, 11, member4b, valueb, 10), is(OKl));
+		assertThat(geodis.gpadd(keyb, 10, 11, member5b, valueb, 12), is(OKl));
+		assertThat(geodis.gpradius(keyb, 0, 0, 10, UNITS.KM).size(), is(2));
+		List<Point<byte[]>> Pointsb = geodis.gpradius(keyb, 0, 0, 100, UNITS.M);
 		for (Point<byte[]> point : Pointsb) {
-			System.out.println(point.toString());
+			// System.out.println(point.toString());
+		}
+		Pointsb = geodis.gpradius(keyb, 10, 11, 100, UNITS.M, "1".getBytes(), "11".getBytes(), ORDERBY.DISTANCE_ASC);
+		assertThat(Pointsb.size(), is(2));
+		for (Point<String> point : Points) {
+			// System.out.println(point.toString());
 		}
 
 		assertThat(geodis.gpexists(keyb, member1b), is(1l));
@@ -188,7 +233,7 @@ public class GeodisTest {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
-	public void testgaddnGupdate() {
+	public void testGpaddnGpupdatenGpradius00() {
 		geodis.del(key);
 		String[] members = { member1, member2 };
 		String[] values = { value, value };
@@ -199,7 +244,7 @@ public class GeodisTest {
 		assertThat(geodis.gpadd(key, 0, 0, member2, value), is(OKl));
 		assertThat(geodis.gpupdate(key, member1, 1, 1), is(OKl));
 		assertThat(geodis.gpupdate(key, member2, 1, 1), is(OKl));
-		List<Point<String>> Points = geodis.gprangeByRadius(key, 1, 1, 100, UNITS.M);
+		List<Point<String>> Points = geodis.gpradius(key, 1, 1, 100, UNITS.M);
 		int idx = 0;
 		for (Point<String> point : Points) {
 			assertTrue(point.getMember().equals(members[idx]));
@@ -211,7 +256,7 @@ public class GeodisTest {
 		Point<String>[] opoints2 = new Point[] { new Point(member1, 1, 1, value, 10), new Point(member2, 1, 1, value, 10) };
 		assertThat(geodis.gpupdate(key, member1, 1, 1, 10, M), is(OKl));
 		assertThat(geodis.gpupdate(key, member2, 1, 1, 10, M), is(OKl));
-		List<Point<String>> Points2 = geodis.gprangeByRadius(key, 1, 1, 100, UNITS.M);
+		List<Point<String>> Points2 = geodis.gpradius(key, 1, 1, 100, UNITS.M);
 		idx = 0;
 		for (Point<String> point : Points2) {
 			assertTrue(point.getMember().equals(members[idx]));
@@ -226,14 +271,14 @@ public class GeodisTest {
 		assertThat(geodis.gpadd(keyb, 0, 0, member2b, valueb), is(OKl));
 		assertThat(geodis.gpupdate(keyb, member1b, 1, 1), is(OKl));
 		assertThat(geodis.gpupdate(keyb, member2b, 1, 1), is(OKl));
-		List<Point<byte[]>> Pointsb = geodis.gprangeByRadius(keyb, 0, 0, 100, UNITS.M);
+		List<Point<byte[]>> Pointsb = geodis.gpradius(keyb, 0, 0, 100, UNITS.M);
 		for (Point<byte[]> point : Pointsb) {
 			System.out.println(point.toString());
 		}
 
 		assertThat(geodis.gpupdate(keyb, member1b, 1, 1, 10, M), is(OKl));
 		assertThat(geodis.gpupdate(keyb, member2b, 1, 1, 10, M), is(OKl));
-		List<Point<byte[]>> Pointsb2 = geodis.gprangeByRadius(keyb, 0, 0, 100, UNITS.M);
+		List<Point<byte[]>> Pointsb2 = geodis.gpradius(keyb, 0, 0, 100, UNITS.M);
 		for (Point<byte[]> point : Pointsb2) {
 			assertTrue(point.getMember().equals(membersb[idx]));
 			assertTrue(point.getValue().equals(valuesb[idx]));
@@ -245,13 +290,13 @@ public class GeodisTest {
 	}
 
 	@Test
-	public void testgaddnGradiusForCircle() {
+	public void testGpaddnGpradiusForCircle() {
 		geodis.del(key);
 		assertThat(geodis.gpadd(key, 0, 0, member1, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, member2, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, 10, UNITS.M, member3, value), is(OKl));
-		assertThat(geodis.gprangeCircleByRadius(key, 0, 0, 10, UNITS.KM).size(), is(1));
-		List<Circle<String>> circles = geodis.gprangeCircleByRadius(key, 0, 0, 100, UNITS.M);
+		assertThat(geodis.gpcircle(key, 0, 0, 10, UNITS.KM).size(), is(1));
+		List<Circle<String>> circles = geodis.gpcircle(key, 0, 0, 100, UNITS.M);
 		for (Circle<String> circle : circles) {
 			System.out.println(circle.toString());
 		}
@@ -262,8 +307,8 @@ public class GeodisTest {
 		assertThat(geodis.gpadd(keyb, 0, 0, member2b, valueb), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, 10, UNITS.M, member3, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, 30, UNITS.M, member4, value), is(OKl));
-		assertThat(geodis.gprangeCircleByRadius(keyb, 0, 0, 50, UNITS.M).size(), is(2));
-		List<Circle<byte[]>> circlesb = geodis.gprangeCircleByRadius(keyb, 0, 0, 50, UNITS.M);
+		assertThat(geodis.gpcircle(keyb, 0, 0, 50, UNITS.M).size(), is(2));
+		List<Circle<byte[]>> circlesb = geodis.gpcircle(keyb, 0, 0, 50, UNITS.M);
 		for (Circle<byte[]> circle : circlesb) {
 			System.out.println(circle.toString());
 		}
@@ -271,7 +316,7 @@ public class GeodisTest {
 	}
 
 	@Test
-	public void testgaddnGrangeBy() {
+	public void testGpaddnGpregionByMember00() {
 		geodis.del(key);
 		geodis.del(keyGG);
 		List<Point<String>> ps = new ArrayList<Point<String>>();
@@ -279,12 +324,32 @@ public class GeodisTest {
 		ps.add(new Point<String>(member2, 0, 0, value));
 		assertThat(geodis.gpadd(key, 0, 0, member1, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, member2, value), is(OKl));
+		assertThat(geodis.gpadd(key, 10, 10, member3, value, 10), is(OKl));
+		assertThat(geodis.gpadd(key, 10, 10, member4, value, 20), is(OKl));
 		Polygon<String> polygon = new Polygon<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
 				new Point<String>(-1, 1), new Point<String>(1, 1));
+		Polygon<String> polygon2 = new Polygon<String>(new Point<String>(11, 11), new Point<String>(1, -1), new Point<String>(-1, -1),
+				new Point<String>(-1, 1), new Point<String>(11, 11));
 		assertThat(geodis.ggadd(keyGG, member3, value, polygon), is(OKl));
+		assertThat(geodis.ggadd(keyGG, member4, value, polygon2), is(OKl));
 
-		assertThat(geodis.gprangeBy(key, keyGG, member3).size(), is(2));
-		List<Point<String>> points = geodis.gprangeBy(key, keyGG, member3);
+		assertThat(geodis.gpregionByMember(key, keyGG, member3).size(), is(2));
+		List<Point<String>> points = geodis.gpregionByMember(key, keyGG, member3);
+		for (int idx = 0; idx < points.size(); idx++) {
+			Point<String> p = points.get(idx);
+			p.equalsDeep(ps.get(idx));
+			System.out.println(p.toString());
+		}
+
+		assertThat(geodis.gpregionByMember(key, keyGG, member4).size(), is(4));
+		points = geodis.gpregionByMember(key, keyGG, member4, "10", "20", "memkey*");
+		for (int idx = 3; idx < points.size(); idx++) {
+			Point<String> p = points.get(idx);
+			p.equalsDeep(ps.get(idx));
+			System.out.println(p.toString());
+		}
+
+		points = geodis.gpregionByMember(key, keyGG, member3);
 		for (int idx = 0; idx < points.size(); idx++) {
 			Point<String> p = points.get(idx);
 			p.equalsDeep(ps.get(idx));
@@ -301,8 +366,8 @@ public class GeodisTest {
 		psb.add(new Point<byte[]>(member1b, 0, 0, valueb));
 		psb.add(new Point<byte[]>(member2b, 0, 0, valueb));
 
-		assertThat(geodis.gprangeBy(key, keyGG, member3).size(), is(2));
-		List<Point<byte[]>> pointsb = geodis.gprangeBy(keyb, keyGG.getBytes(), member3b);
+		assertThat(geodis.gpregionByMember(key, keyGG, member3).size(), is(2));
+		List<Point<byte[]>> pointsb = geodis.gpregionByMember(keyb, keyGG.getBytes(), member3b);
 		for (int idx = 0; idx < pointsb.size(); idx++) {
 			Point<byte[]> p = pointsb.get(idx);
 			p.equalsDeep(psb.get(idx));
@@ -315,20 +380,21 @@ public class GeodisTest {
 	}
 
 	@Test
-	public void testgaddnGrangeByWithMatch() {
+	public void testGpaddnGpregionByMemberWithMatch() {
 		geodis.del(key);
 		geodis.del(keyGG);
 		List<Point<String>> ps = new ArrayList<Point<String>>();
 		ps.add(new Point<String>(member1, 0, 0, value));
 		ps.add(new Point<String>(member2, 0, 0, value));
-		assertThat(geodis.gpadd(key, 0, 0, member1, value), is(OKl));
-		assertThat(geodis.gpadd(key, 0, 0, member2, value), is(OKl));
+		assertThat(geodis.gpadd(key, 0, 0, member1, value, 11), is(OKl));
+		assertThat(geodis.gpadd(key, 0, 0, member2, value, 12), is(OKl));
 		Polygon<String> polygon = new Polygon<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
 				new Point<String>(-1, 1), new Point<String>(1, 1));
 		assertThat(geodis.ggadd(keyGG, member3, value, polygon), is(OKl));
 
-		assertThat(geodis.gprangeBy(key, keyGG, member3, "*1*", 2).size(), is(1));
-		List<Point<String>> points = geodis.gprangeBy(key, keyGG, member3, "*1*", 2);
+		assertThat(geodis.gpregionByMember(key, keyGG, member3, "*1*").size(), is(1));
+		assertThat(geodis.gpregionByMember(key, keyGG, member3, "10", "20", "*1*", 0, 5, ORDERBY.DISTANCE_ASC).size(), is(1));
+		List<Point<String>> points = geodis.gpregionByMember(key, keyGG, member3, "*1*");
 		assertThat(points.get(0), is(new Point<String>(member1, 0, 0, value)));
 
 		assertThat(geodis.ggexists(keyGG, member3), is(1l));
@@ -344,8 +410,8 @@ public class GeodisTest {
 		psb.add(new Point<byte[]>(member1b, 0, 0, valueb));
 		psb.add(new Point<byte[]>(member2b, 0, 0, valueb));
 
-		assertThat(geodis.gprangeBy(keyb, keyGG.getBytes(), member3b, "*2*".getBytes(), 2).size(), is(1));
-		List<Point<byte[]>> pointsb = geodis.gprangeBy(keyb, keyGG.getBytes(), member3b, "*2*".getBytes(), 2);
+		assertThat(geodis.gpregionByMember(keyb, keyGG.getBytes(), member3b, "*2*".getBytes()).size(), is(1));
+		List<Point<byte[]>> pointsb = geodis.gpregionByMember(keyb, keyGG.getBytes(), member3b, "*2*".getBytes());
 		assertThat(pointsb.get(0), is(new Point<byte[]>(member2b, 0, 0, valueb)));
 
 		assertThat(geodis.ggexists(keyGG.getBytes(), member3b), is(1l));
@@ -357,6 +423,11 @@ public class GeodisTest {
 	}
 
 	@Test
+	public void testdd() {
+		assertThat(geodis.gpcircle(key, 0, 0, 10, UNITS.KM).size(), is(0));
+	}
+
+	@Test
 	public void testgaddnGradiusForCircleEXT() {
 		geodis.del(key);
 		System.out.println(geodis.gpdistance(0.0000001, 0, 0.0000002, 0));
@@ -364,14 +435,14 @@ public class GeodisTest {
 		assertThat(geodis.gpadd(key, 0, 0, member2, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, 11, UNITS.M, member3, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0.0000002, 0, 30, UNITS.M, member4, value), is(OKl));
-		assertThat(geodis.gprangeCircleByRadius(key, 0, 0, 10, UNITS.KM).size(), is(2));
-		List<Circle<String>> circles = geodis.gprangeCircleByRadius(key, 0, 0, 100, UNITS.M, RELATION.CONTAINS, ORDERBY.ASC);
+		assertThat(geodis.gpcircle(key, 0, 0, 10, UNITS.KM).size(), is(2));
+		List<Circle<String>> circles = geodis.gpcircle(key, 0, 0, 100, UNITS.M, RELATION.CONTAINS, ORDERBY.DISTANCE_ASC);
 		assertThat(circles.size(), is(2));
 		assertTrue(circles.get(0).getDistance() < circles.get(1).getDistance());
 		for (Circle<String> circle : circles) {
 			System.out.println(circle.toString());
 		}
-		List<Circle<String>> circles2 = geodis.gprangeCircleByRadius(key, 0, 0, 10, UNITS.M, RELATION.WITHIN, ORDERBY.DESC);
+		List<Circle<String>> circles2 = geodis.gpcircle(key, 0, 0, 10, UNITS.M, RELATION.WITHIN, ORDERBY.DISTANCE_DESC);
 		assertThat(circles2.size(), is(2));
 		assertTrue(circles2.get(0).getDistance() > circles2.get(1).getDistance());
 		for (Circle<String> circle : circles2) {
@@ -384,14 +455,14 @@ public class GeodisTest {
 		assertThat(geodis.gpadd(keyb, 0, 0, member2b, valueb), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, 10, UNITS.M, member3, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0.0000002, 0, 30, UNITS.M, member4, value), is(OKl));
-		assertThat(geodis.gprangeCircleByRadius(keyb, 0, 0, 50, UNITS.M).size(), is(2));
-		List<Circle<byte[]>> circlesb = geodis.gprangeCircleByRadius(keyb, 0, 0, 50, UNITS.M, RELATION.CONTAINS, ORDERBY.ASC);
+		assertThat(geodis.gpcircle(keyb, 0, 0, 50, UNITS.M).size(), is(2));
+		List<Circle<byte[]>> circlesb = geodis.gpcircle(keyb, 0, 0, 50, UNITS.M, RELATION.CONTAINS, ORDERBY.DISTANCE_ASC);
 		assertThat(circlesb.size(), is(2));
 		assertTrue(circlesb.get(0).getDistance() < circlesb.get(1).getDistance());
 		for (Circle<byte[]> circle : circlesb) {
 			System.out.println(circle.toString());
 		}
-		List<Circle<byte[]>> circles2b = geodis.gprangeCircleByRadius(keyb, 0, 0, 9, UNITS.M, RELATION.WITHIN, ORDERBY.DESC);
+		List<Circle<byte[]>> circles2b = geodis.gpcircle(keyb, 0, 0, 9, UNITS.M, RELATION.WITHIN, ORDERBY.DISTANCE_DESC);
 		assertThat(circles2b.size(), is(2));
 		assertTrue(circles2b.get(0).getDistance() > circles2b.get(1).getDistance());
 
@@ -399,31 +470,38 @@ public class GeodisTest {
 	}
 
 	@Test
-	public void testgaddnGradiusWithMatch() {
+	public void testGpaddnGpradiusWithMatch() {
 		geodis.del(key);
 		assertThat(geodis.gpadd(key, 0, 0, member1, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, member2, value), is(OKl));
-		assertThat(geodis.gprangeByRadius(key, 0, 0, 10, UNITS.KM).size(), is(2));
-		List<Point<String>> Points = geodis.gprangeByRadius(key, 0, 0, 10, M, "member*");
+		assertThat(geodis.gpadd(key, 10, 10, member3, value, 10), is(OKl));
+		assertThat(geodis.gpadd(key, 10, 10, member4, value, 20), is(OKl));
+		assertThat(geodis.gpradius(key, 0, 0, 10, UNITS.KM).size(), is(2));
+		List<Point<String>> points = geodis.gpradius(key, 0, 0, 10, M, "memkey*");
+		assertThat(points.size(), is(2));
+		System.out.println(points.get(0).getScore());
+
+		List<Point<String>> points2 = geodis.gpradius(key, 10, 10, 10, M, "10", "20", "memkey*");
+		assertThat(points2.size(), is(2));
 
 		geodis.del(keyb);
 		assertThat(geodis.gpadd(keyb, 0, 0, member1b, valueb), is(OKl));
 		assertThat(geodis.gpadd(keyb, 0, 0, member2b, valueb), is(OKl));
-		assertThat(geodis.gprangeByRadius(keyb, 0, 0, 10, UNITS.KM).size(), is(2));
-		List<Point<byte[]>> Pointsb = geodis.gprangeByRadius(keyb, 0, 0, 10, M, "member*".getBytes());
+		assertThat(geodis.gpradius(keyb, 0, 0, 10, UNITS.KM).size(), is(2));
+		List<Point<byte[]>> pointsb = geodis.gpradius(keyb, 0, 0, 10, M, "member*".getBytes());
 		geodis.del(keyb);
 	}
 
 	@Test
-	public void testgaddnGradiusForCircleWithMatch() {
+	public void testGpaddnGpradiusForCircleWithMatch() {
 		geodis.del(key);
 		assertThat(geodis.gpadd(key, 0, 0, member1, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, member2, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, 10, UNITS.M, member3, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, 30, UNITS.M, member4, value), is(OKl));
-		assertThat(geodis.gprangeCircleByRadius(key, 0, 0, 10, UNITS.M).size(), is(1));
-		assertThat(geodis.gprangeCircleByRadius(key, 0, 0, 30, UNITS.KM).size(), is(2));
-		List<Circle<String>> circles = geodis.gprangeCircleByRadius(key, 0, 0, 40, M, "*memkey4*");
+		assertThat(geodis.gpcircle(key, 0, 0, 10, UNITS.M).size(), is(1));
+		assertThat(geodis.gpcircle(key, 0, 0, 30, UNITS.KM).size(), is(2));
+		List<Circle<String>> circles = geodis.gpcircle(key, 0, 0, 40, M, "*memkey4*");
 		assertThat(circles.size(), is(1));
 		geodis.del(key);
 
@@ -432,9 +510,9 @@ public class GeodisTest {
 		assertThat(geodis.gpadd(keyb, 0, 0, member2b, valueb), is(OKl));
 		assertThat(geodis.gpadd(keyb, 0, 0, 10, UNITS.M, member3b, valueb), is(OKl));
 		assertThat(geodis.gpadd(keyb, 0, 0, 30, UNITS.M, member4b, valueb), is(OKl));
-		assertThat(geodis.gprangeCircleByRadius(key, 0, 0, 10, UNITS.M).size(), is(1));
-		assertThat(geodis.gprangeCircleByRadius(key, 0, 0, 30, UNITS.KM).size(), is(2));
-		List<Circle<byte[]>> circlesb = geodis.gprangeCircleByRadius(keyb, 0, 0, 40, M, "*4*".getBytes());
+		assertThat(geodis.gpcircle(key, 0, 0, 10, UNITS.M).size(), is(1));
+		assertThat(geodis.gpcircle(key, 0, 0, 30, UNITS.KM).size(), is(2));
+		List<Circle<byte[]>> circlesb = geodis.gpcircle(keyb, 0, 0, 40, M, "*4*".getBytes());
 		assertThat(circlesb.size(), is(1));
 		geodis.del(keyb);
 	}
@@ -446,9 +524,9 @@ public class GeodisTest {
 		assertThat(geodis.gpadd(key, 0, 0, member2, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, 10, UNITS.M, member3, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, 30, UNITS.M, member4, value), is(OKl));
-		assertThat(geodis.gprangeCircleByRadius(key, 0, 0, 10, UNITS.M).size(), is(1));
-		assertThat(geodis.gprangeCircleByRadius(key, 0, 0, 30, UNITS.KM).size(), is(2));
-		List<Circle<String>> circles = geodis.gprangeCircleByRadius(key, 0, 0, 40, M, "*memkey4*", RELATION.CONTAINS, ORDERBY.ASC);
+		assertThat(geodis.gpcircle(key, 0, 0, 10, UNITS.M).size(), is(1));
+		assertThat(geodis.gpcircle(key, 0, 0, 30, UNITS.KM).size(), is(2));
+		List<Circle<String>> circles = geodis.gpcircle(key, 0, 0, 40, M, "*memkey4*", RELATION.CONTAINS, ORDERBY.DISTANCE_ASC);
 		assertThat(circles.size(), is(1));
 		geodis.del(key);
 
@@ -457,9 +535,9 @@ public class GeodisTest {
 		assertThat(geodis.gpadd(keyb, 0, 0, member2b, valueb), is(OKl));
 		assertThat(geodis.gpadd(keyb, 0, 0, 10, UNITS.M, member3b, valueb), is(OKl));
 		assertThat(geodis.gpadd(keyb, 0, 0, 30, UNITS.M, member4b, valueb), is(OKl));
-		assertThat(geodis.gprangeCircleByRadius(key, 0, 0, 10, UNITS.M).size(), is(1));
-		assertThat(geodis.gprangeCircleByRadius(key, 0, 0, 30, UNITS.KM).size(), is(2));
-		List<Circle<byte[]>> circlesb = geodis.gprangeCircleByRadius(keyb, 0, 0, 40, M, "*4*".getBytes(), RELATION.CONTAINS, ORDERBY.ASC);
+		assertThat(geodis.gpcircle(key, 0, 0, 10, UNITS.M).size(), is(1));
+		assertThat(geodis.gpcircle(key, 0, 0, 30, UNITS.KM).size(), is(2));
+		List<Circle<byte[]>> circlesb = geodis.gpcircle(keyb, 0, 0, 40, M, "*4*".getBytes(), RELATION.CONTAINS, ORDERBY.DISTANCE_ASC);
 		assertThat(circlesb.size(), is(1));
 		geodis.del(keyb);
 	}
@@ -470,8 +548,8 @@ public class GeodisTest {
 		assertThat(geodis.gpadd(key, 0, 0, member1, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, member2, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, "memberd", value), is(OKl));
-		assertThat(geodis.gprangeByRadius(key, 0, 0, 10, UNITS.KM).size(), is(3));
-		List<Point<String>> Points = geodis.gprangeByRadius(key, 0, 0, 10, M, "memberd*");
+		assertThat(geodis.gpradius(key, 0, 0, 10, UNITS.KM).size(), is(3));
+		List<Point<String>> Points = geodis.gpradius(key, 0, 0, 10, M, "memberd*");
 		assertThat(Points.size(), is(1));
 		assertTrue(Points.iterator().next().equals(new Point<String>("memberd", 0, 0, value, 0)));
 		geodis.del(key);
@@ -480,8 +558,8 @@ public class GeodisTest {
 		assertThat(geodis.gpadd(keyb, 0, 0, member1b, valueb), is(OKl));
 		assertThat(geodis.gpadd(keyb, 0, 0, member2b, valueb), is(OKl));
 		assertThat(geodis.gpadd(keyb, 0, 0, "memberd".getBytes(), valueb), is(OKl));
-		assertThat(geodis.gprangeByRadius(keyb, 0, 0, 10, UNITS.KM).size(), is(3));
-		List<Point<byte[]>> Pointsb = geodis.gprangeByRadius(keyb, 0, 0, 10, M, "memberd*".getBytes());
+		assertThat(geodis.gpradius(keyb, 0, 0, 10, UNITS.KM).size(), is(3));
+		List<Point<byte[]>> Pointsb = geodis.gpradius(keyb, 0, 0, 10, M, "memberd*".getBytes());
 		assertThat(Pointsb.size(), is(1));
 		assertTrue(Pointsb.iterator().next().equals(new Point<byte[]>("memberd".getBytes(), 0, 0, valueb, 0)));
 		geodis.del(keyb);
@@ -496,15 +574,15 @@ public class GeodisTest {
 		System.out.println(polygon.getJsonStr());
 
 		geodis.del(key);
-		assertThat(geodis.gpadd(key, 0, 0, member1, value), is(OKl));
+		assertThat(geodis.gpadd(key, 0, 0, member1, value, 10), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, member2, value), is(OKl));
-		assertThat(geodis.gprangeByRegion(key, polygon).size(), is(2));
+		assertThat(geodis.gpregion(key, polygon).size(), is(2));
 		geodis.del(key);
 
 		geodis.del(keyb);
 		assertThat(geodis.gpadd(keyb, 0, 0, member1b, valueb), is(OKl));
 		assertThat(geodis.gpadd(keyb, 0, 0, member2b, valueb), is(OKl));
-		assertThat(geodis.gprangeByRadius(keyb, 0, 0, 10, UNITS.KM).size(), is(2));
+		assertThat(geodis.gpradius(keyb, 0, 0, 10, UNITS.KM).size(), is(2));
 		geodis.del(keyb);
 	}
 
@@ -519,7 +597,7 @@ public class GeodisTest {
 		geodis.del(key);
 		assertThat(geodis.gpadd(keyb, 0, 0, member1b, valueb), is(OKl));
 		assertThat(geodis.gpadd(keyb, 0, 0, member2b, valueb), is(OKl));
-		assertThat(geodis.gprangeByRegion(keyb, polygon).size(), is(2));
+		assertThat(geodis.gpregion(keyb, polygon).size(), is(2));
 		geodis.del(key);
 	}
 
@@ -752,29 +830,29 @@ public class GeodisTest {
 	}
 
 	@Test
-	public void testgfnn() {
+	public void testgpnn() {
 		geodis.del(key);
 		String[] members = { "member1", "member2", "member3", "member4" };
 		assertThat(geodis.gpadd(key, 0.0, 0.0, members[0], value), is(OKl));
 		assertThat(geodis.gpadd(key, 0.1, 0.1, members[1], value), is(OKl));
 		assertThat(geodis.gpadd(key, 0.2, 0.2, members[2], value), is(OKl));
 		assertThat(geodis.gpadd(key, 0.3, 0.3, members[3], value), is(OKl));
-		assertThat(geodis.gpnn(key, 0, 0, 3).size(), is(3));
-		List<Point<String>> result = geodis.gpnn(key, 0, 0, 4);
+		assertThat(geodis.gpnn(key, 0, 0, 0, 3).size(), is(3));
+		List<Point<String>> result = geodis.gpnn(key, 0, 0, 0, 4);
 		assertThat(result.size(), is(4));
 		int idx = 0;
 		for (Point<String> point : result) {
 			point.equals(new Point<String>(members[idx++], 0, 0, value, 0));
 		}
 
-		List<Point<String>> result2 = geodis.gpnn(key, 0.01, 0.01, 5);
+		List<Point<String>> result2 = geodis.gpnn(key, 0.01, 0.01, 0, 5);
 		assertThat(result2.size(), is(4));
 		assertThat(result2.get(0).getMember(), is(members[0]));
 		assertThat(result2.get(1).getMember(), is(members[1]));
 		assertThat(result2.get(2).getMember(), is(members[2]));
 		assertThat(result2.get(3).getMember(), is(members[3]));
 
-		List<Point<String>> result3 = geodis.gpnn(key, 0.11, 0.11, 1);
+		List<Point<String>> result3 = geodis.gpnn(key, 0.11, 0.11, 0, 1);
 		assertThat(result3.size(), is(1));
 		assertThat(result3.get(0).getMember(), is(members[1]));
 
@@ -786,8 +864,8 @@ public class GeodisTest {
 		assertThat(geodis.gpadd(keyb, 0.1, 0.1, membersb[1], valueb), is(OKl));
 		assertThat(geodis.gpadd(keyb, 0.2, 0.2, membersb[2], valueb), is(OKl));
 		assertThat(geodis.gpadd(keyb, 0.3, 0.3, membersb[3], valueb), is(OKl));
-		assertThat(geodis.gpnn(keyb, 0, 0, 3).size(), is(3));
-		List<Point<byte[]>> resultb = geodis.gpnn(keyb, 0, 0, 4);
+		assertThat(geodis.gpnn(keyb, 0, 0, 0, 3).size(), is(3));
+		List<Point<byte[]>> resultb = geodis.gpnn(keyb, 0, 0, 0, 4);
 		assertThat(result.size(), is(4));
 		int idx2 = 0;
 		for (Point<byte[]> point : resultb) {
@@ -802,8 +880,8 @@ public class GeodisTest {
 		String[] members = { "member1", "member2", "member3", "member4" };
 		assertThat(geodis.gpadd(key, 0.0, 0.0, members[0], value), is(OKl));
 		assertThat(geodis.gpadd(key, 0.1, 0.1, members[1], value), is(OKl));
-		assertThat(geodis.gpnn(key, 0, 0, 5).size(), is(2));
-		List<Point<String>> result = geodis.gpnn(key, 0, 0, 5);
+		assertThat(geodis.gpnn(key, 0, 0, 0, 5).size(), is(2));
+		List<Point<String>> result = geodis.gpnn(key, 0, 0, 0, 5);
 		assertThat(result.size(), is(2));
 		int idx = 0;
 		for (Point<String> point : result) {
@@ -815,8 +893,8 @@ public class GeodisTest {
 		byte[][] membersb = { "member1".getBytes(), "member2".getBytes(), "member3".getBytes(), "member4".getBytes() };
 		assertThat(geodis.gpadd(keyb, 0.0, 0.0, membersb[0], valueb), is(OKl));
 		assertThat(geodis.gpadd(keyb, 0.1, 0.1, membersb[1], valueb), is(OKl));
-		assertThat(geodis.gpnn(keyb, 0, 0, 3).size(), is(2));
-		List<Point<byte[]>> resultb = geodis.gpnn(keyb, 0, 0, 5);
+		assertThat(geodis.gpnn(keyb, 0, 0, 0, 3).size(), is(2));
+		List<Point<byte[]>> resultb = geodis.gpnn(keyb, 0, 0, 0, 5);
 		assertThat(result.size(), is(2));
 		int idx2 = 0;
 		for (Point<byte[]> point : resultb) {
@@ -1193,7 +1271,7 @@ public class GeodisTest {
 	}
 
 	@Test
-	public void testggmget() {
+	public void testGpmget() {
 		geodis.del(key);
 		assertThat(geodis.gpadd(key, 0, 0, member1, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, member2, value), is(OKl));
@@ -1305,9 +1383,9 @@ public class GeodisTest {
 				new Point<String>(-2, 2), new Point<String>(2, 2));
 		assertThat(geodis.ggrelation(key, polygon1).size(), is(2));// not contain point
 
-		assertThat((Polygon<String>) geodis.ggrelationBy(key, key, members[0]).get(0), is(polygon));
-		assertThat((LineString<String>) geodis.ggrelationBy(key, key, members[1]).get(0), is(linestr));
-		assertThat((Point<String>) geodis.ggrelationBy(key, key, members[2]).get(0), is(point));
+		assertThat((Polygon<String>) geodis.ggrelationByMember(key, key, members[0]).get(0), is(polygon));
+		assertThat((LineString<String>) geodis.ggrelationByMember(key, key, members[1]).get(0), is(linestr));
+		assertThat((Point<String>) geodis.ggrelationByMember(key, key, members[2]).get(0), is(point));
 
 		// contain operation with point (1.9,1.9)
 		Point<String> pointq = new Point<String>(1.9, 1.9);
@@ -1333,9 +1411,9 @@ public class GeodisTest {
 				new Point<byte[]>(-2, 2), new Point<byte[]>(2, 2));
 		assertThat(geodis.ggrelation(keyb, polygon1b).size(), is(2));// not contain point
 
-		assertThat((Polygon<byte[]>) geodis.ggrelationBy(keyb, keyb, membersb[0]).get(0), is(polygonb));
-		assertThat((LineString<byte[]>) geodis.ggrelationBy(keyb, keyb, membersb[1]).get(0), is(linestrb));
-		assertThat((Point<byte[]>) geodis.ggrelationBy(keyb, keyb, membersb[2]).get(0), is(pointb));
+		assertThat((Polygon<byte[]>) geodis.ggrelationByMember(keyb, keyb, membersb[0]).get(0), is(polygonb));
+		assertThat((LineString<byte[]>) geodis.ggrelationByMember(keyb, keyb, membersb[1]).get(0), is(linestrb));
+		assertThat((Point<byte[]>) geodis.ggrelationByMember(keyb, keyb, membersb[2]).get(0), is(pointb));
 
 		// contain operation with point (1.9,1.9)
 		Point<byte[]> pointqb = new Point<byte[]>(1.9, 1.9);
@@ -1430,13 +1508,13 @@ public class GeodisTest {
 		assertThat(geodis.ggadd(keyb, membersb[1], valueb, linestrb), is(OKl));
 		assertThat(geodis.ggadd(keyb, membersb[2], valueb, pointb), is(OKl));
 
-		assertThat(geodis.ggnn(keyb, 0, 0, 8, "member*".getBytes()).size(), is(3));
+		assertThat(geodis.ggnn(keyb, 0, 0,  8, "member*".getBytes()).size(), is(3));
 
-		assertTrue(geodis.ggnn(keyb, 0, 0, 3, "member*".getBytes()).contains(polygonb));
-		assertTrue(geodis.ggnn(keyb, 0, 0, 3, "member*".getBytes()).contains(linestrb));
-		assertTrue(geodis.ggnn(keyb, 0, 0, 3, "member*".getBytes()).contains(pointb));
-		assertTrue(geodis.ggnn(keyb, 0, 0, 3, "member*".getBytes()).contains(pointb));
-		assertTrue(geodis.ggnn(keyb, 2, 2, 3, "member*".getBytes()).contains(pointb));
+		assertTrue(geodis.ggnn(keyb, 0, 0,  3, "member*".getBytes()).contains(polygonb));
+		assertTrue(geodis.ggnn(keyb, 0, 0,  3, "member*".getBytes()).contains(linestrb));
+		assertTrue(geodis.ggnn(keyb, 0, 0,  3, "member*".getBytes()).contains(pointb));
+		assertTrue(geodis.ggnn(keyb, 0, 0,  3, "member*".getBytes()).contains(pointb));
+		assertTrue(geodis.ggnn(keyb, 2, 2,  3, "member*".getBytes()).contains(pointb));
 
 		geodis.del(keyb);
 	}

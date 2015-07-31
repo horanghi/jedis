@@ -210,6 +210,18 @@ public class Connection implements Closeable {
 	public List<Point<String>> getSpatialMultiBulkReply() {
 		return BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
 	}
+	
+	public List<Point<byte[]>> getBinarySpatialMultiBulkReply() {
+		return BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
+	}
+	
+	public List<Point<String>> getSpatialWithScoreMultiBulkReply() {
+		return BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LIST.build(getBinaryMultiBulkReply());
+	}
+	
+	public List<Point<byte[]>> getBinarySpatialWithScoreMultiBulkReply() {
+		return BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LIST.build(getBinaryMultiBulkReply());
+	}
 
 	public List<Point<String>> getSpatialBoundaryReply() {
 		return BuilderFactory.SPATIAL_BOUNDARY_LIST.build(getBinaryMultiBulkReply());
@@ -217,10 +229,6 @@ public class Connection implements Closeable {
 
 	public List<Point<byte[]>> getBinarySpatialBoundaryReply() {
 		return BuilderFactory.BYTE_SPATIAL_BOUNDARY_LIST.build(getBinaryMultiBulkReply());
-	}
-
-	public List<Point<byte[]>> getBinarySpatialMultiBulkReply() {
-		return BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
 	}
 
 	public List<Circle<String>> getSpatialCircleMultiBulkReply() {
@@ -242,9 +250,17 @@ public class Connection implements Closeable {
 	public List<Point<String>> getSpatialMGETMultiBulkReply() {
 		return BuilderFactory.SPATIAL_GPOINT_LIST.build(getBinaryMultiBulkReply());
 	}
-
+	
 	public List<Point<byte[]>> getBinarySpatialMGETMultiBulkReply() {
 		return BuilderFactory.BYTE_SPATIAL_GPOINT_LIST.build(getBinaryMultiBulkReply());
+	}
+
+	public List<Point<String>> getSpatialWithScoreMGETMultiBulkReply() {
+		return BuilderFactory.SPATIAL_GPOINT_WITHSCORE_LIST.build(getBinaryMultiBulkReply());
+	}
+	
+	public List<Point<byte[]>> getBinarySpatialWithScoreMGETMultiBulkReply() {
+		return BuilderFactory.BYTE_SPATIAL_GPOINT_WITHSCORE_LIST.build(getBinaryMultiBulkReply());
 	}
 
 	public Geometry<String> getSpatialGETGEOMultiBulkReply() {

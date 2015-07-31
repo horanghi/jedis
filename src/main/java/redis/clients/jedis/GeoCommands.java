@@ -170,6 +170,14 @@ public interface GeoCommands {
 
 	List<Point<byte[]>> gpregion(byte[] key, Point<?> point, byte[] pattern);
 
+	List<Point<String>> gpregion(String key, Polygon<?> polygon, String min, String max, String pattern);
+
+	List<Point<byte[]>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, byte[] pattern);
+
+	List<Point<String>> gpregion(String key, LineString<?> lineString, String min, String max, String pattern);
+
+	List<Point<byte[]>> gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, byte[] pattern);
+
 	List<Point<String>> gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String pattern);
 
 	List<Point<byte[]>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count, byte[] pattern);

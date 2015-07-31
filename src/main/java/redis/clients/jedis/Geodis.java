@@ -508,6 +508,34 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
+	public List<Point<String>> gpregion(String key, Polygon<?> polygon, String min, String max, String pattern) {
+		checkIsInMulti();
+		client.gpregion(key, polygon, min, max, pattern);
+		return client.getSpatialWithScoreMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, byte[] pattern) {
+		checkIsInMulti();
+		client.gpregion(key, polygon, min, max, pattern);
+		return client.getBinarySpatialWithScoreMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<String>> gpregion(String key, LineString<?> lineString, String min, String max, String pattern) {
+		checkIsInMulti();
+		client.gpregion(key, lineString, min, max, pattern);
+		return client.getSpatialWithScoreMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, byte[] pattern) {
+		checkIsInMulti();
+		client.gpregion(key, lineString, min, max,  pattern);
+		return client.getBinarySpatialWithScoreMultiBulkReply();
+	}
+
+	@Override
 	public List<Point<String>> gpregion(final String key, final Polygon<?> polygon, final String min, final String max, final long offset,
 			final long count, final String pattern) {
 		checkIsInMulti();

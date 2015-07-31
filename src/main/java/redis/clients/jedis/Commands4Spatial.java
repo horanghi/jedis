@@ -91,10 +91,14 @@ public interface Commands4Spatial extends Commands {
 	void gpregion(String key, LineString<?> lineString, String pattern);
 
 	void gpregion(String key, Point<?> point, String pattern);
+	
+	void gpregion(String key, Polygon<?> polygon, String min, String max, String pattern);
+
+	void gpregion(String key, LineString<?> lineString, String min, String max, String pattern);
 
 	void gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String pattern);
 
-	void gpregion(String key, LineString<?> polygon, String min, String max, long offset, long count, String pattern);
+	void gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count, String pattern);
 
 	void gpcard(String key);
 
@@ -191,5 +195,7 @@ public interface Commands4Spatial extends Commands {
 	void gmupdate(String key, String member, LineString<?> lineString);
 
 	void gmrelationByMember(String key, String byKey, String byMember);
+
+
 
 }

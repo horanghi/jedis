@@ -319,15 +319,14 @@ public class BuilderFactory {
 				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				iterator.next(); // radius
 				String value = SafeEncoder.encode(iterator.next());
-				String strScore = SafeEncoder.encode(iterator.next());
-				if (isNaN(strScore)) {
-					double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
-					result.add(new Point<String>(fistValue, x, y, value, distance));
-				} else {
-					double score = Double.valueOf(strScore);
-					double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
-					result.add(new Point<String>(fistValue, x, y, value, score, distance));
+				
+				Double score = null;
+				byte[] scoreObj = iterator.next();
+				double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				if (scoreObj != null) {
+					score = Double.valueOf(SafeEncoder.encode(scoreObj));
 				}
+				result.add(new Point<String>(fistValue, x, y, value, score, distance));
 			}
 			return result;
 		}
@@ -360,15 +359,14 @@ public class BuilderFactory {
 				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				iterator.next(); // radius
 				byte[] value = iterator.next();
-				String strScore = SafeEncoder.encode(iterator.next());
-				if (isNaN(strScore)) {
-					double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
-					result.add(new Point<byte[]>(fistValue, x, y, value, distance));
-				} else {
-					double score = Double.valueOf(strScore);
-					double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
-					result.add(new Point<byte[]>(fistValue, x, y, value, distance, score));
+				
+				Double score = null;
+				byte[] scoreObj = iterator.next();
+				double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				if (scoreObj != null) {
+					score = Double.valueOf(SafeEncoder.encode(scoreObj));
 				}
+				result.add(new Point<byte[]>(fistValue, x, y, value, score, distance));
 			}
 			return result;
 		}
@@ -572,13 +570,12 @@ public class BuilderFactory {
 				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				iterator.next(); // radius
 				String value = SafeEncoder.encode(iterator.next());
-				String strScore = SafeEncoder.encode(iterator.next());
-				if (isNaN(strScore)) {
-					result.add(new Point<String>(member, x, y, value, null, 0));
-				} else {
-					double score = Double.valueOf(strScore);
-					result.add(new Point<String>(member, x, y, value, score, 0));
+				Double score = null;
+				byte[] scoreObj = iterator.next();
+				if (scoreObj != null) {
+					score = Double.valueOf(SafeEncoder.encode(scoreObj));
 				}
+				result.add(new Point<String>(member, x, y, value, score, 0));
 			}
 			return result;
 		}
@@ -612,13 +609,12 @@ public class BuilderFactory {
 				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				iterator.next(); // radius
 				byte[] value = iterator.next();
-				String strScore = SafeEncoder.encode(iterator.next());
-				if (isNaN(strScore)) {
-					result.add(new Point<byte[]>(fistValue, x, y, value, 0));
-				} else {
-					double score = Double.valueOf(strScore);
-					result.add(new Point<byte[]>(fistValue, x, y, value, score, 0));
+				Double score = null;
+				byte[] scoreObj = iterator.next();
+				if (scoreObj != null) {
+					score = Double.valueOf(SafeEncoder.encode(scoreObj));
 				}
+				result.add(new Point<byte[]>(fistValue, x, y, value, score, 0));
 			}
 			return result;
 		}
@@ -947,11 +943,4 @@ public class BuilderFactory {
 		}
 
 	};
-
-	protected static boolean isNaN(String strScore) {
-		if (NAN.equals(strScore)) {
-			return true;
-		}
-		return false;
-	}
 }

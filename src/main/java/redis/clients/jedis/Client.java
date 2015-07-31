@@ -1,16 +1,6 @@
 package redis.clients.jedis;
 
 import static redis.clients.jedis.Protocol.toByteArray;
-import static redis.clients.jedis.Protocol.Command.GPREGIONBYMEMBER;
-import static redis.clients.jedis.Protocol.GeoOptions.BY;
-import static redis.clients.jedis.Protocol.GeoOptions.LIMIT;
-import static redis.clients.jedis.Protocol.GeoOptions.MATCH;
-import static redis.clients.jedis.Protocol.GeoOptions.NR;
-import static redis.clients.jedis.Protocol.GeoOptions.SCORE;
-import static redis.clients.jedis.Protocol.GeoOptions.WITHDISTANCE;
-import static redis.clients.jedis.Protocol.GeoOptions.WITHSCORES;
-import static redis.clients.jedis.Protocol.GeoOptions.WITHVALUES;
-import static redis.clients.jedis.Protocol.ORDERBY.DISTANCE_ASC;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1097,17 +1087,23 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gpregion(final String key, final Polygon<?> polygon, final String min, final String max, final long offset,
-			final long count, final String pattern) {
-		gpregion(SafeEncoder.encode(key), polygon, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count,
-				SafeEncoder.encode(pattern));
+	public void gpregion(final String key, final Polygon<?> polygon, final String min, final String max, final String pattern) {
+		gpregion(SafeEncoder.encode(key), polygon, SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(pattern));
 	}
 
 	@Override
-	public void gpregion(final String key, final LineString<?> lineString, final String min, final String max, final long offset,
-			final long count, final String pattern) {
-		gpregion(SafeEncoder.encode(key), lineString, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count,
-				SafeEncoder.encode(pattern));
+	public void gpregion(final String key, final LineString<?> lineString, final String min, final String max, final String pattern) {
+		gpregion(SafeEncoder.encode(key), lineString, SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(pattern));
+	}
+	
+	@Override
+	public void gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String pattern) {
+		gpregion(SafeEncoder.encode(key), polygon, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count , SafeEncoder.encode(pattern));
+	}
+
+	@Override
+	public void gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count, String pattern) {
+		gpregion(SafeEncoder.encode(key), lineString, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count , SafeEncoder.encode(pattern));
 	}
 
 	@Override
@@ -1356,5 +1352,7 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	public void gmexists(String key, String member) {
 		gmexists(SafeEncoder.encode(key), SafeEncoder.encode(member));
 	}
+
+
 
 }

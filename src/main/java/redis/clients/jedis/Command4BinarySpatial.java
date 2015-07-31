@@ -94,6 +94,10 @@ public interface Command4BinarySpatial {
 
 	void gpregion(byte[] key, Point<?> point, byte[] pattern);
 
+	void gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, byte[] pattern);
+
+	void gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, byte[] pattern);
+
 	void gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count, byte[] pattern);
 
 	void gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, long offset, long count, byte[] pattern);
@@ -193,4 +197,5 @@ public interface Command4BinarySpatial {
 	void gmupdate(byte[] key, byte[] member, LineString<?> lineString);
 
 	void gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember);
+
 }

@@ -201,6 +201,14 @@ public interface GeoCommands {
 	List<Point<String>> gpmget(String key, String... members);
 
 	List<Point<byte[]>> gpmget(byte[] key, byte[]... members);
+	
+	List<Point<String>> gpscore(String key, String min, String max, String pattern, ORDERBY order);
+
+	List<Point<byte[]>> gpscore(byte[] key, byte[] min, byte[] max, byte[] pattern, ORDERBY order);
+
+	List<Point<String>> gpscore(String key, String min, String max, long offset, long count, String pattern, ORDERBY order);
+
+	List<Point<byte[]>> gpscore(byte[] key, byte[] min, byte[] max, long offset, long count, byte[] pattern, ORDERBY order);
 
 	double gpdistance(double dLat1, double dLon1, double dLat2, double dLon2);
 
@@ -377,5 +385,6 @@ public interface GeoCommands {
 	List<Geometry<String>> gmrelationByMember(String key, String byKey, String byMember);
 
 	List<Geometry<byte[]>> gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember);
+
 
 }

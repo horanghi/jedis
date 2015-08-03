@@ -210,6 +210,30 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 		client.gpmget(key, members);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_LIST);
 	}
+	
+	@Override
+	public Response<List<Point<String>>> gpscore(String key, String min, String max, String pattern, ORDERBY order) {
+		client.gpscore(key, min, max, pattern, order);
+		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHSCORE_LIST);
+	}
+
+	@Override
+	public Response<List<Point<byte[]>>> gpscore(byte[] key, byte[] min, byte[] max, byte[] pattern, ORDERBY order) {
+		client.gpscore(key, min, max, pattern, order);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHSCORE_LIST);
+	}
+
+	@Override
+	public Response<List<Point<String>>> gpscore(String key, String min, String max, long offset, long count, String pattern, ORDERBY order) {
+		client.gpscore(key, min, max, offset, count, pattern, order);
+		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHSCORE_LIST);
+	}
+
+	@Override
+	public Response<List<Point<byte[]>>> gpscore(byte[] key, byte[] min, byte[] max, long offset, long count, byte[] pattern, ORDERBY order) {
+		client.gpscore(key, min, max, offset, count, pattern, order);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHSCORE_LIST);
+	}
 
 	@Override
 	public Response<List<Point<String>>> gpnn(String key, double lat, double lon, long offset, long count) {

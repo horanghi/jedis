@@ -1095,15 +1095,17 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	public void gpregion(final String key, final LineString<?> lineString, final String min, final String max, final String pattern) {
 		gpregion(SafeEncoder.encode(key), lineString, SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(pattern));
 	}
-	
+
 	@Override
 	public void gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String pattern) {
-		gpregion(SafeEncoder.encode(key), polygon, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count , SafeEncoder.encode(pattern));
+		gpregion(SafeEncoder.encode(key), polygon, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count,
+				SafeEncoder.encode(pattern));
 	}
 
 	@Override
 	public void gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count, String pattern) {
-		gpregion(SafeEncoder.encode(key), lineString, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count , SafeEncoder.encode(pattern));
+		gpregion(SafeEncoder.encode(key), lineString, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count,
+				SafeEncoder.encode(pattern));
 	}
 
 	@Override
@@ -1129,6 +1131,18 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 			mlist[idx++] = SafeEncoder.encode(member);
 		}
 		gpmget(SafeEncoder.encode(key), mlist);
+	}
+
+	@Override
+	public void gpscore(final String key, final String min, final String max, final String pattern, ORDERBY order) {
+		gpscore(SafeEncoder.encode(key), SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(pattern), order);
+	}
+
+	@Override
+	public void gpscore(final String key, final String min, final String max, final long offset, final long count, final String pattern,
+			ORDERBY order) {
+		gpscore(SafeEncoder.encode(key), SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count, SafeEncoder.encode(pattern),
+				order);
 	}
 
 	@Override
@@ -1352,7 +1366,5 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	public void gmexists(String key, String member) {
 		gmexists(SafeEncoder.encode(key), SafeEncoder.encode(member));
 	}
-
-
 
 }

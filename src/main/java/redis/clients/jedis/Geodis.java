@@ -6,8 +6,8 @@ import static redis.clients.jedis.Protocol.UNITS.M;
 import java.net.URI;
 import java.util.List;
 
-import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.ORDERBY;
+import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Geometry;
@@ -531,7 +531,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	@Override
 	public List<Point<byte[]>> gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, byte[] pattern) {
 		checkIsInMulti();
-		client.gpregion(key, lineString, min, max,  pattern);
+		client.gpregion(key, lineString, min, max, pattern);
 		return client.getBinarySpatialWithScoreMultiBulkReply();
 	}
 
@@ -649,6 +649,36 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	public List<Point<byte[]>> gpmget(final byte[] key, final byte[]... members) {
 		checkIsInMulti();
 		client.gpmget(key, members);
+		return client.getBinarySpatialWithScoreMGETMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<String>> gpscore(final String key, final String min, final String max, final String pattern, ORDERBY order) {
+		checkIsInMulti();
+		client.gpscore(key, min, max, pattern, order);
+		return client.getSpatialWithScoreMGETMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> gpscore(final byte[] key, final byte[] min, final byte[] max, final byte[] pattern, ORDERBY order) {
+		checkIsInMulti();
+		client.gpscore(key, min, max, pattern, order);
+		return client.getBinarySpatialWithScoreMGETMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<String>> gpscore(final String key, final String min, final String max, final long offset, final long count,
+			final String pattern, ORDERBY order) {
+		checkIsInMulti();
+		client.gpscore(key, min, max, offset, count, pattern, order);
+		return client.getSpatialWithScoreMGETMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> gpscore(final byte[] key, final byte[] min, final byte[] max, final long offset, final long count,
+			final byte[] pattern, ORDERBY order) {
+		checkIsInMulti();
+		client.gpscore(key, min, max, offset, count, pattern, order);
 		return client.getBinarySpatialWithScoreMGETMultiBulkReply();
 	}
 

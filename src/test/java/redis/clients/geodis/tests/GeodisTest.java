@@ -61,7 +61,7 @@ public class GeodisTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		// spatial redis
-		geodisPool = new JedisPool("172.19.114.202", 19009);
+		geodisPool = new JedisPool("172.19.114.202", 19006);
 
 	}
 
@@ -837,9 +837,9 @@ public class GeodisTest {
 		assertThat(geodis.gpadd(key, 0.1, 0.1, members[1], value), is(OKl));
 		assertThat(geodis.gpadd(key, 0.2, 0.2, members[2], value), is(OKl));
 		assertThat(geodis.gpadd(key, 0.3, 0.3, members[3], value), is(OKl));
-		assertThat(geodis.gpnn(key, 0, 0, 0, 3).size(), is(3));
-		List<Point<String>> result = geodis.gpnn(key, 0, 0, 0, 4);
-		assertThat(result.size(), is(4));
+		assertThat(geodis.gpnn(key, 0, 0, 1, 3).size(), is(3));
+		List<Point<String>> result = geodis.gpnn(key, 0, 0, 1, 4);
+		assertThat(result.size(), is(3));
 		int idx = 0;
 		for (Point<String> point : result) {
 			point.equals(new Point<String>(members[idx++], 0, 0, value, 0));

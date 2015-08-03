@@ -69,7 +69,6 @@ public class SampleTest {
 		geodis.mget("hello0", "hello2", "hello1");
 		String key = "good";
 		geodis.gpadd(key, 0, 0, "member1", "value");
-		System.out.println("Spatial");
 		geodis.gpmget(key, "member1", "member2");
 	}
 

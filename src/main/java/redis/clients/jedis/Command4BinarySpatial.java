@@ -110,6 +110,10 @@ public interface Command4BinarySpatial {
 
 	void gpmget(byte[] key, byte[]... members);
 
+	void gpscore(byte[] key, byte[] min, byte[] max, byte[] pattern, ORDERBY order);
+
+	void gpscore(byte[] key, byte[] min, byte[] max, long offset, long count, byte[] pattern, ORDERBY order);
+	
 	/* Geography */
 
 	void ggexists(byte[] key, byte[] member);

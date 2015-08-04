@@ -1006,8 +1006,8 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	@Override
 	public void gpradiusByMember(final String key, final String bykey, final String bymember, final String min, final String max,
 			final String pattern, final long offset, final long count, final ORDERBY order) {
-		gpradiusByMember(SafeEncoder.encode(key), SafeEncoder.encode(bykey), SafeEncoder.encode(bymember), SafeEncoder.encode(pattern),
-				SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count, order);
+		gpradiusByMember(SafeEncoder.encode(key), SafeEncoder.encode(bykey), SafeEncoder.encode(bymember), SafeEncoder.encode(min),
+				SafeEncoder.encode(max), SafeEncoder.encode(pattern), offset, count, order);
 	}
 
 	// gpregionByMember
@@ -1134,14 +1134,14 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gpscore(final String key, final String min, final String max, final String pattern, ORDERBY order) {
-		gpscore(SafeEncoder.encode(key), SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(pattern), order);
+	public void gpscope(final String key, final String min, final String max, final String pattern, ORDERBY order) {
+		gpscope(SafeEncoder.encode(key), SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(pattern), order);
 	}
 
 	@Override
-	public void gpscore(final String key, final String min, final String max, final long offset, final long count, final String pattern,
+	public void gpscope(final String key, final String min, final String max, final long offset, final long count, final String pattern,
 			ORDERBY order) {
-		gpscore(SafeEncoder.encode(key), SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count, SafeEncoder.encode(pattern),
+		gpscope(SafeEncoder.encode(key), SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count, SafeEncoder.encode(pattern),
 				order);
 	}
 

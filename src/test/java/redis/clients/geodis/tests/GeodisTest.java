@@ -2,13 +2,10 @@ package redis.clients.geodis.tests;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static redis.clients.jedis.Protocol.UNITS.M;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,12 +18,11 @@ import org.junit.Test;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.Type;
 import redis.clients.jedis.Protocol.UNITS;
-import redis.clients.jedis.tests.benchmark.GetSetBenchmark;
 import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Geometry;
 import redis.clients.spatial.model.LineString;
@@ -62,6 +58,8 @@ public class GeodisTest {
 	public static void setUpBeforeClass() throws Exception {
 		// spatial redis
 		geodisPool = new JedisPool("172.19.114.202", 19006);
+		int val = Integer.MAX_VALUE;
+		
 
 	}
 
@@ -80,6 +78,55 @@ public class GeodisTest {
 		geodisPool.returnResource(geodis);
 	}
 
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void pipelineggaddggcardnggrem() throws UnsupportedEncodingException {
+		String keyf = "horanghi";
+		
+		geodis.del(keyf);
+		Point<String> mm01 = new Point<String>(0, 0.01);
+		Point<String> mm02 = new Point<String>(0, 0.02);
+		Point<String> mm03 = new Point<String>(0, 0.03);
+		Polygon<String> mmp = new Polygon<String>(mm01, mm02, mm03, mm01);
+		LineString<String> mml = new LineString<String>(mm01, mm02, mm03);
+
+		Pipeline p = geodis.pipelined();
+		p.ggadd(keyf, member1, value, mm01);
+		p.ggadd(keyf, member2, value, mm02);
+		p.ggadd(keyf, member3, value, mm03);
+		p.ggadd(keyf, member4, value, mmp);
+		p.ggadd(keyf, member5, value, mml);
+
+		p.sync();
+
+		p = geodis.pipelined();
+		p.ggcard(keyf);
+		p.ggrem(keyf, member1);
+		p.ggcard(keyf);
+		p.ggrange(keyf, 0, 1);
+		p.ggrevrange(keyf, 0, -1);
+		List<Object> results = p.syncAndReturnAll();
+
+		assertEquals(5, results.size());
+
+		Point<String> mm1 = new Point<String>(member1, 0, 0.01, value);
+		Point<String> mm2 = new Point<String>(member2, 0, 0.02, value);
+		Point<String> mm3 = new Point<String>(member3, 0, 0.03, value);
+		Polygon<String> mm4 = new Polygon<String>(member4, value, mm1, mm2, mm3, mm1);
+		LineString<String> mm5 = new LineString<String>(member5, value, mm1, mm2, mm3);
+
+		System.out.println(results.get(0));
+
+		assertThat((Long) results.get(0), is(5l));
+		assertThat((Long) results.get(1), is(1l));
+		assertThat((Long) results.get(2), is(4l));
+		assertThat(((List) results.get(3)).size(), is(2));
+		assertThat(((List) results.get(4)).size(), is(4));
+
+		geodis.del(keyf);
+	}
+	
 	@Test
 	public void testEqualsType() {
 		assertTrue(Type.POINT == Type.POINT);
@@ -198,7 +245,7 @@ public class GeodisTest {
 			assertTrue(point.getMember().equals(members[2]));
 			assertTrue(point.getValue().equals(values[2]));
 			assertTrue(point.equals(opoints[2]));
-			assertNull(point.getScore());
+			assertNotNull(point.getScore());
 		}
 
 		assertThat(geodis.gpexists(key, member1), is(1l));
@@ -865,8 +912,8 @@ public class GeodisTest {
 		assertThat(geodis.gpadd(keyb, 0.2, 0.2, membersb[2], valueb), is(OKl));
 		assertThat(geodis.gpadd(keyb, 0.3, 0.3, membersb[3], valueb), is(OKl));
 		assertThat(geodis.gpnn(keyb, 0, 0, 0, 3).size(), is(3));
-		List<Point<byte[]>> resultb = geodis.gpnn(keyb, 0, 0, 0, 4);
-		assertThat(result.size(), is(4));
+		List<Point<byte[]>> resultb = geodis.gpnn(keyb, 0, 0, 0, 5);
+		assertThat(resultb.size(), is(4));
 		int idx2 = 0;
 		for (Point<byte[]> point : resultb) {
 			point.equals(new Point<byte[]>(membersb[idx2++], 0, 0, valueb, 0));

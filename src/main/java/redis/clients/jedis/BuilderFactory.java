@@ -272,12 +272,16 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				String fistValue = SafeEncoder.encode(iterator.next());
 				if (fistValue == null) {
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
 					continue;
 				}
 				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
@@ -307,19 +311,25 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				String fistValue = SafeEncoder.encode(iterator.next());
 				if (fistValue == null) {
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
 					continue;
 				}
 				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				iterator.next(); // radius
 				String value = SafeEncoder.encode(iterator.next());
-				
+
 				Double score = null;
 				byte[] scoreObj = iterator.next();
 				double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
@@ -348,18 +358,23 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
 					continue;
 				}
 				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				iterator.next(); // radius
 				byte[] value = iterator.next();
-				
+
 				Double score = null;
 				byte[] scoreObj = iterator.next();
 				double distance = Double.valueOf(SafeEncoder.encode(iterator.next()));
@@ -384,11 +399,16 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
 					continue;
 				}
 				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
@@ -418,11 +438,16 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
 					continue;
 				}
 				String member = SafeEncoder.encode(fistValue);
@@ -453,11 +478,16 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
 					continue;
 				}
 				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
@@ -488,11 +518,16 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
 					continue;
 				}
 				String member = SafeEncoder.encode(fistValue);
@@ -500,6 +535,7 @@ public class BuilderFactory {
 				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				iterator.next(); // radius
 				String value = SafeEncoder.encode(iterator.next());
+				iterator.next(); // score
 				result.add(new Point<String>(member, x, y, value, 0));
 			}
 			return result;
@@ -523,17 +559,25 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
 					continue;
 				}
 				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				iterator.next(); // radius
 				byte[] value = iterator.next();
+				iterator.next(); // score
 				result.add(new Point<byte[]>(fistValue, x, y, value, 0));
 			}
 			return result;
@@ -558,11 +602,16 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
 					continue;
 				}
 				String member = SafeEncoder.encode(fistValue);
@@ -598,11 +647,16 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
-					iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
 					continue;
 				}
 				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
@@ -699,7 +753,10 @@ public class BuilderFactory {
 				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				iterator.next(); // radius
 				String value = SafeEncoder.encode(iterator.next());
-				result = new Point<String>(fistValue, x, y, value, 0);
+				Object _score = iterator.next(); // score
+				Double score = (_score == null) ? null : Double.valueOf(SafeEncoder.encode((byte[]) _score));
+
+				result = new Point<String>(fistValue, x, y, value, score, 0);
 			}
 			return result;
 		}
@@ -728,7 +785,9 @@ public class BuilderFactory {
 				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
 				iterator.next(); // radius
 				byte[] value = iterator.next();
-				result = new Point<byte[]>(fistValue, x, y, value, 0);
+				Object _score = iterator.next(); // score
+				Double score = (_score == null) ? null : Double.valueOf(SafeEncoder.encode((byte[]) _score));
+				result = new Point<byte[]>(fistValue, x, y, value, score, 0);
 			}
 			return result;
 		}

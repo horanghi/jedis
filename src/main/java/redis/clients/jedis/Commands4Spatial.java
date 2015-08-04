@@ -108,9 +108,9 @@ public interface Commands4Spatial extends Commands {
 
 	void gpmget(String key, String... members);
 	
-	void gpscore(String key, String min, String max, String pattern, ORDERBY order);
+	void gpscope(String key, String min, String max, String pattern, ORDERBY order);
 
-	void gpscore(String key, String min, String max, long offset, long count, String pattern, ORDERBY order);
+	void gpscope(String key, String min, String max, long offset, long count, String pattern, ORDERBY order);
 
 	/* Geography */
 

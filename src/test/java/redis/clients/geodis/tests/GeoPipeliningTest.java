@@ -112,6 +112,86 @@ public class GeoPipeliningTest extends Assert {
 		geodisPool.returnResource(jedis);
 	}
 
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void pipelinegpregionByMember() throws UnsupportedEncodingException {
+		jedis.del(keyf);
+		jedis.gpadd(keyf, 0.1, 0.1, member1, value, 10);
+		jedis.gpadd(keyf, 0.1, 0.2, member2, value, 20);
+		jedis.gpadd(keyf, 0.1, 0.3, member3, value, 30);
+		jedis.gpadd(keyf, 0.1, 0.4, member4, value, 40);
+
+		Point<String> point1 = new Point<String>(member1, 0.1, 0.1, value);
+		Point<String> point2 = new Point<String>(member2, 0.1, 0.2, value);
+		Point<String> point3 = new Point<String>(member3, 0.1, 0.3, value);
+		Point<String> point4 = new Point<String>(member4, 0.1, 0.4, value);
+		Point<String> point5 = new Point<String>(member5, 0.1, 0.5, value);
+
+		Point<byte[]> point1b = new Point<byte[]>(member1b, 0.1, 0.1, valueb);
+		Point<byte[]> point2b = new Point<byte[]>(member2b, 0.1, 0.2, valueb);
+		Point<byte[]> point3b = new Point<byte[]>(member3b, 0.1, 0.3, valueb);
+		Point<byte[]> point4b = new Point<byte[]>(member4b, 0.1, 0.4, valueb);
+		Point<byte[]> point5b = new Point<byte[]>(member5b, 0.1, 0.5, valueb);
+
+		Polygon<String> polygon = new Polygon<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
+				new Point<String>(-1, 1), new Point<String>(1, 1));
+
+		jedis.ggadd(keyg, member5, value, polygon);
+		double distance = jedis.gpdistance(0.1, 0.4, 0.1, 0.5) + 0.001;
+
+		Pipeline p = jedis.pipelined();
+		p.gpregionByMember(keyf, keyg, member5); // 0
+		p.gpregionByMember(keyb, keyg.getBytes(), member5.getBytes());// 1
+		p.gpregionByMember(keyf, keyg, member5, "memkey1"); // 2
+		p.gpregionByMember(keyb, keyg.getBytes(), member5.getBytes(), "memkey1".getBytes());// 3
+		p.gpregionByMember(keyf, keyg, member5, "10", "20", "memkey1");// 4
+		p.gpregionByMember(keyb, keyg.getBytes(), member5.getBytes(), "10".getBytes(), "20".getBytes(), "memkey1".getBytes());// 5
+		p.gpregionByMember(keyf, keyg, member5, "10", "20", "memkey1", 0, 10, ORDERBY.DISTANCE_DESC);// 6
+		p.gpregionByMember(keyb, keyg.getBytes(), member5.getBytes(), "10".getBytes(), "20".getBytes(), "memkey1".getBytes(), 0, 10,
+				ORDERBY.DISTANCE_DESC);// 7
+		List<Object> results = p.syncAndReturnAll();
+
+		assertEquals(8, results.size());
+		assertTrue(((List<Point<String>>) results.get(0)).get(0).getMember().equals(member1));
+		assertThat(((List<Point<String>>) results.get(0)).size(), is(4));
+		assertTrue(((List<Point<String>>) results.get(0)).contains(point1));
+		assertTrue(((List<Point<String>>) results.get(0)).contains(point2));
+		assertTrue(((List<Point<String>>) results.get(0)).contains(point3));
+		assertTrue(((List<Point<String>>) results.get(0)).contains(point4));
+		assertFalse(((List<Point<String>>) results.get(0)).contains(point5));
+
+		assertTrue(((List<Point<byte[]>>) results.get(1)).contains(point4b));
+		assertFalse(((List<Point<byte[]>>) results.get(1)).contains(point5b));
+		assertThat(((List<Point<byte[]>>) results.get(1)).size(), is(4));
+
+		assertThat(((List<Point<String>>) results.get(2)).size(), is(1));
+		assertTrue(((List<Point<String>>) results.get(2)).contains(point1));
+		assertFalse(((List<Point<String>>) results.get(2)).contains(point2));
+
+		 assertThat(((List<Point<byte[]>>) results.get(3)).size(), is(1));
+		 assertTrue(((List<Point<byte[]>>) results.get(3)).contains(point1b));
+		 assertFalse(((List<Point<byte[]>>) results.get(3)).contains(point2b));
+
+		assertThat(((List<Point<String>>) results.get(4)).size(), is(1));
+		assertTrue(((List<Point<String>>) results.get(4)).contains(point1));
+		assertFalse(((List<Point<String>>) results.get(4)).contains(point2));
+
+		assertThat(((List<Point<byte[]>>) results.get(5)).size(), is(1));
+		assertTrue(((List<Point<byte[]>>) results.get(5)).contains(point1b));
+		assertFalse(((List<Point<byte[]>>) results.get(5)).contains(point2b));
+
+		assertThat(((List<Point<String>>) results.get(6)).size(), is(1));
+		assertTrue(((List<Point<String>>) results.get(6)).contains(point1));
+		assertFalse(((List<Point<String>>) results.get(6)).contains(point2));
+
+		assertThat(((List<Point<byte[]>>) results.get(7)).size(), is(1));
+		assertTrue(((List<Point<byte[]>>) results.get(7)).contains(point1b));
+		assertFalse(((List<Point<byte[]>>) results.get(7)).contains(point2b));
+
+		jedis.del(keyb);
+	}
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void pipelinegrangeByRadius() throws UnsupportedEncodingException {

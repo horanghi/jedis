@@ -207,19 +207,19 @@ public class Connection implements Closeable {
 		return BuilderFactory.STRING_LIST.build(getBinaryMultiBulkReply());
 	}
 
-	public List<Point<String>> getSpatialMultiBulkReply() {
-		return BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
-	}
+	// public List<Point<String>> getSPATIAL_GPOINT_WITHDISTANCE_LISTMultiBulkReply() {
+	// return BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
+	// }
+	//
+	// public List<Point<byte[]>> getBYTE_SPATIAL_GPOINT_WITHDISTANCE_LISTMultiBulkReply() {
+	// return BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
+	// }
 
-	public List<Point<byte[]>> getBinarySpatialMultiBulkReply() {
-		return BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
-	}
-
-	public List<Point<String>> getSpatialWithScoreMultiBulkReply() {
+	public List<Point<String>> getSPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LISTMultiBulkReply() {
 		return BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LIST.build(getBinaryMultiBulkReply());
 	}
 
-	public List<Point<byte[]>> getBinarySpatialWithScoreMultiBulkReply() {
+	public List<Point<byte[]>> getBYTE_SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LISTMultiBulkReply() {
 		return BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LIST.build(getBinaryMultiBulkReply());
 	}
 
@@ -239,29 +239,29 @@ public class Connection implements Closeable {
 		return BuilderFactory.BYTE_SPATIAL_GCIRCLE_WITHDISTANCE_LIST.build(getBinaryMultiBulkReply());
 	}
 
-	public Point<String> getSpatialGETMultiBulkReply() {
+	public Point<String> getSPATIAL_GPOINTMultiBulkReply() {
 		return BuilderFactory.SPATIAL_GPOINT.build(getBinaryMultiBulkReply());
 	}
 
-	public Point<byte[]> getBinarySpatialGETMultiBulkReply() {
+	public Point<byte[]> getBYTE_SPATIAL_GPOINTMultiBulkReply() {
 		return BuilderFactory.BYTE_SPATIAL_GPOINT.build(getBinaryMultiBulkReply());
 	}
 
-	public List<Point<String>> getSpatialMGETMultiBulkReply() {
+	public List<Point<String>> getSPATIAL_GPOINT_LISTMultiBulkReply() {
 		return BuilderFactory.SPATIAL_GPOINT_LIST.build(getBinaryMultiBulkReply());
 	}
 
-	public List<Point<byte[]>> getBinarySpatialMGETMultiBulkReply() {
+	public List<Point<byte[]>> getBYTE_SPATIAL_GPOINT_LISTMultiBulkReply() {
 		return BuilderFactory.BYTE_SPATIAL_GPOINT_LIST.build(getBinaryMultiBulkReply());
 	}
 
-	public List<Point<String>> getSpatialWithScoreMGETMultiBulkReply() {
+	public List<Point<String>> getSPATIAL_GPOINT_WITHSCORE_LISTMultiBulkReply() {
 		return BuilderFactory.SPATIAL_GPOINT_WITHSCORE_LIST.build(getBinaryMultiBulkReply());
 	}
 
-	public List<Point<byte[]>> getBinarySpatialWithScoreMGETMultiBulkReply() {
-		return BuilderFactory.BYTE_SPATIAL_GPOINT_WITHSCORE_LIST.build(getBinaryMultiBulkReply());
-	}
+	// public List<Point<byte[]>> getBYTE_SPATIAL_GPOINT_WITHSCORE_LISTMultiBulkReply() {
+	// return BuilderFactory.BYTE_SPATIAL_GPOINT_WITHSCORE_LIST.build(getBinaryMultiBulkReply());
+	// }
 
 	public Geometry<String> getSpatialGETGEOMultiBulkReply() {
 		return BuilderFactory.SPATIAL_GGRAPHY.build(getBinaryMultiBulkReply());

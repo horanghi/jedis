@@ -233,7 +233,6 @@ public final class Protocol {
 		INCRBY,
 		INCR,
 		APPEND,
-		SUBSTR,
 		HSET,
 		HGET,
 		HSETNX,

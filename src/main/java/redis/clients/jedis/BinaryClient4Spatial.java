@@ -41,6 +41,8 @@ import static redis.clients.jedis.Protocol.Command.GPREGIONBYMEMBER;
 import static redis.clients.jedis.Protocol.Command.GPREM;
 import static redis.clients.jedis.Protocol.Command.GPSCOPE;
 import static redis.clients.jedis.Protocol.Command.GPUPDATEBY;
+import static redis.clients.jedis.Protocol.Command.PL_END;
+import static redis.clients.jedis.Protocol.Command.PL_START;
 import static redis.clients.jedis.Protocol.GeoOptions.BY;
 import static redis.clients.jedis.Protocol.GeoOptions.LIMIT;
 import static redis.clients.jedis.Protocol.GeoOptions.MATCH;
@@ -71,7 +73,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	public BinaryClient4Spatial(final String host, final int port) {
 		super(host, port);
 	}
-
+	
 	@Override
 	public void gpexists(final byte[] key, final byte[] member) {
 		sendCommand(GPEXISTS, key, member);

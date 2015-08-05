@@ -57,6 +57,10 @@ public class Pipeline extends GeoMultiKeyPipelineBase {
 	public void setClient(Client client) {
 		this.client = client;
 	}
+	
+	protected Client getClient() {
+		return client;
+	}
 
 	@Override
 	protected Client getClient(byte[] key) {
@@ -119,6 +123,20 @@ public class Pipeline extends GeoMultiKeyPipelineBase {
 		Response<String> response = getResponse(BuilderFactory.STRING); // Expecting
 		// OK
 		currentMulti = new MultiResponseBuilder();
+		return response;
+	}
+	
+	public Response<String> pl_start() {
+		client.pipelineStart();
+		Response<String> response = getResponse(BuilderFactory.STRING); // Expecting
+		// OK
+		return response;
+	}
+	
+	public Response<String> pl_end() {
+		client.pipelineEnd();
+		Response<String> response = getResponse(BuilderFactory.STRING); // Expecting
+		// OK
 		return response;
 	}
 

@@ -19,8 +19,6 @@ import redis.clients.util.SafeEncoder;
 
 public class BuilderFactory {
 
-	private static final String NAN = "nan";
-
 	public static final Builder<Double> DOUBLE = new Builder<Double>() {
 		public Double build(Object data) {
 			String asString = STRING.build(data);

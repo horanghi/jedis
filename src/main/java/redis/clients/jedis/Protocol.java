@@ -283,6 +283,8 @@ public final class Protocol {
 		MULTI,
 		DISCARD,
 		EXEC,
+		PL_START,
+		PL_END,
 		WATCH,
 		UNWATCH,
 		SORT,

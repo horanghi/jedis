@@ -33,6 +33,8 @@ public class BinaryClient extends Connection {
 	}
 
 	private boolean isInMulti;
+	
+	private boolean isInPipeline;
 
 	private String password;
 
@@ -43,9 +45,23 @@ public class BinaryClient extends Connection {
 	public boolean isInMulti() {
 		return isInMulti;
 	}
+	
+	public boolean isInPipeline() {
+		return isInPipeline;
+	}
 
 	public boolean isInWatch() {
 		return isInWatch;
+	}
+	
+	public void pipelineStart() {
+		sendCommand(PL_START);
+		isInPipeline = true;
+	}
+
+	public void pipelineEnd() {
+		sendCommand(PL_END);
+		isInPipeline = false;
 	}
 
 	public BinaryClient(final String host) {
@@ -211,7 +227,7 @@ public class BinaryClient extends Connection {
 	}
 
 	public void substr(final byte[] key, final int start, final int end) {
-		sendCommand(SUBSTR, key, toByteArray(start), toByteArray(end));
+		sendCommand(GETRANGE, key, toByteArray(start), toByteArray(end));
 	}
 
 	public void hset(final byte[] key, final byte[] field, final byte[] value) {
@@ -451,13 +467,13 @@ public class BinaryClient extends Connection {
 		isInMulti = false;
 		isInWatch = false;
 	}
-
+	
 	public void exec() {
 		sendCommand(EXEC);
 		isInMulti = false;
 		isInWatch = false;
 	}
-
+	
 	public void watch(final byte[]... keys) {
 		sendCommand(WATCH, keys);
 		isInWatch = true;

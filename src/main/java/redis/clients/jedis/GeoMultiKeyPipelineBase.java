@@ -810,7 +810,7 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 
 	@Override
 	public Response<List<Point<String>>> gpradiusByMember(String key, String bykey, String bymember, String min, String max, String pattern) {
-		client.gpradiusByMember(key, bykey, bymember, pattern);
+		client.gpradiusByMember(key, bykey, bymember, min, max, pattern);
 		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LIST);
 	}
 

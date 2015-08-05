@@ -1499,7 +1499,7 @@ public class BinaryJedis implements BasicCommands, BinaryJedisCommands, MultiKey
 		client.multi();
 		return new Transaction(client);
 	}
-
+	
 	@Deprecated
 	/**
 	 * This method is deprecated due to its error prone

@@ -466,6 +466,7 @@ public class BinaryClient extends Connection {
 		sendCommand(DISCARD);
 		isInMulti = false;
 		isInWatch = false;
+		isInPipeline = false;
 	}
 	
 	public void exec() {
@@ -896,7 +897,7 @@ public class BinaryClient extends Connection {
 	public void resetState() {
 		if (isInMulti())
 			discard();
-
+		
 		if (isInWatch())
 			unwatch();
 	}

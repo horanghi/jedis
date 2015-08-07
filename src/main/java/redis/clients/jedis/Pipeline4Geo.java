@@ -193,13 +193,13 @@ public interface Pipeline4Geo {
 
 	Response<List<Point<byte[]>>> gpmget(byte[] key, byte[]... members);
 	
-	Response<List<Point<String>>> gpscore(String key, String min, String max, String pattern, ORDERBY order);
+	Response<List<Point<String>>> gpscope(String key, String min, String max, String pattern, ORDERBY order);
 
-	Response<List<Point<byte[]>>> gpscore(byte[] key, byte[] min, byte[] max, byte[] pattern, ORDERBY order);
+	Response<List<Point<byte[]>>> gpscope(byte[] key, byte[] min, byte[] max, byte[] pattern, ORDERBY order);
 
-	Response<List<Point<String>>> gpscore(String key, String min, String max, long offset, long count, String pattern, ORDERBY order);
+	Response<List<Point<String>>> gpscope(String key, String min, String max, long offset, long count, String pattern, ORDERBY order);
 
-	Response<List<Point<byte[]>>> gpscore(byte[] key, byte[] min, byte[] max, long offset, long count, byte[] pattern, ORDERBY order);
+	Response<List<Point<byte[]>>> gpscope(byte[] key, byte[] min, byte[] max, long offset, long count, byte[] pattern, ORDERBY order);
 
 
 	/* Geography */

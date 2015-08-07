@@ -212,25 +212,25 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 	
 	@Override
-	public Response<List<Point<String>>> gpscore(String key, String min, String max, String pattern, ORDERBY order) {
+	public Response<List<Point<String>>> gpscope(String key, String min, String max, String pattern, ORDERBY order) {
 		client.gpscope(key, min, max, pattern, order);
 		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LIST);
 	}
 
 	@Override
-	public Response<List<Point<byte[]>>> gpscore(byte[] key, byte[] min, byte[] max, byte[] pattern, ORDERBY order) {
+	public Response<List<Point<byte[]>>> gpscope(byte[] key, byte[] min, byte[] max, byte[] pattern, ORDERBY order) {
 		client.gpscope(key, min, max, pattern, order);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LIST);
 	}
 
 	@Override
-	public Response<List<Point<String>>> gpscore(String key, String min, String max, long offset, long count, String pattern, ORDERBY order) {
+	public Response<List<Point<String>>> gpscope(String key, String min, String max, long offset, long count, String pattern, ORDERBY order) {
 		client.gpscope(key, min, max, offset, count, pattern, order);
 		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LIST);
 	}
 
 	@Override
-	public Response<List<Point<byte[]>>> gpscore(byte[] key, byte[] min, byte[] max, long offset, long count, byte[] pattern, ORDERBY order) {
+	public Response<List<Point<byte[]>>> gpscope(byte[] key, byte[] min, byte[] max, long offset, long count, byte[] pattern, ORDERBY order) {
 		client.gpscope(key, min, max, offset, count, pattern, order);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LIST);
 	}
@@ -714,7 +714,7 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 
 	@Override
 	public Response<Long> gmexists(final byte[] key, final byte[] member) {
-		client.ggexists(key, member);
+		client.gmexists(key, member);
 		return getResponse(BuilderFactory.LONG);
 	}
 

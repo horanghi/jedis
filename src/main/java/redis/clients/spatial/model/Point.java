@@ -102,7 +102,7 @@ public class Point<T> extends Geometry<T> implements Comparable<T> {
 	// {"type": "Point", "coordinates": [1,1]}
 	public String getJsonStr() {
 		StringBuffer sb = new StringBuffer(POINT.toString());
-		sb.append(OP.str).append(this.x).append(",").append(this.y).append(CL.str).append(CCL.str);
+		sb.append(OP.str).append(this.y).append(",").append(this.x).append(CL.str).append(CCL.str);
 		return sb.toString();
 	}
 

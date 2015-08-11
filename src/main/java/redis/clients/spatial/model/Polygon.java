@@ -72,7 +72,7 @@ public class Polygon<T> extends Geometry<T> implements Comparable<T> {
 				if (idx != 0) {
 					sb.append(CO.str);
 				}
-				sb.append(OP.str).append(vp.getX()).append(CO.str).append(vp.getY()).append(CL.str);
+				sb.append(OP.str).append(vp.getY()).append(CO.str).append(vp.getX()).append(CL.str);
 			}
 			sb.append(CL.str).append(CL.str).append(CCL.str);
 		}

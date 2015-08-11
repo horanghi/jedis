@@ -17,7 +17,7 @@ public enum GEOMETRY {
 			// [[1.00000000000000,1.00000000000000]]}
 			String xys = typeJson.substring(this.toString().length() - 1);
 			String[] xylist = StringUtils.split(xys, " ,[]{}:");
-			return new Point<String>(Double.valueOf(xylist[0]), Double.valueOf(xylist[1]));
+			return new Point<String>(Double.valueOf(xylist[1]), Double.valueOf(xylist[0]));
 		}
 
 		public Geometry<byte[]> getGBGeometry(final String typeJson) {
@@ -25,7 +25,7 @@ public enum GEOMETRY {
 			// [[1.00000000000000,1.00000000000000]]}
 			String xys = typeJson.substring(this.toString().length() - 1);
 			String[] xylist = StringUtils.split(xys, " [,]{}:");
-			return new Point<byte[]>(Double.valueOf(xylist[0]), Double.valueOf(xylist[1]));
+			return new Point<byte[]>(Double.valueOf(xylist[1]), Double.valueOf(xylist[0]));
 		}
 	},
 
@@ -40,7 +40,9 @@ public enum GEOMETRY {
 				if (xylist[idx] == null) {
 					break;
 				}
-				Point<String> point = new Point<String>(Double.valueOf(xylist[idx++]), Double.valueOf(xylist[idx++]));
+				double y = Double.valueOf(xylist[idx++]);
+				double x = Double.valueOf(xylist[idx++]);
+				Point<String> point = new Point<String>(x, y);
 				resultList.add(point);
 			}
 			return new Polygon<String>(resultList);
@@ -56,7 +58,9 @@ public enum GEOMETRY {
 				if (xylist[idx] == null) {
 					break;
 				}
-				Point<byte[]> point = new Point<byte[]>(Double.valueOf(xylist[idx++]), Double.valueOf(xylist[idx++]));
+				double y = Double.valueOf(xylist[idx++]);
+				double x = Double.valueOf(xylist[idx++]);
+				Point<byte[]> point = new Point<byte[]>(x, y);
 				resultList.add(point);
 			}
 			return new Polygon<byte[]>(resultList);
@@ -71,7 +75,9 @@ public enum GEOMETRY {
 				if (xylist[idx] == null) {
 					break;
 				}
-				Point<String> point = new Point<String>(Double.valueOf(xylist[idx++]), Double.valueOf(xylist[idx++]));
+				double y = Double.valueOf(xylist[idx++]);
+				double x = Double.valueOf(xylist[idx++]);
+				Point<String> point = new Point<String>(x, y);
 				resultList.add(point);
 			}
 			return new LineString<String>(resultList);
@@ -85,7 +91,9 @@ public enum GEOMETRY {
 				if (xylist[idx] == null) {
 					break;
 				}
-				Point<byte[]> point = new Point<byte[]>(Double.valueOf(xylist[idx++]), Double.valueOf(xylist[idx++]));
+				double y = Double.valueOf(xylist[idx++]);
+				double x = Double.valueOf(xylist[idx++]);
+				Point<byte[]> point = new Point<byte[]>(x, y);
 				resultList.add(point);
 			}
 			return new LineString<byte[]>(resultList);

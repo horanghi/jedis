@@ -13,6 +13,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.ToString;
 import redis.clients.jedis.Protocol.Type;
+import redis.clients.jedis.exceptions.JedisException;
 import redis.clients.util.GEOMETRY;
 import redis.clients.util.SafeEncoder;
 
@@ -34,6 +35,20 @@ public class LineString<T> extends Geometry<T> implements Comparable<T> {
 		super();
 		for (Point<T> p : points) {
 			this.points.add(p);
+		}
+	}
+
+	public LineString(double x, double y, double... xy) {
+		super();
+		this.points.add(new Point<T>(x, y));
+		if (xy.length % 2 != 0) {
+			throw new JedisException("parameter error. check it out.");
+		}
+		int idx = 0;
+		while (idx < xy.length) {
+			double _x = xy[idx++];
+			double _y = xy[idx++];
+			this.points.add(new Point<T>(_x, _y));
 		}
 	}
 

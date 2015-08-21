@@ -46,6 +46,18 @@ public interface GeoCommands {
 
 	Long gpupdate(byte[] key, byte[] member, double lat, double lon, double radius, UNITS unit);
 
+	Long gpupdate(String key, String member, double radius, UNITS unit);
+
+	Long gpupdate(byte[] key, byte[] member, double radius, UNITS unit);
+
+	Long gpupdate(String key, String member, double score);
+
+	Long gpupdate(byte[] key, byte[] member, double score);
+
+	Long gpupdate(String key, String member, String value);
+
+	Long gpupdate(byte[] key, byte[] member, byte[] value);
+
 	// gpradius
 
 	List<Point<String>> gpradius(String key, double lat, double lon, double radius, UNITS unit);
@@ -201,7 +213,7 @@ public interface GeoCommands {
 	List<Point<String>> gpmget(String key, String... members);
 
 	List<Point<byte[]>> gpmget(byte[] key, byte[]... members);
-	
+
 	List<Point<String>> gpscope(String key, String min, String max, String pattern, ORDERBY order);
 
 	List<Point<byte[]>> gpscope(byte[] key, byte[] min, byte[] max, byte[] pattern, ORDERBY order);
@@ -385,6 +397,5 @@ public interface GeoCommands {
 	List<Geometry<String>> gmrelationByMember(String key, String byKey, String byMember);
 
 	List<Geometry<byte[]>> gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember);
-
 
 }

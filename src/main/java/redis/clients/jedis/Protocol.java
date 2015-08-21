@@ -352,7 +352,7 @@ public final class Protocol {
 		CLUSTER,
 		ASKING,
 		GPADD,
-		GPUPDATEBY,
+		GPUPDATE,
 		GPRADIUS,
 		GPCARD,
 		GPREM,
@@ -364,7 +364,7 @@ public final class Protocol {
 		GPREGIONBYMEMBER,
 		GPSCOPE,
 		GGADD,
-		GGUPDATEBY,
+		GGUPDATE,
 		GGRANGE,
 		GGREVRANGE,
 		GGCARD,
@@ -378,7 +378,7 @@ public final class Protocol {
 		GMGETBOUNDARY,
 		GMREBUILDBOUNDARY,
 		GMADD,
-		GMUPDATEBY,
+		GMUPDATE,
 		GMRANGE,
 		GMREVRANGE,
 		GMCARD,
@@ -500,7 +500,10 @@ public final class Protocol {
 		WITHGEOJSON,
 		XR,
 		NR,
-		LIMIT;
+		LIMIT,
+		POS,
+		VALUE,
+		;
 
 		public final byte[] raw;
 

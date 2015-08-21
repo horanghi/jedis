@@ -25,6 +25,12 @@ public interface Commands4Spatial extends Commands {
 
 	void gpupdate(String key, String member, double lat, double lon, double radius, UNITS unit);
 
+	void gpupdate(String key, String member, double radius, UNITS unit);
+
+	void gpupdate(String key, String member, double score);
+
+	void gpupdate(String key, String member, String value);
+
 	// gpradius
 
 	void gpradius(String key, double lat, double lon, double radius, UNITS unit);
@@ -91,7 +97,7 @@ public interface Commands4Spatial extends Commands {
 	void gpregion(String key, LineString<?> lineString, String pattern);
 
 	void gpregion(String key, Point<?> point, String pattern);
-	
+
 	void gpregion(String key, Polygon<?> polygon, String min, String max, String pattern);
 
 	void gpregion(String key, LineString<?> lineString, String min, String max, String pattern);
@@ -107,7 +113,7 @@ public interface Commands4Spatial extends Commands {
 	void gpget(String key, String member);
 
 	void gpmget(String key, String... members);
-	
+
 	void gpscope(String key, String min, String max, String pattern, ORDERBY order);
 
 	void gpscope(String key, String min, String max, long offset, long count, String pattern, ORDERBY order);
@@ -199,7 +205,5 @@ public interface Commands4Spatial extends Commands {
 	void gmupdate(String key, String member, LineString<?> lineString);
 
 	void gmrelationByMember(String key, String byKey, String byMember);
-
-
 
 }

@@ -928,6 +928,21 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 		gpupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), lat, lon, radius, unit);
 	}
 
+	@Override
+	public void gpupdate(String key, String member, double radius, UNITS unit) {
+		gpupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), radius, unit);
+	}
+
+	@Override
+	public void gpupdate(String key, String member, double score) {
+		gpupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), score);
+	}
+
+	@Override
+	public void gpupdate(String key, String member, String value) {
+		gpupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value));
+	}
+
 	// gpradius
 
 	@Override

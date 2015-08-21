@@ -23,16 +23,16 @@ import com.jayway.jsonpath.JsonPath;
 
 public class POIGenerator {
 
-	static JedisPool jedispool = new JedisPool(new GenericObjectPoolConfig(), "172.19.114.204", 19005, 3000, "b1234");
+	static JedisPool jedispool = new JedisPool(new GenericObjectPoolConfig(), "172.19.114.206", 19000, 3000, "b1234");
 	static Jedis jedis;
 	String dir;
-	String key = "bservice";
+	String key = "aservice";
 
 	public static void main(String[] args) throws IOException {
 		jedis = jedispool.getResource();
 		POIGenerator pg = new POIGenerator();
-		 pg.execute();
-//		pg.getTest();
+		pg.execute();
+//		 pg.getTest();
 
 		jedispool.destroy();
 
@@ -42,12 +42,27 @@ public class POIGenerator {
 	double[] ys = { 127.01508, 127.01509, 127.01510, 127.01511, 127.01512, 127.01513, 127.01514, 127.01515, 127.01516, 127.01517 };
 
 	private void getTest() {
-		
+
 		jedis = jedispool.getResource();
 		try {
 			for (int idx = 0; idx < xs.length; idx++) {
 				List<Point<String>> result = jedis.gpradius(key, xs[idx], ys[idx], 1, UNITS.KM);
 				List<Point<String>> result2 = jedis.gpradius(key, xs[idx], ys[idx], 1, UNITS.KM, "*");
+				if (result.size() != result2.size()) {
+					throw new JedisDataException(" not equals ");
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			jedispool.returnResource(jedis);
+		}
+		
+		jedis = jedispool.getResource();
+		try {
+			for (int idx = 0; idx < xs.length; idx++) {
+				List<Point<String>> result = jedis.gpnn(key, xs[idx], ys[idx], 0, 100, "*");
+				List<Point<String>> result2 = jedis.gpnn(key, xs[idx], ys[idx], 0, 100, "*");
 				if (result.size() != result2.size()) {
 					throw new JedisDataException(" not equals ");
 				}
@@ -136,10 +151,11 @@ public class POIGenerator {
 		double lat = JsonPath.read(jo, "$.location.coordinates.[1]");
 		int poi_id = JsonPath.read(jo, "$.poi_id");
 		String memberKey;
-//		String name = JsonPath.read(jo, "$.name");
-//		String category = JsonPath.read(jo, "$.category.name");
-//		String address = JsonPath.read(jo, "$.address");
-		memberKey = "poi_id:" + poi_id ;
+		String name = JsonPath.read(jo, "$.name");
+		String category = JsonPath.read(jo, "$.category.name");
+		String address = JsonPath.read(jo, "$.address");
+		// memberKey = "poi_id:" + poi_id ;
+		memberKey = "poi_id:" + poi_id + "|name:" + name + "|address:" + address + "|category:" + category;
 		jedis.gpadd(key, lat, lot, memberKey, jo.toJSONString());
 	}
 

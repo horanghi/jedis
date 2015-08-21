@@ -24,6 +24,12 @@ public interface Command4BinarySpatial {
 	void gpupdate(byte[] key, byte[] member, double lat, double lon);
 
 	void gpupdate(byte[] key, byte[] member, double lat, double lon, double radius, UNITS unit);
+	
+	void gpupdate(byte[] key, byte[] member, double radius, UNITS unit);
+	
+	void gpupdate(byte[] key, byte[] member, double score);
+
+	void gpupdate(byte[] key, byte[] member, byte[] value);
 
 	// gpradius
 

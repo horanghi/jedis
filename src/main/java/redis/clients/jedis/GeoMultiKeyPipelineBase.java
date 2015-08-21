@@ -62,6 +62,42 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
+	public Response<Long> gpupdate(String key, String member, double radius, UNITS unit) {
+		client.gpupdate(key, member, radius, unit);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gpupdate(byte[] key, byte[] member, double radius, UNITS unit) {
+		client.gpupdate(key, member, radius, unit);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gpupdate(String key, String member, double score) {
+		client.gpupdate(key, member, score);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gpupdate(byte[] key, byte[] member, double score) {
+		client.gpupdate(key, member, score);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gpupdate(String key, String member, String value) {
+		client.gpupdate(key, member, value);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gpupdate(byte[] key, byte[] member, byte[] value) {
+		client.gpupdate(key, member, value);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
 	public Response<List<Point<String>>> gpregionByMember(String key, String bykey, String bymember) {
 		client.gpregionByMember(key, bykey, bymember);
 		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LIST);
@@ -210,7 +246,7 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 		client.gpmget(key, members);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_LIST);
 	}
-	
+
 	@Override
 	public Response<List<Point<String>>> gpscope(String key, String min, String max, String pattern, ORDERBY order) {
 		client.gpscope(key, min, max, pattern, order);

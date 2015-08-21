@@ -12,7 +12,7 @@ import static redis.clients.jedis.Protocol.Command.GGRELATION;
 import static redis.clients.jedis.Protocol.Command.GGRELATIONBYMEMBER;
 import static redis.clients.jedis.Protocol.Command.GGREM;
 import static redis.clients.jedis.Protocol.Command.GGREVRANGE;
-import static redis.clients.jedis.Protocol.Command.GGUPDATEBY;
+import static redis.clients.jedis.Protocol.Command.GGUPDATE;
 import static redis.clients.jedis.Protocol.Command.GMADD;
 import static redis.clients.jedis.Protocol.Command.GMCARD;
 import static redis.clients.jedis.Protocol.Command.GMEXISTS;
@@ -27,7 +27,7 @@ import static redis.clients.jedis.Protocol.Command.GMRELATIONBYMEMBER;
 import static redis.clients.jedis.Protocol.Command.GMREM;
 import static redis.clients.jedis.Protocol.Command.GMREVRANGE;
 import static redis.clients.jedis.Protocol.Command.GMSETBOUNDARY;
-import static redis.clients.jedis.Protocol.Command.GMUPDATEBY;
+import static redis.clients.jedis.Protocol.Command.GMUPDATE;
 import static redis.clients.jedis.Protocol.Command.GPADD;
 import static redis.clients.jedis.Protocol.Command.GPCARD;
 import static redis.clients.jedis.Protocol.Command.GPEXISTS;
@@ -40,15 +40,15 @@ import static redis.clients.jedis.Protocol.Command.GPREGION;
 import static redis.clients.jedis.Protocol.Command.GPREGIONBYMEMBER;
 import static redis.clients.jedis.Protocol.Command.GPREM;
 import static redis.clients.jedis.Protocol.Command.GPSCOPE;
-import static redis.clients.jedis.Protocol.Command.GPUPDATEBY;
-import static redis.clients.jedis.Protocol.Command.PL_END;
-import static redis.clients.jedis.Protocol.Command.PL_START;
+import static redis.clients.jedis.Protocol.Command.GPUPDATE;
 import static redis.clients.jedis.Protocol.GeoOptions.BY;
 import static redis.clients.jedis.Protocol.GeoOptions.LIMIT;
 import static redis.clients.jedis.Protocol.GeoOptions.MATCH;
 import static redis.clients.jedis.Protocol.GeoOptions.NR;
+import static redis.clients.jedis.Protocol.GeoOptions.POS;
 import static redis.clients.jedis.Protocol.GeoOptions.RADIUS;
 import static redis.clients.jedis.Protocol.GeoOptions.SCORE;
+import static redis.clients.jedis.Protocol.GeoOptions.VALUE;
 import static redis.clients.jedis.Protocol.GeoOptions.WITHDISTANCE;
 import static redis.clients.jedis.Protocol.GeoOptions.WITHGEOJSON;
 import static redis.clients.jedis.Protocol.GeoOptions.WITHSCORES;
@@ -73,7 +73,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	public BinaryClient4Spatial(final String host, final int port) {
 		super(host, port);
 	}
-	
+
 	@Override
 	public void gpexists(final byte[] key, final byte[] member) {
 		sendCommand(GPEXISTS, key, member);
@@ -108,14 +108,57 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 
 	@Override
 	public void gpupdate(final byte[] key, final byte[] member, final double lat, final double lon) {
-		// GUPDATEBY key member latitude longitude [RADIUS radius m|km]
-		sendCommand(GPUPDATEBY, key, member, toByteArray(lat), toByteArray(lon));
+		/*
+		 * GPUPDATE key member [POS latitude longitude radius m|km]
+		 *                     [VALUE value]
+		 *                     [SCORE score]
+		 *
+		 */
+		sendCommand(GPUPDATE, key, member, POS.raw, toByteArray(lat), toByteArray(lon));
 	}
 
 	@Override
 	public void gpupdate(final byte[] key, final byte[] member, final double lat, final double lon, final double radius, final UNITS unit) {
-		// GUPDATEBY key member latitude longitude [RADIUS radius m|km]
-		sendCommand(GPUPDATEBY, key, member, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw);
+		/*
+		 * GPUPDATE key member [POS latitude longitude radius m|km]
+		 *                     [VALUE value]
+		 *                     [SCORE score]
+		 *
+		 */
+		sendCommand(GPUPDATE, key, member, POS.raw, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw);
+	}
+
+	@Override
+	public void gpupdate(final byte[] key, final byte[] member, final double radius, final UNITS unit) {
+		/*
+		 * GPUPDATE key member [POS latitude longitude radius m|km]
+		 *                     [VALUE value]
+		 *                     [SCORE score]
+		 *
+		 */
+		sendCommand(GPUPDATE, key, member, RADIUS.raw, toByteArray(radius), unit.raw);
+	}
+
+	@Override
+	public void gpupdate(final byte[] key, final byte[] member, final double score) {
+		/*
+		 * GPUPDATE key member [POS latitude longitude radius m|km]
+		 *                     [VALUE value]
+		 *                     [SCORE score]
+		 *
+		 */
+		sendCommand(GPUPDATE, key, member, SCORE.raw, toByteArray(score));
+	}
+
+	@Override
+	public void gpupdate(final byte[] key, final byte[] member, final byte[] value) {
+		/*
+		 * GPUPDATE key member [POS latitude longitude radius m|km]
+		 *                     [VALUE value]
+		 *                     [SCORE score]
+		 *
+		 */
+		sendCommand(GPUPDATE, key, member, VALUE.raw, value);
 	}
 
 	// gpradius
@@ -642,19 +685,19 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	@Override
 	public void ggupdate(byte[] key, byte[] member, Polygon<?> polygon) {
 		// GGUPDATEBY key member geojson
-		sendCommand(GGUPDATEBY, key, member, polygon.getJsonByte());
+		sendCommand(GGUPDATE, key, member, polygon.getJsonByte());
 	}
 
 	@Override
 	public void ggupdate(byte[] key, byte[] member, Point<?> point) {
 		// GGUPDATEBY key member geojson
-		sendCommand(GGUPDATEBY, key, member, point.getJsonByte());
+		sendCommand(GGUPDATE, key, member, point.getJsonByte());
 	}
 
 	@Override
 	public void ggupdate(byte[] key, byte[] member, LineString<?> lineString) {
 		// GGUPDATEBY key member geojson
-		sendCommand(GGUPDATEBY, key, member, lineString.getJsonByte());
+		sendCommand(GGUPDATE, key, member, lineString.getJsonByte());
 	}
 
 	@Override
@@ -778,19 +821,19 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	@Override
 	public void gmupdate(byte[] key, byte[] member, Polygon<?> polygon) {
 		// GMUPDATEBY key member geojson
-		sendCommand(GMUPDATEBY, key, member, polygon.getJsonByte());
+		sendCommand(GMUPDATE, key, member, polygon.getJsonByte());
 	}
 
 	@Override
 	public void gmupdate(byte[] key, byte[] member, Point<?> point) {
 		// GMUPDATEBY key member geojson
-		sendCommand(GMUPDATEBY, key, member, point.getJsonByte());
+		sendCommand(GMUPDATE, key, member, point.getJsonByte());
 	}
 
 	@Override
 	public void gmupdate(byte[] key, byte[] member, LineString<?> lineString) {
 		// GMUPDATEBY key member geojson
-		sendCommand(GMUPDATEBY, key, member, lineString.getJsonByte());
+		sendCommand(GMUPDATE, key, member, lineString.getJsonByte());
 	}
 
 	@Override

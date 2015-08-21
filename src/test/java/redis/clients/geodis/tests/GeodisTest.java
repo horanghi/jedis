@@ -287,6 +287,13 @@ public class GeodisTest {
 		assertThat(geodis.gpadd(key, 0, 0, member1, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, member2, value), is(OKl));
 		assertThat(geodis.gpupdate(key, member1, 1, 1), is(OKl));
+		assertThat(geodis.gpupdate(key, member1, value+"1"), is(OKl));
+		assertThat(geodis.gpget(key, member1).getValue(), is(value+"1"));
+		assertThat(geodis.gpupdate(key, member1, value), is(OKl));
+		assertThat(geodis.gpupdate(key, member1, 30), is(OKl));
+		assertThat(geodis.gpget(key, member1).getScore(), is(30d));
+		assertThat(geodis.gpupdate(key, member1, 10, UNITS.M), is(OKl));
+		assertThat(geodis.gpupdate(key, member1, 0, UNITS.M), is(OKl));
 		assertThat(geodis.gpupdate(key, member2, 1, 1), is(OKl));
 		List<Point<String>> Points = geodis.gpradius(key, 1, 1, 100, UNITS.M);
 		int idx = 0;
@@ -315,6 +322,8 @@ public class GeodisTest {
 		assertThat(geodis.gpadd(keyb, 0, 0, member2b, valueb), is(OKl));
 		assertThat(geodis.gpupdate(keyb, member1b, 1, 1), is(OKl));
 		assertThat(geodis.gpupdate(keyb, member2b, 1, 1), is(OKl));
+		assertThat(geodis.gpupdate(keyb, member1b, 10, UNITS.M), is(OKl));
+		assertThat(geodis.gpupdate(keyb, member1b, 0, UNITS.M), is(OKl));
 		List<Point<byte[]>> Pointsb = geodis.gpradius(keyb, 0, 0, 100, UNITS.M);
 		for (Point<byte[]> point : Pointsb) {
 			System.out.println(point.toString());

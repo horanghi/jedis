@@ -45,6 +45,8 @@ public interface Commands4Spatial extends Commands {
 			long count, ORDERBY order);
 
 	// gpcircle
+	
+	void gpcircle(String key, String member);
 
 	void gpcircle(String key, double lat, double lon, double radius, UNITS unit);
 

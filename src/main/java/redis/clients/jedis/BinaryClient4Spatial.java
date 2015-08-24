@@ -239,6 +239,11 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	// gpcircle
+	@Override
+	public void gpcircle(final byte[] key, final byte[] member) {
+		// GPGET key member / GPMGET key member [member ...]
+		sendCommand(GPGET, key, member);
+	}
 
 	@Override
 	public void gpcircle(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit) {

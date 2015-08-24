@@ -796,6 +796,69 @@ public class BuilderFactory {
 
 	};
 
+	public static final Builder<Circle<String>> SPATIAL_CIRCLE = new Builder<Circle<String>>() {
+		@SuppressWarnings("unchecked")
+		public Circle<String> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			List<byte[]> l = (List<byte[]>) data;
+			Circle<String> result = null;
+			Iterator<byte[]> iterator = l.iterator();
+
+			if (iterator.hasNext()) {
+				byte[] _fistValue = iterator.next();
+				if (_fistValue == null) {
+					return null;
+				}
+				String fistValue = SafeEncoder.encode(_fistValue);
+				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double radius = Double.valueOf(SafeEncoder.encode(iterator.next())); // radius
+				String value = SafeEncoder.encode(iterator.next());
+				iterator.next(); // score
+
+				result = new Circle<String>(fistValue, x, y, radius, UNITS.M, value);
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "Point";
+		}
+
+	};
+	public static final Builder<Circle<byte[]>> BYTE_SPATIAL_CIRCLE = new Builder<Circle<byte[]>>() {
+		public Circle<byte[]> build(Object data) {
+			if (null == data) {
+				return null;
+			}
+			@SuppressWarnings("unchecked")
+			List<byte[]> l = (List<byte[]>) data;
+			Circle<byte[]> result = null;
+			Iterator<byte[]> iterator = l.iterator();
+
+			if (iterator.hasNext()) {
+				byte[] fistValue = iterator.next();
+				if (fistValue == null) {
+					return null;
+				}
+				double x = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double y = Double.valueOf(SafeEncoder.encode(iterator.next()));
+				double radius = Double.valueOf(SafeEncoder.encode(iterator.next())); // radius
+				byte[] value = iterator.next();
+				iterator.next(); // score
+				result = new Circle<byte[]>(fistValue, x, y, radius, UNITS.M, value);
+			}
+			return result;
+		}
+
+		public String toString() {
+			return "Point<byte[]>";
+		}
+
+	};
+
 	public static final Builder<Geometry<String>> SPATIAL_GGRAPHY = new Builder<Geometry<String>>() {
 		@SuppressWarnings("unchecked")
 		public Geometry<String> build(Object data) {

@@ -45,6 +45,8 @@ public interface Command4BinarySpatial {
 			long count, ORDERBY order);
 
 	// gpcircle
+	
+	void gpcircle(byte[] key, byte[] member);
 
 	void gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit);
 

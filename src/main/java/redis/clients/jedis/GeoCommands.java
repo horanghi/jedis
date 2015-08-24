@@ -83,6 +83,10 @@ public interface GeoCommands {
 			long offset, long count, ORDERBY order);
 
 	// gpcircle
+	
+	Circle<String> gpcircle(String key, String member);
+
+	Circle<byte[]> gpcircle(byte[] key, byte[] member);
 
 	List<Circle<String>> gpcircle(String key, double lat, double lon, double radius, UNITS unit);
 

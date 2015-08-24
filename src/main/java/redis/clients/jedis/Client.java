@@ -978,6 +978,11 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	// gpcircle
 
 	@Override
+	public void gpcircle(final String key, final String member) {
+		gpcircle(SafeEncoder.encode(key), SafeEncoder.encode(member));
+	}
+
+	@Override
 	public void gpcircle(final String key, final double lat, final double lon, final double radius, final UNITS unit) {
 		gpcircle(SafeEncoder.encode(key), lat, lon, radius, unit);
 	}

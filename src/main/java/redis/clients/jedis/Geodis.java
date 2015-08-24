@@ -258,6 +258,20 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	// gpcircle
 
 	@Override
+	public Circle<String> gpcircle(final String key, final String member) {
+		checkIsInMulti();
+		client.gpcircle(key, member);
+		return client.getSPATIAL_CIRCLEReply();
+	}
+
+	@Override
+	public Circle<byte[]> gpcircle(final byte[] key, final byte[] member) {
+		checkIsInMulti();
+		client.gpcircle(key, member);
+		return client.getBYTE_SPATIAL_CIRCLEReply();
+	}
+
+	@Override
 	public List<Circle<String>> gpcircle(final String key, final double lat, final double lon, final double radius, final UNITS unit) {
 		checkIsInMulti();
 		client.gpcircle(key, lat, lon, radius, unit);

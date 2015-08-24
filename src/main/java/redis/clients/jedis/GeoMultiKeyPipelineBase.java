@@ -136,6 +136,18 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
+	public Response<Circle<String>> gpcircle(String key, String member) {
+		client.gpcircle(key, member);
+		return getResponse(BuilderFactory.SPATIAL_CIRCLE);
+	}
+
+	@Override
+	public Response<Circle<byte[]>> gpcircle(byte[] key, byte[] member) {
+		client.gpcircle(key, member);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_CIRCLE);
+	}
+
+	@Override
 	public Response<List<Circle<String>>> gpcircle(String key, double lat, double lon, double radius, UNITS unit) {
 		client.gpcircle(key, lat, lon, radius, unit);
 		return getResponse(BuilderFactory.SPATIAL_GCIRCLE_WITHDISTANCE_LIST);

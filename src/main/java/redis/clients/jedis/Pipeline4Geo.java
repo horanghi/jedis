@@ -87,6 +87,10 @@ public interface Pipeline4Geo {
 
 	// gpcircle
 
+	Response<Circle<String>> gpcircle(String key, String member);
+
+	Response<Circle<byte[]>> gpcircle(byte[] key, byte[] member);
+
 	Response<List<Circle<String>>> gpcircle(String key, double lat, double lon, double radius, UNITS unit);
 
 	Response<List<Circle<byte[]>>> gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit);

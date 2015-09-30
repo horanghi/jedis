@@ -11,16 +11,18 @@ import redis.clients.jedis.Protocol.Type;
 import redis.clients.util.SafeEncoder;
 
 @ToString(doNotUseGetters = true, callSuper = true)
-public class Point<T> extends Geometry<T> implements Comparable<T> {
+public class Point<T> extends Geometry<T> implements Comparable<T>, Cloneable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1978761421041959442L;
 
+	@Setter
 	@Getter
-	final private double x;
+	private double x;
+	@Setter
 	@Getter
-	final private double y;
+	private double y;
 
 	private Double score = null;
 	@Setter
@@ -116,6 +118,11 @@ public class Point<T> extends Geometry<T> implements Comparable<T> {
 			return 0;
 		}
 		return -1;
+	}
+
+	@Override
+	public Point<T> clone() {
+		return new Point<T>(this.getMember(), this.getX(), this.getY(), this.getValue(), this.getScore(), this.getDistance());
 	}
 
 }

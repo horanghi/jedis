@@ -133,7 +133,7 @@ public interface GeoCommands {
 	List<Point<String>> gpregionByMember(String key, String bykey, String bymember, String pattern);
 
 	List<Point<byte[]>> gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern);
-
+	
 	List<Point<String>> gpregionByMember(String key, String bykey, String bymember, String min, String max, String pattern);
 
 	List<Point<byte[]>> gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern);

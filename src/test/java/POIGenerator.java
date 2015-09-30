@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -15,6 +14,7 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.spatial.model.Point;
@@ -23,16 +23,19 @@ import com.jayway.jsonpath.JsonPath;
 
 public class POIGenerator {
 
-	static JedisPool jedispool = new JedisPool(new GenericObjectPoolConfig(), "172.19.114.206", 19000, 3000, "b1234");
+	static JedisPool jedispool = new JedisPool(new GenericObjectPoolConfig(), "172.19.114.204", 29000, 3000, "svc08_01");
 	static Jedis jedis;
+	static Pipeline pl;
 	String dir;
 	String key = "aservice";
 
 	public static void main(String[] args) throws IOException {
 		jedis = jedispool.getResource();
+		pl = jedis.pipelined();
 		POIGenerator pg = new POIGenerator();
 		pg.execute();
-//		 pg.getTest();
+		// pg.getTest();
+		pl.sync();
 
 		jedispool.destroy();
 
@@ -57,7 +60,7 @@ public class POIGenerator {
 		} finally {
 			jedispool.returnResource(jedis);
 		}
-		
+
 		jedis = jedispool.getResource();
 		try {
 			for (int idx = 0; idx < xs.length; idx++) {
@@ -156,7 +159,7 @@ public class POIGenerator {
 		String address = JsonPath.read(jo, "$.address");
 		// memberKey = "poi_id:" + poi_id ;
 		memberKey = "poi_id:" + poi_id + "|name:" + name + "|address:" + address + "|category:" + category;
-		jedis.gpadd(key, lat, lot, memberKey, jo.toJSONString());
+		pl.gpadd(key, lat, lot, memberKey, jo.toJSONString());
 	}
 
 }

@@ -21,7 +21,7 @@ public final class Protocol {
 	private static final String CLUSTERDOWN_RESPONSE = "CLUSTERDOWN";
 	public static final int DEFAULT_PORT = 6379;
 	public static final int DEFAULT_SENTINEL_PORT = 26379;
-	public static final int DEFAULT_TIMEOUT = 2000;
+	public static final int DEFAULT_TIMEOUT = 5000;
 	public static final int DEFAULT_DATABASE = 0;
 
 	public static final String CHARSET = "UTF-8";
@@ -488,11 +488,12 @@ public final class Protocol {
 	}
 
 	public static enum GeoOptions {
-		// BY CONTAINS|WITHIN [MATCH pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
+		// BY CONTAINS|WITHIN [MATCH key-pattern] [MATCHVALUE value-pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
 		BY,
 		RADIUS,
 		MATCH,
+		MATCHVALUE,
 		SCORE,
 		WITHVALUES,
 		WITHSCORES,

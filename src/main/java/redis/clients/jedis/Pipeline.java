@@ -3,7 +3,6 @@ package redis.clients.jedis;
 import java.util.ArrayList;
 import java.util.List;
 
-import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.jedis.exceptions.JedisDataException;
 
 public class Pipeline extends GeoMultiKeyPipelineBase {

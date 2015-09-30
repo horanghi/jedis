@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -69,7 +70,7 @@ public class GeoPipeliningTest extends Assert {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		geodisPool = new JedisPool("172.19.114.202", 19006);
+		geodisPool = new JedisPool(new GenericObjectPoolConfig(), "172.19.114.203", 19006, 2000, "1234");
 	}
 
 	@AfterClass

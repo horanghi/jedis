@@ -44,6 +44,7 @@ import static redis.clients.jedis.Protocol.Command.GPUPDATE;
 import static redis.clients.jedis.Protocol.GeoOptions.BY;
 import static redis.clients.jedis.Protocol.GeoOptions.LIMIT;
 import static redis.clients.jedis.Protocol.GeoOptions.MATCH;
+import static redis.clients.jedis.Protocol.GeoOptions.MATCHVALUE;
 import static redis.clients.jedis.Protocol.GeoOptions.NR;
 import static redis.clients.jedis.Protocol.GeoOptions.POS;
 import static redis.clients.jedis.Protocol.GeoOptions.RADIUS;

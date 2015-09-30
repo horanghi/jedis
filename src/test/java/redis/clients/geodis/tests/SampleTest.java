@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -42,7 +43,7 @@ public class SampleTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		// spatial redis
-		geodisPool = new JedisPool("172.19.114.202", 19009);
+		geodisPool = new JedisPool(new GenericObjectPoolConfig(), "172.19.114.203", 19006, 2000, "1234");
 
 	}
 

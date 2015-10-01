@@ -24,11 +24,11 @@ public interface Command4BinarySpatial {
 	void gpupdate(byte[] key, byte[] member, double lat, double lon);
 
 	void gpupdate(byte[] key, byte[] member, double lat, double lon, double radius, UNITS unit);
-	
+
 	void gpupdate(byte[] key, byte[] member, double lat, double lon, double radius, UNITS unit, byte[] value, double score);
-	
+
 	void gpupdate(byte[] key, byte[] member, double radius, UNITS unit);
-	
+
 	void gpupdate(byte[] key, byte[] member, double score);
 
 	void gpupdate(byte[] key, byte[] member, byte[] value);
@@ -37,58 +37,73 @@ public interface Command4BinarySpatial {
 
 	void gpradius(byte[] key, double lat, double lon, double radius, UNITS unit);
 
-	void gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
+	void gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] vpattern);
 
-	void gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max, byte[] pattern);
+	void gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max, byte[] vpattern);
 
 	void gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max, ORDERBY order);
 
-	void gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max, byte[] pattern, long offset,
+	void gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max, byte[] vpattern, long offset,
 			long count, ORDERBY order);
 
+	void gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max, byte[] mpattern, byte[] vpattern,
+			long offset, long count, ORDERBY order);
+
 	// gpcircle
-	
+
 	void gpcircle(byte[] key, byte[] member);
 
 	void gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit);
 
 	void gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, RELATION scope, ORDERBY order);
 
-	void gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
+	void gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] vpattern);
 
-	void gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern, RELATION ops, ORDERBY sort);
+	void gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] vpattern, RELATION ops, ORDERBY sort);
+
+	void gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] mpattern, byte[] vpattern, RELATION ops,
+			ORDERBY sort);
 
 	// gpradiusByMember
 
 	void gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember);
 
-	void gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern);
+	void gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] vpattern);
 
-	void gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern);
+	void gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] vpattern);
 
-	void gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern, long offset, long count,
+	void gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] vpattern, long offset, long count,
 			ORDERBY order);
+
+	void gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] mpattern, byte[] vpattern, long offset,
+			long count, ORDERBY order);
 
 	// gpregionByMember
 
 	void gpregionByMember(byte[] key, byte[] bykey, byte[] bymember);
 
-	void gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern);
+	void gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] vpattern);
 
-	void gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern);
+	void gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] vpattern);
 
-	void gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern, long offset, long count,
+	void gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] vpattern, long offset, long count,
 			ORDERBY order);
+
+	void gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] mpattern, byte[] vpattern, long offset,
+			long count, ORDERBY order);
 
 	// gpnn
 
 	void gpnn(byte[] key, double lat, double lon, long offset, long count);
 
-	void gpnn(byte[] key, double lat, double lon, long offset, long count, byte[] pattern);
+	void gpnn(byte[] key, double lat, double lon, long offset, long count, byte[] vpattern);
 
-	void gpnn(byte[] key, double lat, double lon, long offset, long count, byte[] pattern, byte[] min, byte[] max);
+	void gpnn(byte[] key, double lat, double lon, long offset, long count, byte[] vpattern, byte[] min, byte[] max);
 
-	void gpnn(byte[] key, double lat, double lon, long offset, long count, byte[] pattern, byte[] min, byte[] max, ORDERBY order);
+	void gpnn(byte[] key, double lat, double lon, long offset, long count, byte[] vpattern, byte[] min, byte[] max, ORDERBY order);
+
+	void gpnn(byte[] key, double lat, double lon, long offset, long count, byte[] mpattern, byte[] vpattern, byte[] min, byte[] max,
+			ORDERBY order);
 
 	// gpregion
 
@@ -98,19 +113,19 @@ public interface Command4BinarySpatial {
 
 	void gpregion(byte[] key, Point<?> point);
 
-	void gpregion(byte[] key, Polygon<?> polygon, byte[] pattern);
+	void gpregion(byte[] key, Polygon<?> polygon, byte[] vpattern);
 
-	void gpregion(byte[] key, LineString<?> lineString, byte[] pattern);
+	void gpregion(byte[] key, LineString<?> lineString, byte[] vpattern);
 
-	void gpregion(byte[] key, Point<?> point, byte[] pattern);
+	void gpregion(byte[] key, Point<?> point, byte[] vpattern);
 
-	void gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, byte[] pattern);
+	void gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, byte[] vpattern);
 
-	void gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, byte[] pattern);
+	void gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, byte[] vpattern);
 
-	void gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count, byte[] pattern);
+	void gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count, byte[] vpattern);
 
-	void gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, long offset, long count, byte[] pattern);
+	void gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, long offset, long count, byte[] vpattern);
 
 	void gpcard(byte[] key);
 
@@ -120,10 +135,12 @@ public interface Command4BinarySpatial {
 
 	void gpmget(byte[] key, byte[]... members);
 
-	void gpscope(byte[] key, byte[] min, byte[] max, byte[] pattern, ORDERBY order);
+	void gpscope(byte[] key, byte[] min, byte[] max, byte[] vpattern, ORDERBY order);
 
-	void gpscope(byte[] key, byte[] min, byte[] max, long offset, long count, byte[] pattern, ORDERBY order);
-	
+	void gpscope(byte[] key, byte[] min, byte[] max, long offset, long count, byte[] vpattern, ORDERBY order);
+
+	void gpscope(byte[] key, byte[] min, byte[] max, long offset, long count, byte[] mpattern, byte[] vpattern, ORDERBY order);
+
 	/* Geography */
 
 	void ggexists(byte[] key, byte[] member);
@@ -154,7 +171,9 @@ public interface Command4BinarySpatial {
 
 	void ggnn(byte[] key, double lat, double lon, long count);
 
-	void ggnn(byte[] key, double lat, double lon, long count, byte[] pattern);
+	void ggnn(byte[] key, double lat, double lon, long count, byte[] vpattern);
+
+	void ggnn(byte[] key, double lat, double lon, long count, byte[] mpattern, byte[] vpattern);
 
 	void ggupdate(byte[] key, byte[] member, Point<?> point);
 
@@ -202,7 +221,9 @@ public interface Command4BinarySpatial {
 
 	void gmnn(byte[] key, double x, double y, long count);
 
-	void gmnn(byte[] key, double x, double y, long count, byte[] pattern);
+	void gmnn(byte[] key, double x, double y, long count, byte[] vpattern);
+
+	void gmnn(byte[] key, double x, double y, long count, byte[] mpattern, byte[] vpattern);
 
 	void gmupdate(byte[] key, byte[] member, Point<?> point);
 

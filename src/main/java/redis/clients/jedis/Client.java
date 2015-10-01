@@ -53,8 +53,8 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 		type(SafeEncoder.encode(key));
 	}
 
-	public void keys(final String pattern) {
-		keys(SafeEncoder.encode(pattern));
+	public void keys(final String vpattern) {
+		keys(SafeEncoder.encode(vpattern));
 	}
 
 	public void rename(final String oldkey, final String newkey) {
@@ -599,18 +599,18 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 		unsubscribe(cs);
 	}
 
-	public void psubscribe(final String... patterns) {
-		final byte[][] ps = new byte[patterns.length][];
+	public void psubscribe(final String... vpatterns) {
+		final byte[][] ps = new byte[vpatterns.length][];
 		for (int i = 0; i < ps.length; i++) {
-			ps[i] = SafeEncoder.encode(patterns[i]);
+			ps[i] = SafeEncoder.encode(vpatterns[i]);
 		}
 		psubscribe(ps);
 	}
 
-	public void punsubscribe(final String... patterns) {
-		final byte[][] ps = new byte[patterns.length][];
+	public void punsubscribe(final String... vpatterns) {
+		final byte[][] ps = new byte[vpatterns.length][];
 		for (int i = 0; i < ps.length; i++) {
-			ps[i] = SafeEncoder.encode(patterns[i]);
+			ps[i] = SafeEncoder.encode(vpatterns[i]);
 		}
 		punsubscribe(ps);
 	}
@@ -623,8 +623,8 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 		subscribe(cs);
 	}
 
-	public void pubsubChannels(String pattern) {
-		pubsub(Protocol.PUBSUB_CHANNELS, pattern);
+	public void pubsubChannels(String vpattern) {
+		pubsub(Protocol.PUBSUB_CHANNELS, vpattern);
 	}
 
 	public void pubsubNumPat() {
@@ -639,8 +639,8 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 		configSet(SafeEncoder.encode(parameter), SafeEncoder.encode(value));
 	}
 
-	public void configGet(String pattern) {
-		configGet(SafeEncoder.encode(pattern));
+	public void configGet(String vpattern) {
+		configGet(SafeEncoder.encode(vpattern));
 	}
 
 	private byte[][] getByteParams(String... params) {
@@ -957,15 +957,15 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gpradius(final String key, final double lat, final double lon, final double radius, final UNITS unit, final String pattern) {
-		gpradius(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(pattern));
+	public void gpradius(final String key, final double lat, final double lon, final double radius, final UNITS unit, final String vpattern) {
+		gpradius(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(vpattern));
 	}
 
 	@Override
 	public void gpradius(final String key, final double lat, final double lon, final double radius, final UNITS unit, final String min,
-			final String max, final String pattern) {
+			final String max, final String vpattern) {
 		gpradius(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(min), SafeEncoder.encode(max),
-				SafeEncoder.encode(pattern));
+				SafeEncoder.encode(vpattern));
 	}
 
 	@Override
@@ -976,9 +976,16 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 
 	@Override
 	public void gpradius(final String key, final double lat, final double lon, final double radius, final UNITS unit, final String min,
-			final String max, final String pattern, final long offset, final long count, final ORDERBY order) {
+			final String max, final String vpattern, final long offset, final long count, final ORDERBY order) {
 		gpradius(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(min), SafeEncoder.encode(max),
-				SafeEncoder.encode(pattern), offset, count, order);
+				SafeEncoder.encode(vpattern), offset, count, order);
+	}
+
+	@Override
+	public void gpradius(final String key, final double lat, final double lon, final double radius, final UNITS unit, final String min,
+			final String max, final String mpattern, final String vpattern, final long offset, final long count, final ORDERBY order) {
+		gpradius(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(min), SafeEncoder.encode(max),
+				SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern), offset, count, order);
 	}
 
 	// gpcircle
@@ -1000,14 +1007,20 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gpcircle(final String key, final double lat, final double lon, final double radius, final UNITS unit, final String pattern) {
-		gpcircle(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(pattern));
+	public void gpcircle(final String key, final double lat, final double lon, final double radius, final UNITS unit, final String vpattern) {
+		gpcircle(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(vpattern));
 	}
 
 	@Override
-	public void gpcircle(final String key, final double lat, final double lon, final double radius, final UNITS unit, final String pattern,
-			final RELATION scope, final ORDERBY order) {
-		gpcircle(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(pattern), scope, order);
+	public void gpcircle(final String key, final double lat, final double lon, final double radius, final UNITS unit,
+			final String vpattern, final RELATION scope, final ORDERBY order) {
+		gpcircle(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(vpattern), scope, order);
+	}
+
+	@Override
+	public void gpcircle(final String key, final double lat, final double lon, final double radius, final UNITS unit,
+			final String mpattern, final String vpattern, final RELATION scope, final ORDERBY order) {
+		gpcircle(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern), scope, order);
 	}
 
 	// gpradiusByMember
@@ -1018,22 +1031,29 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gpradiusByMember(final String key, final String bykey, final String bymember, final String pattern) {
-		gpradiusByMember(SafeEncoder.encode(key), SafeEncoder.encode(bykey), SafeEncoder.encode(bymember), SafeEncoder.encode(pattern));
+	public void gpradiusByMember(final String key, final String bykey, final String bymember, final String vpattern) {
+		gpradiusByMember(SafeEncoder.encode(key), SafeEncoder.encode(bykey), SafeEncoder.encode(bymember), SafeEncoder.encode(vpattern));
 	}
 
 	@Override
 	public void gpradiusByMember(final String key, final String bykey, final String bymember, final String min, final String max,
-			final String pattern) {
+			final String vpattern) {
 		gpradiusByMember(SafeEncoder.encode(key), SafeEncoder.encode(bykey), SafeEncoder.encode(bymember), SafeEncoder.encode(min),
-				SafeEncoder.encode(max), SafeEncoder.encode(pattern));
+				SafeEncoder.encode(max), SafeEncoder.encode(vpattern));
 	}
 
 	@Override
 	public void gpradiusByMember(final String key, final String bykey, final String bymember, final String min, final String max,
-			final String pattern, final long offset, final long count, final ORDERBY order) {
+			final String vpattern, final long offset, final long count, final ORDERBY order) {
 		gpradiusByMember(SafeEncoder.encode(key), SafeEncoder.encode(bykey), SafeEncoder.encode(bymember), SafeEncoder.encode(min),
-				SafeEncoder.encode(max), SafeEncoder.encode(pattern), offset, count, order);
+				SafeEncoder.encode(max), SafeEncoder.encode(vpattern), offset, count, order);
+	}
+
+	@Override
+	public void gpradiusByMember(final String key, final String bykey, final String bymember, final String min, final String max,
+			final String mpattern, final String vpattern, final long offset, final long count, final ORDERBY order) {
+		gpradiusByMember(SafeEncoder.encode(key), SafeEncoder.encode(bykey), SafeEncoder.encode(bymember), SafeEncoder.encode(min),
+				SafeEncoder.encode(max), SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern), offset, count, order);
 	}
 
 	// gpregionByMember
@@ -1044,21 +1064,28 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gpregionByMember(String key, String bykey, String bymember, String pattern) {
-		gpregionByMember(SafeEncoder.encode(key), SafeEncoder.encode(bykey), SafeEncoder.encode(bymember), SafeEncoder.encode(pattern));
+	public void gpregionByMember(String key, String bykey, String bymember, String vpattern) {
+		gpregionByMember(SafeEncoder.encode(key), SafeEncoder.encode(bykey), SafeEncoder.encode(bymember), SafeEncoder.encode(vpattern));
 	}
 
 	@Override
-	public void gpregionByMember(String key, String bykey, String bymember, String min, String max, String pattern) {
+	public void gpregionByMember(String key, String bykey, String bymember, String min, String max, String vpattern) {
 		gpregionByMember(SafeEncoder.encode(key), SafeEncoder.encode(bykey), SafeEncoder.encode(bymember), SafeEncoder.encode(min),
-				SafeEncoder.encode(max), SafeEncoder.encode(pattern));
+				SafeEncoder.encode(max), SafeEncoder.encode(vpattern));
 	}
 
 	@Override
-	public void gpregionByMember(String key, String bykey, String bymember, String min, String max, String pattern, long offset,
+	public void gpregionByMember(String key, String bykey, String bymember, String min, String max, String vpattern, long offset,
 			long count, ORDERBY order) {
 		gpregionByMember(SafeEncoder.encode(key), SafeEncoder.encode(bykey), SafeEncoder.encode(bymember), SafeEncoder.encode(min),
-				SafeEncoder.encode(max), SafeEncoder.encode(pattern), offset, count, order);
+				SafeEncoder.encode(max), SafeEncoder.encode(vpattern), offset, count, order);
+	}
+
+	@Override
+	public void gpregionByMember(String key, String bykey, String bymember, String min, String max, String mpattern, String vpattern,
+			long offset, long count, ORDERBY order) {
+		gpregionByMember(SafeEncoder.encode(key), SafeEncoder.encode(bykey), SafeEncoder.encode(bymember), SafeEncoder.encode(min),
+				SafeEncoder.encode(max), SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern), offset, count, order);
 	}
 
 	// gpnn
@@ -1069,15 +1096,22 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gpnn(final String key, final double lat, final double lon, final long offset, final long count, final String pattern) {
-		gpnn(SafeEncoder.encode(key), lat, lon, offset, count, SafeEncoder.encode(pattern));
+	public void gpnn(final String key, final double lat, final double lon, final long offset, final long count, final String vpattern) {
+		gpnn(SafeEncoder.encode(key), lat, lon, offset, count, SafeEncoder.encode(vpattern));
 	}
 
 	@Override
-	public void gpnn(final String key, final double lat, final double lon, final long offset, final long count, final String pattern,
+	public void gpnn(final String key, final double lat, final double lon, final long offset, final long count, final String vpattern,
 			final String min, final String max, ORDERBY order) {
-		gpnn(SafeEncoder.encode(key), lat, lon, offset, count, SafeEncoder.encode(pattern), SafeEncoder.encode(min),
+		gpnn(SafeEncoder.encode(key), lat, lon, offset, count, SafeEncoder.encode(vpattern), SafeEncoder.encode(min),
 				SafeEncoder.encode(max), order);
+	}
+
+	@Override
+	public void gpnn(final String key, final double lat, final double lon, final long offset, final long count, final String mpattern,
+			final String vpattern, final String min, final String max, ORDERBY order) {
+		gpnn(SafeEncoder.encode(key), lat, lon, offset, count, SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern),
+				SafeEncoder.encode(min), SafeEncoder.encode(max), order);
 	}
 
 	// gpregion
@@ -1098,40 +1132,40 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gpregion(final String key, final Polygon<?> polygon, final String pattern) {
-		gpregion(SafeEncoder.encode(key), polygon, SafeEncoder.encode(pattern));
+	public void gpregion(final String key, final Polygon<?> polygon, final String vpattern) {
+		gpregion(SafeEncoder.encode(key), polygon, SafeEncoder.encode(vpattern));
 	}
 
 	@Override
-	public void gpregion(final String key, final LineString<?> lineString, final String pattern) {
-		gpregion(SafeEncoder.encode(key), lineString, SafeEncoder.encode(pattern));
+	public void gpregion(final String key, final LineString<?> lineString, final String vpattern) {
+		gpregion(SafeEncoder.encode(key), lineString, SafeEncoder.encode(vpattern));
 	}
 
 	@Override
-	public void gpregion(final String key, final Point<?> point, final String pattern) {
-		gpregion(SafeEncoder.encode(key), point, SafeEncoder.encode(pattern));
+	public void gpregion(final String key, final Point<?> point, final String vpattern) {
+		gpregion(SafeEncoder.encode(key), point, SafeEncoder.encode(vpattern));
 	}
 
 	@Override
-	public void gpregion(final String key, final Polygon<?> polygon, final String min, final String max, final String pattern) {
-		gpregion(SafeEncoder.encode(key), polygon, SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(pattern));
+	public void gpregion(final String key, final Polygon<?> polygon, final String min, final String max, final String vpattern) {
+		gpregion(SafeEncoder.encode(key), polygon, SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(vpattern));
 	}
 
 	@Override
-	public void gpregion(final String key, final LineString<?> lineString, final String min, final String max, final String pattern) {
-		gpregion(SafeEncoder.encode(key), lineString, SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(pattern));
+	public void gpregion(final String key, final LineString<?> lineString, final String min, final String max, final String vpattern) {
+		gpregion(SafeEncoder.encode(key), lineString, SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(vpattern));
 	}
 
 	@Override
-	public void gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String pattern) {
+	public void gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String vpattern) {
 		gpregion(SafeEncoder.encode(key), polygon, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count,
-				SafeEncoder.encode(pattern));
+				SafeEncoder.encode(vpattern));
 	}
 
 	@Override
-	public void gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count, String pattern) {
+	public void gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count, String vpattern) {
 		gpregion(SafeEncoder.encode(key), lineString, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count,
-				SafeEncoder.encode(pattern));
+				SafeEncoder.encode(vpattern));
 	}
 
 	@Override
@@ -1160,15 +1194,22 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gpscope(final String key, final String min, final String max, final String pattern, ORDERBY order) {
-		gpscope(SafeEncoder.encode(key), SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(pattern), order);
+	public void gpscope(final String key, final String min, final String max, final String vpattern, ORDERBY order) {
+		gpscope(SafeEncoder.encode(key), SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(vpattern), order);
 	}
 
 	@Override
-	public void gpscope(final String key, final String min, final String max, final long offset, final long count, final String pattern,
+	public void gpscope(final String key, final String min, final String max, final long offset, final long count, final String vpattern,
 			ORDERBY order) {
-		gpscope(SafeEncoder.encode(key), SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count, SafeEncoder.encode(pattern),
+		gpscope(SafeEncoder.encode(key), SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count, SafeEncoder.encode(vpattern),
 				order);
+	}
+
+	@Override
+	public void gpscope(final String key, final String min, final String max, final long offset, final long count, final String mpattern,
+			final String vpattern, ORDERBY order) {
+		gpscope(SafeEncoder.encode(key), SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count, SafeEncoder.encode(mpattern),
+				SafeEncoder.encode(vpattern), order);
 	}
 
 	@Override
@@ -1262,8 +1303,13 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void ggnn(String key, double lat, double lon, long count, String pattern) {
-		ggnn(SafeEncoder.encode(key), lat, lon, count, SafeEncoder.encode(pattern));
+	public void ggnn(String key, double lat, double lon, long count, String vpattern) {
+		ggnn(SafeEncoder.encode(key), lat, lon, count, SafeEncoder.encode(vpattern));
+	}
+
+	@Override
+	public void ggnn(String key, double lat, double lon, long count, String mpattern, String vpattern) {
+		ggnn(SafeEncoder.encode(key), lat, lon, count, SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern));
 	}
 
 	/*Geometry */
@@ -1379,8 +1425,13 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gmnn(String key, double x, double y, long count, String pattern) {
-		gmnn(SafeEncoder.encode(key), x, y, count, SafeEncoder.encode(pattern));
+	public void gmnn(String key, double x, double y, long count, String vpattern) {
+		gmnn(SafeEncoder.encode(key), x, y, count, SafeEncoder.encode(vpattern));
+	}
+
+	@Override
+	public void gmnn(String key, double x, double y, long count, String mpattern, String vpattern) {
+		gmnn(SafeEncoder.encode(key), x, y, count, SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern));
 	}
 
 	@Override

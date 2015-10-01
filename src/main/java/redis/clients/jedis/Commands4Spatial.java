@@ -37,14 +37,17 @@ public interface Commands4Spatial extends Commands {
 
 	void gpradius(String key, double lat, double lon, double radius, UNITS unit);
 
-	void gpradius(String key, double lat, double lon, double radius, UNITS unit, String pattern);
+	void gpradius(String key, double lat, double lon, double radius, UNITS unit, String vpattern);
 
-	void gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max, String pattern);
+	void gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max, String vpattern);
 
 	void gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max, ORDERBY order);
 
-	void gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max, String pattern, long offset,
+	void gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max, String vpattern, long offset,
 			long count, ORDERBY order);
+
+	void gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max, String mpattern, String vpattern,
+			long offset, long count, ORDERBY order);
 
 	// gpcircle
 
@@ -54,39 +57,51 @@ public interface Commands4Spatial extends Commands {
 
 	void gpcircle(String key, double lat, double lon, double radius, UNITS unit, RELATION scope, ORDERBY order);
 
-	void gpcircle(String key, double lat, double lon, double radius, UNITS unit, String pattern);
+	void gpcircle(String key, double lat, double lon, double radius, UNITS unit, String vpattern);
 
-	void gpcircle(String key, double lat, double lon, double radius, UNITS unit, String pattern, RELATION ops, ORDERBY sort);
+	void gpcircle(String key, double lat, double lon, double radius, UNITS unit, String vpattern, RELATION ops, ORDERBY sort);
+
+	void gpcircle(String key, double lat, double lon, double radius, UNITS unit, String mpattern, String vpattern, RELATION scope,
+			ORDERBY order);
 
 	// gpradiusByMember
 
 	void gpradiusByMember(String key, String bykey, String bymember);
 
-	void gpradiusByMember(String key, String bykey, String bymember, String pattern);
+	void gpradiusByMember(String key, String bykey, String bymember, String vpattern);
 
-	void gpradiusByMember(String key, String bykey, String bymember, String min, String max, String pattern);
+	void gpradiusByMember(String key, String bykey, String bymember, String min, String max, String vpattern);
 
-	void gpradiusByMember(String key, String bykey, String bymember, String min, String max, String pattern, long offset, long count,
+	void gpradiusByMember(String key, String bykey, String bymember, String min, String max, String vpattern, long offset, long count,
 			ORDERBY order);
+
+	void gpradiusByMember(String key, String bykey, String bymember, String min, String max, String mpattern, String vpattern, long offset,
+			long count, ORDERBY order);
 
 	// gpregionByMember
 
 	void gpregionByMember(String key, String bykey, String bymember);
 
-	void gpregionByMember(String key, String bykey, String bymember, String pattern);
+	void gpregionByMember(String key, String bykey, String bymember, String vpattern);
 
-	void gpregionByMember(String key, String bykey, String bymember, String min, String max, String pattern);
+	void gpregionByMember(String key, String bykey, String bymember, String min, String max, String vpattern);
 
-	void gpregionByMember(String key, String bykey, String bymember, String min, String max, String pattern, long offset, long count,
+	void gpregionByMember(String key, String bykey, String bymember, String min, String max, String vpattern, long offset, long count,
 			ORDERBY order);
+
+	void gpregionByMember(String key, String bykey, String bymember, String min, String max, String mpattern, String vpattern, long offset,
+			long count, ORDERBY order);
 
 	// gpnn
 
 	void gpnn(String key, double lat, double lon, long offset, long count);
 
-	void gpnn(String key, double lat, double lon, long offset, long count, String pattern);
+	void gpnn(String key, double lat, double lon, long offset, long count, String vpattern);
 
-	void gpnn(String key, double lat, double lon, long offset, long count, String pattern, String min, String max, ORDERBY order);
+	void gpnn(String key, double lat, double lon, long offset, long count, String vpattern, String min, String max, ORDERBY order);
+
+	void gpnn(String key, double lat, double lon, long offset, long count, String mpattern, String vpattern, String min, String max,
+			ORDERBY order);
 
 	// gpregion
 
@@ -96,19 +111,19 @@ public interface Commands4Spatial extends Commands {
 
 	void gpregion(String key, Point<?> point);
 
-	void gpregion(String key, Polygon<?> polygon, String pattern);
+	void gpregion(String key, Polygon<?> polygon, String vpattern);
 
-	void gpregion(String key, LineString<?> lineString, String pattern);
+	void gpregion(String key, LineString<?> lineString, String vpattern);
 
-	void gpregion(String key, Point<?> point, String pattern);
+	void gpregion(String key, Point<?> point, String vpattern);
 
-	void gpregion(String key, Polygon<?> polygon, String min, String max, String pattern);
+	void gpregion(String key, Polygon<?> polygon, String min, String max, String vpattern);
 
-	void gpregion(String key, LineString<?> lineString, String min, String max, String pattern);
+	void gpregion(String key, LineString<?> lineString, String min, String max, String vpattern);
 
-	void gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String pattern);
+	void gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String vpattern);
 
-	void gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count, String pattern);
+	void gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count, String vpattern);
 
 	void gpcard(String key);
 
@@ -118,9 +133,11 @@ public interface Commands4Spatial extends Commands {
 
 	void gpmget(String key, String... members);
 
-	void gpscope(String key, String min, String max, String pattern, ORDERBY order);
+	void gpscope(String key, String min, String max, String vpattern, ORDERBY order);
 
-	void gpscope(String key, String min, String max, long offset, long count, String pattern, ORDERBY order);
+	void gpscope(String key, String min, String max, long offset, long count, String vpattern, ORDERBY order);
+
+	void gpscope(String key, String min, String max, long offset, long count, String mpattern, String vpattern, ORDERBY order);
 
 	/* Geography */
 
@@ -152,7 +169,9 @@ public interface Commands4Spatial extends Commands {
 
 	void ggnn(String key, double lat, double lon, long count);
 
-	void ggnn(String key, double lat, double lon, long count, String pattern);
+	void ggnn(String key, double lat, double lon, long count, String vpattern);
+
+	void ggnn(String key, double lat, double lon, long count, String mpattern, String vpattern);
 
 	void ggupdate(String key, String member, Point<?> point);
 
@@ -200,7 +219,9 @@ public interface Commands4Spatial extends Commands {
 
 	void gmnn(String key, double x, double y, long count);
 
-	void gmnn(String key, double x, double y, long count, String pattern);
+	void gmnn(String key, double x, double y, long count, String vpattern);
+
+	void gmnn(String key, double x, double y, long count, String mpattern, String vpattern);
 
 	void gmupdate(String key, String member, Point<?> point);
 

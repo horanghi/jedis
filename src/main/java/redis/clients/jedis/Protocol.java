@@ -503,8 +503,7 @@ public final class Protocol {
 		NR,
 		LIMIT,
 		POS,
-		VALUE,
-		;
+		VALUE, ;
 
 		public final byte[] raw;
 

@@ -413,10 +413,10 @@ public class GeodisGeometryTest {
 
 	@Test
 	public void testgmaddngmnnpattern() {
-		assertThat(geodis.gmadd(keyb, 0, 0, member1b, valueb), is(OKl));
-		assertThat(geodis.gmadd(keyb, 1, 1, member2b, valueb), is(OKl));
-		assertThat(geodis.gmadd(key, 2, 2, member3, value), is(OKl));
-		assertThat(geodis.gmadd(key, 3, 3, member4, value), is(OKl));
+		assertThat(geodis.gmadd(keyb, 0, 0, member1b, member1b), is(OKl));
+		assertThat(geodis.gmadd(keyb, 1, 1, member2b, member2b), is(OKl));
+		assertThat(geodis.gmadd(key, 2, 2, member3, member3), is(OKl));
+		assertThat(geodis.gmadd(key, 3, 3, member4, member4), is(OKl));
 
 		assertThat(geodis.gmnn(key, 4, 4, 2, "memkey*").size(), is(2));
 		assertThat(geodis.gmnn(key, 4, 4, 3, "memkey*").size(), is(3));

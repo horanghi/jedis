@@ -25,6 +25,8 @@ public interface Commands4Spatial extends Commands {
 
 	void gpupdate(String key, String member, double lat, double lon, double radius, UNITS unit);
 
+	void gpupdate(String key, String member, double lat, double lon, double radius, UNITS unit, String value, double score);
+
 	void gpupdate(String key, String member, double radius, UNITS unit);
 
 	void gpupdate(String key, String member, double score);
@@ -45,7 +47,7 @@ public interface Commands4Spatial extends Commands {
 			long count, ORDERBY order);
 
 	// gpcircle
-	
+
 	void gpcircle(String key, String member);
 
 	void gpcircle(String key, double lat, double lon, double radius, UNITS unit);

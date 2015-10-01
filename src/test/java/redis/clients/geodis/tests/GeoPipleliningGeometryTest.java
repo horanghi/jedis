@@ -771,10 +771,10 @@ public class GeoPipleliningGeometryTest {
 
 		Pipeline p = geodis.pipelined();
 
-		p.gmadd(key, 0, 0, member1, value);
-		p.gmadd(key, 1, 1, member2, value);
-		p.gmadd(key, member3, value, polygon);
-		p.gmadd(key, member4, value, linestr);
+		p.gmadd(key, 0, 0, member1, member1);
+		p.gmadd(key, 1, 1, member2, member2);
+		p.gmadd(key, member3, member3, polygon);
+		p.gmadd(key, member4, member4, linestr);
 
 		p.gmnn(key, 0.4, 0.4, 2);
 		p.gmnn(key, 0.4, 0.4, 2, "*1*");
@@ -883,10 +883,10 @@ public class GeoPipleliningGeometryTest {
 
 		Pipeline p = geodis.pipelined();
 
-		p.gmadd(keyb, 0, 0, member1b, valueb);
-		p.gmadd(keyb, 1, 1, member2b, valueb);
-		p.gmadd(keyb, member3b, valueb, polygon);
-		p.gmadd(keyb, member4b, valueb, linestr);
+		p.gmadd(keyb, 0, 0, member1b, member1b);
+		p.gmadd(keyb, 1, 1, member2b, member2b);
+		p.gmadd(keyb, member3b, member3b, polygon);
+		p.gmadd(keyb, member4b, member4b, linestr);
 
 		p.gmnn(keyb, 0.4, 0.4, 2);
 		p.gmnn(keyb, 0.4, 0.4, 2, "*1*".getBytes());

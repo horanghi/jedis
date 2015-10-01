@@ -45,6 +45,10 @@ public interface GeoCommands {
 	Long gpupdate(String key, String member, double lat, double lon, double radius, UNITS unit);
 
 	Long gpupdate(byte[] key, byte[] member, double lat, double lon, double radius, UNITS unit);
+	
+	Long gpupdate(String key, String member, double lat, double lon, double radius, UNITS unit, String value, double score);
+
+	Long gpupdate(byte[] key, byte[] member, double lat, double lon, double radius, UNITS unit, byte[] value, double score);
 
 	Long gpupdate(String key, String member, double radius, UNITS unit);
 

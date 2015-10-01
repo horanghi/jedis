@@ -45,6 +45,10 @@ public interface Pipeline4Geo {
 
 	Response<Long> gpupdate(byte[] key, byte[] member, double lat, double lon, double radius, UNITS unit);
 
+	Response<Long> gpupdate(String key, String member, double lat, double lon, double radius, UNITS unit, String value, double score);
+
+	Response<Long> gpupdate(byte[] key, byte[] member, double lat, double lon, double radius, UNITS unit, byte[] value, double score);
+
 	Response<Long> gpupdate(String key, String member, double radius, UNITS unit);
 
 	Response<Long> gpupdate(byte[] key, byte[] member, double radius, UNITS unit);

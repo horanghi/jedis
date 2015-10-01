@@ -62,6 +62,18 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
+	public Response<Long> gpupdate(String key, String member, double lat, double lon, double radius, UNITS unit, String value, double score) {
+		client.gpupdate(key, member, lat, lon, radius, unit, value, score);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gpupdate(byte[] key, byte[] member, double lat, double lon, double radius, UNITS unit, byte[] value, double score) {
+		client.gpupdate(key, member, lat, lon, radius, unit, value, score);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
 	public Response<Long> gpupdate(String key, String member, double radius, UNITS unit) {
 		client.gpupdate(key, member, radius, unit);
 		return getResponse(BuilderFactory.LONG);

@@ -85,24 +85,24 @@ public class GeoPipeliningTest extends Assert {
 
 		jedis = geodisPool.getResource();
 		jedis.flushAll();
-		jedis.gpadd(keyf, 0, 0, member1, value);
-		jedis.gpadd(keyf, 0, 0, member2, value);
-		jedis.gpadd(keyf, 0, 0, member3, value);
-		jedis.gpadd(keyf, 0, 0, member4, value);
-		jedis.gpadd(keyf, 0, 0, member5, value);
-		jedis.gpadd(keyf, 0, 0, member11, value);
+		jedis.gpadd(keyf, 0, 0, member1,  member1);
+		jedis.gpadd(keyf, 0, 0, member2,  member2);
+		jedis.gpadd(keyf, 0, 0, member3,  member3);
+		jedis.gpadd(keyf, 0, 0, member4,  member4);
+		jedis.gpadd(keyf, 0, 0, member5,  member5);
+		jedis.gpadd(keyf, 0, 0, member11, member11);
 
-		jedis.gpadd(keyf, 0.1, 0.1, 1, M, member6, value);
-		jedis.gpadd(keyf, 0.1, 0.2, 1, M, member7, value);
-		jedis.gpadd(keyf, 0.1, 0.3, 1, M, member8, value);
-		jedis.gpadd(keyf, 0.1, 0.4, 1, M, member9, value);
-		jedis.gpadd(keyf, 0.1, 0.5, 1, M, member10, value);
+		jedis.gpadd(keyf, 0.1, 0.1, 1, M, member6, member6);
+		jedis.gpadd(keyf, 0.1, 0.2, 1, M, member7, member7);
+		jedis.gpadd(keyf, 0.1, 0.3, 1, M, member8, member8);
+		jedis.gpadd(keyf, 0.1, 0.4, 1, M, member9, member9);
+		jedis.gpadd(keyf, 0.1, 0.5, 1, M, member10,member10);
 
-		jedis.ggadd(keyg, member1, value, polygon);
-		jedis.ggadd(keyg, member2, value, polygon);
-		jedis.ggadd(keyg, member3, value, polygon);
-		jedis.ggadd(keyg, member4, value, polygon);
-		jedis.ggadd(keyg, member5, value, polygon);
+		jedis.ggadd(keyg, member1, member1, polygon);
+		jedis.ggadd(keyg, member2, member2, polygon);
+		jedis.ggadd(keyg, member3, member3, polygon);
+		jedis.ggadd(keyg, member4, member4, polygon);
+		jedis.ggadd(keyg, member5, member5, polygon);
 
 		jedis.del(new String[] { "foo", "bar", "string", "hash", "list", "set", "zset" });
 	}
@@ -113,27 +113,26 @@ public class GeoPipeliningTest extends Assert {
 		geodisPool.returnResource(jedis);
 	}
 
-	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void pipelinegpregionByMember() throws UnsupportedEncodingException {
 		jedis.del(keyf);
-		jedis.gpadd(keyf, 0.1, 0.1, member1, value, 10);
-		jedis.gpadd(keyf, 0.1, 0.2, member2, value, 20);
-		jedis.gpadd(keyf, 0.1, 0.3, member3, value, 30);
-		jedis.gpadd(keyf, 0.1, 0.4, member4, value, 40);
+		jedis.gpadd(keyf, 0.1, 0.1, member1, member1, 10);
+		jedis.gpadd(keyf, 0.1, 0.2, member2, member2, 20);
+		jedis.gpadd(keyf, 0.1, 0.3, member3, member3, 30);
+		jedis.gpadd(keyf, 0.1, 0.4, member4, member4, 40);
 
-		Point<String> point1 = new Point<String>(member1, 0.1, 0.1, value);
-		Point<String> point2 = new Point<String>(member2, 0.1, 0.2, value);
-		Point<String> point3 = new Point<String>(member3, 0.1, 0.3, value);
-		Point<String> point4 = new Point<String>(member4, 0.1, 0.4, value);
-		Point<String> point5 = new Point<String>(member5, 0.1, 0.5, value);
+		Point<String> point1 = new Point<String>(member1, 0.1, 0.1, member1);
+		Point<String> point2 = new Point<String>(member2, 0.1, 0.2, member2);
+		Point<String> point3 = new Point<String>(member3, 0.1, 0.3, member3);
+		Point<String> point4 = new Point<String>(member4, 0.1, 0.4, member4);
+		Point<String> point5 = new Point<String>(member5, 0.1, 0.5, member5);
 
-		Point<byte[]> point1b = new Point<byte[]>(member1b, 0.1, 0.1, valueb);
-		Point<byte[]> point2b = new Point<byte[]>(member2b, 0.1, 0.2, valueb);
-		Point<byte[]> point3b = new Point<byte[]>(member3b, 0.1, 0.3, valueb);
-		Point<byte[]> point4b = new Point<byte[]>(member4b, 0.1, 0.4, valueb);
-		Point<byte[]> point5b = new Point<byte[]>(member5b, 0.1, 0.5, valueb);
+		Point<byte[]> point1b = new Point<byte[]>(member1b, 0.1, 0.1, member1b);
+		Point<byte[]> point2b = new Point<byte[]>(member2b, 0.1, 0.2, member2b);
+		Point<byte[]> point3b = new Point<byte[]>(member3b, 0.1, 0.3, member3b);
+		Point<byte[]> point4b = new Point<byte[]>(member4b, 0.1, 0.4, member4b);
+		Point<byte[]> point5b = new Point<byte[]>(member5b, 0.1, 0.5, member5b);
 
 		Polygon<String> polygon = new Polygon<String>(new Point<String>(1, 1), new Point<String>(1, -1), new Point<String>(-1, -1),
 				new Point<String>(-1, 1), new Point<String>(1, 1));
@@ -170,9 +169,9 @@ public class GeoPipeliningTest extends Assert {
 		assertTrue(((List<Point<String>>) results.get(2)).contains(point1));
 		assertFalse(((List<Point<String>>) results.get(2)).contains(point2));
 
-		 assertThat(((List<Point<byte[]>>) results.get(3)).size(), is(1));
-		 assertTrue(((List<Point<byte[]>>) results.get(3)).contains(point1b));
-		 assertFalse(((List<Point<byte[]>>) results.get(3)).contains(point2b));
+		assertThat(((List<Point<byte[]>>) results.get(3)).size(), is(1));
+		assertTrue(((List<Point<byte[]>>) results.get(3)).contains(point1b));
+		assertFalse(((List<Point<byte[]>>) results.get(3)).contains(point2b));
 
 		assertThat(((List<Point<String>>) results.get(4)).size(), is(1));
 		assertTrue(((List<Point<String>>) results.get(4)).contains(point1));

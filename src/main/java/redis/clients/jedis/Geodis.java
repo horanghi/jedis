@@ -709,6 +709,22 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
+	public List<Point<String>> gpregion(final String key, final Polygon<?> polygon, final String min, final String max, final long offset,
+			final long count, final String memberPattern, final String valuePattern, final ORDERBY order) {
+		checkIsInMulti();
+		client.gpregion(key, polygon, min, max, offset, count, memberPattern, valuePattern, order);
+		return client.getSPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LISTMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> gpregion(final byte[] key, final Polygon<?> polygon, final byte[] min, final byte[] max, final long offset,
+			final long count, final byte[] memberPattern, final byte[] valuePattern, final ORDERBY order) {
+		checkIsInMulti();
+		client.gpregion(key, polygon, min, max, offset, count, memberPattern, valuePattern, order);
+		return client.getBYTE_SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LISTMultiBulkReply();
+	}
+
+	@Override
 	public List<Point<String>> gpregion(final String key, final LineString<?> lineString, final String valuePattern) {
 		checkIsInMulti();
 		client.gpregion(key, lineString, valuePattern);
@@ -737,6 +753,20 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
+	public List<Point<String>> gpregion(final String key, final Point<?> point, final String memberPattern, final String valuePattern) {
+		checkIsInMulti();
+		client.gpregion(key, point, memberPattern, valuePattern);
+		return client.getSPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LISTMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> gpregion(final byte[] key, final Point<?> point, final byte[] memberPattern, final byte[] valuePattern) {
+		checkIsInMulti();
+		client.gpregion(key, point, memberPattern, valuePattern);
+		return client.getBYTE_SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LISTMultiBulkReply();
+	}
+
+	@Override
 	public List<Point<String>> gpregion(final String key, final LineString<?> lineString, final String min, final String max,
 			final long offset, final long count, final String valuePattern) {
 		checkIsInMulti();
@@ -749,6 +779,22 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 			final long offset, final long count, final byte[] valuePattern) {
 		checkIsInMulti();
 		client.gpregion(key, lineString, min, max, offset, count, valuePattern);
+		return client.getBYTE_SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LISTMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<String>> gpregion(final String key, final LineString<?> lineString, final String min, final String max,
+			final long offset, final long count, final String memberPattern, final String valuePattern, final ORDERBY order) {
+		checkIsInMulti();
+		client.gpregion(key, lineString, min, max, offset, count, memberPattern, valuePattern, order);
+		return client.getSPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LISTMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> gpregion(final byte[] key, final LineString<?> lineString, final byte[] min, final byte[] max,
+			final long offset, final long count, final byte[] memberPattern, final byte[] valuePattern, final ORDERBY order) {
+		checkIsInMulti();
+		client.gpregion(key, lineString, min, max, offset, count, memberPattern, valuePattern, order);
 		return client.getBYTE_SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LISTMultiBulkReply();
 	}
 

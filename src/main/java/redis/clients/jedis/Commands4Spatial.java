@@ -117,13 +117,21 @@ public interface Commands4Spatial extends Commands {
 
 	void gpregion(String key, Point<?> point, String vpattern);
 
+	void gpregion(String key, Point<?> point, String mpattern, String vpattern);
+
 	void gpregion(String key, Polygon<?> polygon, String min, String max, String vpattern);
 
 	void gpregion(String key, LineString<?> lineString, String min, String max, String vpattern);
 
 	void gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String vpattern);
 
+	void gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String mpattern, String vpattern,
+			ORDERBY order);
+
 	void gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count, String vpattern);
+
+	void gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count, String mpattern, String vpattern,
+			ORDERBY order);
 
 	void gpcard(String key);
 

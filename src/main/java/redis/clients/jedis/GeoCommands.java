@@ -238,6 +238,22 @@ public interface GeoCommands {
 
 	List<Point<byte[]>> gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, long offset, long count, byte[] valuePattern);
 
+	List<Point<String>> gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String memberPattern,
+			String valuePattern, ORDERBY order);
+
+	List<Point<byte[]>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count, byte[] memberPattern,
+			byte[] valuePattern, ORDERBY order);
+
+	List<Point<String>> gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count,
+			String memberPattern, String valuePattern, ORDERBY order);
+
+	List<Point<byte[]>> gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, long offset, long count,
+			byte[] memberPattern, byte[] valuePattern, ORDERBY order);
+
+	List<Point<String>> gpregion(String key, Point<?> point, String memberPattern, String valuePattern);
+
+	List<Point<byte[]>> gpregion(byte[] key, Point<?> point, byte[] memberPattern, byte[] valuePattern);
+	
 	Long gpcard(String key);
 
 	Long gpcard(byte[] key);

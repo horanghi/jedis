@@ -1147,6 +1147,11 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
+	public void gpregion(final String key, final Point<?> point, final String mpattern, final String vpattern) {
+		gpregion(SafeEncoder.encode(key), point, SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern));
+	}
+
+	@Override
 	public void gpregion(final String key, final Polygon<?> polygon, final String min, final String max, final String vpattern) {
 		gpregion(SafeEncoder.encode(key), polygon, SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(vpattern));
 	}
@@ -1163,9 +1168,23 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
+	public void gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String mpattern, String vpattern,
+			ORDERBY order) {
+		gpregion(SafeEncoder.encode(key), polygon, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count,
+				SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern), order);
+	}
+
+	@Override
 	public void gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count, String vpattern) {
 		gpregion(SafeEncoder.encode(key), lineString, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count,
 				SafeEncoder.encode(vpattern));
+	}
+
+	@Override
+	public void gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count, String mpattern,
+			String vpattern, ORDERBY order) {
+		gpregion(SafeEncoder.encode(key), lineString, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count,
+				SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern), order);
 	}
 
 	@Override

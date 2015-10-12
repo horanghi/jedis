@@ -67,15 +67,15 @@ public interface Pipeline4Geo {
 
 	Response<List<Point<byte[]>>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit);
 
-	Response<List<Point<String>>> gpradius(String key, double lat, double lon, double radius, UNITS unit, String pattern);
+	Response<List<Point<String>>> gpradius(String key, double lat, double lon, double radius, UNITS unit, String valuePattern);
 
-	Response<List<Point<byte[]>>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
+	Response<List<Point<byte[]>>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] valuePattern);
 
 	Response<List<Point<String>>> gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max,
-			String pattern);
+			String valuePattern);
 
 	Response<List<Point<byte[]>>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max,
-			byte[] pattern);
+			byte[] valuePattern);
 
 	Response<List<Point<String>>> gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max,
 			ORDERBY order);
@@ -84,10 +84,10 @@ public interface Pipeline4Geo {
 			ORDERBY order);
 
 	Response<List<Point<String>>> gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max,
-			String pattern, long offset, long count, ORDERBY order);
+			String valuePattern, long offset, long count, ORDERBY order);
 
 	Response<List<Point<byte[]>>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max,
-			byte[] pattern, long offset, long count, ORDERBY order);
+			byte[] valuePattern, long offset, long count, ORDERBY order);
 
 	// gpcircle
 
@@ -103,15 +103,21 @@ public interface Pipeline4Geo {
 
 	Response<List<Circle<byte[]>>> gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, RELATION scope, ORDERBY order);
 
-	Response<List<Circle<String>>> gpcircle(String key, double lat, double lon, double radius, UNITS unit, String pattern);
+	Response<List<Circle<String>>> gpcircle(String key, double lat, double lon, double radius, UNITS unit, String valuePattern);
 
-	Response<List<Circle<byte[]>>> gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern);
+	Response<List<Circle<byte[]>>> gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] valuePattern);
 
-	Response<List<Circle<String>>> gpcircle(String key, double lat, double lon, double radius, UNITS unit, String pattern, RELATION ops,
-			ORDERBY sort);
+	Response<List<Circle<String>>> gpcircle(String key, double lat, double lon, double radius, UNITS unit, String valuePattern,
+			RELATION ops, ORDERBY sort);
 
-	Response<List<Circle<byte[]>>> gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] pattern, RELATION ops,
-			ORDERBY sort);
+	Response<List<Circle<byte[]>>> gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] valuePattern,
+			RELATION ops, ORDERBY sort);
+
+	Response<List<Circle<String>>> gpcircle(String key, double lat, double lon, double radius, UNITS unit, String memberPattern,
+			String valuePattern, RELATION ops, ORDERBY sort);
+
+	Response<List<Circle<byte[]>>> gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] memberPattern,
+			byte[] valuePattern, RELATION ops, ORDERBY sort);
 
 	// gpradiusByMember
 
@@ -119,19 +125,25 @@ public interface Pipeline4Geo {
 
 	Response<List<Point<byte[]>>> gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember);
 
-	Response<List<Point<String>>> gpradiusByMember(String key, String bykey, String bymember, String pattern);
+	Response<List<Point<String>>> gpradiusByMember(String key, String bykey, String bymember, String valuePattern);
 
-	Response<List<Point<byte[]>>> gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern);
+	Response<List<Point<byte[]>>> gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] valuePattern);
 
-	Response<List<Point<String>>> gpradiusByMember(String key, String bykey, String bymember, String min, String max, String pattern);
+	Response<List<Point<String>>> gpradiusByMember(String key, String bykey, String bymember, String min, String max, String valuePattern);
 
-	Response<List<Point<byte[]>>> gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern);
+	Response<List<Point<byte[]>>> gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] valuePattern);
 
-	Response<List<Point<String>>> gpradiusByMember(String key, String bykey, String bymember, String min, String max, String pattern,
+	Response<List<Point<String>>> gpradiusByMember(String key, String bykey, String bymember, String min, String max, String valuePattern,
 			long offset, long count, ORDERBY order);
 
-	Response<List<Point<byte[]>>> gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern,
+	Response<List<Point<byte[]>>> gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] valuePattern,
 			long offset, long count, ORDERBY order);
+
+	Response<List<Point<String>>> gpradiusByMember(String key, String bykey, String bymember, String min, String max, String memberPattern,
+			String valuePattern, long offset, long count, ORDERBY order);
+
+	Response<List<Point<byte[]>>> gpradiusByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] memberPattern,
+			byte[] valuePattern, long offset, long count, ORDERBY order);
 
 	// gpregionByMember
 
@@ -139,19 +151,25 @@ public interface Pipeline4Geo {
 
 	Response<List<Point<byte[]>>> gpregionByMember(byte[] key, byte[] bykey, byte[] bymember);
 
-	Response<List<Point<String>>> gpregionByMember(String key, String bykey, String bymember, String pattern);
+	Response<List<Point<String>>> gpregionByMember(String key, String bykey, String bymember, String valuePattern);
 
-	Response<List<Point<byte[]>>> gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] pattern);
+	Response<List<Point<byte[]>>> gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] valuePattern);
 
-	Response<List<Point<String>>> gpregionByMember(String key, String bykey, String bymember, String min, String max, String pattern);
+	Response<List<Point<String>>> gpregionByMember(String key, String bykey, String bymember, String min, String max, String valuePattern);
 
-	Response<List<Point<byte[]>>> gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern);
+	Response<List<Point<byte[]>>> gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] valuePattern);
 
-	Response<List<Point<String>>> gpregionByMember(String key, String bykey, String bymember, String min, String max, String pattern,
+	Response<List<Point<String>>> gpregionByMember(String key, String bykey, String bymember, String min, String max, String valuePattern,
 			long offset, long count, ORDERBY order);
 
-	Response<List<Point<byte[]>>> gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] pattern,
+	Response<List<Point<byte[]>>> gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] valuePattern,
 			long offset, long count, ORDERBY order);
+
+	Response<List<Point<String>>> gpregionByMember(String key, String bykey, String bymember, String min, String max, String memberPattern,
+			String valuePattern, long offset, long count, ORDERBY order);
+
+	Response<List<Point<byte[]>>> gpregionByMember(byte[] key, byte[] bykey, byte[] bymember, byte[] min, byte[] max, byte[] memberPattern,
+			byte[] valuePattern, long offset, long count, ORDERBY order);
 
 	// gpnn
 
@@ -159,15 +177,21 @@ public interface Pipeline4Geo {
 
 	Response<List<Point<byte[]>>> gpnn(byte[] key, double lat, double lon, long offset, long count);
 
-	Response<List<Point<String>>> gpnn(String key, double lat, double lon, long offset, long count, String pattern);
+	Response<List<Point<String>>> gpnn(String key, double lat, double lon, long offset, long count, String valuePattern);
 
-	Response<List<Point<byte[]>>> gpnn(byte[] key, double lat, double lon, long offset, long count, byte[] pattern);
+	Response<List<Point<byte[]>>> gpnn(byte[] key, double lat, double lon, long offset, long count, byte[] valuePattern);
 
-	Response<List<Point<String>>> gpnn(String key, double lat, double lon, long offset, long count, String pattern, String min, String max,
-			ORDERBY order);
+	Response<List<Point<String>>> gpnn(String key, double lat, double lon, long offset, long count, String valuePattern, String min,
+			String max, ORDERBY order);
 
-	Response<List<Point<byte[]>>> gpnn(byte[] key, double lat, double lon, long offset, long count, byte[] pattern, byte[] min, byte[] max,
-			ORDERBY order);
+	Response<List<Point<byte[]>>> gpnn(byte[] key, double lat, double lon, long offset, long count, byte[] valuePattern, byte[] min,
+			byte[] max, ORDERBY order);
+
+	Response<List<Point<String>>> gpnn(String key, double lat, double lon, long offset, long count, String memberPattern,
+			String valuePattern, String min, String max, ORDERBY order);
+
+	Response<List<Point<byte[]>>> gpnn(byte[] key, double lat, double lon, long offset, long count, byte[] memberPattern,
+			byte[] valuePattern, byte[] min, byte[] max, ORDERBY order);
 
 	// gpregion
 
@@ -183,27 +207,37 @@ public interface Pipeline4Geo {
 
 	Response<List<Point<byte[]>>> gpregion(byte[] key, Point<?> point);
 
-	Response<List<Point<String>>> gpregion(String key, Polygon<?> polygon, String pattern);
+	Response<List<Point<String>>> gpregion(String key, Polygon<?> polygon, String valuePattern);
 
-	Response<List<Point<byte[]>>> gpregion(byte[] key, Polygon<?> polygon, byte[] pattern);
+	Response<List<Point<byte[]>>> gpregion(byte[] key, Polygon<?> polygon, byte[] valuePattern);
 
-	Response<List<Point<String>>> gpregion(String key, LineString<?> lineString, String pattern);
+	Response<List<Point<String>>> gpregion(String key, LineString<?> lineString, String valuePattern);
 
-	Response<List<Point<byte[]>>> gpregion(byte[] key, LineString<?> lineString, byte[] pattern);
+	Response<List<Point<byte[]>>> gpregion(byte[] key, LineString<?> lineString, byte[] valuePattern);
 
-	Response<List<Point<String>>> gpregion(String key, Point<?> point, String pattern);
+	Response<List<Point<String>>> gpregion(String key, Point<?> point, String valuePattern);
 
-	Response<List<Point<byte[]>>> gpregion(byte[] key, Point<?> point, byte[] pattern);
+	Response<List<Point<byte[]>>> gpregion(byte[] key, Point<?> point, byte[] valuePattern);
 
-	Response<List<Point<String>>> gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String pattern);
+	Response<List<Point<String>>> gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count,
+			String valuePattern);
 
-	Response<List<Point<byte[]>>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count, byte[] pattern);
+	Response<List<Point<byte[]>>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count,
+			byte[] valuePattern);
 
 	Response<List<Point<String>>> gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count,
-			String pattern);
+			String valuePattern);
 
 	Response<List<Point<byte[]>>> gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, long offset, long count,
-			byte[] pattern);
+			byte[] valuePattern);
+
+	Response<List<Point<String>>> gpregion(String key, Polygon<?> polygon, String min, String max, String valuePattern);
+
+	Response<List<Point<byte[]>>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, byte[] valuePattern);
+
+	Response<List<Point<String>>> gpregion(String key, LineString<?> lineString, String min, String max, String valuePattern);
+
+	Response<List<Point<byte[]>>> gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, byte[] valuePattern);
 
 	Response<Long> gpcard(String key);
 
@@ -221,13 +255,19 @@ public interface Pipeline4Geo {
 
 	Response<List<Point<byte[]>>> gpmget(byte[] key, byte[]... members);
 
-	Response<List<Point<String>>> gpscope(String key, String min, String max, String pattern, ORDERBY order);
+	Response<List<Point<String>>> gpscope(String key, String min, String max, String valuePattern, ORDERBY order);
 
-	Response<List<Point<byte[]>>> gpscope(byte[] key, byte[] min, byte[] max, byte[] pattern, ORDERBY order);
+	Response<List<Point<byte[]>>> gpscope(byte[] key, byte[] min, byte[] max, byte[] valuePattern, ORDERBY order);
 
-	Response<List<Point<String>>> gpscope(String key, String min, String max, long offset, long count, String pattern, ORDERBY order);
+	Response<List<Point<String>>> gpscope(String key, String min, String max, long offset, long count, String valuePattern, ORDERBY order);
 
-	Response<List<Point<byte[]>>> gpscope(byte[] key, byte[] min, byte[] max, long offset, long count, byte[] pattern, ORDERBY order);
+	Response<List<Point<byte[]>>> gpscope(byte[] key, byte[] min, byte[] max, long offset, long count, byte[] valuePattern, ORDERBY order);
+
+	Response<List<Point<String>>> gpscope(String key, String min, String max, long offset, long count, String memberPattern,
+			String valuePattern, ORDERBY order);
+
+	Response<List<Point<byte[]>>> gpscope(byte[] key, byte[] min, byte[] max, long offset, long count, byte[] memberPattern,
+			byte[] valuePattern, ORDERBY order);
 
 	/* Geography */
 
@@ -287,9 +327,13 @@ public interface Pipeline4Geo {
 
 	Response<List<Geometry<byte[]>>> ggnn(byte[] key, double lat, double lon, long count);
 
-	Response<List<Geometry<String>>> ggnn(String key, double lat, double lon, long count, String pattern);
+	Response<List<Geometry<String>>> ggnn(String key, double lat, double lon, long count, String valuePattern);
 
-	Response<List<Geometry<byte[]>>> ggnn(byte[] key, double lat, double lon, long count, byte[] pattern);
+	Response<List<Geometry<byte[]>>> ggnn(byte[] key, double lat, double lon, long count, byte[] valuePattern);
+
+	Response<List<Geometry<String>>> ggnn(String key, double lat, double lon, long count, String memberPattern, String valuePattern);
+
+	Response<List<Geometry<byte[]>>> ggnn(byte[] key, double lat, double lon, long count, byte[] memberPattern, byte[] valuePattern);
 
 	Response<Long> ggupdate(String key, String member, Point<?> point);
 
@@ -381,9 +425,13 @@ public interface Pipeline4Geo {
 
 	Response<List<Geometry<byte[]>>> gmnn(byte[] key, double x, double y, long count);
 
-	Response<List<Geometry<String>>> gmnn(String key, double x, double y, long count, String pattern);
+	Response<List<Geometry<String>>> gmnn(String key, double x, double y, long count, String valuePattern);
 
-	Response<List<Geometry<byte[]>>> gmnn(byte[] key, double x, double y, long count, byte[] pattern);
+	Response<List<Geometry<byte[]>>> gmnn(byte[] key, double x, double y, long count, byte[] valuePattern);
+
+	Response<List<Geometry<String>>> gmnn(String key, double x, double y, long count, String memberPattern, String valuePattern);
+
+	Response<List<Geometry<byte[]>>> gmnn(byte[] key, double x, double y, long count, byte[] memberPattern, byte[] valuePattern);
 
 	Response<Long> gmupdate(String key, String member, Point<?> point);
 

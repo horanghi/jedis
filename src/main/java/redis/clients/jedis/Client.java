@@ -888,7 +888,6 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	// Spatial methods =================================================================
-	// TODO
 	@Override
 	public void gpexists(String key, String member) {
 		gpexists(SafeEncoder.encode(key), SafeEncoder.encode(member));
@@ -1446,11 +1445,6 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	@Override
 	public void gmnn(String key, double x, double y, long count, String vpattern) {
 		gmnn(SafeEncoder.encode(key), x, y, count, SafeEncoder.encode(vpattern));
-	}
-
-	@Override
-	public void gmnn(String key, double x, double y, long count, String mpattern, String vpattern) {
-		gmnn(SafeEncoder.encode(key), x, y, count, SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern));
 	}
 
 	@Override

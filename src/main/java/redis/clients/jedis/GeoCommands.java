@@ -448,10 +448,6 @@ public interface GeoCommands {
 
 	List<Geometry<byte[]>> gmnn(byte[] key, double x, double y, long count, byte[] valuePattern);
 
-	List<Geometry<String>> gmnn(String key, double x, double y, long count, String memberPattern, String valuePattern);
-
-	List<Geometry<byte[]>> gmnn(byte[] key, double x, double y, long count, byte[] memberPattern, byte[] valuePattern);
-
 	Long gmupdate(String key, String member, Point<?> point);
 
 	Long gmupdate(byte[] key, byte[] member, Point<?> point);

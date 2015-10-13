@@ -1498,22 +1498,6 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 		return client.getBinarySpatialMGETGEOWithDistanceMultiBulkReply();
 	}
 
-	@Override
-	public List<Geometry<String>> gmnn(final String key, final double x, final double y, final long count, final String memberPattern,
-			final String valuePattern) {
-		checkIsInMulti();
-		client.gmnn(key, x, y, count, memberPattern, valuePattern);
-		return client.getSpatialMGETGEOWithDistanceMultiWBulkReply();
-	}
-
-	@Override
-	public List<Geometry<byte[]>> gmnn(final byte[] key, final double x, final double y, final long count, final byte[] memberPattern,
-			final byte[] valuePattern) {
-		checkIsInMulti();
-		client.gmnn(key, x, y, count, memberPattern, valuePattern);
-		return client.getBinarySpatialMGETGEOWithDistanceMultiBulkReply();
-	}
-
 	// exists
 
 	@Override

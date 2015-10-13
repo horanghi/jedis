@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import redis.clients.jedis.exceptions.JedisDataException;
+import redis.clients.spatial.model.Geometry;
 
 public class Pipeline extends GeoMultiKeyPipelineBase {
 
@@ -57,7 +58,7 @@ public class Pipeline extends GeoMultiKeyPipelineBase {
 	public void setClient(Client client) {
 		this.client = client;
 	}
-	
+
 	protected Client getClient() {
 		return client;
 	}
@@ -125,21 +126,19 @@ public class Pipeline extends GeoMultiKeyPipelineBase {
 		currentMulti = new MultiResponseBuilder();
 		return response;
 	}
-	
+
 	public Response<String> pl_start() {
 		client.pipelineStart();
 		Response<String> response = getResponse(BuilderFactory.STRING); // Expecting
 		// OK
 		return response;
 	}
-	
+
 	public Response<String> pl_end() {
 		client.pipelineEnd();
 		Response<String> response = getResponse(BuilderFactory.STRING); // Expecting
 		// OK
 		return response;
 	}
-
-
 
 }

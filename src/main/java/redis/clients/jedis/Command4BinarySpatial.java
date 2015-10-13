@@ -231,8 +231,6 @@ public interface Command4BinarySpatial {
 
 	void gmnn(byte[] key, double x, double y, long count, byte[] vpattern);
 
-	void gmnn(byte[] key, double x, double y, long count, byte[] mpattern, byte[] vpattern);
-
 	void gmupdate(byte[] key, byte[] member, Point<?> point);
 
 	void gmupdate(byte[] key, byte[] member, Polygon<?> polygon);

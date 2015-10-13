@@ -229,8 +229,6 @@ public interface Commands4Spatial extends Commands {
 
 	void gmnn(String key, double x, double y, long count, String vpattern);
 
-	void gmnn(String key, double x, double y, long count, String mpattern, String vpattern);
-
 	void gmupdate(String key, String member, Point<?> point);
 
 	void gmupdate(String key, String member, Polygon<?> polygon);

@@ -429,10 +429,6 @@ public interface Pipeline4Geo {
 
 	Response<List<Geometry<byte[]>>> gmnn(byte[] key, double x, double y, long count, byte[] valuePattern);
 
-	Response<List<Geometry<String>>> gmnn(String key, double x, double y, long count, String memberPattern, String valuePattern);
-
-	Response<List<Geometry<byte[]>>> gmnn(byte[] key, double x, double y, long count, byte[] memberPattern, byte[] valuePattern);
-
 	Response<Long> gmupdate(String key, String member, Point<?> point);
 
 	Response<Long> gmupdate(byte[] key, byte[] member, Point<?> point);

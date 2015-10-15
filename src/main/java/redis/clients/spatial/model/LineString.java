@@ -26,7 +26,7 @@ public class LineString<T> extends Geometry<T> implements Comparable<T> {
 	private static final long serialVersionUID = -6291789145778774869L;
 
 	@Getter
-	final List<Point<T>> points = new ArrayList<Point<T>>();
+	final List<Point<?>> points = new ArrayList<Point<?>>();
 
 	private Type type = Type.LINESTRING;
 
@@ -77,11 +77,11 @@ public class LineString<T> extends Geometry<T> implements Comparable<T> {
 	// {"type": "LineString", "coordinates": [[[1,1], [1,-1], [-1,-1], [-1,1], [1,1]]]}
 	public String getJsonStr() {
 		StringBuffer sb = new StringBuffer(LINESTRING.toString());
-		Iterator<Point<T>> iters = points.iterator();
+		Iterator<Point<?>> iters = points.iterator();
 		if (iters.hasNext()) {
 			sb.append(OP.str);
 			for (int idx = 0; iters.hasNext(); idx++) {
-				Point<T> vp = iters.next();
+				Point<?> vp = iters.next();
 				if (idx != 0) {
 					sb.append(CO.str);
 				}

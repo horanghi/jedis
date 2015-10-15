@@ -36,6 +36,12 @@ public class Circle<T> extends Point<T> implements Comparable<T> {
 		this.unit = unit;
 	}
 
+	public Circle(double x, double y, double radius, UNITS unit) {
+		super(x, y);
+		this.radius = radius;
+		this.unit = unit;
+	}
+
 	@Override
 	public Type getType() {
 		return type;

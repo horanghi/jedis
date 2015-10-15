@@ -4,7 +4,9 @@ import static redis.clients.jedis.Protocol.DEFAULT_TIMEOUT;
 import static redis.clients.jedis.Protocol.UNITS.M;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.RELATION;
@@ -12,10 +14,11 @@ import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Geometry;
 import redis.clients.spatial.model.LineString;
+import redis.clients.spatial.model.LineStringRange;
 import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
 
-public class Geodis extends BinaryJedis implements GeoCommands {
+abstract class Geodis extends BinaryJedis implements GeoCommands {
 
 	public Geodis(final String host) {
 		super(host);
@@ -903,7 +906,7 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 
 	@Override
 	public double gpdistance(final double lat1, final double lng1, final double lat2, final double lng2) {
-		double earthRadius = 6378137; // meters (EPSG 3785)
+		double earthRadius = GeoUtils.EarthRadius; // meters (EPSG 3785)
 		double dLat = Math.toRadians(lat2 - lat1);
 		double dLng = Math.toRadians(lng2 - lng1);
 		double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
@@ -1527,5 +1530,78 @@ public class Geodis extends BinaryJedis implements GeoCommands {
 		client.gmexists(key, member);
 		return client.getIntegerReply();
 	}
+
+	// TODO
+
+//	public List<Point<String>> gpregion(final String key, final LineStringRange lineRange, final String min, final String max,
+//			final long offset, final long count, final String memberPattern, final String valuePattern, final ORDERBY order) {
+//
+//		return null;
+//	}
+//
+//	@Override
+//	public List<Point<String>> gpregion(String key, LineStringRange lineRange) {
+//		Map<String, Point<String>> resultMap = new HashMap<String, Point<String>>();
+//		List<Circle<?>> circles = lineRange.getRangeCircles();
+//		List<Polygon<?>> polygons = lineRange.getRangeRectangles();
+//
+//		for (int idx = 0; idx < circles.size(); idx++) {
+//			resultMap.this.gpradius(key, circles.get(idx).getX(), circles.get(idx).getY(), circles.get(idx).getDistance(), circles.get(idx)
+//					.getUnit());
+//		}
+//
+//		return null;
+//	}
+//
+//	@Override
+//	public List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public List<Point<String>> gpregion(String key, LineStringRange lineRange, String valuePattern) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange, byte[] valuePattern) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public List<Point<String>> gpregion(String key, LineStringRange lineRange, String min, String max, String valuePattern) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange, byte[] min, byte[] max, byte[] valuePattern) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public List<Point<String>> gpregion(String key, LineStringRange lineRange, String min, String max, long offset, long count,
+//			String valuePattern) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange, byte[] min, byte[] max, long offset, long count,
+//			byte[] valuePattern) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange, byte[] min, byte[] max, long offset, long count,
+//			byte[] memberPattern, byte[] valuePattern, ORDERBY order) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 }

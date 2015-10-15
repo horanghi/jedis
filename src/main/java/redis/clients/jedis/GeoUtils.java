@@ -10,6 +10,8 @@ import redis.clients.spatial.model.Point;
 
 public final class GeoUtils {
 
+	public final static double EarthRadius = 6378137; // meters (EPSG 3785)
+
 	final CRSFactory crsFactory = new CRSFactory();
 
 	final CoordinateReferenceSystem bessel1841 = crsFactory.createFromName("epsg:4162");

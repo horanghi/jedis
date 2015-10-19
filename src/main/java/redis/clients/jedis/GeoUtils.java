@@ -6,6 +6,7 @@ import org.osgeo.proj4j.CoordinateTransform;
 import org.osgeo.proj4j.CoordinateTransformFactory;
 import org.osgeo.proj4j.ProjCoordinate;
 
+import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Point;
 
 public final class GeoUtils {
@@ -54,4 +55,21 @@ public final class GeoUtils {
 		return new Point(dest.x, dest.y);
 	}
 
+	public static double toMeter(UNITS units, double fromValue) {
+		double resultValue = fromValue;
+		switch (units) {
+		case KM:
+			resultValue = fromValue * 1000;
+			break;
+		case FEET:
+			resultValue = fromValue * 0.3048;
+			break;
+		case MILES:
+			resultValue = (fromValue / 0.6214) * 1000;
+			break;
+		default:
+			break;
+		}
+		return resultValue;
+	}
 }

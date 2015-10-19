@@ -89,6 +89,12 @@ public interface Pipeline4Geo {
 	Response<List<Point<byte[]>>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max,
 			byte[] valuePattern, long offset, long count, ORDERBY order);
 
+	Response<List<Point<String>>> gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max,
+			String memberPattern, String valuePattern, long offset, long count, ORDERBY order);
+
+	Response<List<Point<byte[]>>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max,
+			byte[] memberPattern, byte[] valuePattern, long offset, long count, ORDERBY order);
+
 	// gpcircle
 
 	Response<Circle<String>> gpcircle(String key, String member);
@@ -238,6 +244,12 @@ public interface Pipeline4Geo {
 	Response<List<Point<String>>> gpregion(String key, LineString<?> lineString, String min, String max, String valuePattern);
 
 	Response<List<Point<byte[]>>> gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, byte[] valuePattern);
+
+	Response<List<Point<String>>> gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count,
+			String memberPattern, String valuePattern);
+
+	Response<List<Point<byte[]>>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count,
+			byte[] memberPattern, byte[] valuePattern);
 
 	Response<Long> gpcard(String key);
 

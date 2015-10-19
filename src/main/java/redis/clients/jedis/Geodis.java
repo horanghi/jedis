@@ -4,8 +4,11 @@ import static redis.clients.jedis.Protocol.DEFAULT_TIMEOUT;
 import static redis.clients.jedis.Protocol.UNITS.M;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import redis.clients.jedis.Protocol.ORDERBY;
@@ -1531,77 +1534,191 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 		return client.getIntegerReply();
 	}
 
-	// TODO
+	@Override
+	public List<Point<String>> gpregion(String key, LineStringRange lineRange) {
+		return this.gpregion(key, lineRange, "*");
+	}
 
-//	public List<Point<String>> gpregion(final String key, final LineStringRange lineRange, final String min, final String max,
-//			final long offset, final long count, final String memberPattern, final String valuePattern, final ORDERBY order) {
-//
-//		return null;
-//	}
-//
-//	@Override
-//	public List<Point<String>> gpregion(String key, LineStringRange lineRange) {
-//		Map<String, Point<String>> resultMap = new HashMap<String, Point<String>>();
-//		List<Circle<?>> circles = lineRange.getRangeCircles();
-//		List<Polygon<?>> polygons = lineRange.getRangeRectangles();
-//
-//		for (int idx = 0; idx < circles.size(); idx++) {
-//			resultMap.this.gpradius(key, circles.get(idx).getX(), circles.get(idx).getY(), circles.get(idx).getDistance(), circles.get(idx)
-//					.getUnit());
-//		}
-//
-//		return null;
-//	}
-//
-//	@Override
-//	public List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List<Point<String>> gpregion(String key, LineStringRange lineRange, String valuePattern) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange, byte[] valuePattern) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List<Point<String>> gpregion(String key, LineStringRange lineRange, String min, String max, String valuePattern) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange, byte[] min, byte[] max, byte[] valuePattern) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List<Point<String>> gpregion(String key, LineStringRange lineRange, String min, String max, long offset, long count,
-//			String valuePattern) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange, byte[] min, byte[] max, long offset, long count,
-//			byte[] valuePattern) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange, byte[] min, byte[] max, long offset, long count,
-//			byte[] memberPattern, byte[] valuePattern, ORDERBY order) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	@Override
+	public List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange) {
+		return this.gpregion(key, lineRange, "*".getBytes());
+	}
 
+	@Override
+	public List<Point<String>> gpregion(String key, LineStringRange lineRange, String valuePattern) {
+		List<Circle<?>> circles = lineRange.getRangeCircles();
+		List<Polygon<?>> polygons = lineRange.getRangeRectangles();
+
+		Pipeline pl = this.pipelined();
+		for (int idx = 0; idx < circles.size(); idx++) {
+			pl.gpradius(key, circles.get(idx).getX(), circles.get(idx).getY(), circles.get(idx).getRadius(), circles.get(idx).getUnit(),
+					valuePattern);
+		}
+		List<Object> results01 = pl.syncAndReturnAll();
+
+		pl = this.pipelined();
+		for (int idx = 0; idx < polygons.size(); idx++) {
+			pl.gpregion(key, polygons.get(idx), valuePattern);
+		}
+		List<Object> results02 = pl.syncAndReturnAll();
+
+		List<Point<String>> lastResult = getResultSum(results01, results02);
+		return lastResult;
+	}
+
+	@Override
+	public List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange, byte[] valuePattern) {
+		List<Circle<?>> circles = lineRange.getRangeCircles();
+		List<Polygon<?>> polygons = lineRange.getRangeRectangles();
+
+		Pipeline pl = this.pipelined();
+		for (int idx = 0; idx < circles.size(); idx++) {
+			pl.gpradius(key, circles.get(idx).getX(), circles.get(idx).getY(), circles.get(idx).getRadius(), circles.get(idx).getUnit(),
+					valuePattern);
+		}
+		List<Object> results01 = pl.syncAndReturnAll();
+
+		pl = this.pipelined();
+		for (int idx = 0; idx < polygons.size(); idx++) {
+			pl.gpregion(key, polygons.get(idx), valuePattern);
+		}
+		List<Object> results02 = pl.syncAndReturnAll();
+
+		List<Point<byte[]>> lastResult = getResultSum(results01, results02);
+		return lastResult;
+	}
+
+	@Override
+	public List<Point<String>> gpregion(String key, LineStringRange lineRange, String min, String max, String valuePattern) {
+		List<Circle<?>> circles = lineRange.getRangeCircles();
+		List<Polygon<?>> polygons = lineRange.getRangeRectangles();
+
+		Pipeline pl = this.pipelined();
+
+		for (int idx = 0; idx < circles.size(); idx++) {
+			pl.gpradius(key, circles.get(idx).getX(), circles.get(idx).getY(), circles.get(idx).getRadius(), circles.get(idx).getUnit(),
+					min, max, valuePattern);
+		}
+		List<Object> results01 = pl.syncAndReturnAll();
+
+		pl = this.pipelined();
+
+		for (int idx = 0; idx < polygons.size(); idx++) {
+			pl.gpregion(key, polygons.get(idx), min, max, valuePattern);
+		}
+		List<Object> results02 = pl.syncAndReturnAll();
+
+		List<Point<String>> lastResult = getResultSum(results01, results02);
+		return lastResult;
+	}
+
+	@Override
+	public List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange, byte[] min, byte[] max, byte[] valuePattern) {
+		List<Circle<?>> circles = lineRange.getRangeCircles();
+		List<Polygon<?>> polygons = lineRange.getRangeRectangles();
+
+		Pipeline pl = this.pipelined();
+		for (int idx = 0; idx < circles.size(); idx++) {
+			pl.gpradius(key, circles.get(idx).getX(), circles.get(idx).getY(), circles.get(idx).getRadius(), circles.get(idx).getUnit(),
+					min, max, valuePattern);
+		}
+		List<Object> results01 = pl.syncAndReturnAll();
+
+		pl = this.pipelined();
+		for (int idx = 0; idx < polygons.size(); idx++) {
+			pl.gpregion(key, polygons.get(idx), min, max, valuePattern);
+		}
+		List<Object> results02 = pl.syncAndReturnAll();
+
+		List<Point<byte[]>> lastResult = getResultSum(results01, results02);
+		return lastResult;
+	}
+
+	@Override
+	public List<Point<String>> gpregion(String key, LineStringRange lineRange, String min, String max, long offset, long count,
+			String valuePattern) {
+		return this.gpregion(key, lineRange, min, max, offset, count, "*", valuePattern);
+	}
+
+	@Override
+	public List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange, byte[] min, byte[] max, long offset, long count,
+			byte[] valuePattern) {
+		return this.gpregion(key, lineRange, min, max, offset, count, "*".getBytes(), valuePattern);
+	}
+
+	@Override
+	public List<Point<String>> gpregion(final String key, final LineStringRange lineRange, final String min, final String max,
+			final long offset, final long count, final String memberPattern, final String valuePattern) {
+		List<Circle<?>> circles = lineRange.getRangeCircles();
+		List<Polygon<?>> polygons = lineRange.getRangeRectangles();
+
+		Pipeline pl = this.pipelined();
+		for (int idx = 0; idx < circles.size(); idx++) {
+			pl.gpradius(key, circles.get(idx).getX(), circles.get(idx).getY(), circles.get(idx).getRadius(), circles.get(idx).getUnit(),
+					min, max, memberPattern, valuePattern, offset, count, ORDERBY.SCORE_DESC);
+		}
+		List<Object> results01 = pl.syncAndReturnAll();
+
+		pl = this.pipelined();
+		for (int idx = 0; idx < polygons.size(); idx++) {
+			pl.gpregion(key, polygons.get(idx), min, max, offset, count, memberPattern, valuePattern);
+		}
+		List<Object> results02 = pl.syncAndReturnAll();
+
+		List<Point<String>> lastResult = getResultSum(results01, results02);
+		return lastResult;
+	}
+
+	@Override
+	public List<Point<byte[]>> gpregion(final byte[] key, final LineStringRange lineRange, final byte[] min, final byte[] max,
+			final long offset, final long count, final byte[] memberPattern, final byte[] valuePattern) {
+		List<Circle<?>> circles = lineRange.getRangeCircles();
+		List<Polygon<?>> polygons = lineRange.getRangeRectangles();
+
+		Pipeline pl = this.pipelined();
+		for (int idx = 0; idx < circles.size(); idx++) {
+			pl.gpradius(key, circles.get(idx).getX(), circles.get(idx).getY(), circles.get(idx).getRadius(), circles.get(idx).getUnit(),
+					min, max, memberPattern, valuePattern, offset, count, ORDERBY.SCORE_DESC);
+		}
+		List<Object> results01 = pl.syncAndReturnAll();
+
+		pl = this.pipelined();
+
+		for (int idx = 0; idx < polygons.size(); idx++) {
+			pl.gpregion(key, polygons.get(idx), min, max, offset, count, memberPattern, valuePattern);
+		}
+		List<Object> results02 = pl.syncAndReturnAll();
+
+		List<Point<byte[]>> lastResult = getResultSum(results01, results02);
+		return lastResult;
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> List<Point<T>> getResultSum(List<Object> results01, List<Object> results02) {
+		Map<T, Point<T>> resultMap = new HashMap<T, Point<T>>();
+		List<Point<T>> rpoints = new ArrayList<Point<T>>();
+
+		for (int idx = 0; idx < results01.size(); idx++) {
+			List<Point<T>> ppoints = (List<Point<T>>) results01.get(idx);
+			for (Point<T> pp : ppoints) {
+				pp.setDistance(0);
+				rpoints.add(pp);
+			}
+		}
+		for (int idx = 0; idx < results02.size(); idx++) {
+			List<Point<T>> ppoints = (List<Point<T>>) results02.get(idx);
+			for (Point<T> pp : ppoints) {
+				pp.setDistance(0);
+				rpoints.add(pp);
+			}
+		}
+		ListIterator<Point<T>> iters = rpoints.listIterator();
+		while (iters.hasNext()) {
+			Point<T> point = (Point<T>) iters.next();
+			if (!resultMap.containsKey(point.getMember())) {
+				resultMap.put(point.getMember(), point);
+			}
+		}
+		return new ArrayList<Point<T>>(resultMap.values());
+	}
 }

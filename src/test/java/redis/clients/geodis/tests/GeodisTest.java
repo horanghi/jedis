@@ -27,6 +27,7 @@ import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Geometry;
 import redis.clients.spatial.model.LineString;
+import redis.clients.spatial.model.LineStringRange;
 import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
 import redis.clients.util.GEOMETRY;
@@ -288,8 +289,8 @@ public class GeodisTest {
 		assertThat(geodis.gpadd(key, 0, 0, member1, value), is(OKl));
 		assertThat(geodis.gpadd(key, 0, 0, member2, value), is(OKl));
 		assertThat(geodis.gpupdate(key, member1, 1, 1), is(OKl));
-		assertThat(geodis.gpupdate(key, member1, value+"1"), is(OKl));
-		assertThat(geodis.gpget(key, member1).getValue(), is(value+"1"));
+		assertThat(geodis.gpupdate(key, member1, value + "1"), is(OKl));
+		assertThat(geodis.gpget(key, member1).getValue(), is(value + "1"));
 		assertThat(geodis.gpupdate(key, member1, value), is(OKl));
 		assertThat(geodis.gpupdate(key, member1, 30), is(OKl));
 		assertThat(geodis.gpget(key, member1).getScore(), is(30d));
@@ -673,11 +674,11 @@ public class GeodisTest {
 		geodis.del(keyb);
 		assertThat(geodis.gpadd(keyb, 0, 0, member1b, member1b), is(OKl));
 		assertThat(geodis.gpadd(keyb, 0, 0, member2b, member2b), is(OKl));
-		assertThat(geodis.gpadd(keyb, 0, 0, "memberd".getBytes(),  "memberd".getBytes()), is(OKl));
+		assertThat(geodis.gpadd(keyb, 0, 0, "memberd".getBytes(), "memberd".getBytes()), is(OKl));
 		assertThat(geodis.gpradius(keyb, 0, 0, 10, UNITS.KM).size(), is(3));
 		List<Point<byte[]>> Pointsb = geodis.gpradius(keyb, 0, 0, 10, M, "memberd*".getBytes());
 		assertThat(Pointsb.size(), is(1));
-		assertTrue(Pointsb.iterator().next().equals(new Point<byte[]>("memberd".getBytes(), 0, 0,  "memberd".getBytes(), 0)));
+		assertTrue(Pointsb.iterator().next().equals(new Point<byte[]>("memberd".getBytes(), 0, 0, "memberd".getBytes(), 0)));
 		geodis.del(keyb);
 	}
 
@@ -714,6 +715,206 @@ public class GeodisTest {
 		assertThat(geodis.gpadd(keyb, 0, 0, member1b, valueb), is(OKl));
 		assertThat(geodis.gpadd(keyb, 0, 0, member2b, valueb), is(OKl));
 		assertThat(geodis.gpregion(keyb, polygon).size(), is(2));
+		geodis.del(key);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testgaddnRegionLineString() {
+
+		// 판교 하나은행에서 할리스 커피 까지 라인 185.45m
+		LineString<String> linestring = new LineString<String>(new Point<String>(37.396446, 127.110032), new Point<String>(37.397665,
+				127.111322), new Point<String>(37.397725, 127.111415), new Point<String>(37.396396, 127.111451));
+
+		// SKP
+		double latitude = 37.397516;
+		double longitude = 127.110059;
+
+		// SKP - line 75.4m
+		Point<String> skp = new Point<String>(latitude, longitude);
+
+		// 현대 자동자판교점 37.396416, 127.111907
+		Point<String> car = new Point<String>(37.396416, 127.111907);
+
+		Point<String> notP = new Point<String>(37.392601, 127.111984);
+		Point<String> check = new Point<String>(37.397006, 127.110992);
+
+		geodis.del(key);
+		assertThat(geodis.gpadd(key, latitude, longitude, "skplanet", "hello world", 10), is(OKl));
+		assertThat(geodis.gpadd(key, 37.396416, 127.111907, "car", "car1234", 10), is(OKl));
+		assertThat(geodis.gpadd(key, notP.getX(), notP.getY(), "empty", "empty", 10), is(OKl));
+		assertThat(geodis.gpadd(key, 37.397006, 127.110992, "check", "check", 10), is(OKl));
+
+		// 37.397018, 127.111441 //40.16 //
+		System.out.println(geodis.gpdistance(37.397018, 127.111441, 37.397006, 127.110992));
+
+		// 경계값 425.0792541503906
+		List<Point<String>> rpoints = geodis.gpregion(key, new LineStringRange(linestring, 426, UNITS.M));
+		assertTrue(rpoints.contains(skp));
+		assertTrue(rpoints.contains(car));
+		assertTrue(rpoints.contains(notP));
+
+		rpoints = geodis.gpregion(key, new LineStringRange(linestring, 424, UNITS.M));
+		assertTrue(rpoints.contains(skp));
+		assertTrue(rpoints.contains(car));
+		assertFalse(rpoints.contains(notP));
+
+		double d2 = geodis.gpdistance(37.396396, 127.111451, notP.getX(), notP.getY());
+		System.out.println(d2);
+		rpoints = geodis.gpradius(key, 37.396396, 127.111451, 450, UNITS.M);
+		for (Point<String> pc : rpoints) {
+			System.out.println(pc);
+		}
+		assertTrue(rpoints.contains(skp));
+		assertTrue(rpoints.contains(car));
+		assertTrue(rpoints.contains(notP));
+
+		geodis.del(key);
+
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testgaddnRegionLine00() {
+
+		// 판교 하나은행에서 할리스 커피 까지 라인 185.45m
+		LineString<String> linestring = new LineString<String>(37.396290, 127.110355,
+		/* 37.396288, 127.110744 , */
+		37.396290, 127.111468, // 37.396295, 127.111767
+				/*37.396292, 127.111910 , */
+				37.396290, 127.112116);
+
+		// SKP
+		double latitude = 37.397516;
+		double longitude = 127.110059;
+
+		// y치과 20m
+		Point<String> dental = new Point<String>(37.396469, 127.111770);
+
+		// 한의원 11m 37.396390, 127.111463
+		Point<String> hop = new Point<String>(37.396390, 127.111463);
+
+		geodis.del(key);
+		assertThat(geodis.gpadd(key, dental.getX(), dental.getY(), "dental", "dental", 10), is(OKl));
+		assertThat(geodis.gpadd(key, hop.getX(), hop.getY(), "hop", "hop1234", 20), is(OKl));
+
+		// 범위내에 POI가 한개만 있는 경우
+		List<Point<String>> rpoints = geodis.gpregion(key, new LineStringRange(linestring, 12, UNITS.M));
+		assertFalse(rpoints.contains(dental));
+		assertTrue(rpoints.contains(hop));
+
+		// 범위내에 좌표가 벗어난 경우
+		rpoints = geodis.gpregion(key, new LineStringRange(linestring, 8, UNITS.M));
+		assertFalse(rpoints.contains(dental));
+		assertFalse(rpoints.contains(hop));
+
+		// 범위내에 좌표가 모두 포함하는 경우
+		rpoints = geodis.gpregion(key, new LineStringRange(linestring, 25, UNITS.M));
+		assertTrue(rpoints.contains(dental));
+		assertTrue(rpoints.contains(hop));
+
+		rpoints = geodis.gpregion(key, new LineStringRange(linestring, 25, UNITS.M), "den*");
+		assertTrue(rpoints.contains(dental));
+		assertFalse(rpoints.contains(hop));
+
+		// 범위내에 좌표가 벗어난 경우
+		rpoints = geodis.gpregion(key, new LineStringRange(linestring, 25, UNITS.M), "12", "21", "den*");
+		assertFalse(rpoints.contains(dental));
+		assertFalse(rpoints.contains(hop));
+
+		// 범위내에 좌표가 벗어난 경우
+		rpoints = geodis.gpregion(key, new LineStringRange(linestring, 25, UNITS.M), "12", "21", "*1234");
+		assertFalse(rpoints.contains(dental));
+		assertTrue(rpoints.contains(hop));
+
+		// 범위내에 좌표가 벗어난 경우
+		rpoints = geodis.gpregion(key, new LineStringRange(linestring, 25, UNITS.M), "12", "21", 0, 4, "*1234");
+		assertFalse(rpoints.contains(dental));
+		assertTrue(rpoints.contains(hop));
+
+		// 범위내에 좌표가 벗어난 경우
+		rpoints = geodis.gpregion(key, new LineStringRange(linestring, 25, UNITS.M), "12", "21", 0, 4, "hop*", "*1234");
+		assertFalse(rpoints.contains(dental));
+		assertTrue(rpoints.contains(hop));
+
+		rpoints = geodis.gpregion(key, new LineStringRange(linestring, 25, UNITS.M), "12", "21", 0, 4, "hop*", "den*");
+		assertFalse(rpoints.contains(dental));
+		assertFalse(rpoints.contains(hop));
+
+		geodis.del(key);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testgaddnRegionLine00_byte() {
+
+		// 판교 하나은행에서 할리스 커피 까지 라인 185.45m
+		LineString<byte[]> linestring = new LineString<byte[]>(37.396290, 127.110355,
+		/* 37.396288, 127.110744 , */
+		37.396290, 127.111468, // 37.396295, 127.111767
+				/*37.396292, 127.111910 , */
+				37.396290, 127.112116);
+
+		// SKP
+		double latitude = 37.397516;
+		double longitude = 127.110059;
+
+		// y치과 20m
+		Point<byte[]> dental = new Point<byte[]>(37.396469, 127.111770);
+
+		// 한의원 11m 37.396390, 127.111463
+		Point<byte[]> hop = new Point<byte[]>(37.396390, 127.111463);
+
+		geodis.del(key);
+		assertThat(geodis.gpadd(keyb, dental.getX(), dental.getY(), "dental".getBytes(), "dental".getBytes(), 10), is(OKl));
+		assertThat(geodis.gpadd(keyb, hop.getX(), hop.getY(), "hop".getBytes(), "hop1234".getBytes(), 20), is(OKl));
+
+		// 범위내에 POI가 한개만 있는 경우
+		List<Point<byte[]>> rpoints = geodis.gpregion(keyb, new LineStringRange(linestring, 12, UNITS.M));
+		assertFalse(rpoints.contains(dental));
+		assertTrue(rpoints.contains(hop));
+
+		// 범위내에 좌표가 벗어난 경우
+		rpoints = geodis.gpregion(keyb, new LineStringRange(linestring, 8, UNITS.M));
+		assertFalse(rpoints.contains(dental));
+		assertFalse(rpoints.contains(hop));
+
+		// 범위내에 좌표가 모두 포함하는 경우
+		rpoints = geodis.gpregion(keyb, new LineStringRange(linestring, 25, UNITS.M));
+		assertTrue(rpoints.contains(dental));
+		assertTrue(rpoints.contains(hop));
+
+		rpoints = geodis.gpregion(keyb, new LineStringRange(linestring, 25, UNITS.M), "den*".getBytes());
+		assertTrue(rpoints.contains(dental));
+		assertFalse(rpoints.contains(hop));
+
+		// 범위내에 좌표가 벗어난 경우
+		rpoints = geodis.gpregion(keyb, new LineStringRange(linestring, 25, UNITS.M), "12".getBytes(), "21".getBytes(), "den*".getBytes());
+		assertFalse(rpoints.contains(dental));
+		assertFalse(rpoints.contains(hop));
+
+		// 범위내에 좌표가 벗어난 경우
+		rpoints = geodis.gpregion(keyb, new LineStringRange(linestring, 25, UNITS.M), "12".getBytes(), "21".getBytes(), "*1234".getBytes());
+		assertFalse(rpoints.contains(dental));
+		assertTrue(rpoints.contains(hop));
+
+		// 범위내에 좌표가 벗어난 경우
+		rpoints = geodis.gpregion(keyb, new LineStringRange(linestring, 25, UNITS.M), "12".getBytes(), "21".getBytes(), 0, 4,
+				"*1234".getBytes());
+		assertFalse(rpoints.contains(dental));
+		assertTrue(rpoints.contains(hop));
+
+		// 범위내에 좌표가 벗어난 경우
+		rpoints = geodis.gpregion(keyb, new LineStringRange(linestring, 25, UNITS.M), "12".getBytes(), "21".getBytes(), 0, 4,
+				"hop*".getBytes(), "*1234".getBytes());
+		assertFalse(rpoints.contains(dental));
+		assertTrue(rpoints.contains(hop));
+
+		rpoints = geodis.gpregion(keyb, new LineStringRange(linestring, 25, UNITS.M), "12".getBytes(), "21".getBytes(), 0, 4,
+				"hop*".getBytes(), "den*".getBytes());
+		assertFalse(rpoints.contains(dental));
+		assertFalse(rpoints.contains(hop));
+
 		geodis.del(key);
 	}
 

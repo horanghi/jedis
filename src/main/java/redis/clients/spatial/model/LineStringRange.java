@@ -14,7 +14,7 @@ public class LineStringRange {
 
 	public LineStringRange(final LineString<?> linestring, final double distance, UNITS unit) {
 		this.linestring = linestring;
-		this.distance =  distance;
+		this.distance = distance;
 		this.unit = unit;
 	}
 
@@ -36,7 +36,7 @@ public class LineStringRange {
 		List<Circle<?>> circles = new ArrayList<Circle<?>>();
 		List<Point<?>> points = linestring.getPoints();
 		for (int idx = 0; idx < points.size(); idx++) {
-			circles.add(new Circle(points.get(idx).getX(), points.get(idx).getX(), distance, unit));
+			circles.add(new Circle(points.get(idx).getX(), points.get(idx).getY(), this.distance, this.unit));
 		}
 		return circles;
 	}
@@ -45,11 +45,13 @@ public class LineStringRange {
 		List<Polygon<?>> polygons = new ArrayList<Polygon<?>>();
 
 		List<Point<?>> points = linestring.getPoints();
-		double _dist = distance; // m 단위로 변환 ...
+		double _dist = GeoUtils.toMeter(this.unit, this.distance);
+
 		for (int idx = 0; idx < points.size() - 1; idx++) {
+			int nextp = idx;
 			// 4개점 구하기
-			polygons.add(getRectangle(points.get(idx).getX(), points.get(idx++).getY(), points.get(idx).getX(), points.get(idx).getY(),
-					_dist));
+			polygons.add(getRectangle(points.get(nextp).getX(), points.get(nextp++).getY(), points.get(nextp).getX(), points.get(nextp)
+					.getY(), _dist));
 		}
 		return polygons;
 	}
@@ -73,7 +75,7 @@ public class LineStringRange {
 		Point xy03 = new Point(a - _x + x1, b - _y + y1);
 		Point xy04 = new Point(a + _x + x1, b + _y + y1);
 
-		return new Polygon<String>(xy01, xy02, xy03, xy04);
+		return new Polygon<String>(xy01, xy02, xy03, xy04, xy01);
 	}
 
 	private double distance(double lat1, double lng1, double lat2, double lng2) {

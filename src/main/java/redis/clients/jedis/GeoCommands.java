@@ -272,10 +272,10 @@ public interface GeoCommands {
 	List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange, byte[] min, byte[] max, long offset, long count, byte[] valuePattern);
 
 	List<Point<String>> gpregion(String key, LineStringRange lineRange, String min, String max, long offset, long count,
-			String memberPattern, String valuePattern, ORDERBY order);
+			String memberPattern, String valuePattern);
 
 	List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange, byte[] min, byte[] max, long offset, long count,
-			byte[] memberPattern, byte[] valuePattern, ORDERBY order);
+			byte[] memberPattern, byte[] valuePattern);
 
 	Long gpcard(String key);
 

@@ -23,7 +23,7 @@ public final class GeoUtils {
 	final static CoordinateTransform transWGS2Bessel = ctf.createTransform(wgs84, bessel1841);
 
 	@SuppressWarnings("rawtypes")
-	public static Point transBessl1841ToWGS84(final Point point) {
+	public static Point transBessel1841ToWGS84(final Point point) {
 
 		ProjCoordinate src = new ProjCoordinate(point.getX(), point.getY());
 		ProjCoordinate dest = new ProjCoordinate();
@@ -33,7 +33,7 @@ public final class GeoUtils {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public static Point transWGS84ToBessl1841(final Point point) {
+	public static Point transWGS84ToBessel1841(final Point point) {
 
 		ProjCoordinate src = new ProjCoordinate(point.getX(), point.getY());
 		ProjCoordinate dest = new ProjCoordinate();
@@ -43,7 +43,7 @@ public final class GeoUtils {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public static Point transBessl1841ToWGS84(double x, double y) {
+	public static Point transBessel1841ToWGS84(double x, double y) {
 
 		ProjCoordinate src = new ProjCoordinate(x, y);
 		ProjCoordinate dest = new ProjCoordinate();
@@ -53,7 +53,7 @@ public final class GeoUtils {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public static Point transWGS84ToBessl1841(double x, double y) {
+	public static Point transWGS84ToBessel1841(double x, double y) {
 
 		ProjCoordinate src = new ProjCoordinate(x, y);
 		ProjCoordinate dest = new ProjCoordinate();

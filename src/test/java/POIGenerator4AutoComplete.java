@@ -16,12 +16,13 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Point;
+import redis.clients.spatial.model.Polygon;
 
 import com.jayway.jsonpath.JsonPath;
 
 public class POIGenerator4AutoComplete {
 
-	static JedisPool jedispool = new JedisPool(new GenericObjectPoolConfig(), "172.19.114.204", 29000, 3000, "svc03_01");
+	static JedisPool jedispool = new JedisPool(new GenericObjectPoolConfig(), "172.19.114.203", 19006, 3000, "1234");
 	static Jedis jedis;
 	static Pipeline pl;
 	String dir;
@@ -31,11 +32,23 @@ public class POIGenerator4AutoComplete {
 		long s = System.currentTimeMillis();
 		jedis = jedispool.getResource();
 		// pl = jedis.pipelined();
-		POIGenerator4AutoComplete pg = new POIGenerator4AutoComplete();
+		// POIGenerator4AutoComplete pg = new POIGenerator4AutoComplete();
 		// pg.execute();
-		pg.getTest();
+		// // pg.getTest();
 		// pl.sync();
 
+		/*
+		 * 2) "33.118250000000003" "126.2666"
+		 */
+		// jedis.ggadd("mygg", "polygon", "polygon_value", new Polygon<String>(33.118250000000002, 126.26659, 33.118250000000004, 126.26659,
+		// 33.118250000000004, 126.26661, 33.118250000000002, 126.26661, 33.118250000000002, 126.26659));
+
+		System.out.println(jedis.gpregion("autocomplete",
+				new Polygon<String>(33.11824, 126.2665, 33.11826, 126.2665, 33.11826, 126.2667, 33.11824, 126.2667, 33.11824, 126.2665))
+				.get(0));
+		System.out.println(jedis.gpregionByMember("autocomplete", "mygg", "polygon").get(0));
+
+		jedispool.returnResource(jedis);
 		jedispool.destroy();
 		long e = System.currentTimeMillis();
 		System.out.println("time : " + (e - s));
@@ -166,6 +179,7 @@ public class POIGenerator4AutoComplete {
 			valuelist.add(value);
 		}
 		Iterator<String> it = valuelist.iterator();
+		int Tidx = 0;
 		while (it.hasNext()) {
 			String[] eles = it.next().split("\t");
 			String mkey = eles[0] + " " + eles[1];
@@ -178,14 +192,16 @@ public class POIGenerator4AutoComplete {
 
 			if (latlons.size() > 2) {
 				Iterator<String> latloniter = latlons.iterator();
-				int idx = 0;
+				int idx = 0 + (Tidx++);
 				while (latloniter.hasNext()) {
 					// System.out.print(".");
-					pl.gpadd(key, Double.valueOf(latloniter.next()), Double.valueOf(latloniter.next()), mkey + "" + idx, mkey, score);
+					pl.gpadd(key, Double.valueOf(latloniter.next()), Double.valueOf(latloniter.next()), "sample" + idx, "sample value"
+							+ idx, score);
 				}
 			} else {
 				// System.out.print(".\n");
-				pl.gpadd(key, Double.valueOf(latlons.get(0).trim()), Double.valueOf(latlons.get(1).trim()), mkey, mkey, score);
+				pl.gpadd(key, Double.valueOf(latlons.get(0).trim()), Double.valueOf(latlons.get(1).trim()), "hello" + (Tidx), "hello value"
+						+ (Tidx++), score);
 			}
 		}
 

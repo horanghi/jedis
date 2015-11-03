@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import redis.clients.jedis.exceptions.JedisDataException;
-import redis.clients.spatial.model.Geometry;
 
 public class Pipeline extends GeoMultiKeyPipelineBase {
 

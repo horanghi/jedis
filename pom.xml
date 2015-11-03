@@ -160,7 +160,6 @@
 			<groupId>org.osgeo</groupId>
 			<artifactId>proj4j</artifactId>
 			<version>0.1.0</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

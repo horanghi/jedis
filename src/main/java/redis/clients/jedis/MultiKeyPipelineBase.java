@@ -4,9 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import redis.clients.spatial.model.LineString;
-import redis.clients.spatial.model.Point;
-
 abstract class MultiKeyPipelineBase extends PipelineBase  {
 
 	protected Client client = null;

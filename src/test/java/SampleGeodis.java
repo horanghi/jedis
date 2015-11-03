@@ -180,14 +180,14 @@ public class SampleGeodis {
 
 	@Test
 	public void testCoord() {
-		Point<String> point = GeoUtils.transWGS84ToBessl1841(1, 2);
-		Point<String> rpoint = GeoUtils.transBessl1841ToWGS84(point);
+		Point<String> point = GeoUtils.transWGS84ToBessel1841(1, 2);
+		Point<String> rpoint = GeoUtils.transBessel1841ToWGS84(point);
 
 		assertTrue(rpoint.getX() == 0.9999999999999999);
 		assertTrue(rpoint.getY() == 1.9999999993709712);
 
-		point = GeoUtils.transWGS84ToBessl1841(new Point<String>(1, 2));
-		rpoint = GeoUtils.transBessl1841ToWGS84(point);
+		point = GeoUtils.transWGS84ToBessel1841(new Point<String>(1, 2));
+		rpoint = GeoUtils.transBessel1841ToWGS84(point);
 		assertTrue(rpoint.getX() == 0.9999999999999999);
 		assertTrue(rpoint.getY() == 1.9999999993709712);
 	}

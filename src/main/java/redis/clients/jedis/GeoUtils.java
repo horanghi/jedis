@@ -1,11 +1,9 @@
 package redis.clients.jedis;
 
-import org.osgeo.proj4j.CRSFactory;
-import org.osgeo.proj4j.CoordinateReferenceSystem;
-import org.osgeo.proj4j.CoordinateTransform;
-import org.osgeo.proj4j.CoordinateTransformFactory;
-import org.osgeo.proj4j.ProjCoordinate;
-
+import geoservice.ellip2ellipsoid.Ellip2Ellipsoid;
+import geoservice.ellip2ellipsoid.Ellipsoid;
+import geoservice.ellip2ellipsoid.Parameters7;
+import geoservice.ellip2ellipsoid.Values3;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Point;
 
@@ -13,53 +11,44 @@ public final class GeoUtils {
 
 	public final static double EarthRadius = 6378137; // meters (EPSG 3785)
 
-	final static CRSFactory crsFactory = new CRSFactory();
+	final static Ellipsoid bessel1841 = new Ellipsoid(6377397.155, 1.0 / 299.152813);
+	final static Ellipsoid wgs1984 = new Ellipsoid(GeoUtils.EarthRadius, 1.0 / 298.257223563);
+	final static Parameters7 params = new Parameters7(-115.8, 474.99, 674.11, -1.16, 2.31, 1.63, 6.43);
 
-	final static CoordinateReferenceSystem wgs84 = crsFactory.createFromName("epsg:3785");
-	final static CoordinateReferenceSystem bessel1841 = crsFactory.createFromName("epsg:4162");
-
-	final static CoordinateTransformFactory ctf = new CoordinateTransformFactory();
-	final static CoordinateTransform transBessel2WGS = ctf.createTransform(bessel1841, wgs84);
-	final static CoordinateTransform transWGS2Bessel = ctf.createTransform(wgs84, bessel1841);
+	final static Ellip2Ellipsoid transform = new Ellip2Ellipsoid(bessel1841, wgs1984, params);
 
 	@SuppressWarnings("rawtypes")
 	public static Point transBessel1841ToWGS84(final Point point) {
 
-		ProjCoordinate src = new ProjCoordinate(point.getX(), point.getY());
-		ProjCoordinate dest = new ProjCoordinate();
-		transBessel2WGS.transform(src, dest);
+		Values3 src = new Values3(point.getX(), point.getY(), 0);
+		Values3 dst = new Values3();
 
-		return new Point(dest.x, dest.y);
+		transform.transfom(src, dst);
+
+		return new Point(dst.V1, dst.V2);
 	}
 
 	@SuppressWarnings("rawtypes")
 	public static Point transWGS84ToBessel1841(final Point point) {
 
-		ProjCoordinate src = new ProjCoordinate(point.getX(), point.getY());
-		ProjCoordinate dest = new ProjCoordinate();
-		transWGS2Bessel.transform(src, dest);
+		Values3 src = new Values3();
+		Values3 dst = new Values3(point.getX(), point.getY(), 0);
 
-		return new Point(dest.x, dest.y);
+		transform.reverseTransform(src, dst);
+
+		return new Point(src.V1, src.V2);
 	}
 
 	@SuppressWarnings("rawtypes")
 	public static Point transBessel1841ToWGS84(double x, double y) {
 
-		ProjCoordinate src = new ProjCoordinate(x, y);
-		ProjCoordinate dest = new ProjCoordinate();
-		transBessel2WGS.transform(src, dest);
-
-		return new Point(dest.x, dest.y);
+		return GeoUtils.transBessel1841ToWGS84(new Point(x, y));
 	}
 
 	@SuppressWarnings("rawtypes")
 	public static Point transWGS84ToBessel1841(double x, double y) {
 
-		ProjCoordinate src = new ProjCoordinate(x, y);
-		ProjCoordinate dest = new ProjCoordinate();
-		transWGS2Bessel.transform(src, dest);
-
-		return new Point(dest.x, dest.y);
+		return GeoUtils.transWGS84ToBessel1841(new Point(x, y));
 	}
 
 	public static double toMeter(UNITS units, double fromValue) {
@@ -79,4 +68,5 @@ public final class GeoUtils {
 		}
 		return resultValue;
 	}
+
 }

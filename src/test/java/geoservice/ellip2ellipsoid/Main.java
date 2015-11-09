@@ -4,25 +4,85 @@ public class Main {
 
 	public static void main(String[] args) {
 
+		// 127.4391389 37.09011111 127.4369722 37.09294444
+
 		Ellipsoid bessel1841 = new Ellipsoid(6377397.155, 1.0 / 299.152813);
 		Ellipsoid wgs1984 = new Ellipsoid(6378137, 1.0 / 298.257223563);
 		Parameters7 params = new Parameters7(-115.8, 474.99, 674.11, -1.16, 2.31, 1.63, 6.43);
 
-		Ellip2Ellipsoid transform = new Ellip2Ellipsoid(bessel1841, wgs1984, params);
+		Parameters7 params2 = new Parameters7(-145.87375, 503.34752, 684.74189, -1.161703, 2.3457, 1.591998, 6.3423);
 
-		Values3 src = new Values3(37.98369444, 127.8112222, 0);
+		Ellip2Ellipsoid transform = new Ellip2Ellipsoid(bessel1841, wgs1984, params);
+		
+		Ellip2Ellipsoid transform2 = new Ellip2Ellipsoid(wgs1984, bessel1841, params2);
+
+		Values3 src = new Values3(37.09011111, 127.4391389, 0);
 		Values3 dst = new Values3();
 
 		System.out.println("bessel lat/lng -> wgs84 lat/lng");
 		transform.transfom(src, dst);
 		System.out.println(src + " -> " + dst + "\n");
 
+		Values3 src1 = new Values3(dst.V1, dst.V2, 0);
+		Values3 dst1 = new Values3();
+
 		System.out.println("wgs84 lat/lng -> bessel lat/lng");
-		transform.reverseTransform(src, dst);
-		System.out.println(src + " -> " + dst);
+		transform2.transfom(src1, dst1);
+		System.out.println(src1 + " -> " + dst1);
+
+		Values3 src2 = new Values3(dst1.V1, dst1.V2, 0);
+		Values3 dst2 = new Values3();
+
+		System.out.println("bessel lat/lng -> wgs84 lat/lng");
+		transform.transfom(src2, dst2);
+		System.out.println(src2 + " -> " + dst2);
+		
+		//
+		// // B 127.0966667 37.31841667
+		// // W 127.0945278 37.32122222
+		//
+		// Ellipsoid bessel1841 = new Ellipsoid(6377397.155, 1.0 / 299.152813);
+		// Ellipsoid wgs1984 = new Ellipsoid(6378137, 1.0 / 298.257223563);
+		// Parameters7 params = new Parameters7(-115.8, 474.99, 674.11, -1.16, 2.31, 1.63, 6.43);
+		//
+		// Ellip2Ellipsoid transform = new Ellip2Ellipsoid(bessel1841, wgs1984, params);
+		//
+		// double y = 127.0966667;
+		// double x = 37.31841667;
+		//
+		// // 36.65460384473778, 128.12819486689486,
+		//
+		// Values3 src = new Values3(x, y, 0);
+		// Values3 dst = new Values3();
+		//
+		// System.out.println("bessel lat/lng -> wgs84 lat/lng");
+		// transform.transfom(src, dst);
+		// System.out.println(src + " -> " + dst + "\n");
+		// // 37.3212430488147, 127.09455843178665
+		//
+		// Values3 src1 = new Values3(37.3212430488147, 127.09455843178665, 0);
+		// Values3 dst1 = new Values3();
+		//
+		// System.out.println("wgs84 lat/lng -> bessel lat/lng   ");
+		// transform.reverseTransform(src1, dst1);
+		// System.out.println(src1 + " -> " + dst1);
+		//
+		// Values3 src2 = new Values3(dst1.V1, dst.V2, 0);
+		// Values3 dst2 = new Values3();
+		//
+		// System.out.println("bessel lat/lng -> wgs84 lat/lng");
+		// transform.transfom(src2, dst2);
+		// System.out.println(src2 + " -> " + dst2 + "\n");
+
+		// 36.65169444 128.1303889
+		// 36.64587455071312, 128.13477749722443
+		// 36.65167390220105, 128.1303607487695
+
+		// CoordPoint pt = new CoordPoint(y, x);
+		// CoordPoint besselPt = TransCoord.getTransCoord(pt, TransCoord.COORD_TYPE_BESSEL, TransCoord.COORD_TYPE_WGS84);
+		// System.out.println("WGS84 XY 좌표 :: " + besselPt.y + ", " + besselPt.x);
 
 	}
-
 	// 129.3876389 36.34802778 129.3853333 36.351
 
 	// 127.8112222 37.98369444 127.809 37.98644444
@@ -64,4 +124,5 @@ public class Main {
 	// 127.1418333 37.59930556 127.1396944 37.60208333
 	// 126.9018333 37.48063889 126.8997222 37.48341667
 	// 127.0376944 37.49175 127.0355556 37.49452778
+
 }

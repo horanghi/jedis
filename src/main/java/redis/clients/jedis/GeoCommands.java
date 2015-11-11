@@ -277,6 +277,14 @@ public interface GeoCommands {
 	List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange, byte[] min, byte[] max, long offset, long count,
 			byte[] memberPattern, byte[] valuePattern);
 
+	List<Point<String>> gprange(String key, long start, long stop);
+
+	List<Point<byte[]>> gprange(byte[] key, long start, long stop);
+
+	List<Point<String>> gprevrange(final String key, final long start, final long stop);
+
+	List<Point<byte[]>> gprevrange(final byte[] key, final long start, final long stop);
+
 	Long gpcard(String key);
 
 	Long gpcard(byte[] key);

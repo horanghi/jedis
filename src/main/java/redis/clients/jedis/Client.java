@@ -1187,6 +1187,16 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
+	public void gprange(String key, long start, long stop) {
+		gprange(SafeEncoder.encode(key), start, stop);
+	}
+
+	@Override
+	public void gprevrange(String key, long start, long stop) {
+		gprange(SafeEncoder.encode(key), start, stop);
+	}
+
+	@Override
 	public void gpcard(final String key) {
 		gpcard(SafeEncoder.encode(key));
 	}

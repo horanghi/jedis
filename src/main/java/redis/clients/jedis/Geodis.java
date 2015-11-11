@@ -804,6 +804,34 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
+	public List<Point<String>> gprange(String key, long start, long stop) {
+		checkIsInMulti();
+		client.gprange(key, start, stop);
+		return client.getSPATIAL_GPOINT_WITHSCORE_LISTMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> gprange(byte[] key, long start, long stop) {
+		checkIsInMulti();
+		client.gprange(key, start, stop);
+		return client.getBYTE_SPATIAL_GPOINT_WITHSCORE_LISTMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<String>> gprevrange(final String key, final long start, final long stop) {
+		checkIsInMulti();
+		client.gprevrange(key, start, stop);
+		return client.getSPATIAL_GPOINT_WITHSCORE_LISTMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> gprevrange(final byte[] key, final long start, final long stop) {
+		checkIsInMulti();
+		client.gprevrange(key, start, stop);
+		return client.getBYTE_SPATIAL_GPOINT_WITHSCORE_LISTMultiBulkReply();
+	}
+
+	@Override
 	public Long gpcard(final String key) {
 		checkIsInMulti();
 		client.gpcard(key);

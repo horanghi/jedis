@@ -252,6 +252,30 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
+	public Response<List<Point<String>>> gprange(String key, long start, long stop) {
+		client.gprange(key, start, stop);
+		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHSCORE_LIST);
+	}
+
+	@Override
+	public Response<List<Point<byte[]>>> gprange(byte[] key, long start, long stop) {
+		client.gprange(key, start, stop);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHSCORE_LIST);
+	}
+
+	@Override
+	public Response<List<Point<String>>> gprevrange(String key, long start, long stop) {
+		client.gprange(key, start, stop);
+		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHSCORE_LIST);
+	}
+
+	@Override
+	public Response<List<Point<byte[]>>> gprevrange(byte[] key, long start, long stop) {
+		client.gprange(key, start, stop);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHSCORE_LIST);
+	}
+
+	@Override
 	public Response<Long> gpcard(String key) {
 		client.gpcard(key);
 		return getResponse(BuilderFactory.LONG);

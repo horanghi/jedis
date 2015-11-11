@@ -36,9 +36,11 @@ import static redis.clients.jedis.Protocol.Command.GPMGET;
 import static redis.clients.jedis.Protocol.Command.GPNN;
 import static redis.clients.jedis.Protocol.Command.GPRADIUS;
 import static redis.clients.jedis.Protocol.Command.GPRADIUSBYMEMBER;
+import static redis.clients.jedis.Protocol.Command.GPRANGE;
 import static redis.clients.jedis.Protocol.Command.GPREGION;
 import static redis.clients.jedis.Protocol.Command.GPREGIONBYMEMBER;
 import static redis.clients.jedis.Protocol.Command.GPREM;
+import static redis.clients.jedis.Protocol.Command.GPREVRANGE;
 import static redis.clients.jedis.Protocol.Command.GPSCOPE;
 import static redis.clients.jedis.Protocol.Command.GPUPDATE;
 import static redis.clients.jedis.Protocol.GeoOptions.BY;
@@ -766,6 +768,22 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		sendCommand(GPREGION, key, lineString.getJsonByte(), MATCH.raw, mpattern, MATCHVALUE.raw, vpattern, SCORE.raw, min, max, NR.raw,
 				WITHVALUES.raw, WITHSCORES.raw, WITHDISTANCE.raw, LIMIT.raw, toByteArray(offset), toByteArray(count), order.raw0,
 				order.raw1, order.raw2);
+	}
+
+	@Override
+	public void gprange(byte[] key, final long start, long stop) {
+		/*
+		 * GPRANGE/GPREVRANGE key start stop [WITHVALUES] [WITHSCORES] [WITHGEOHASH]
+		 */
+		sendCommand(GPRANGE, key, toByteArray(start), toByteArray(stop), WITHVALUES.raw, WITHSCORES.raw);
+	}
+
+	@Override
+	public void gprevrange(byte[] key, final long start, long stop) {
+		/*
+		 * GPRANGE/GPREVRANGE key start stop [WITHVALUES] [WITHSCORES] [WITHGEOHASH]
+		 */
+		sendCommand(GPREVRANGE, key, toByteArray(start), toByteArray(stop), WITHVALUES.raw, WITHSCORES.raw);
 	}
 
 	public void gpcard(final byte[] key) {

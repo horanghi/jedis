@@ -135,6 +135,10 @@ public interface Command4BinarySpatial {
 	void gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, long offset, long count, byte[] mpattern, byte[] vpattern,
 			ORDERBY order);
 
+	void gprange(byte[] key, long start, long stop);
+
+	void gprevrange(byte[] key, long start, long stop);
+
 	void gpcard(byte[] key);
 
 	void gprem(byte[] key, byte[] member);

@@ -251,6 +251,14 @@ public interface Pipeline4Geo {
 	Response<List<Point<byte[]>>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count,
 			byte[] memberPattern, byte[] valuePattern);
 
+	Response<List<Point<String>>> gprange(String key, long start, long stop);
+
+	Response<List<Point<byte[]>>> gprange(byte[] key, long start, long stop);
+
+	Response<List<Point<String>>> gprevrange(String key, long start, long stop);
+
+	Response<List<Point<byte[]>>> gprevrange(byte[] key, long start, long stop);
+
 	Response<Long> gpcard(String key);
 
 	Response<Long> gpcard(byte[] key);

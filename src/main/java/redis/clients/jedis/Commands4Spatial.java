@@ -133,6 +133,10 @@ public interface Commands4Spatial extends Commands {
 	void gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count, String mpattern, String vpattern,
 			ORDERBY order);
 
+	void gprange(String key, long start, long stop);
+
+	void gprevrange(String key, long start, long stop);
+
 	void gpcard(String key);
 
 	void gprem(String key, String member);

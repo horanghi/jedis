@@ -267,9 +267,9 @@ public class Connection implements Closeable {
 		return BuilderFactory.SPATIAL_GPOINT_WITHSCORE_LIST.build(getBinaryMultiBulkReply());
 	}
 
-	// public List<Point<byte[]>> getBYTE_SPATIAL_GPOINT_WITHSCORE_LISTMultiBulkReply() {
-	// return BuilderFactory.BYTE_SPATIAL_GPOINT_WITHSCORE_LIST.build(getBinaryMultiBulkReply());
-	// }
+	public List<Point<byte[]>> getBYTE_SPATIAL_GPOINT_WITHSCORE_LISTMultiBulkReply() {
+		return BuilderFactory.BYTE_SPATIAL_GPOINT_WITHSCORE_LIST.build(getBinaryMultiBulkReply());
+	}
 
 	public Geometry<String> getSpatialGETGEOMultiBulkReply() {
 		return BuilderFactory.SPATIAL_GGRAPHY.build(getBinaryMultiBulkReply());

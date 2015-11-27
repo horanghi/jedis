@@ -82,4 +82,28 @@ public abstract class Pool<T> {
 			throw new JedisException("Could not destroy the pool", e);
 		}
 	}
+
+	public int getNumActive() {
+		if (this.internalPool == null || this.internalPool.isClosed()) {
+			return -1;
+		}
+
+		return this.internalPool.getNumActive();
+	}
+
+	public int getNumIdle() {
+		if (this.internalPool == null || this.internalPool.isClosed()) {
+			return -1;
+		}
+
+		return this.internalPool.getNumIdle();
+	}
+
+	public int getNumWaiters() {
+		if (this.internalPool == null || this.internalPool.isClosed()) {
+			return -1;
+		}
+
+		return this.internalPool.getNumWaiters();
+	}
 }

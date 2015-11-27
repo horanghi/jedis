@@ -35,8 +35,9 @@ public class Polygon<T> extends Geometry<T> implements Comparable<T> {
 		for (Point<T> p : points) {
 			this.points.add(p);
 		}
+		closing();
 	}
-	
+
 	public Polygon(double x, double y, double... xy) {
 		super();
 		this.points.add(new Point<T>(x, y));
@@ -49,6 +50,7 @@ public class Polygon<T> extends Geometry<T> implements Comparable<T> {
 			double _y = xy[idx++];
 			this.points.add(new Point<T>(_x, _y));
 		}
+		closing();
 	}
 
 	public Polygon(List<Point<T>> points) {
@@ -56,6 +58,7 @@ public class Polygon<T> extends Geometry<T> implements Comparable<T> {
 		for (Point<T> p : points) {
 			this.points.add(p);
 		}
+		closing();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -64,12 +67,23 @@ public class Polygon<T> extends Geometry<T> implements Comparable<T> {
 		for (Point<T> p : points) {
 			this.points.add(p);
 		}
+		closing();
 	}
 
 	public Polygon(final T member, final T value, List<Point<T>> points) {
 		super(member, value);
 		for (Point<T> p : points) {
 			this.points.add(p);
+		}
+		closing();
+	}
+
+	private void closing() {
+		if (!this.points.isEmpty()) {
+			Point<T> firstP = this.points.get(0);
+			if (!firstP.equals(this.points.get(this.points.size() - 1))) {
+				this.points.add(firstP);
+			}
 		}
 	}
 
@@ -121,7 +135,7 @@ public class Polygon<T> extends Geometry<T> implements Comparable<T> {
 		if (!this.points.containsAll(p2)) {
 			return false;
 		}
-		
+
 		if (!p2.containsAll(this.points)) {
 			return false;
 		}

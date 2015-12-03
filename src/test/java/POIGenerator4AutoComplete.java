@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import net.minidev.json.JSONObject;
 
@@ -15,6 +16,8 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Protocol.UNITS;
+import redis.clients.spatial.model.LineString;
+import redis.clients.spatial.model.LineStringRange;
 import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
 
@@ -22,20 +25,16 @@ import com.jayway.jsonpath.JsonPath;
 
 public class POIGenerator4AutoComplete {
 
-	static JedisPool jedispool = new JedisPool(new GenericObjectPoolConfig(), "172.19.114.203", 19006, 3000, "1234");
+	static JedisPool jedispool = new JedisPool(new GenericObjectPoolConfig(), "172.19.114.206", 29010, 3000, "svc08_01");
 	static Jedis jedis;
-	static Pipeline pl;
 	String dir;
-	String key = "autocomplete";
+	static String key = "autocomplete";
 
 	public static void main(String[] args) throws IOException {
-		long s = System.currentTimeMillis();
+		// long s = System.currentTimeMillis();
 		jedis = jedispool.getResource();
-		// pl = jedis.pipelined();
 		// POIGenerator4AutoComplete pg = new POIGenerator4AutoComplete();
 		// pg.execute();
-		// // pg.getTest();
-		// pl.sync();
 
 		/*
 		 * 2) "33.118250000000003" "126.2666"
@@ -43,15 +42,45 @@ public class POIGenerator4AutoComplete {
 		// jedis.ggadd("mygg", "polygon", "polygon_value", new Polygon<String>(33.118250000000002, 126.26659, 33.118250000000004, 126.26659,
 		// 33.118250000000004, 126.26661, 33.118250000000002, 126.26661, 33.118250000000002, 126.26659));
 
-		System.out.println(jedis.gpregion("autocomplete",
-				new Polygon<String>(33.11824, 126.2665, 33.11826, 126.2665, 33.11826, 126.2667, 33.11824, 126.2667, 33.11824, 126.2665))
-				.get(0));
-		System.out.println(jedis.gpregionByMember("autocomplete", "mygg", "polygon").get(0));
+		long s = System.currentTimeMillis();
+		// List<Point<String>> result = jedis.gpradius("autocomplete", 37.566404, 126.985037, 1000, UNITS.M, "*세븐일레븐*");
+
+		List<Point<String>> result = jedis.gpradius(key, 37.566404, 126.985037, 100, UNITS.M, "*스타벅스*");
+		System.out.println(result.size());
+		result = jedis.gpradius(key, 37.566404, 126.985037, 1000, UNITS.M, "*스타벅스*");
+		System.out.println(result.size());
+		result = jedis.gpradius(key, 37.566404, 126.985037, 1000, UNITS.M, "*은행*");
+		System.out.println(result.size());
+
+		System.out.println("스타벅수 count : " + result.size());
+		long e = System.currentTimeMillis();
+		System.out.println("time : " + (e - s));
+
+		result = jedis.gpregion(key,
+				new LineStringRange(new LineString<String>(37.566681, 126.982724, 37.566723, 126.987391), 100, UNITS.M));
+		System.out.println("line range count : " + result.size());
+		for (Point<String> p : result) {
+			System.out.println(p);
+		}
+		// Long seed = (Long) jedis.gpcard("autocomplete");
+		// Random r = new Random();
+		// long num = r.nextInt(seed.intValue());
+		// System.out.println(num);
+		// System.out.println(jedis.gprange("autocomplete", num, num).size());
+
+		// jedis.gpupdate("autocomplete", "세븐일레븐 명동채원점", 10);
+		//
+		// result = jedis.gpregion("autocomplete", new Polygon<String>(37.664662, 126.283428, 37.664662, 127.635342, 37.398235, 127.263163,
+		// 37.334278, 126.655606, 37.664662, 126.283428), "-inf", "+inf", "*");
+		// System.out.println("All count : " + result.size());
+
+		// System.out.println(jedis.gpregionByMember("autocomplete", "mygg", "polygon").get(0));
+
+		// e = System.currentTimeMillis();
+		// System.out.println("time : " + (e - s));
 
 		jedispool.returnResource(jedis);
 		jedispool.destroy();
-		long e = System.currentTimeMillis();
-		System.out.println("time : " + (e - s));
 
 	}
 
@@ -138,6 +167,7 @@ public class POIGenerator4AutoComplete {
 			if (file.isFile()) {
 				// parsenSave(loadConfigGetJson(file.getAbsolutePath()));
 				parsenSave(loadConfigGetDelimeter(file.getAbsolutePath()));
+
 			}
 		}
 	}
@@ -180,14 +210,24 @@ public class POIGenerator4AutoComplete {
 		}
 		Iterator<String> it = valuelist.iterator();
 		int Tidx = 0;
-		while (it.hasNext()) {
-			String[] eles = it.next().split("\t");
-			String mkey = eles[0] + " " + eles[1];
 
-			if (eles[2].isEmpty()) {
+		while (it.hasNext()) {
+			Pipeline pl = jedis.pipelined();
+			String[] eles = it.next().split("\t");
+			String mkey = eles[1];
+			String value = eles[0] + " " + eles[1];
+
+			if (eles[2].indexOf("[") == -1) {
 				continue;
 			}
-			ArrayList<String> latlons = parseLocation(eles[2]);
+
+			ArrayList<String> latlons = latlons = parseLocation(eles[2]);
+			try {
+				System.out.println(eles[1]);
+
+			} catch (Exception ex) {
+
+			}
 			double score = Double.valueOf(eles[3]);
 
 			if (latlons.size() > 2) {
@@ -195,14 +235,26 @@ public class POIGenerator4AutoComplete {
 				int idx = 0 + (Tidx++);
 				while (latloniter.hasNext()) {
 					// System.out.print(".");
-					pl.gpadd(key, Double.valueOf(latloniter.next()), Double.valueOf(latloniter.next()), "sample" + idx, "sample value"
-							+ idx, score);
+					String lat = latloniter.next();
+					String lon = latloniter.next();
+					for (int dd = 101; dd < 1100; dd++) {
+						pl.gpadd(key + dd, Double.valueOf(lat), Double.valueOf(lon), mkey, value, score);
+					}
+					// pl.gpadd(key, Double.valueOf(lat), Double.valueOf(lon), mkey, value, score);
 				}
 			} else {
 				// System.out.print(".\n");
-				pl.gpadd(key, Double.valueOf(latlons.get(0).trim()), Double.valueOf(latlons.get(1).trim()), "hello" + (Tidx), "hello value"
-						+ (Tidx++), score);
+				for (int dd = 101; dd < 1100; dd++) {
+					pl.gpadd(key + dd, Double.valueOf(latlons.get(0).trim()), Double.valueOf(latlons.get(1).trim()), mkey, value, score);
+					// pl.gpadd(key, Double.valueOf(latlons.get(0).trim()), Double.valueOf(latlons.get(1).trim()), mkey, value, score);
+				}
 			}
+			List<Object> results = pl.syncAndReturnAll();
+			System.out.println(results.size());
+			for (int idx = 0; idx < results.size(); idx++) {
+				results.get(idx);
+			}
+
 		}
 
 		return true;
@@ -228,7 +280,7 @@ public class POIGenerator4AutoComplete {
 		String address = JsonPath.read(jo, "$.address");
 		// memberKey = "poi_id:" + poi_id ;
 		memberKey = "poi_id:" + poi_id + "|name:" + name + "|address:" + address + "|category:" + category;
-		pl.gpadd(key, lat, lot, memberKey, jo.toJSONString());
+		// pl.gpadd(key, lat, lot, memberKey, jo.toJSONString());
 	}
 
 }

@@ -2,6 +2,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.jedis.Response;
 import redis.clients.spatial.model.Point;
+import redis.clients.spatial.model.Polygon;
 
 public class SampleGeodis {
 
@@ -39,12 +41,60 @@ public class SampleGeodis {
 	public static void setUpBeforeClass() throws Exception {
 		// spatial redis
 		pool = new JedisPool(new GenericObjectPoolConfig(), "172.19.114.203", 19006, 2000, "1234");
+		// 172.19.114.202 -p 19004
+		// pool = new JedisPool(new GenericObjectPoolConfig(), "172.19.114.202", 19004, 2000);
 
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		pool.destroy();
+	}
+
+	// @Test
+	// public void testPlaceDB() {
+	// Polygon<String> polygon = new Polygon<String>(37.48335120413632, 126.92966390402688, 37.483201199030994, 126.92840291197126,
+	// 37.483109531946965, 126.92778352651186, 37.48304564278844, 126.92735301195984, 37.48297897299903, 126.92674473589668,
+	// 37.48294563857588, 126.92646698435105, 37.482873414869246, 126.92591425894099, 37.48254007426454, 126.92333950279912,
+	// 37.482473408396835, 126.92295065119818, 37.48427552191557, 126.92295065119818, 37.48434218778328, 126.92333950279912,
+	// 37.48467552838798, 126.92591425894099, 37.48474775209461, 126.92646698435105, 37.48478108651776, 126.92674473589668,
+	// 37.484847756307175, 126.92735301195984, 37.4849116454657, 126.92778352651186, 37.48500331254973, 126.92840291197126,
+	// 37.485153317655055, 126.92966390402688);
+	//
+	// Jedis geodis = pool.getResource();
+	//
+	// List<Point<String>> ps = geodis.gpregion("sap1", polygon);
+	// Point<String> pp = new Point<String>(37.48511192974065, 126.91665620600378);
+	// for (Point<String> p : ps) {
+	// if (p.equals(pp)) {
+	// System.out.println(p);
+	// }
+	// }
+	//
+	// System.out.println(ps.size());
+	//
+	// pool.returnResource(geodis);
+	//
+	// }
+
+	@Test
+	public void testclose() {
+		List<Point<String>> listPoints = new ArrayList<Point<String>>();
+		listPoints.add(new Point<String>(1, 1));
+		listPoints.add(new Point<String>(2, 2));
+		listPoints.add(new Point<String>(3, 3));
+
+		Polygon<String> polygon1 = new Polygon<String>(1, 1, 2, 2, 3, 3);
+		Polygon<String> polygon2 = new Polygon<String>(new Point<String>(1, 1), new Point<String>(2, 2), new Point<String>(3, 3));
+		Polygon<String> polygon3 = new Polygon<String>(listPoints);
+		Polygon<String> polygon4 = new Polygon<String>(1, 1, 2, 2, 3, 3, 1, 1);
+
+		assertTrue(polygon1.getJsonStr().equals(polygon2.getJsonStr()));
+		assertTrue(polygon1.getJsonStr().equals(polygon3.getJsonStr()));
+		assertTrue(polygon4.getJsonStr().equals(polygon1.getJsonStr()));
+		assertTrue(polygon4.getJsonStr().equals(polygon2.getJsonStr()));
+		assertTrue(polygon4.getJsonStr().equals(polygon3.getJsonStr()));
+
 	}
 
 	@Test
@@ -180,18 +230,18 @@ public class SampleGeodis {
 
 	@Test
 	public void testCoord() {
-//		Point<String> point = GeoUtils.transWGS84ToBessel1841(1, 2);
-//		Point<String> rpoint = GeoUtils.transBessel1841ToWGS84(point);
-//
-//		assertTrue(rpoint.getX() == 0.9999999999999999);
-//		assertTrue(rpoint.getY() == 1.9999999993709712);
-//
-//		point = GeoUtils.transWGS84ToBessel1841(new Point<String>(1, 2));
-//		rpoint = GeoUtils.transBessel1841ToWGS84(point);
-//		assertTrue(rpoint.getX() == 0.9999999999999999);
-//		assertTrue(rpoint.getY() == 1.9999999993709712);
+		// Point<String> point = GeoUtils.transWGS84ToBessel1841(1, 2);
+		// Point<String> rpoint = GeoUtils.transBessel1841ToWGS84(point);
+		//
+		// assertTrue(rpoint.getX() == 0.9999999999999999);
+		// assertTrue(rpoint.getY() == 1.9999999993709712);
+		//
+		// point = GeoUtils.transWGS84ToBessel1841(new Point<String>(1, 2));
+		// rpoint = GeoUtils.transBessel1841ToWGS84(point);
+		// assertTrue(rpoint.getX() == 0.9999999999999999);
+		// assertTrue(rpoint.getY() == 1.9999999993709712);
 
-		Point<String> point  = GeoUtils.transBessel1841ToWGS84(36.34802778, 129.3876389);
+		Point<String> point = GeoUtils.transBessel1841ToWGS84(36.34802778, 129.3876389);
 		System.out.println(point);
 		// 129.3876389 36.34802778 129.3853333 36.351
 		// 127.8112222 37.98369444 127.809 37.98644444

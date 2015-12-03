@@ -5,6 +5,8 @@ import static redis.clients.jedis.Protocol.UNITS.M;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
@@ -948,6 +950,30 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
+	public double gpdistance(final double lat1, final double lng1, final double lat2, final double lng2, final double lat3,
+			final double lng3) {
+
+		return this.gpdistance(new LineString<String>(lat1, lng1, lat2, lng2), new Point<String>(lat3, lng3));
+	}
+
+	@Override
+	public double gpdistance(final LineString<?> line, final Point<?> point) {
+		// angle = atan2(y1x2-x1y2, x1x2+y1y2);
+		List<Point<?>> xys = line.getPoints();
+		Point<?> p0 = xys.get(0);
+		Point<?> p1 = xys.get(1);
+		double x1 = (point.getX() - p0.getX());
+		double y1 = (point.getY() - p0.getY());
+		double x2 = (p1.getX() - p0.getX());
+		double y2 = (p1.getY() - p0.getY());
+		double dist = this.gpdistance(p0.getX(), p0.getY(), point.getX(), point.getY());
+
+		double seta = Math.atan2((y1 * x2 - x1 * y2), (x1 * x2 + y1 * y2));
+		double r = Math.abs(Math.sin(seta) * dist);
+		return r;
+	}
+
+	@Override
 	public Long ggadd(final String key, final String member, final String value, final Polygon<?> polygon) {
 		checkIsInMulti();
 		client.ggadd(key, member, value, polygon);
@@ -1589,7 +1615,7 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 		}
 		List<Object> results02 = pl.syncAndReturnAll();
 
-		List<Point<String>> lastResult = getResultSum(results01, results02);
+		List<Point<String>> lastResult = getResultSum(results01, results02, lineRange.getLineStrings());
 		return lastResult;
 	}
 
@@ -1611,7 +1637,7 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 		}
 		List<Object> results02 = pl.syncAndReturnAll();
 
-		List<Point<byte[]>> lastResult = getResultSum(results01, results02);
+		List<Point<byte[]>> lastResult = getResultSum(results01, results02, lineRange.getLineStrings());
 		return lastResult;
 	}
 
@@ -1635,7 +1661,7 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 		}
 		List<Object> results02 = pl.syncAndReturnAll();
 
-		List<Point<String>> lastResult = getResultSum(results01, results02);
+		List<Point<String>> lastResult = getResultSum(results01, results02, lineRange.getLineStrings());
 		return lastResult;
 	}
 
@@ -1657,7 +1683,7 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 		}
 		List<Object> results02 = pl.syncAndReturnAll();
 
-		List<Point<byte[]>> lastResult = getResultSum(results01, results02);
+		List<Point<byte[]>> lastResult = getResultSum(results01, results02, lineRange.getLineStrings());
 		return lastResult;
 	}
 
@@ -1692,7 +1718,7 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 		}
 		List<Object> results02 = pl.syncAndReturnAll();
 
-		List<Point<String>> lastResult = getResultSum(results01, results02);
+		List<Point<String>> lastResult = getResultSum(results01, results02, lineRange.getLineStrings());
 		return lastResult;
 	}
 
@@ -1716,29 +1742,31 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 		}
 		List<Object> results02 = pl.syncAndReturnAll();
 
-		List<Point<byte[]>> lastResult = getResultSum(results01, results02);
+		List<Point<byte[]>> lastResult = getResultSum(results01, results02, lineRange.getLineStrings());
 		return lastResult;
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> List<Point<T>> getResultSum(List<Object> results01, List<Object> results02) {
+	private <T> List<Point<T>> getResultSum(List<Object> cresults01, List<Object> presults02, List<LineString<?>> lines) {
 		Map<T, Point<T>> resultMap = new HashMap<T, Point<T>>();
 		List<Point<T>> rpoints = new ArrayList<Point<T>>();
+		// first polygon
+		for (int idx = 0; idx < presults02.size(); idx++) {
+			List<Point<T>> ppoints = (List<Point<T>>) presults02.get(idx);
+			for (Point<T> pp : ppoints) {
+				double dist = this.gpdistance(lines.get(idx), pp);
+				pp.setDistance(dist);
+				rpoints.add(pp);
+			}
+		}
 
-		for (int idx = 0; idx < results01.size(); idx++) {
-			List<Point<T>> ppoints = (List<Point<T>>) results01.get(idx);
+		for (int idx = 0; idx < cresults01.size(); idx++) {
+			List<Point<T>> ppoints = (List<Point<T>>) cresults01.get(idx);
 			for (Point<T> pp : ppoints) {
-				pp.setDistance(0);
 				rpoints.add(pp);
 			}
 		}
-		for (int idx = 0; idx < results02.size(); idx++) {
-			List<Point<T>> ppoints = (List<Point<T>>) results02.get(idx);
-			for (Point<T> pp : ppoints) {
-				pp.setDistance(0);
-				rpoints.add(pp);
-			}
-		}
+
 		ListIterator<Point<T>> iters = rpoints.listIterator();
 		while (iters.hasNext()) {
 			Point<T> point = (Point<T>) iters.next();
@@ -1746,6 +1774,13 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 				resultMap.put(point.getMember(), point);
 			}
 		}
-		return new ArrayList<Point<T>>(resultMap.values());
+		List<Point<T>> rplist = new ArrayList<Point<T>>(resultMap.values());
+		Collections.sort(rplist, new Comparator<Point<T>>() {
+			@Override
+			public int compare(Point<T> o1, Point<T> o2) {
+				return (o1.getDistance() > o2.getDistance()) ? 1 : -1;
+			}
+		});
+		return rplist;
 	}
 }

@@ -3,6 +3,7 @@ package redis.clients.spatial.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
 import redis.clients.jedis.GeoUtils;
 import redis.clients.jedis.Protocol.UNITS;
 
@@ -54,6 +55,22 @@ public class LineStringRange {
 					.getY(), _dist));
 		}
 		return polygons;
+	}
+
+	public List<LineString<?>> getLineStrings() {
+		List<LineString<?>> lineStrings = new ArrayList<LineString<?>>();
+
+		List<Point<?>> points = linestring.getPoints();
+
+		for (int idx = 0; idx < points.size();) {
+			Point<?> sp = points.get(idx++);
+			if (idx >= points.size()) {
+				break;
+			}
+			Point<?> ep = points.get(idx);
+			lineStrings.add(new LineString<String>(sp.getX(), sp.getY(), ep.getX(), ep.getY()));
+		}
+		return lineStrings;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

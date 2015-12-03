@@ -587,6 +587,12 @@ public class GeodisTest {
 	}
 
 	@Test
+	public void testDistance2() {
+		System.out.println(geodis.gpdistance(37.396285, 127.109739, 37.396294, 127.112117, 37.396455, 127.111206));
+
+	}
+
+	@Test
 	public void testGpaddnGpradiusWithMatch() {
 		geodis.del(key);
 		assertThat(geodis.gpadd(key, 0, 0, member1, member1), is(OKl));

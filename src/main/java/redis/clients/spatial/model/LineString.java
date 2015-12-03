@@ -50,6 +50,7 @@ public class LineString<T> extends Geometry<T> implements Comparable<T> {
 			double _y = xy[idx++];
 			this.points.add(new Point<T>(_x, _y));
 		}
+
 	}
 
 	public LineString(List<Point<T>> points) {

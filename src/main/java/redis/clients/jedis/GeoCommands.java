@@ -317,6 +317,10 @@ public interface GeoCommands {
 
 	double gpdistance(double dLat1, double dLon1, double dLat2, double dLon2);
 
+	double gpdistance(double lat1, double lng1, double lat2, double lng2, double lat3, double lng3);
+
+	double gpdistance(LineString<?> line, Point<?> point);
+
 	/* Geography */
 
 	Long ggexists(String key, String member);

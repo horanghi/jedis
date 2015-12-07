@@ -690,7 +690,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		* 		[WITHVALUES] [WITHSCORES] [WITHDISTANCE]
 		*/
 		sendCommand(GPREGION, key, polygon.getJsonByte(), MATCHVALUE.raw, vpattern, SCORE.raw, min, max, NR.raw, WITHVALUES.raw,
-				WITHSCORES.raw, WITHDISTANCE.raw, DISTANCE_ASC.raw0, SCORE_DESC.raw1, SCORE_DESC.raw2);
+				WITHSCORES.raw, WITHDISTANCE.raw, SCORE_DESC.raw0, SCORE_DESC.raw1, SCORE_DESC.raw2);
 	}
 
 	@Override

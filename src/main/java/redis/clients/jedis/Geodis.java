@@ -1602,20 +1602,29 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 		List<Circle<?>> circles = lineRange.getRangeCircles();
 		List<Polygon<?>> polygons = lineRange.getRangeRectangles();
 
+		List<Object> results01 = new ArrayList<Object>();
+		List<Object> results02 = new ArrayList<Object>();
+		
 		Pipeline pl = this.pipelined();
 		for (int idx = 0; idx < circles.size(); idx++) {
+			if (idx % 20 == 0) {
+				results01.addAll(pl.syncAndReturnAll());
+			}
 			pl.gpradius(key, circles.get(idx).getX(), circles.get(idx).getY(), circles.get(idx).getRadius(), circles.get(idx).getUnit(),
 					valuePattern);
 		}
-		List<Object> results01 = pl.syncAndReturnAll();
-
+		results01.addAll(pl.syncAndReturnAll());
 		pl = this.pipelined();
 		for (int idx = 0; idx < polygons.size(); idx++) {
+			if (idx % 20 == 0) {
+				results02.addAll(pl.syncAndReturnAll());
+			}
 			pl.gpregion(key, polygons.get(idx), valuePattern);
 		}
-		List<Object> results02 = pl.syncAndReturnAll();
-
+		results02.addAll(pl.syncAndReturnAll());
+		
 		List<Point<String>> lastResult = getResultSum(results01, results02, lineRange.getLineStrings());
+		
 		return lastResult;
 	}
 
@@ -1624,18 +1633,27 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 		List<Circle<?>> circles = lineRange.getRangeCircles();
 		List<Polygon<?>> polygons = lineRange.getRangeRectangles();
 
+		List<Object> results01 = new ArrayList<Object>();
+		List<Object> results02 = new ArrayList<Object>();
+
 		Pipeline pl = this.pipelined();
 		for (int idx = 0; idx < circles.size(); idx++) {
+			if (idx % 20 == 0) {
+				results01.addAll(pl.syncAndReturnAll());
+			}
 			pl.gpradius(key, circles.get(idx).getX(), circles.get(idx).getY(), circles.get(idx).getRadius(), circles.get(idx).getUnit(),
 					valuePattern);
 		}
-		List<Object> results01 = pl.syncAndReturnAll();
+		results01.addAll(pl.syncAndReturnAll());
 
 		pl = this.pipelined();
 		for (int idx = 0; idx < polygons.size(); idx++) {
+			if (idx % 20 == 0) {
+				results02.addAll(pl.syncAndReturnAll());
+			}
 			pl.gpregion(key, polygons.get(idx), valuePattern);
 		}
-		List<Object> results02 = pl.syncAndReturnAll();
+		results02.addAll(pl.syncAndReturnAll());
 
 		List<Point<byte[]>> lastResult = getResultSum(results01, results02, lineRange.getLineStrings());
 		return lastResult;

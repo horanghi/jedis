@@ -25,16 +25,15 @@ import com.jayway.jsonpath.JsonPath;
 
 public class POIGenerator4AutoComplete {
 
-	static JedisPool jedispool = new JedisPool(new GenericObjectPoolConfig(), "172.19.114.206", 29010, 3000, "svc08_01");
-	static Jedis jedis;
+	static JedisPool jedispool = new JedisPool(new GenericObjectPoolConfig(), "172.19.114.206", 29009, 100000, "svc07_01");
+	static Jedis staticJedis;
 	String dir;
 	static String key = "autocomplete";
 
 	public static void main(String[] args) throws IOException {
 		// long s = System.currentTimeMillis();
-		jedis = jedispool.getResource();
-		// POIGenerator4AutoComplete pg = new POIGenerator4AutoComplete();
-		// pg.execute();
+		POIGenerator4AutoComplete pg = new POIGenerator4AutoComplete();
+		pg.execute();
 
 		/*
 		 * 2) "33.118250000000003" "126.2666"
@@ -45,23 +44,23 @@ public class POIGenerator4AutoComplete {
 		long s = System.currentTimeMillis();
 		// List<Point<String>> result = jedis.gpradius("autocomplete", 37.566404, 126.985037, 1000, UNITS.M, "*세븐일레븐*");
 
-		List<Point<String>> result = jedis.gpradius(key, 37.566404, 126.985037, 100, UNITS.M, "*스타벅스*");
-		System.out.println(result.size());
-		result = jedis.gpradius(key, 37.566404, 126.985037, 1000, UNITS.M, "*스타벅스*");
-		System.out.println(result.size());
-		result = jedis.gpradius(key, 37.566404, 126.985037, 1000, UNITS.M, "*은행*");
-		System.out.println(result.size());
-
-		System.out.println("스타벅수 count : " + result.size());
-		long e = System.currentTimeMillis();
-		System.out.println("time : " + (e - s));
-
-		result = jedis.gpregion(key,
-				new LineStringRange(new LineString<String>(37.566681, 126.982724, 37.566723, 126.987391), 100, UNITS.M));
-		System.out.println("line range count : " + result.size());
-		for (Point<String> p : result) {
-			System.out.println(p);
-		}
+		// List<Point<String>> result = staticJedis.gpradius(key, 37.566404, 126.985037, 100, UNITS.M, "*스타벅스*");
+		// System.out.println(result.size());
+		// result = staticJedis.gpradius(key, 37.566404, 126.985037, 1000, UNITS.M, "*스타벅스*");
+		// System.out.println(result.size());
+		// result = staticJedis.gpradius(key, 37.566404, 126.985037, 1000, UNITS.M, "*은행*");
+		// System.out.println(result.size());
+		//
+		// System.out.println("스타벅수 count : " + result.size());
+		// long e = System.currentTimeMillis();
+		// System.out.println("time : " + (e - s));
+		//
+		// result = staticJedis.gpregion(key, new LineStringRange(new LineString<String>(37.566681, 126.982724, 37.566723, 126.987391), 100,
+		// UNITS.M));
+		// System.out.println("line range count : " + result.size());
+		// for (Point<String> p : result) {
+		// System.out.println(p);
+		// }
 		// Long seed = (Long) jedis.gpcard("autocomplete");
 		// Random r = new Random();
 		// long num = r.nextInt(seed.intValue());
@@ -79,7 +78,7 @@ public class POIGenerator4AutoComplete {
 		// e = System.currentTimeMillis();
 		// System.out.println("time : " + (e - s));
 
-		jedispool.returnResource(jedis);
+		jedispool.returnResource(staticJedis);
 		jedispool.destroy();
 
 	}
@@ -89,24 +88,24 @@ public class POIGenerator4AutoComplete {
 
 	private void getTest() {
 
-		jedis = jedispool.getResource();
-		List<Point<String>> result = jedis.gpradius(key, 37.271526, 127.12666, 10, UNITS.M, "*");
+		staticJedis = jedispool.getResource();
+		List<Point<String>> result = staticJedis.gpradius(key, 37.271526, 127.12666, 10, UNITS.M, "*");
 		System.out.println(result.size());
-		result = jedis.gpradius(key, 37.271526, 127.12666, 100, UNITS.M, "*");
+		result = staticJedis.gpradius(key, 37.271526, 127.12666, 100, UNITS.M, "*");
 		System.out.println(result.size());
-		result = jedis.gpradius(key, 37.271526, 127.12666, 1000, UNITS.M, "*");
+		result = staticJedis.gpradius(key, 37.271526, 127.12666, 1000, UNITS.M, "*");
 		System.out.println(result.size());
-		result = jedis.gpradius(key, 37.271526, 127.12666, 10000, UNITS.M, "*");
+		result = staticJedis.gpradius(key, 37.271526, 127.12666, 10000, UNITS.M, "*");
 		System.out.println(result.size());
 		// jedis.gpupdate(key, "gs25ㅁㅏㄹㅏㄷㅗㅈㅓㅁ gs25 마라도점", 19);
 
-		result = jedis.gpnn(key, 37.271526, 127.12666, 0, 3, "*");
+		result = staticJedis.gpnn(key, 37.271526, 127.12666, 0, 3, "*");
 		System.out.println(result.size());
-		result = jedis.gpnn(key, 37.271526, 127.12666, 0, 15, "*");
+		result = staticJedis.gpnn(key, 37.271526, 127.12666, 0, 15, "*");
 		System.out.println(result.size());
-		result = jedis.gpnn(key, 37.271526, 127.12666, 0, 27, "*");
+		result = staticJedis.gpnn(key, 37.271526, 127.12666, 0, 27, "*");
 		System.out.println(result.size());
-		result = jedis.gpnn(key, 37.271526, 127.12666, 0, 2022, "*");
+		result = staticJedis.gpnn(key, 37.271526, 127.12666, 0, 2022, "*");
 		System.out.println(result.size());
 
 		// 0
@@ -114,37 +113,7 @@ public class POIGenerator4AutoComplete {
 		// 15
 		// 27
 		// 2022
-		jedispool.returnBrokenResource(jedis);
-
-		// try {
-		// for (int idx = 0; idx < xs.length; idx++) {
-		// List<Point<String>> result = jedis.gpradius(key, xs[idx], ys[idx], 1, UNITS.KM);
-		// List<Point<String>> result2 = jedis.gpradius(key, xs[idx], ys[idx], 1, UNITS.KM, "*");
-		// if (result.size() != result2.size()) {
-		// throw new JedisDataException(" not equals ");
-		// }
-		// }
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// } finally {
-		// jedispool.returnResource(jedis);
-		// }
-		//
-		// jedis = jedispool.getResource();
-		// try {
-		// for (int idx = 0; idx < xs.length; idx++) {
-		// List<Point<String>> result = jedis.gpnn(key, xs[idx], ys[idx], 0, 100, "*");
-		// List<Point<String>> result2 = jedis.gpnn(key, xs[idx], ys[idx], 0, 100, "*");
-		// if (result.size() != result2.size()) {
-		// throw new JedisDataException(" not equals ");
-		// }
-		// }
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// } finally {
-		// jedispool.returnResource(jedis);
-		// }
-		// System.out.println("OK");
+		jedispool.returnBrokenResource(staticJedis);
 	}
 
 	public POIGenerator4AutoComplete() {
@@ -164,6 +133,7 @@ public class POIGenerator4AutoComplete {
 		File[] fileList = dir.listFiles();
 		for (int i = 0; i < fileList.length; i++) {
 			File file = fileList[i];
+			System.out.println(file.getName());
 			if (file.isFile()) {
 				// parsenSave(loadConfigGetJson(file.getAbsolutePath()));
 				parsenSave(loadConfigGetDelimeter(file.getAbsolutePath()));
@@ -209,10 +179,16 @@ public class POIGenerator4AutoComplete {
 			valuelist.add(value);
 		}
 		Iterator<String> it = valuelist.iterator();
-		int Tidx = 0;
+		int idx = 0;
+		Jedis jedis = null;
+		Pipeline pl = null;
+		jedis = jedispool.getResource();
 
 		while (it.hasNext()) {
-			Pipeline pl = jedis.pipelined();
+			if (pl == null) {
+				pl = jedis.pipelined();
+			}
+			idx++;
 			String[] eles = it.next().split("\t");
 			String mkey = eles[1];
 			String value = eles[0] + " " + eles[1];
@@ -222,41 +198,25 @@ public class POIGenerator4AutoComplete {
 			}
 
 			ArrayList<String> latlons = latlons = parseLocation(eles[2]);
-			try {
-				System.out.println(eles[1]);
-
-			} catch (Exception ex) {
-
-			}
 			double score = Double.valueOf(eles[3]);
-
 			if (latlons.size() > 2) {
 				Iterator<String> latloniter = latlons.iterator();
-				int idx = 0 + (Tidx++);
 				while (latloniter.hasNext()) {
-					// System.out.print(".");
 					String lat = latloniter.next();
 					String lon = latloniter.next();
-					for (int dd = 101; dd < 1100; dd++) {
-						pl.gpadd(key + dd, Double.valueOf(lat), Double.valueOf(lon), mkey, value, score);
-					}
-					// pl.gpadd(key, Double.valueOf(lat), Double.valueOf(lon), mkey, value, score);
+					pl.gpadd(key, Double.valueOf(lat), Double.valueOf(lon), mkey, value, score);
 				}
 			} else {
-				// System.out.print(".\n");
-				for (int dd = 101; dd < 1100; dd++) {
-					pl.gpadd(key + dd, Double.valueOf(latlons.get(0).trim()), Double.valueOf(latlons.get(1).trim()), mkey, value, score);
-					// pl.gpadd(key, Double.valueOf(latlons.get(0).trim()), Double.valueOf(latlons.get(1).trim()), mkey, value, score);
-				}
+				pl.gpadd(key, Double.valueOf(latlons.get(0).trim()), Double.valueOf(latlons.get(1).trim()), mkey, value, score);
 			}
-			List<Object> results = pl.syncAndReturnAll();
-			System.out.println(results.size());
-			for (int idx = 0; idx < results.size(); idx++) {
-				results.get(idx);
+			if (idx > 100) {
+				pl.syncAndReturnAll();
+				System.out.println(".");
+				idx = 0;
 			}
-
 		}
 
+		jedispool.returnResource(jedis);
 		return true;
 	}
 

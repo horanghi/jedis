@@ -3,7 +3,6 @@ package redis.clients.spatial.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
 import redis.clients.jedis.GeoUtils;
 import redis.clients.jedis.Protocol.UNITS;
 

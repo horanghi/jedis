@@ -17,7 +17,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.LineString;
-import redis.clients.spatial.model.LineStringRange;
+import redis.clients.spatial.model.LineStringBuffer;
 import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
 

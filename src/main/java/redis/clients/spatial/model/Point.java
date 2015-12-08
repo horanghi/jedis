@@ -10,6 +10,8 @@ import lombok.ToString;
 import redis.clients.jedis.Protocol.Type;
 import redis.clients.util.SafeEncoder;
 
+import com.vividsolutions.jts.geom.Coordinate;
+
 @ToString(doNotUseGetters = true, callSuper = true)
 public class Point<T> extends Geometry<T> implements Comparable<T>, Cloneable {
 	/**
@@ -123,6 +125,11 @@ public class Point<T> extends Geometry<T> implements Comparable<T>, Cloneable {
 	@Override
 	public Point<T> clone() {
 		return new Point<T>(this.getMember(), this.getX(), this.getY(), this.getValue(), this.getScore(), this.getDistance());
+	}
+
+	public com.vividsolutions.jts.geom.Geometry getGeometyOfJTS() {
+		Coordinate coordinate = new Coordinate(this.y, this.x);
+		return gf.createPoint(coordinate);
 	}
 
 }

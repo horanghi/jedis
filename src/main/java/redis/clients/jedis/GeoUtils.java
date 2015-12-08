@@ -10,6 +10,9 @@ public final class GeoUtils {
 
 	public final static double EarthRadius = 6378137; // meters (EPSG 3785)
 
+	public final static double TOMETER = 0.000009;
+	public final static double BYMETER = 1 / 0.000009;
+
 	// final static Ellipsoid bessel1841 = new Ellipsoid(6377397.155, 1.0 / 299.152813);
 	// final static Ellipsoid wgs1984 = new Ellipsoid(GeoUtils.EarthRadius, 1.0 / 298.257223563);
 	// final static Parameters7 params = new Parameters7(-115.8, 474.99, 674.11, -1.16, 2.31, 1.63, 6.43);

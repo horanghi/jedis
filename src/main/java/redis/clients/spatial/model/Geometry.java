@@ -8,7 +8,9 @@ import lombok.Setter;
 import lombok.ToString;
 import redis.clients.jedis.Protocol.Type;
 
-@ToString
+import com.vividsolutions.jts.geom.GeometryFactory;
+
+@ToString(exclude="gf")
 public class Geometry<T> implements Serializable, Comparable<T> {
 
 	/**
@@ -22,6 +24,8 @@ public class Geometry<T> implements Serializable, Comparable<T> {
 	@Setter
 	@Getter
 	private T value;
+	
+	final GeometryFactory gf = new GeometryFactory();
 
 	public Geometry() {
 	}

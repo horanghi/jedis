@@ -8,7 +8,7 @@ import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Geometry;
 import redis.clients.spatial.model.LineString;
-import redis.clients.spatial.model.LineStringRange;
+import redis.clients.spatial.model.LineStringBuffer;
 import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
 
@@ -255,27 +255,29 @@ public interface GeoCommands {
 
 	List<Point<byte[]>> gpregion(byte[] key, Point<?> point, byte[] memberPattern, byte[] valuePattern);
 
-	List<Point<String>> gpregion(String key, LineStringRange lineRange);
+	List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer);
 
-	List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange);
+	List<Point<byte[]>> gpregion(byte[] key, LineStringBuffer lineBuffer);
 
-	List<Point<String>> gpregion(String key, LineStringRange lineRange, String valuePattern);
+	List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer, String valuePattern, ORDERBY order);
 
-	List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange, byte[] valuePattern);
+	List<Point<byte[]>> gpregion(byte[] key, LineStringBuffer lineBuffer, byte[] valuePattern, ORDERBY order);
 
-	List<Point<String>> gpregion(String key, LineStringRange lineRange, String min, String max, String valuePattern);
+	List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer, String min, String max, String valuePattern, ORDERBY order);
 
-	List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange, byte[] min, byte[] max, byte[] valuePattern);
+	List<Point<byte[]>> gpregion(byte[] key, LineStringBuffer lineBuffer, byte[] min, byte[] max, byte[] valuePattern, ORDERBY order);
 
-	List<Point<String>> gpregion(String key, LineStringRange lineRange, String min, String max, long offset, long count, String valuePattern);
+	List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer, String min, String max, long offset, long count,
+			String valuePattern, ORDERBY order);
 
-	List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange, byte[] min, byte[] max, long offset, long count, byte[] valuePattern);
+	List<Point<byte[]>> gpregion(byte[] key, LineStringBuffer lineBuffer, byte[] min, byte[] max, long offset, long count,
+			byte[] valuePattern, ORDERBY order);
 
-	List<Point<String>> gpregion(String key, LineStringRange lineRange, String min, String max, long offset, long count,
-			String memberPattern, String valuePattern);
+	List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer, String min, String max, long offset, long count,
+			String memberPattern, String valuePattern, ORDERBY order);
 
-	List<Point<byte[]>> gpregion(byte[] key, LineStringRange lineRange, byte[] min, byte[] max, long offset, long count,
-			byte[] memberPattern, byte[] valuePattern);
+	List<Point<byte[]>> gpregion(byte[] key, LineStringBuffer lineBuffer, byte[] min, byte[] max, long offset, long count,
+			byte[] memberPattern, byte[] valuePattern, ORDERBY order);
 
 	List<Point<String>> gprange(String key, long start, long stop);
 

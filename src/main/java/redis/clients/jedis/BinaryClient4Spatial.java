@@ -435,8 +435,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		* 		[LIMIT offset count] 
 		* 		[WITHVALUES] [WITHSCORES] [WITHDISTANCE]
 		*/
-		sendCommand(GPREGIONBYMEMBER, key, BY.raw, bykey, bymember, NR.raw, WITHVALUES.raw, WITHSCORES.raw, WITHDISTANCE.raw,
-				DISTANCE_ASC.raw0, DISTANCE_ASC.raw1, DISTANCE_ASC.raw2);
+		sendCommand(GPREGIONBYMEMBER, key, BY.raw, bykey, bymember, NR.raw, WITHVALUES.raw, WITHSCORES.raw, WITHDISTANCE.raw);
 	}
 
 	@Override
@@ -451,7 +450,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		* 		[WITHVALUES] [WITHSCORES] [WITHDISTANCE]
 		*/
 		sendCommand(GPREGIONBYMEMBER, key, BY.raw, bykey, bymember, MATCHVALUE.raw, vpattern, NR.raw, WITHVALUES.raw, WITHSCORES.raw,
-				WITHDISTANCE.raw, DISTANCE_ASC.raw0, DISTANCE_ASC.raw1, DISTANCE_ASC.raw2);
+				WITHDISTANCE.raw);
 	}
 
 	@Override
@@ -466,7 +465,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		* 		[WITHVALUES] [WITHSCORES] [WITHDISTANCE]
 		*/
 		sendCommand(GPREGIONBYMEMBER, key, BY.raw, bykey, bymember, SCORE.raw, min, max, MATCHVALUE.raw, vpattern, NR.raw, WITHVALUES.raw,
-				WITHSCORES.raw, WITHDISTANCE.raw, SCORE_DESC.raw0, SCORE_DESC.raw1, SCORE_DESC.raw2);
+				WITHSCORES.raw, WITHDISTANCE.raw);
 	}
 
 	@Override
@@ -514,7 +513,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		* 		[WITHVALUES] [WITHDISTANCE]
 		*/
 		sendCommand(GPNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(offset), toByteArray(count), NR.raw,
-				WITHVALUES.raw, WITHSCORES.raw, WITHDISTANCE.raw);
+				WITHVALUES.raw, WITHSCORES.raw, WITHDISTANCE.raw, DISTANCE_ASC.raw0, DISTANCE_ASC.raw1, DISTANCE_ASC.raw2);
 	}
 
 	@Override
@@ -690,7 +689,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		* 		[WITHVALUES] [WITHSCORES] [WITHDISTANCE]
 		*/
 		sendCommand(GPREGION, key, polygon.getJsonByte(), MATCHVALUE.raw, vpattern, SCORE.raw, min, max, NR.raw, WITHVALUES.raw,
-				WITHSCORES.raw, WITHDISTANCE.raw, SCORE_DESC.raw0, SCORE_DESC.raw1, SCORE_DESC.raw2);
+				WITHSCORES.raw, WITHDISTANCE.raw);
 	}
 
 	@Override
@@ -704,7 +703,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
 		*/
 		sendCommand(GPREGION, key, lineString.getJsonByte(), MATCHVALUE.raw, vpattern, SCORE.raw, min, max, NR.raw, WITHVALUES.raw,
-				WITHSCORES.raw, WITHDISTANCE.raw, SCORE_DESC.raw0, SCORE_DESC.raw1, SCORE_DESC.raw2);
+				WITHSCORES.raw, WITHDISTANCE.raw);
 	}
 
 	@Override
@@ -718,8 +717,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
 		*/
 		sendCommand(GPREGION, key, polygon.getJsonByte(), MATCHVALUE.raw, vpattern, SCORE.raw, min, max, NR.raw, WITHVALUES.raw,
-				WITHSCORES.raw, WITHDISTANCE.raw, LIMIT.raw, toByteArray(offset), toByteArray(count), SCORE_DESC.raw0, SCORE_DESC.raw1,
-				SCORE_DESC.raw2);
+				WITHSCORES.raw, WITHDISTANCE.raw, LIMIT.raw, toByteArray(offset), toByteArray(count));
 	}
 
 	@Override
@@ -750,8 +748,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
 		*/
 		sendCommand(GPREGION, key, lineString.getJsonByte(), MATCHVALUE.raw, vpattern, SCORE.raw, min, max, NR.raw, WITHVALUES.raw,
-				WITHSCORES.raw, WITHDISTANCE.raw, LIMIT.raw, toByteArray(offset), toByteArray(count), SCORE_DESC.raw0, SCORE_DESC.raw1,
-				SCORE_DESC.raw2);
+				WITHSCORES.raw, WITHDISTANCE.raw, LIMIT.raw, toByteArray(offset), toByteArray(count));
 	}
 
 	@Override

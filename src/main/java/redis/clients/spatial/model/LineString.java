@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateList;
+
 import lombok.Getter;
 import lombok.ToString;
 import redis.clients.jedis.Protocol.Type;
@@ -98,6 +101,14 @@ public class LineString<T> extends Geometry<T> implements Comparable<T> {
 		return SafeEncoder.encode(getJsonStr());
 	}
 
+	public CoordinateList getCoordinateList() {
+		CoordinateList cl = new CoordinateList();
+		for (Point<?> p : points) {
+			cl.add(new Coordinate(p.getY(), p.getX()), true);
+		}
+		return cl;
+	}
+
 	@Override
 	public Type getType() {
 		return type;
@@ -134,4 +145,16 @@ public class LineString<T> extends Geometry<T> implements Comparable<T> {
 		}
 		return -1;
 	}
+	
+	@SuppressWarnings("rawtypes")
+	public com.vividsolutions.jts.geom.Geometry getGeometyOfJTS() {
+		
+		Coordinate[] coordinates = new Coordinate[points.size()];
+		int idx = 0;
+		for(Point p : points){
+			coordinates[idx++] = new Coordinate(p.getY(), p.getX());
+		}
+		return gf.createLineString(coordinates);
+	}
+	
 }

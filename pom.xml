@@ -10,7 +10,7 @@
 	<packaging>jar</packaging>
 	<groupId>com.skplanet.plandas</groupId>
 	<artifactId>geodis</artifactId>
-	<version>0.10.4-SNAPSHOT</version>
+	<version>0.11.0-SNAPSHOT</version>
 	<name>Geodis</name>
 	<description>Geodis is a blazingly small Geo-Redis java client.</description>
 	<url>https://github.com/xetorthio/jedis</url>
@@ -156,6 +156,11 @@
 			<version>3.1</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.vividsolutions</groupId>
+			<artifactId>jts</artifactId>
+			<version>1.8</version>
+		</dependency>
 	</dependencies>
 
 	<!-- 프로젝트의 artifact를 배포할 저장소 -->
@@ -171,7 +176,6 @@
 			<url>http://mvn.skplanet.com/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
-
 	<build>
 		<plugins>
 			<plugin>

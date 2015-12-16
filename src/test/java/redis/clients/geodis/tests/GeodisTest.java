@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import redis.clients.jedis.BitOP;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Pipeline;
@@ -195,6 +196,16 @@ public class GeodisTest {
 		String[] vv = new String[args.length];
 		assertTrue(vv.length == args.length);
 	}
+
+	// @Test
+	// public void testBitOp() {
+	// long v1 = 0x0000;
+	// long v2 = 0x1111;
+	//
+	// geodis.setbit
+	// System.out.println(geodis.getbit(key, v1));
+	//
+	// }
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
@@ -1876,5 +1887,21 @@ public class GeodisTest {
 		assertTrue(geodis.ggnn(keyb, 2, 2, 3, "member*".getBytes()).contains(pointb));
 
 		geodis.del(keyb);
+	}
+
+	@Test
+	public void bitOpNot() {
+		geodis.del("key1", "key2");
+
+		int hexValue1 = 0x1; // 00
+		int hexValue2 = 0x0; // 00
+		int hexValue3 = 0xDEAF;
+		int hexValue4 = 0xCAB;
+		geodis.setbit("key1", hexValue1, true);
+		geodis.setbit("key2", hexValue2, true);
+
+		long result = geodis.bitop(BitOP.AND, "key1", "key2");
+		System.out.println(result);
+
 	}
 }

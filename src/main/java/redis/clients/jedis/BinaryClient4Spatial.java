@@ -693,6 +693,21 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
+	public void gpregion(byte[] key, Polygon<?> polygon, final byte[] min, final byte[] max, byte[] mpattern, byte[] vpattern) {
+		/*
+		* GPREGION key geojson_region 
+		* 		[CP latitude longitude] 
+		* 		[MATCH key_pattern][MATCHVALUE value_pattern] 
+		* 		[SCORE min max] [NR|XR] 
+		* 		[ORDERBY SCORE|DIST ASC|DESC] 
+		* 		[LIMIT offset count] 
+		* 		[WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPREGION, key, polygon.getJsonByte(), MATCH.raw, mpattern, MATCHVALUE.raw, vpattern, SCORE.raw, min, max, NR.raw,
+				WITHVALUES.raw, WITHSCORES.raw, WITHDISTANCE.raw);
+	}
+
+	@Override
 	public void gpregion(byte[] key, LineString<?> lineString, final byte[] min, final byte[] max, byte[] vpattern) {
 		/*
 		* GPREGION key geojson
@@ -717,7 +732,8 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
 		*/
 		sendCommand(GPREGION, key, polygon.getJsonByte(), MATCHVALUE.raw, vpattern, SCORE.raw, min, max, NR.raw, WITHVALUES.raw,
-				WITHSCORES.raw, WITHDISTANCE.raw, LIMIT.raw, toByteArray(offset), toByteArray(count));
+				WITHSCORES.raw, WITHDISTANCE.raw, LIMIT.raw, toByteArray(offset), toByteArray(count), SCORE_DESC.raw0, SCORE_DESC.raw1,
+				SCORE_DESC.raw2);
 	}
 
 	@Override
@@ -748,7 +764,8 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		*          [WITHVALUES] [WITHSCORES] [WITHDISTANCE]
 		*/
 		sendCommand(GPREGION, key, lineString.getJsonByte(), MATCHVALUE.raw, vpattern, SCORE.raw, min, max, NR.raw, WITHVALUES.raw,
-				WITHSCORES.raw, WITHDISTANCE.raw, LIMIT.raw, toByteArray(offset), toByteArray(count));
+				WITHSCORES.raw, WITHDISTANCE.raw, LIMIT.raw, toByteArray(offset), toByteArray(count), SCORE_DESC.raw0, SCORE_DESC.raw1,
+				SCORE_DESC.raw2);
 	}
 
 	@Override

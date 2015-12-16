@@ -266,14 +266,15 @@ public class PlaceDBSample {
 		long start = System.currentTimeMillis();
 		LineStringBuffer range = new LineStringBuffer(linestr, 1000, Protocol.UNITS.M);
 		System.out.println(range.getLinePolygon().getJsonStr());
-		List<Point<String>> result = geodis.gpregion("sap1", range, "*name1\":\"벌터\"*", ORDERBY.SCORE_ASC);
+		System.out.println(range.getLinePolygon().getJsonStr());
+		List<Point<String>> result = geodis.gpregion("sap1", range, "*classA\":\"8\",\"classB\":\"1\",\"classC\":\"4\"*", ORDERBY.SCORE_ASC);
 		long end = System.currentTimeMillis();
 		System.out.println("duration = " + (end - start));
 		System.out.println("result = " + result.size());
 		System.out.println(result.get(0));
-		// for (Point<String> p : result) {
-		// System.out.println(p.getScore());
-		// }
+//		for (Point<String> p : result) {
+//			System.out.println(p.getScore());
+//		}
 
 	}
 

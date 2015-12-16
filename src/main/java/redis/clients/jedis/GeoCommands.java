@@ -227,6 +227,10 @@ public interface GeoCommands {
 
 	List<Point<byte[]>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, byte[] valuePattern);
 
+	List<Point<String>> gpregion(String key, Polygon<?> polygon, String min, String max, String memberPattern, String valuePattern);
+
+	List<Point<byte[]>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, byte[] memberPattern, byte[] valuePattern);
+
 	List<Point<String>> gpregion(String key, LineString<?> lineString, String min, String max, String valuePattern);
 
 	List<Point<byte[]>> gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, byte[] valuePattern);
@@ -266,6 +270,12 @@ public interface GeoCommands {
 	List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer, String min, String max, String valuePattern, ORDERBY order);
 
 	List<Point<byte[]>> gpregion(byte[] key, LineStringBuffer lineBuffer, byte[] min, byte[] max, byte[] valuePattern, ORDERBY order);
+
+	List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer, String min, String max, String memberPattern,
+			String valuePattern, ORDERBY order);
+
+	List<Point<byte[]>> gpregion(byte[] key, LineStringBuffer lineBuffer, byte[] min, byte[] max, byte[] memberPattern,
+			byte[] valuePattern, ORDERBY order);
 
 	List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer, String min, String max, long offset, long count,
 			String valuePattern, ORDERBY order);

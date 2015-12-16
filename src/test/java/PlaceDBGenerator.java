@@ -112,49 +112,55 @@ public class PlaceDBGenerator {
 				String classC = dc.read("$.value.classC");
 				String abcKey = classA + classB + classC;
 
-//				String[] itplace = new String[] { "211", "216", "225", "218", "2113", "21114", "213", "212", "215", "2112", "223", "221",
-//						"2299", "219", "2199", "224", "222", "29999", "2399", "8399", "232", "834", "232", "8399", "232", "834", "731",
-//						"831", "217", "8173", "10101", "235", "238", "239", "231", "2110", "253", "2313", "248", "844", "738", "8499",
-//						"814", "812", "89999", "7499", "319", "3432" };
-//				List<String> its = new ArrayList<String>();
-//				Collections.addAll(its, itplace);
-//
-//				if (abcKey.equals("121")) {
-//					pl.gpadd("gas", lat, lot, memberKey, value, score);
-//
-//				} else if (abcKey.equals("511") || abcKey.equals("512")) {
-//					pl.gpadd("bank", lat, lot, memberKey, value, score);
-//
-//				} else if (abcKey.equals("812")) {
-//					pl.gpadd("mart", lat, lot, memberKey, value, score);
-//
-//				} else if (abcKey.equals("814")) {
-//					pl.gpadd("cvs", lat, lot, memberKey, value, score);
-//
-//				} else if (abcKey.equals("225")) {
-//					pl.gpadd("coffee", lat, lot, memberKey, value, score);
-//
-//				} else if (abcKey.equals("2418")) {
-//					pl.gpadd("restroom", lat, lot, memberKey, value, score);
-//
-//				} else if (abcKey.equals("2113")) {
-//					pl.gpadd("bakery", lat, lot, memberKey, value, score);
-//
-//				} else if (abcKey.equals("1110") || abcKey.equals("1121")) {
-//					pl.gpadd("restarea", lat, lot, memberKey, value, score);
-//
-//				} else if (abcKey.equals("128") || abcKey.equals("1218")) {
-//					pl.gpadd("car", lat, lot, memberKey, value, score);
-//
-//				} else if (abcKey.equals("413") || abcKey.equals("421")) {
-//					pl.gpadd("hospital", lat, lot, memberKey, value, score);
-//
-//				} else if (abcKey.equals("275")) {
-//					pl.gpadd("sight", lat, lot, memberKey, value, score);
-//
-//				} else if (its.contains(abcKey)) {
-//					pl.gpadd("itplace", lat, lot, memberKey, value, score);
-//				}
+				// String[] itplace = new String[] { "211", "216", "225", "218", "2113", "21114", "213", "212", "215", "2112", "223", "221",
+				// "2299", "219", "2199", "224", "222", "29999", "2399", "8399", "232", "834", "232", "8399", "232", "834", "731",
+				// "831", "217", "8173", "10101", "235", "238", "239", "231", "2110", "253", "2313", "248", "844", "738", "8499",
+				// "814", "812", "89999", "7499", "319", "3432" };
+				String[] restaurant = new String[] { "211", "216", "218", "2114", "213", "212", "215", "2112", "2199" };
+
+				List<String> its = new ArrayList<String>();
+				Collections.addAll(its, restaurant);
+
+				// if (abcKey.equals("121")) {
+				// pl.gpadd("gas", lat, lot, memberKey, value, score);
+				//
+				// } else if (abcKey.equals("511") || abcKey.equals("512")) {
+				// pl.gpadd("bank", lat, lot, memberKey, value, score);
+				//
+				// } else if (abcKey.equals("812")) {
+				// pl.gpadd("mart", lat, lot, memberKey, value, score);
+				//
+				// } else if (abcKey.equals("814")) {
+				// pl.gpadd("cvs", lat, lot, memberKey, value, score);
+				//
+				// } else if (abcKey.equals("225")) {
+				// pl.gpadd("coffee", lat, lot, memberKey, value, score);
+				//
+				// } else if (abcKey.equals("2418")) {
+				// pl.gpadd("restroom", lat, lot, memberKey, value, score);
+				//
+				// } else if (abcKey.equals("2113")) {
+				// pl.gpadd("bakery", lat, lot, memberKey, value, score);
+				//
+				// } else if (abcKey.equals("1110") || abcKey.equals("1121")) {
+				// pl.gpadd("restarea", lat, lot, memberKey, value, score);
+				//
+				// } else if (abcKey.equals("128") || abcKey.equals("1218")) {
+				// pl.gpadd("car", lat, lot, memberKey, value, score);
+				//
+				// } else if (abcKey.equals("413") || abcKey.equals("421")) {
+				// pl.gpadd("hospital", lat, lot, memberKey, value, score);
+				//
+				// } else if (abcKey.equals("275")) {
+				// pl.gpadd("sight", lat, lot, memberKey, value, score);
+				//
+				// } else if (its.contains(abcKey)) {
+				// pl.gpadd("itplace", lat, lot, memberKey, value, score);
+				// }
+
+				if (its.contains(abcKey)) {
+					pl.gpadd("restaurant", lat, lot, memberKey, value, score);
+				}
 
 			} catch (Exception ex) {
 			}

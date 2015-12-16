@@ -715,6 +715,22 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
+	public List<Point<String>> gpregion(final String key, final Polygon<?> polygon, final String min, final String max,
+			final String memberPattern, final String valuePattern) {
+		checkIsInMulti();
+		client.gpregion(key, polygon, min, max, memberPattern, valuePattern);
+		return client.getSPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LISTMultiBulkReply();
+	}
+
+	@Override
+	public List<Point<byte[]>> gpregion(final byte[] key, final Polygon<?> polygon, final byte[] min, final byte[] max,
+			final byte[] memberPattern, final byte[] valuePattern) {
+		checkIsInMulti();
+		client.gpregion(key, polygon, min, max, memberPattern, valuePattern);
+		return client.getBYTE_SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LISTMultiBulkReply();
+	}
+
+	@Override
 	public List<Point<String>> gpregion(final String key, final Polygon<?> polygon, final String min, final String max, final long offset,
 			final long count, final String memberPattern, final String valuePattern, final ORDERBY order) {
 		checkIsInMulti();
@@ -1621,44 +1637,58 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
+	public List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer, String min, String max, String memberPattern,
+			String valuePattern, ORDERBY order) {
+		List<Point<String>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, memberPattern, valuePattern);
+		return this.sortBy(order, points, lineBuffer.getLinestring());
+	}
+
+	@Override
+	public List<Point<byte[]>> gpregion(byte[] key, LineStringBuffer lineBuffer, byte[] min, byte[] max, byte[] memberPattern,
+			byte[] valuePattern, ORDERBY order) {
+		List<Point<byte[]>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, memberPattern, valuePattern);
+		return this.sortBy(order, points, lineBuffer.getLinestring());
+	}
+
+	@Override
 	public List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer, String min, String max, long offset, long count,
 			String valuePattern, ORDERBY order) {
-		List<Point<String>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, offset, count, valuePattern);
-		return this.sortBy(order, points, lineBuffer.getLinestring());
+		List<Point<String>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, valuePattern);
+		return this.sortBy(order, points, lineBuffer.getLinestring(), offset, count);
 	}
 
 	@Override
 	public List<Point<byte[]>> gpregion(byte[] key, LineStringBuffer lineBuffer, byte[] min, byte[] max, long offset, long count,
 			byte[] valuePattern, ORDERBY order) {
-		List<Point<byte[]>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, offset, count, valuePattern);
-		return this.sortBy(order, points, lineBuffer.getLinestring());
+		List<Point<byte[]>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, valuePattern);
+		return this.sortBy(order, points, lineBuffer.getLinestring(), offset, count);
 	}
 
 	@Override
 	public List<Point<String>> gpregion(final String key, final LineStringBuffer lineBuffer, final String min, final String max,
 			final long offset, final long count, final String memberPattern, final String valuePattern, ORDERBY order) {
-		List<Point<String>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, offset, count, memberPattern, valuePattern,
-				ORDERBY.SCORE_DESC);
-		return this.sortBy(order, points, lineBuffer.getLinestring());
+		List<Point<String>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, memberPattern, valuePattern);
+		return this.sortBy(order, points, lineBuffer.getLinestring(), offset, count);
 	}
 
 	@Override
 	public List<Point<byte[]>> gpregion(final byte[] key, final LineStringBuffer lineBuffer, final byte[] min, final byte[] max,
 			final long offset, final long count, final byte[] memberPattern, final byte[] valuePattern, ORDERBY order) {
-		List<Point<byte[]>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, offset, count, memberPattern, valuePattern,
-				ORDERBY.SCORE_DESC);
-		return this.sortBy(order, points, lineBuffer.getLinestring());
+		List<Point<byte[]>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, memberPattern, valuePattern);
+		return this.sortBy(order, points, lineBuffer.getLinestring(), offset, count);
 	}
 
 	@SuppressWarnings("rawtypes")
-	private <T> List<Point<T>> sortBy(final ORDERBY order, final List<Point<T>> points, final LineString linestr) {
+	public <T> List<Point<T>> sortBy(final ORDERBY order, final List<Point<T>> points, final LineString linestr) {
 		List<Point<T>> rpoints = new ArrayList<Point<T>>();
 
-		com.vividsolutions.jts.geom.Geometry line = linestr.getGeometyOfJTS();
-		for (Point<T> p : points) {
-			double distance = DistanceOp.distance(line, p.getGeometyOfJTS()) * GeoUtils.BYMETER;
-			p.setDistance(distance);
-			rpoints.add(p);
+		if (linestr != null) {
+			com.vividsolutions.jts.geom.Geometry line = linestr.getGeometyOfJTS();
+			for (Point<T> p : points) {
+				double distance = DistanceOp.distance(line, p.getGeometyOfJTS()) * GeoUtils.BYMETER;
+				p.setDistance(distance);
+				rpoints.add(p);
+			}
 		}
 
 		switch (order) {
@@ -1735,5 +1765,39 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 		}
 
 		return rpoints;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public <T> List<Point<T>> sortBy(final ORDERBY order, final List<Point<T>> points, final LineString linestr, long offset, long count) {
+		List<Point<T>> result = null;
+		if (linestr != null) {
+			result = this.sortBy(order, points, linestr);
+		}
+
+		int fromIndex = 0;
+		int toIndex = 0;
+		if (Integer.MAX_VALUE < offset) {
+			fromIndex = Integer.MAX_VALUE;
+		} else {
+			fromIndex = (int) offset;
+		}
+		long max = offset + count;
+		if (Integer.MAX_VALUE < max) {
+			toIndex = Integer.MAX_VALUE;
+		} else {
+			toIndex = (int) max;
+		}
+		if (points.size() < fromIndex) {
+			fromIndex = points.size();
+		}
+		if (points.size() < toIndex) {
+			toIndex = points.size();
+		}
+		return result.subList(fromIndex, toIndex);
+	}
+
+	@SuppressWarnings("rawtypes")
+	public <T> List<Point<T>> sortBy(final ORDERBY order, final List<Point<T>> points, long offset, long count) {
+		return this.sortBy(order, points, null, offset, count);
 	}
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import redis.clients.jedis.BinaryJedis;
+import redis.clients.jedis.BitOP;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.Protocol;
@@ -99,4 +100,30 @@ public class JedisTest extends JedisCommandTestBase {
 		bj.connect();
 		bj.close();
 	}
+
+	@Test
+	public void bitOp() {
+		jedis.set("key1", "\u0060");
+		jedis.set("key2", "\u0044");
+
+		jedis.bitop(BitOP.AND, "resultAnd", "key1", "key2");
+		String resultAnd = jedis.get("resultAnd");
+		assertEquals("\u0040", resultAnd);
+
+		jedis.bitop(BitOP.OR, "resultOr", "key1", "key2");
+		String resultOr = jedis.get("resultOr");
+		assertEquals("\u0064", resultOr);
+
+		jedis.bitop(BitOP.XOR, "resultXor", "key1", "key2");
+		String resultXor = jedis.get("resultXor");
+		assertEquals("\u0024", resultXor);
+
+		jedis.del("resultAnd");
+		jedis.del("resultOr");
+		jedis.del("resultXor");
+		jedis.del("key1");
+		jedis.del("key2");
+	}
+
+
 }

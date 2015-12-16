@@ -125,6 +125,8 @@ public interface Command4BinarySpatial {
 
 	void gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, byte[] vpattern);
 
+	void gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, byte[] mpattern, byte[] vpattern);
+
 	void gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count, byte[] vpattern);
 
 	void gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count, byte[] mpattern, byte[] vpattern,

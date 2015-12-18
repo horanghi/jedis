@@ -1689,6 +1689,8 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 				p.setDistance(distance);
 				rpoints.add(p);
 			}
+		} else {
+			rpoints = points;
 		}
 
 		switch (order) {
@@ -1772,6 +1774,8 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 		List<Point<T>> result = null;
 		if (linestr != null) {
 			result = this.sortBy(order, points, linestr);
+		} else {
+			result = this.sortBy(order, points);
 		}
 
 		int fromIndex = 0;
@@ -1796,7 +1800,10 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 		return result.subList(fromIndex, toIndex);
 	}
 
-	@SuppressWarnings("rawtypes")
+	public <T> List<Point<T>> sortBy(final ORDERBY order, final List<Point<T>> points) {
+		return this.sortBy(order, points, null);
+	}
+
 	public <T> List<Point<T>> sortBy(final ORDERBY order, final List<Point<T>> points, long offset, long count) {
 		return this.sortBy(order, points, null, offset, count);
 	}

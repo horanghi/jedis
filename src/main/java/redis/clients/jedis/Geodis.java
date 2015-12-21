@@ -1692,7 +1692,7 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 		} else {
 			rpoints = points;
 		}
-
+		
 		switch (order) {
 		case DISTANCE_ASC:
 			Collections.sort(rpoints, new Comparator<Point<T>>() {

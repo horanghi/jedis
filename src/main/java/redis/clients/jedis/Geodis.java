@@ -1199,6 +1199,48 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
+	public List<Geometry<String>> ggrelation(String key, Polygon<?> polygon, String min, String max) {
+		checkIsInMulti();
+		client.ggrelation(key, polygon, min, max);
+		return client.getSpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<byte[]>> ggrelation(byte[] key, Polygon<?> polygon, byte[] min, byte[] max) {
+		checkIsInMulti();
+		client.ggrelation(key, polygon, min, max);
+		return client.getBinarySpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<String>> ggrelation(String key, LineString<?> lineString, String min, String max) {
+		checkIsInMulti();
+		client.ggrelation(key, lineString, min, max);
+		return client.getSpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<byte[]>> ggrelation(byte[] key, LineString<?> lineString, byte[] min, byte[] max) {
+		checkIsInMulti();
+		client.ggrelation(key, lineString, min, max);
+		return client.getBinarySpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<String>> ggrelation(String key, Point<?> point, String min, String max) {
+		checkIsInMulti();
+		client.ggrelation(key, point, min, max);
+		return client.getSpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<byte[]>> ggrelation(byte[] key, Point<?> point, byte[] min, byte[] max) {
+		checkIsInMulti();
+		client.ggrelation(key, point, min, max);
+		return client.getBinarySpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
 	public List<Geometry<String>> ggrelationByMember(final String key, final String byKey, final String byMember) {
 		checkIsInMulti();
 		client.ggrelationByMember(key, byKey, byMember);
@@ -1253,6 +1295,22 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 			final byte[] valuePattern) {
 		checkIsInMulti();
 		client.ggnn(key, lat, lon, count, memberPattern, valuePattern);
+		return client.getBinarySpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<String>> ggnn(String key, double lat, double lon, long count, String memberPattern, String valuePattern,
+			String min, String max) {
+		checkIsInMulti();
+		client.ggnn(key, lat, lon, count, memberPattern, valuePattern, min, max);
+		return client.getSpatialMGETGEOMultiBulkReply();
+	}
+
+	@Override
+	public List<Geometry<byte[]>> ggnn(byte[] key, double lat, double lon, long count, byte[] memberPattern, byte[] valuePattern,
+			byte[] min, byte[] max) {
+		checkIsInMulti();
+		client.ggnn(key, lat, lon, count, memberPattern, valuePattern, min, max);
 		return client.getBinarySpatialMGETGEOMultiBulkReply();
 	}
 
@@ -1615,84 +1673,87 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 	@Override
 	public List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer, String valuePattern, ORDERBY order) {
 		List<Point<String>> points = this.gpregion(key, lineBuffer.getLinePolygon(), valuePattern);
-		return this.sortBy(order, points, lineBuffer.getLinestring());
+		return this.sortBy(order, points, lineBuffer);
 	}
 
 	@Override
 	public List<Point<byte[]>> gpregion(byte[] key, LineStringBuffer lineBuffer, byte[] valuePattern, ORDERBY order) {
 		List<Point<byte[]>> points = this.gpregion(key, lineBuffer.getLinePolygon(), valuePattern);
-		return this.sortBy(order, points, lineBuffer.getLinestring());
+		return this.sortBy(order, points, lineBuffer);
 	}
 
 	@Override
 	public List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer, String min, String max, String valuePattern, ORDERBY order) {
 		List<Point<String>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, valuePattern);
-		return this.sortBy(order, points, lineBuffer.getLinestring());
+		return this.sortBy(order, points, lineBuffer);
 	}
 
 	@Override
 	public List<Point<byte[]>> gpregion(byte[] key, LineStringBuffer lineBuffer, byte[] min, byte[] max, byte[] valuePattern, ORDERBY order) {
 		List<Point<byte[]>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, valuePattern);
-		return this.sortBy(order, points, lineBuffer.getLinestring());
+		return this.sortBy(order, points, lineBuffer);
 	}
 
 	@Override
 	public List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer, String min, String max, String memberPattern,
 			String valuePattern, ORDERBY order) {
 		List<Point<String>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, memberPattern, valuePattern);
-		return this.sortBy(order, points, lineBuffer.getLinestring());
+		return this.sortBy(order, points, lineBuffer);
 	}
 
 	@Override
 	public List<Point<byte[]>> gpregion(byte[] key, LineStringBuffer lineBuffer, byte[] min, byte[] max, byte[] memberPattern,
 			byte[] valuePattern, ORDERBY order) {
 		List<Point<byte[]>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, memberPattern, valuePattern);
-		return this.sortBy(order, points, lineBuffer.getLinestring());
+		return this.sortBy(order, points, lineBuffer);
 	}
 
 	@Override
 	public List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer, String min, String max, long offset, long count,
 			String valuePattern, ORDERBY order) {
 		List<Point<String>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, valuePattern);
-		return this.sortBy(order, points, lineBuffer.getLinestring(), offset, count);
+		return this.sortBy(order, points, lineBuffer, offset, count);
 	}
 
 	@Override
 	public List<Point<byte[]>> gpregion(byte[] key, LineStringBuffer lineBuffer, byte[] min, byte[] max, long offset, long count,
 			byte[] valuePattern, ORDERBY order) {
 		List<Point<byte[]>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, valuePattern);
-		return this.sortBy(order, points, lineBuffer.getLinestring(), offset, count);
+		return this.sortBy(order, points, lineBuffer, offset, count);
 	}
 
 	@Override
 	public List<Point<String>> gpregion(final String key, final LineStringBuffer lineBuffer, final String min, final String max,
 			final long offset, final long count, final String memberPattern, final String valuePattern, ORDERBY order) {
 		List<Point<String>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, memberPattern, valuePattern);
-		return this.sortBy(order, points, lineBuffer.getLinestring(), offset, count);
+		return this.sortBy(order, points, lineBuffer, offset, count);
 	}
 
 	@Override
 	public List<Point<byte[]>> gpregion(final byte[] key, final LineStringBuffer lineBuffer, final byte[] min, final byte[] max,
 			final long offset, final long count, final byte[] memberPattern, final byte[] valuePattern, ORDERBY order) {
 		List<Point<byte[]>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, memberPattern, valuePattern);
-		return this.sortBy(order, points, lineBuffer.getLinestring(), offset, count);
+		return this.sortBy(order, points, lineBuffer, offset, count);
 	}
 
 	@SuppressWarnings("rawtypes")
-	public <T> List<Point<T>> sortBy(final ORDERBY order, final List<Point<T>> points, final LineString linestr) {
+	public <T> List<Point<T>> sortBy(final ORDERBY order, final List<Point<T>> points, final LineStringBuffer lineStringBuffer) {
 		List<Point<T>> rpoints = new ArrayList<Point<T>>();
 
-		if (linestr != null) {
-			com.vividsolutions.jts.geom.Geometry line = linestr.getGeometyOfJTS();
+		if (lineStringBuffer != null) {
+			com.vividsolutions.jts.geom.Geometry line = lineStringBuffer.getGeometyOfJTS();
 			for (Point<T> p : points) {
 				double distance = DistanceOp.distance(line, p.getGeometyOfJTS()) * GeoUtils.BYMETER;
-				p.setDistance(distance);
-				rpoints.add(p);
+				if (lineStringBuffer.getDistance() >= distance) {
+					p.setDistance(distance);
+					rpoints.add(p);
+				}
+
 			}
 		} else {
 			rpoints = points;
 		}
-		
+
 		switch (order) {
 		case DISTANCE_ASC:
 			Collections.sort(rpoints, new Comparator<Point<T>>() {
@@ -1770,10 +1831,11 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public <T> List<Point<T>> sortBy(final ORDERBY order, final List<Point<T>> points, final LineString linestr, long offset, long count) {
+	public <T> List<Point<T>> sortBy(final ORDERBY order, final List<Point<T>> points, final LineStringBuffer lineStringBuffer,
+			long offset, long count) {
 		List<Point<T>> result = null;
-		if (linestr != null) {
-			result = this.sortBy(order, points, linestr);
+		if (lineStringBuffer != null) {
+			result = this.sortBy(order, points, lineStringBuffer);
 		} else {
 			result = this.sortBy(order, points);
 		}
@@ -1807,4 +1869,91 @@ abstract class Geodis extends BinaryJedis implements GeoCommands {
 	public <T> List<Point<T>> sortBy(final ORDERBY order, final List<Point<T>> points, long offset, long count) {
 		return this.sortBy(order, points, null, offset, count);
 	}
+
+	// TDODO with Score
+
+	@Override
+	public Long ggadd(final String key, final String member, final String value, final Polygon<?> polygon, double score) {
+		checkIsInMulti();
+		client.ggadd(key, member, value, polygon, score);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggadd(final byte[] key, final byte[] member, final byte[] value, final Polygon<?> polygon, double score) {
+		checkIsInMulti();
+		client.ggadd(key, member, value, polygon, score);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggadd(final String key, final String member, final String value, final LineString<?> lineString, double score) {
+		checkIsInMulti();
+		client.ggadd(key, member, value, lineString, score);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggadd(final byte[] key, final byte[] member, final byte[] value, final LineString<?> lineString, double score) {
+		checkIsInMulti();
+		client.ggadd(key, member, value, lineString, score);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggadd(String key, String member, String value, Point<?> point, double score) {
+		checkIsInMulti();
+		client.ggadd(key, member, value, point, score);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggadd(byte[] key, byte[] member, byte[] value, Point<?> point, double score) {
+		checkIsInMulti();
+		client.ggadd(key, member, value, point, score);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggupdate(final String key, final String member, final Point<?> point, double score) {
+		checkIsInMulti();
+		client.ggupdate(key, member, point, score);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggupdate(final byte[] key, final byte[] member, final Point<?> point, double score) {
+		checkIsInMulti();
+		client.ggupdate(key, member, point, score);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggupdate(final String key, final String member, final Polygon<?> polygon, double score) {
+		checkIsInMulti();
+		client.ggupdate(key, member, polygon, score);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggupdate(final byte[] key, final byte[] member, final Polygon<?> polygon, double score) {
+		checkIsInMulti();
+		client.ggupdate(key, member, polygon, score);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggupdate(final String key, final String member, final LineString<?> lineString, double score) {
+		checkIsInMulti();
+		client.ggupdate(key, member, lineString, score);
+		return client.getIntegerReply();
+	}
+
+	@Override
+	public Long ggupdate(final byte[] key, final byte[] member, final LineString<?> lineString, double score) {
+		checkIsInMulti();
+		client.ggupdate(key, member, lineString, score);
+		return client.getIntegerReply();
+	}
+
 }

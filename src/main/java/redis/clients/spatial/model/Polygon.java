@@ -88,6 +88,7 @@ public class Polygon<T> extends Geometry<T> implements Comparable<T> {
 	}
 
 	// {"type": "Polygon", "coordinates": [[[1,1], [1,-1], [-1,-1], [-1,1], [1,1]]]}
+	@Override
 	public String getJsonStr() {
 		StringBuffer sb = new StringBuffer(POLYGON.toString());
 		Iterator<Point<T>> iters = points.iterator();
@@ -109,6 +110,7 @@ public class Polygon<T> extends Geometry<T> implements Comparable<T> {
 		return sb.toString();
 	}
 
+	@Override
 	public byte[] getJsonByte() {
 		return SafeEncoder.encode(getJsonStr());
 	}

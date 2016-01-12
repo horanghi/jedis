@@ -10,7 +10,7 @@ import redis.clients.jedis.Protocol.Type;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
 
-@ToString(exclude="gf")
+@ToString(exclude = "gf")
 public class Geometry<T> implements Serializable, Comparable<T> {
 
 	/**
@@ -24,7 +24,11 @@ public class Geometry<T> implements Serializable, Comparable<T> {
 	@Setter
 	@Getter
 	private T value;
-	
+
+	@Setter
+	@Getter
+	protected Double score = null;
+
 	final GeometryFactory gf = new GeometryFactory();
 
 	public Geometry() {
@@ -33,6 +37,12 @@ public class Geometry<T> implements Serializable, Comparable<T> {
 	public Geometry(final T member, final T value) {
 		this.member = member;
 		this.value = value;
+	}
+
+	public Geometry(final T member, final T value, double score) {
+		this.member = member;
+		this.value = value;
+		this.score = score;
 	}
 
 	public Type getType() {
@@ -50,9 +60,9 @@ public class Geometry<T> implements Serializable, Comparable<T> {
 			if (this.member instanceof String) {
 				Geometry<String> other = (Geometry<String>) o;
 				if (this.member.equals(other.getMember())) {
-					if(this.value == null && other.getValue() == null){
+					if (this.value == null && other.getValue() == null) {
 						return true;
-					}else if (this.value != null && this.value.equals(other.getValue())) {
+					} else if (this.value != null && this.value.equals(other.getValue())) {
 						return true;
 					}
 
@@ -60,9 +70,10 @@ public class Geometry<T> implements Serializable, Comparable<T> {
 			} else {
 				Geometry<byte[]> other = (Geometry<byte[]>) o;
 				if (Arrays.equals(((Geometry<byte[]>) this).getMember(), ((Geometry<byte[]>) other).getMember())) {
-					if(this.value == null && other.getValue() == null){
+					if (this.value == null && other.getValue() == null) {
 						return true;
-					}else if (this.value != null && Arrays.equals(((Geometry<byte[]>) this).getValue(), ((Geometry<byte[]>) other).getValue())) {
+					} else if (this.value != null
+							&& Arrays.equals(((Geometry<byte[]>) this).getValue(), ((Geometry<byte[]>) other).getValue())) {
 						return true;
 					}
 				}
@@ -72,6 +83,14 @@ public class Geometry<T> implements Serializable, Comparable<T> {
 			return false;
 		}
 
+	}
+
+	public String getJsonStr() {
+		return null;
+	}
+
+	public byte[] getJsonByte() {
+		return null;
 	}
 
 	@Override

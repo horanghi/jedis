@@ -79,6 +79,7 @@ public class LineString<T> extends Geometry<T> implements Comparable<T> {
 	}
 
 	// {"type": "LineString", "coordinates": [[[1,1], [1,-1], [-1,-1], [-1,1], [1,1]]]}
+	@Override
 	public String getJsonStr() {
 		StringBuffer sb = new StringBuffer(LINESTRING.toString());
 		Iterator<Point<?>> iters = points.iterator();
@@ -97,6 +98,7 @@ public class LineString<T> extends Geometry<T> implements Comparable<T> {
 
 	}
 
+	@Override
 	public byte[] getJsonByte() {
 		return SafeEncoder.encode(getJsonStr());
 	}

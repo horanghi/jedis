@@ -871,16 +871,24 @@ public class BuilderFactory {
 			if (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
-					iterator.next();
-					iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
 					return null;
 				}
 				String member = SafeEncoder.encode(fistValue);
 				String value = SafeEncoder.encode(iterator.next());
 				String geoJsonStr = SafeEncoder.encode(iterator.next());
+				byte[] score = iterator.next();
 				result = GEOMETRY.getGeometry(geoJsonStr);
 				result.setMember(member);
 				result.setValue(value);
+				if (score != null) {
+					result.setScore(Double.valueOf(SafeEncoder.encode(score)));
+				}
 			}
 			return result;
 		}
@@ -909,8 +917,12 @@ public class BuilderFactory {
 				byte[] member = fistValue;
 				byte[] value = iterator.next();
 				result = GEOMETRY.getBGeometry(iterator.next());
+				byte[] score = iterator.next();
 				result.setMember(member);
 				result.setValue(value);
+				if (score != null) {
+					result.setScore(Double.valueOf(SafeEncoder.encode(score)));
+				}
 			}
 			return result;
 		}
@@ -933,16 +945,24 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
-					iterator.next();
-					iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
 					continue;
 				}
 				String member = SafeEncoder.encode(fistValue);
 				String value = SafeEncoder.encode(iterator.next());
 				String geoJsonStr = SafeEncoder.encode(iterator.next());
 				Geometry<String> geo = GEOMETRY.getGeometry(geoJsonStr);
+				byte[] score = iterator.next();
 				geo.setMember(member);
 				geo.setValue(value);
+				if (score != null) {
+					geo.setScore(Double.valueOf(SafeEncoder.encode(score)));
+				}
 
 				result.add(geo);
 			}
@@ -968,15 +988,23 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
-					iterator.next();
-					iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
 					continue;
 				}
 				byte[] member = fistValue;
 				byte[] value = iterator.next();
 				Geometry<byte[]> geo = GEOMETRY.getBGeometry(iterator.next());
+				byte[] score = iterator.next();
 				geo.setMember(member);
 				geo.setValue(value);
+				if (score != null) {
+					geo.setScore(Double.valueOf(SafeEncoder.encode(score)));
+				}
 
 				result.add(geo);
 			}
@@ -1001,8 +1029,12 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
-					iterator.next();
-					iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
 					continue;
 				}
 				String member = SafeEncoder.encode(fistValue);
@@ -1040,8 +1072,12 @@ public class BuilderFactory {
 			while (iterator.hasNext()) {
 				byte[] fistValue = iterator.next();
 				if (fistValue == null) {
-					iterator.next();
-					iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
 					continue;
 				}
 				byte[] member = fistValue;

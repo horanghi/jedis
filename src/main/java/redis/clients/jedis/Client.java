@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
+import redis.clients.spatial.model.Geometry;
 import redis.clients.spatial.model.LineString;
 import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
@@ -1116,80 +1117,42 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	// gpregion
 
 	@Override
-	public void gpregion(final String key, final Polygon<?> polygon) {
-		gpregion(SafeEncoder.encode(key), polygon);
+	public void gpregion(final String key, final Geometry<?> geometry) {
+		gpregion(SafeEncoder.encode(key), geometry);
 	}
 
 	@Override
-	public void gpregion(final String key, final LineString<?> lineString) {
-		gpregion(SafeEncoder.encode(key), lineString);
+	public void gpregion(final String key, final Geometry<?> geometry, final String vpattern) {
+		gpregion(SafeEncoder.encode(key), geometry, SafeEncoder.encode(vpattern));
 	}
 
 	@Override
-	public void gpregion(final String key, final Point<?> point) {
-		gpregion(SafeEncoder.encode(key), point);
+	public void gpregion(final String key, final Geometry<?> geometry, final String mpattern, final String vpattern) {
+		gpregion(SafeEncoder.encode(key), geometry, SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern));
 	}
 
 	@Override
-	public void gpregion(final String key, final Polygon<?> polygon, final String vpattern) {
-		gpregion(SafeEncoder.encode(key), polygon, SafeEncoder.encode(vpattern));
+	public void gpregion(final String key, final Geometry<?> geometry, final String min, final String max, final String vpattern) {
+		gpregion(SafeEncoder.encode(key), geometry, SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(vpattern));
 	}
 
 	@Override
-	public void gpregion(final String key, final LineString<?> lineString, final String vpattern) {
-		gpregion(SafeEncoder.encode(key), lineString, SafeEncoder.encode(vpattern));
-	}
-
-	@Override
-	public void gpregion(final String key, final Point<?> point, final String vpattern) {
-		gpregion(SafeEncoder.encode(key), point, SafeEncoder.encode(vpattern));
-	}
-
-	@Override
-	public void gpregion(final String key, final Point<?> point, final String mpattern, final String vpattern) {
-		gpregion(SafeEncoder.encode(key), point, SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern));
-	}
-
-	@Override
-	public void gpregion(final String key, final Polygon<?> polygon, final String min, final String max, final String vpattern) {
-		gpregion(SafeEncoder.encode(key), polygon, SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(vpattern));
-	}
-
-	@Override
-	public void gpregion(final String key, final LineString<?> lineString, final String min, final String max, final String vpattern) {
-		gpregion(SafeEncoder.encode(key), lineString, SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(vpattern));
-	}
-
-	@Override
-	public void gpregion(final String key, final Polygon<?> polygon, final String min, final String max, final String mpattern,
+	public void gpregion(final String key, final Geometry<?> geometry, final String min, final String max, final String mpattern,
 			final String vpattern) {
-		gpregion(SafeEncoder.encode(key), polygon, SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(mpattern),
+		gpregion(SafeEncoder.encode(key), geometry, SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(mpattern),
 				SafeEncoder.encode(vpattern));
 	}
 
 	@Override
-	public void gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String vpattern) {
-		gpregion(SafeEncoder.encode(key), polygon, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count,
+	public void gpregion(String key, Geometry<?> geometry, String min, String max, long offset, long count, String vpattern) {
+		gpregion(SafeEncoder.encode(key), geometry, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count,
 				SafeEncoder.encode(vpattern));
 	}
 
 	@Override
-	public void gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String mpattern, String vpattern,
-			ORDERBY order) {
-		gpregion(SafeEncoder.encode(key), polygon, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count,
-				SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern), order);
-	}
-
-	@Override
-	public void gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count, String vpattern) {
-		gpregion(SafeEncoder.encode(key), lineString, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count,
-				SafeEncoder.encode(vpattern));
-	}
-
-	@Override
-	public void gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count, String mpattern,
+	public void gpregion(String key, Geometry<?> geometry, String min, String max, long offset, long count, String mpattern,
 			String vpattern, ORDERBY order) {
-		gpregion(SafeEncoder.encode(key), lineString, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count,
+		gpregion(SafeEncoder.encode(key), geometry, SafeEncoder.encode(min), SafeEncoder.encode(max), offset, count,
 				SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern), order);
 	}
 
@@ -1248,33 +1211,23 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void ggadd(String key, String member, String value, Polygon<?> polygon) {
-		ggadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), polygon);
+	public void ggadd(String key, String member, String value, Geometry<?> geometry) {
+		ggadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), geometry);
 	}
 
 	@Override
-	public void ggadd(String key, String member, String value, LineString<?> lineString) {
-		ggadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), lineString);
+	public void ggadd(String key, String member, String value, Geometry<?> geometry, double score) {
+		ggadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), geometry, score);
 	}
 
 	@Override
-	public void ggadd(String key, String member, String value, Point<?> point) {
-		ggadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), point);
+	public void ggupdate(String key, String member, Geometry<?> geometry) {
+		ggupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), geometry);
 	}
 
 	@Override
-	public void ggupdate(String key, String member, Polygon<?> polygon) {
-		ggupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), polygon);
-	}
-
-	@Override
-	public void ggupdate(String key, String member, LineString<?> lineString) {
-		ggupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), lineString);
-	}
-
-	@Override
-	public void ggupdate(String key, String member, Point<?> point) {
-		ggupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), point);
+	public void ggupdate(String key, String member, Geometry<?> geometry, double score) {
+		ggupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), geometry, score);
 	}
 
 	@Override
@@ -1313,18 +1266,13 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void ggrelation(String key, Polygon<?> polygon) {
-		ggrelation(SafeEncoder.encode(key), polygon);
+	public void ggrelation(String key, Geometry<?> geometry) {
+		ggrelation(SafeEncoder.encode(key), geometry);
 	}
 
 	@Override
-	public void ggrelation(String key, LineString<?> lineString) {
-		ggrelation(SafeEncoder.encode(key), lineString);
-	}
-
-	@Override
-	public void ggrelation(String key, Point<?> point) {
-		ggrelation(SafeEncoder.encode(key), point);
+	public void ggrelation(String key, Geometry<?> geometry, String min, String max) {
+		ggrelation(SafeEncoder.encode(key), geometry, SafeEncoder.encode(min), SafeEncoder.encode(max));
 	}
 
 	@Override
@@ -1347,6 +1295,12 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 		ggnn(SafeEncoder.encode(key), lat, lon, count, SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern));
 	}
 
+	@Override
+	public void ggnn(String key, double lat, double lon, long count, String mpattern, String vpattern, String min, String max) {
+		ggnn(SafeEncoder.encode(key), lat, lon, count, SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern), SafeEncoder.encode(min),
+				SafeEncoder.encode(max));
+	}
+
 	/*Geometry */
 
 	@Override
@@ -1365,18 +1319,8 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gmadd(String key, String member, String value, Polygon<?> polygon) {
-		gmadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), polygon);
-	}
-
-	@Override
-	public void gmadd(String key, String member, String value, LineString<?> lineString) {
-		gmadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), lineString);
-	}
-
-	@Override
-	public void gmadd(String key, String member, String value, Point<?> point) {
-		gmadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), point);
+	public void gmadd(String key, String member, String value, Geometry<?> geometry) {
+		gmadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), geometry);
 	}
 
 	@Override
@@ -1385,18 +1329,8 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gmupdate(String key, String member, Polygon<?> polygon) {
-		gmupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), polygon);
-	}
-
-	@Override
-	public void gmupdate(String key, String member, LineString<?> lineString) {
-		gmupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), lineString);
-	}
-
-	@Override
-	public void gmupdate(String key, String member, Point<?> point) {
-		gmupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), point);
+	public void gmupdate(String key, String member, Geometry<?> geometry) {
+		gmupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), geometry);
 	}
 
 	@Override

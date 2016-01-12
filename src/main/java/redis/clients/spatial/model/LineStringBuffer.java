@@ -19,6 +19,7 @@ public class LineStringBuffer {
 	final com.vividsolutions.jts.geom.LineString linear;
 	final com.vividsolutions.jts.geom.Geometry buffer;
 
+	@Getter
 	final double distance;
 	final UNITS unit;
 

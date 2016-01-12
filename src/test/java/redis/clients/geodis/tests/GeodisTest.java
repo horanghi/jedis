@@ -60,7 +60,7 @@ public class GeodisTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		// spatial redis
-		geodisPool = new JedisPool(new GenericObjectPoolConfig(), "172.19.114.203", 19006, 2000, "1234");
+		geodisPool = new JedisPool(new GenericObjectPoolConfig(), "172.19.114.203", 19007, 2000, "1234");
 
 	}
 
@@ -790,7 +790,7 @@ public class GeodisTest {
 		assertTrue(rpoints.contains(car));
 		assertTrue(rpoints.contains(notP));
 
-		rpoints = geodis.gpregion(key, new LineStringBuffer(linestring, 424, UNITS.M));
+		rpoints = geodis.gpregion(key, new LineStringBuffer(linestring, 425, UNITS.M));
 		assertTrue(rpoints.contains(skp));
 		assertTrue(rpoints.contains(car));
 		assertFalse(rpoints.contains(notP));
@@ -1512,6 +1512,7 @@ public class GeodisTest {
 		assertThat(geodis.ggadd(key, members[0], value, polygon), is(OKl));
 		assertThat(geodis.ggadd(key, members[1], value, linestr), is(OKl));
 		assertThat(geodis.ggadd(key, members[2], value, point), is(OKl));
+		
 		assertThat((Polygon<String>) geodis.ggget(key, members[0]), is(polygon));
 		assertThat((LineString<String>) geodis.ggget(key, members[1]), is(linestr));
 		assertThat((Point<String>) geodis.ggget(key, members[2]), is(point));

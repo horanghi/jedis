@@ -26,7 +26,6 @@ public class Point<T> extends Geometry<T> implements Comparable<T>, Cloneable {
 	@Getter
 	private double y;
 
-	private Double score = null;
 	@Setter
 	@Getter
 	private double distance;
@@ -65,14 +64,6 @@ public class Point<T> extends Geometry<T> implements Comparable<T>, Cloneable {
 		return this.type;
 	}
 
-	public void setScore(Double score) {
-		this.score = score;
-	}
-
-	public Double getScore() {
-		return this.score;
-	}
-
 	@SuppressWarnings("unchecked")
 	public boolean equals(Object o) {
 		if (o == this) {
@@ -104,12 +95,14 @@ public class Point<T> extends Geometry<T> implements Comparable<T>, Cloneable {
 	}
 
 	// {"type": "Point", "coordinates": [1,1]}
+	@Override
 	public String getJsonStr() {
 		StringBuffer sb = new StringBuffer(POINT.toString());
 		sb.append(OP.str).append(this.y).append(",").append(this.x).append(CL.str).append(CCL.str);
 		return sb.toString();
 	}
 
+	@Override
 	public byte[] getJsonByte() {
 		return SafeEncoder.encode(getJsonStr());
 	}

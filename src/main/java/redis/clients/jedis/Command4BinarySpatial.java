@@ -3,6 +3,7 @@ package redis.clients.jedis;
 import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
+import redis.clients.spatial.model.Geometry;
 import redis.clients.spatial.model.LineString;
 import redis.clients.spatial.model.Point;
 import redis.clients.spatial.model.Polygon;
@@ -107,34 +108,19 @@ public interface Command4BinarySpatial {
 
 	// gpregion
 
-	void gpregion(byte[] key, Polygon<?> polygon);
+	void gpregion(byte[] key, Geometry<?> geometry);
 
-	void gpregion(byte[] key, LineString<?> lineString);
+	void gpregion(byte[] key, Geometry<?> geometry, byte[] vpattern);
 
-	void gpregion(byte[] key, Point<?> point);
+	void gpregion(byte[] key, Geometry<?> geometry, byte[] mpattern, byte[] vpattern);
 
-	void gpregion(byte[] key, Polygon<?> polygon, byte[] vpattern);
+	void gpregion(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, byte[] vpattern);
 
-	void gpregion(byte[] key, LineString<?> lineString, byte[] vpattern);
+	void gpregion(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, byte[] mpattern, byte[] vpattern);
 
-	void gpregion(byte[] key, Point<?> point, byte[] vpattern);
+	void gpregion(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, long offset, long count, byte[] vpattern);
 
-	void gpregion(byte[] key, Point<?> point, byte[] mpattern, byte[] vpattern);
-
-	void gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, byte[] vpattern);
-
-	void gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, byte[] vpattern);
-
-	void gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, byte[] mpattern, byte[] vpattern);
-
-	void gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count, byte[] vpattern);
-
-	void gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count, byte[] mpattern, byte[] vpattern,
-			ORDERBY order);
-
-	void gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, long offset, long count, byte[] vpattern);
-
-	void gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, long offset, long count, byte[] mpattern, byte[] vpattern,
+	void gpregion(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, long offset, long count, byte[] mpattern, byte[] vpattern,
 			ORDERBY order);
 
 	void gprange(byte[] key, long start, long stop);
@@ -159,13 +145,11 @@ public interface Command4BinarySpatial {
 
 	void ggexists(byte[] key, byte[] member);
 
-	void ggadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon);
+	void ggadd(byte[] key, byte[] member, byte[] value, Geometry<?> geometry);
 
-	void ggadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString);
+	void ggadd(byte[] key, byte[] member, byte[] value, Geometry<?> geometry, double score);
 
 	void ggrange(byte[] key, long start, long stop);
-
-	void ggadd(byte[] key, byte[] member, byte[] value, Point<?> point);
 
 	void ggrevrange(byte[] key, long start, long stop);
 
@@ -177,11 +161,9 @@ public interface Command4BinarySpatial {
 
 	void ggmget(byte[] key, byte[]... members);
 
-	void ggrelation(byte[] key, Polygon<?> polygon);
+	void ggrelation(byte[] key, Geometry<?> geometry);
 
-	void ggrelation(byte[] key, LineString<?> lineString);
-
-	void ggrelation(byte[] key, Point<?> point);
+	void ggrelation(byte[] key, Geometry<?> geometry, byte[] min, byte[] max);
 
 	void ggnn(byte[] key, double lat, double lon, long count);
 
@@ -189,11 +171,11 @@ public interface Command4BinarySpatial {
 
 	void ggnn(byte[] key, double lat, double lon, long count, byte[] mpattern, byte[] vpattern);
 
-	void ggupdate(byte[] key, byte[] member, Point<?> point);
+	void ggnn(byte[] key, double lat, double lon, long count, byte[] mpattern, byte[] vpattern, byte[] min, byte[] max);
 
-	void ggupdate(byte[] key, byte[] member, Polygon<?> polygon);
+	void ggupdate(byte[] key, byte[] member, Geometry<?> geometry);
 
-	void ggupdate(byte[] key, byte[] member, LineString<?> lineString);
+	void ggupdate(byte[] key, byte[] member, Geometry<?> geometry, double score);
 
 	void ggrelationByMember(byte[] key, byte[] byKey, byte[] byMember);
 
@@ -207,11 +189,7 @@ public interface Command4BinarySpatial {
 
 	void gmrebuildBoundary(byte[] key, double minx, double miny, double maxx, double maxy);
 
-	void gmadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon);
-
-	void gmadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString);
-
-	void gmadd(byte[] key, byte[] member, byte[] value, Point<?> point);
+	void gmadd(byte[] key, byte[] member, byte[] value, Geometry<?> geometry);
 
 	void gmadd(byte[] key, double x, double y, byte[] member, byte[] value);
 
@@ -237,11 +215,7 @@ public interface Command4BinarySpatial {
 
 	void gmnn(byte[] key, double x, double y, long count, byte[] vpattern);
 
-	void gmupdate(byte[] key, byte[] member, Point<?> point);
-
-	void gmupdate(byte[] key, byte[] member, Polygon<?> polygon);
-
-	void gmupdate(byte[] key, byte[] member, LineString<?> lineString);
+	void gmupdate(byte[] key, byte[] member, Geometry<?> geometry);
 
 	void gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember);
 

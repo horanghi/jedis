@@ -12,6 +12,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import redis.clients.jedis.BinaryClient.LIST_POSITION;
+import redis.clients.spatial.model.LineString;
+import redis.clients.spatial.model.Point;
+import redis.clients.spatial.model.Polygon;
 import redis.clients.util.SafeEncoder;
 import redis.clients.util.Slowlog;
 
@@ -1243,7 +1246,7 @@ public class Jedis extends Geodis implements JedisCommands, MultiKeyCommands, Ad
 		client.zadd(key, score, member);
 		return client.getIntegerReply();
 	}
-	
+
 	public Long zadd(final String key, final Map<String, Double> scoreMembers) {
 		checkIsInMulti();
 		client.zadd(key, scoreMembers);
@@ -1257,7 +1260,6 @@ public class Jedis extends Geodis implements JedisCommands, MultiKeyCommands, Ad
 		return new LinkedHashSet<String>(members);
 	}
 
-	
 	/**
 	 * Remove the specified member from the sorted set value stored at key. If member was not a member of the set no operation is performed.
 	 * If key does not not hold a set value an error is returned.
@@ -3031,4 +3033,5 @@ public class Jedis extends Geodis implements JedisCommands, MultiKeyCommands, Ad
 		client.pubsubNumSub(channels);
 		return BuilderFactory.STRING_MAP.build(client.getBinaryMultiBulkReply());
 	}
+
 }

@@ -1035,6 +1035,8 @@ public class BuilderFactory {
 						iterator.next();
 					if (iterator.hasNext())
 						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
 					continue;
 				}
 				String member = SafeEncoder.encode(fistValue);
@@ -1042,12 +1044,15 @@ public class BuilderFactory {
 				byte[] distance = iterator.next();
 				String geoJsonStr = SafeEncoder.encode(iterator.next());
 				Geometry<String> geo = GEOMETRY.getGeometry(geoJsonStr);
+				byte[] score = iterator.next();
 				geo.setMember(member);
 				geo.setValue(value);
 				if (geo.getType() == Type.POINT) {
 					((Point<String>) geo).setDistance(Double.valueOf(SafeEncoder.encode(distance)));
 				}
-
+				if (score != null) {
+					geo.setScore(Double.valueOf(SafeEncoder.encode(score)));
+				}
 				result.add(geo);
 			}
 			return result;
@@ -1078,16 +1083,22 @@ public class BuilderFactory {
 						iterator.next();
 					if (iterator.hasNext())
 						iterator.next();
+					if (iterator.hasNext())
+						iterator.next();
 					continue;
 				}
 				byte[] member = fistValue;
 				byte[] value = iterator.next();
 				byte[] distanceb = iterator.next();
 				Geometry<byte[]> geo = GEOMETRY.getBGeometry(iterator.next());
+				byte[] score = iterator.next();
 				geo.setMember(member);
 				geo.setValue(value);
 				if (geo.getType() == Type.POINT) {
 					((Point<byte[]>) geo).setDistance(Double.valueOf(SafeEncoder.encode(distanceb)));
+				}
+				if (score != null) {
+					geo.setScore(Double.valueOf(SafeEncoder.encode(score)));
 				}
 				result.add(geo);
 			}

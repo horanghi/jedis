@@ -1329,8 +1329,23 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
+	public void gmadd(String key, String member, String value, Geometry<?> geometry, double score) {
+		gmadd(SafeEncoder.encode(key), SafeEncoder.encode(member), SafeEncoder.encode(value), geometry, score);
+	}
+
+	@Override
+	public void gmadd(String key, double x, double y, String member, String value, double score) {
+		gmadd(SafeEncoder.encode(key), x, y, SafeEncoder.encode(member), SafeEncoder.encode(value), score);
+	}
+
+	@Override
 	public void gmupdate(String key, String member, Geometry<?> geometry) {
 		gmupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), geometry);
+	}
+
+	@Override
+	public void gmupdate(String key, String member, Geometry<?> geometry, double score) {
+		gmupdate(SafeEncoder.encode(key), SafeEncoder.encode(member), geometry, score);
 	}
 
 	@Override
@@ -1369,23 +1384,36 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gmrelation(String key, Polygon<?> polygon) {
-		gmrelation(SafeEncoder.encode(key), polygon);
+	public void gmrelation(String key, Geometry<?> geometry) {
+		gmrelation(SafeEncoder.encode(key), geometry);
 	}
 
 	@Override
-	public void gmrelation(String key, LineString<?> lineString) {
-		gmrelation(SafeEncoder.encode(key), lineString);
+	public void gmrelation(String key, Geometry<?> geometry, String mpattern, String vpattern) {
+		gmrelation(SafeEncoder.encode(key), geometry, SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern));
 	}
 
 	@Override
-	public void gmrelation(String key, Point<?> point) {
-		gmrelation(SafeEncoder.encode(key), point);
+	public void gmrelation(String key, Geometry<?> geometry, String min, String max, String mpattern, String vpattern) {
+		gmrelation(SafeEncoder.encode(key), geometry, SafeEncoder.encode(min), SafeEncoder.encode(max), SafeEncoder.encode(mpattern),
+				SafeEncoder.encode(vpattern));
 	}
 
 	@Override
 	public void gmrelationByMember(String key, String byKey, String byMember) {
 		gmrelationByMember(SafeEncoder.encode(key), SafeEncoder.encode(byKey), SafeEncoder.encode(byMember));
+	}
+
+	@Override
+	public void gmrelationByMember(String key, String byKey, String byMember, String mpattern, String vpattern) {
+		gmrelationByMember(SafeEncoder.encode(key), SafeEncoder.encode(byKey), SafeEncoder.encode(byMember), SafeEncoder.encode(mpattern),
+				SafeEncoder.encode(vpattern));
+	}
+
+	@Override
+	public void gmrelationByMember(String key, String byKey, String byMember, String min, String max, String mpattern, String vpattern) {
+		gmrelationByMember(SafeEncoder.encode(key), SafeEncoder.encode(byKey), SafeEncoder.encode(byMember), SafeEncoder.encode(min),
+				SafeEncoder.encode(max), SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern));
 	}
 
 	@Override

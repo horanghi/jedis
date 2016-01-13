@@ -70,7 +70,7 @@ public class GeoPipeliningTest extends Assert {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		geodisPool = new JedisPool(new GenericObjectPoolConfig(), "172.19.114.203", 19006, 2000, "1234");
+		geodisPool = new JedisPool(new GenericObjectPoolConfig(), "172.19.114.203", 19007, 2000, "1234");
 	}
 
 	@AfterClass

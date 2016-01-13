@@ -37,8 +37,6 @@ public interface GeoCommands {
 
 	Long gpadd(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] member, byte[] value, double score);
 
-	// gpupdate
-
 	Long gpupdate(String key, String member, double lat, double lon);
 
 	Long gpupdate(byte[] key, byte[] member, double lat, double lon);
@@ -50,6 +48,8 @@ public interface GeoCommands {
 	Long gpupdate(String key, String member, double lat, double lon, double radius, UNITS unit, String value, double score);
 
 	Long gpupdate(byte[] key, byte[] member, double lat, double lon, double radius, UNITS unit, byte[] value, double score);
+
+	// gpupdate
 
 	Long gpupdate(String key, String member, double radius, UNITS unit);
 
@@ -199,65 +199,35 @@ public interface GeoCommands {
 
 	// gpregion
 
-	List<Point<String>> gpregion(String key, Polygon<?> polygon);
+	List<Point<String>> gpregion(String key, Geometry<?> geometry);
 
-	List<Point<byte[]>> gpregion(byte[] key, Polygon<?> polygon);
+	List<Point<byte[]>> gpregion(byte[] key, Geometry<?> geometry);
 
-	List<Point<String>> gpregion(String key, LineString<?> lineString);
+	List<Point<String>> gpregion(String key, Geometry<?> geometry, String valuePattern);
 
-	List<Point<byte[]>> gpregion(byte[] key, LineString<?> lineString);
+	List<Point<byte[]>> gpregion(byte[] key, Geometry<?> geometry, byte[] valuePattern);
 
-	List<Point<String>> gpregion(String key, Point<?> point);
+	List<Point<String>> gpregion(String key, Geometry<?> geometry, String memberPattern, String valuePattern);
 
-	List<Point<byte[]>> gpregion(byte[] key, Point<?> point);
+	List<Point<byte[]>> gpregion(byte[] key, Geometry<?> geometry, byte[] memberPattern, byte[] valuePattern);
 
-	List<Point<String>> gpregion(String key, Polygon<?> polygon, String valuePattern);
+	List<Point<String>> gpregion(String key, Geometry<?> geometry, String min, String max, String valuePattern);
 
-	List<Point<byte[]>> gpregion(byte[] key, Polygon<?> polygon, byte[] valuePattern);
+	List<Point<byte[]>> gpregion(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, byte[] valuePattern);
 
-	List<Point<String>> gpregion(String key, LineString<?> lineString, String valuePattern);
+	List<Point<String>> gpregion(String key, Geometry<?> geometry, String min, String max, String memberPattern, String valuePattern);
 
-	List<Point<byte[]>> gpregion(byte[] key, LineString<?> lineString, byte[] valuePattern);
+	List<Point<byte[]>> gpregion(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, byte[] memberPattern, byte[] valuePattern);
 
-	List<Point<String>> gpregion(String key, Point<?> point, String valuePattern);
+	List<Point<String>> gpregion(String key, Geometry<?> geometry, String min, String max, long offset, long count, String valuePattern);
 
-	List<Point<byte[]>> gpregion(byte[] key, Point<?> point, byte[] valuePattern);
+	List<Point<byte[]>> gpregion(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, long offset, long count, byte[] valuePattern);
 
-	List<Point<String>> gpregion(String key, Polygon<?> polygon, String min, String max, String valuePattern);
-
-	List<Point<byte[]>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, byte[] valuePattern);
-
-	List<Point<String>> gpregion(String key, Polygon<?> polygon, String min, String max, String memberPattern, String valuePattern);
-
-	List<Point<byte[]>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, byte[] memberPattern, byte[] valuePattern);
-
-	List<Point<String>> gpregion(String key, LineString<?> lineString, String min, String max, String valuePattern);
-
-	List<Point<byte[]>> gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, byte[] valuePattern);
-
-	List<Point<String>> gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String valuePattern);
-
-	List<Point<byte[]>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count, byte[] valuePattern);
-
-	List<Point<String>> gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count, String valuePattern);
-
-	List<Point<byte[]>> gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, long offset, long count, byte[] valuePattern);
-
-	List<Point<String>> gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count, String memberPattern,
+	List<Point<String>> gpregion(String key, Geometry<?> geometry, String min, String max, long offset, long count, String memberPattern,
 			String valuePattern, ORDERBY order);
 
-	List<Point<byte[]>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count, byte[] memberPattern,
+	List<Point<byte[]>> gpregion(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, long offset, long count, byte[] memberPattern,
 			byte[] valuePattern, ORDERBY order);
-
-	List<Point<String>> gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count,
-			String memberPattern, String valuePattern, ORDERBY order);
-
-	List<Point<byte[]>> gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, long offset, long count,
-			byte[] memberPattern, byte[] valuePattern, ORDERBY order);
-
-	List<Point<String>> gpregion(String key, Point<?> point, String memberPattern, String valuePattern);
-
-	List<Point<byte[]>> gpregion(byte[] key, Point<?> point, byte[] memberPattern, byte[] valuePattern);
 
 	List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer);
 
@@ -339,29 +309,13 @@ public interface GeoCommands {
 
 	Long ggexists(byte[] key, byte[] member);
 
-	Long ggadd(String key, String member, String value, Polygon<?> polygon);
+	Long ggadd(String key, String member, String value, Geometry<?> geometry);
 
-	Long ggadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon);
+	Long ggadd(byte[] key, byte[] member, byte[] value, Geometry<?> geometry);
 
-	Long ggadd(String key, String member, String value, LineString<?> lineString);
+	Long ggadd(String key, String member, String value, Geometry<?> geometry, double score);
 
-	Long ggadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString);
-
-	Long ggadd(String key, String member, String value, Point<?> point);
-
-	Long ggadd(byte[] key, byte[] member, byte[] value, Point<?> point);
-
-	Long ggadd(String key, String member, String value, Polygon<?> polygon, double score);
-
-	Long ggadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon, double score);
-
-	Long ggadd(String key, String member, String value, LineString<?> lineString, double score);
-
-	Long ggadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString, double score);
-
-	Long ggadd(String key, String member, String value, Point<?> point, double score);
-
-	Long ggadd(byte[] key, byte[] member, byte[] value, Point<?> point, double score);
+	Long ggadd(byte[] key, byte[] member, byte[] value, Geometry<?> geometry, double score);
 
 	List<Geometry<String>> ggrange(String key, long start, long stop);
 
@@ -387,29 +341,13 @@ public interface GeoCommands {
 
 	List<Geometry<byte[]>> ggmget(byte[] key, byte[]... members);
 
-	List<Geometry<String>> ggrelation(String key, Polygon<?> polygon);
+	List<Geometry<String>> ggrelation(String key, Geometry<?> geometry);
 
-	List<Geometry<byte[]>> ggrelation(byte[] key, Polygon<?> polygon);
+	List<Geometry<byte[]>> ggrelation(byte[] key, Geometry<?> geometry);
 
-	List<Geometry<String>> ggrelation(String key, LineString<?> lineString);
+	List<Geometry<String>> ggrelation(String key, Geometry<?> geometry, String min, String max);
 
-	List<Geometry<byte[]>> ggrelation(byte[] key, LineString<?> lineString);
-
-	List<Geometry<String>> ggrelation(String key, Point<?> point);
-
-	List<Geometry<byte[]>> ggrelation(byte[] key, Point<?> point);
-
-	List<Geometry<String>> ggrelation(String key, Polygon<?> polygon, String min, String max);
-
-	List<Geometry<byte[]>> ggrelation(byte[] key, Polygon<?> polygon, byte[] min, byte[] max);
-
-	List<Geometry<String>> ggrelation(String key, LineString<?> lineString, String min, String max);
-
-	List<Geometry<byte[]>> ggrelation(byte[] key, LineString<?> lineString, byte[] min, byte[] max);
-
-	List<Geometry<String>> ggrelation(String key, Point<?> point, String min, String max);
-
-	List<Geometry<byte[]>> ggrelation(byte[] key, Point<?> point, byte[] min, byte[] max);
+	List<Geometry<byte[]>> ggrelation(byte[] key, Geometry<?> geometry, byte[] min, byte[] max);
 
 	List<Geometry<String>> ggnn(String key, double lat, double lon, long count);
 
@@ -429,29 +367,13 @@ public interface GeoCommands {
 	List<Geometry<byte[]>> ggnn(byte[] key, double lat, double lon, long count, byte[] memberPattern, byte[] valuePattern, byte[] min,
 			byte[] max);
 
-	Long ggupdate(String key, String member, Point<?> point);
+	Long ggupdate(String key, String member, Geometry<?> geometry);
 
-	Long ggupdate(byte[] key, byte[] member, Point<?> point);
+	Long ggupdate(byte[] key, byte[] member, Geometry<?> geometry);
 
-	Long ggupdate(String key, String member, Polygon<?> polygon);
+	Long ggupdate(String key, String member, Geometry<?> geometry, double score);
 
-	Long ggupdate(byte[] key, byte[] member, Polygon<?> polygon);
-
-	Long ggupdate(String key, String member, LineString<?> lineString);
-
-	Long ggupdate(byte[] key, byte[] member, LineString<?> lineString);
-
-	Long ggupdate(String key, String member, Point<?> point, double score);
-
-	Long ggupdate(byte[] key, byte[] member, Point<?> point, double score);
-
-	Long ggupdate(String key, String member, Polygon<?> polygon, double score);
-
-	Long ggupdate(byte[] key, byte[] member, Polygon<?> polygon, double score);
-
-	Long ggupdate(String key, String member, LineString<?> lineString, double score);
-
-	Long ggupdate(byte[] key, byte[] member, LineString<?> lineString, double score);
+	Long ggupdate(byte[] key, byte[] member, Geometry<?> geometry, double score);
 
 	List<Geometry<String>> ggrelationByMember(String key, String byKey, String byMember);
 
@@ -477,21 +399,21 @@ public interface GeoCommands {
 
 	Long gmrebuildBoundary(byte[] key, double minx, double miny, double maxx, double maxy);
 
-	Long gmadd(String key, String member, String value, Polygon<?> polygon);
+	Long gmadd(String key, String member, String value, Geometry<?> geometry);
 
-	Long gmadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon);
-
-	Long gmadd(String key, String member, String value, LineString<?> lineString);
-
-	Long gmadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString);
-
-	Long gmadd(String key, String member, String value, Point<?> point);
-
-	Long gmadd(byte[] key, byte[] member, byte[] value, Point<?> point);
+	Long gmadd(byte[] key, byte[] member, byte[] value, Geometry<?> geometry);
 
 	Long gmadd(String key, double x, double y, String member, String value);
 
 	Long gmadd(byte[] key, double x, double y, byte[] member, byte[] value);
+
+	Long gmadd(String key, String member, String value, Geometry<?> geometry, double score);
+
+	Long gmadd(byte[] key, byte[] member, byte[] value, Geometry<?> geometry, double score);
+
+	Long gmadd(String key, double x, double y, String member, String value, double score);
+
+	Long gmadd(byte[] key, double x, double y, byte[] member, byte[] value, double score);
 
 	List<Geometry<String>> gmrange(String key, long start, long stop);
 
@@ -517,17 +439,17 @@ public interface GeoCommands {
 
 	List<Geometry<byte[]>> gmmget(byte[] key, byte[]... members);
 
-	List<Geometry<String>> gmrelation(String key, Polygon<?> polygon);
+	List<Geometry<String>> gmrelation(String key, Geometry<?> geometry);
 
-	List<Geometry<byte[]>> gmrelation(byte[] key, Polygon<?> polygon);
+	List<Geometry<byte[]>> gmrelation(byte[] key, Geometry<?> geometry);
 
-	List<Geometry<String>> gmrelation(String key, LineString<?> lineString);
+	List<Geometry<String>> gmrelation(String key, Geometry<?> geometry, String memberPattern, String valuePattern);
 
-	List<Geometry<byte[]>> gmrelation(byte[] key, LineString<?> lineString);
+	List<Geometry<byte[]>> gmrelation(byte[] key, Geometry<?> geometry, byte[] memberPattern, byte[] valuePattern);
 
-	List<Geometry<String>> gmrelation(String key, Point<?> point);
+	List<Geometry<String>> gmrelation(String key, Geometry<?> geometry, String min, String max, String memberPattern, String valuePattern);
 
-	List<Geometry<byte[]>> gmrelation(byte[] key, Point<?> point);
+	List<Geometry<byte[]>> gmrelation(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, byte[] memberPattern, byte[] valuePattern);
 
 	List<Geometry<String>> gmnn(String key, double x, double y, long count);
 
@@ -537,20 +459,26 @@ public interface GeoCommands {
 
 	List<Geometry<byte[]>> gmnn(byte[] key, double x, double y, long count, byte[] valuePattern);
 
-	Long gmupdate(String key, String member, Point<?> point);
+	Long gmupdate(String key, String member, Geometry<?> geometry);
 
-	Long gmupdate(byte[] key, byte[] member, Point<?> point);
+	Long gmupdate(byte[] key, byte[] member, Geometry<?> geometry);
 
-	Long gmupdate(String key, String member, Polygon<?> polygon);
+	Long gmupdate(String key, String member, Geometry<?> geometry, double score);
 
-	Long gmupdate(byte[] key, byte[] member, Polygon<?> polygon);
-
-	Long gmupdate(String key, String member, LineString<?> lineString);
-
-	Long gmupdate(byte[] key, byte[] member, LineString<?> lineString);
+	Long gmupdate(byte[] key, byte[] member, Geometry<?> geometry, double score);
 
 	List<Geometry<String>> gmrelationByMember(String key, String byKey, String byMember);
 
 	List<Geometry<byte[]>> gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember);
+
+	List<Geometry<String>> gmrelationByMember(String key, String byKey, String byMember, String memberPattern, String valuePattern);
+
+	List<Geometry<byte[]>> gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember, byte[] memberPattern, byte[] valuePattern);
+
+	List<Geometry<String>> gmrelationByMember(String key, String byKey, String byMember, String min, String max, String memberPattern,
+			String valuePattern);
+
+	List<Geometry<byte[]>> gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember, byte[] min, byte[] max, byte[] memberPattern,
+			byte[] valuePattern);
 
 }

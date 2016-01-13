@@ -943,21 +943,39 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
+	public void gmadd(byte[] key, byte[] member, byte[] value, Geometry<?> geometry, double score) {
+		// GMADD key member value geojson score
+		sendCommand(GMADD, key, member, value, geometry.getJsonByte(), SCORE.raw, toByteArray(score));
+	}
+
+	@Override
+	public void gmadd(byte[] key, double x, double y, byte[] member, byte[] value, double score) {
+		// GMADD key member value geojson score
+		sendCommand(GMADD, key, member, value, new Point<byte[]>(x, y).getJsonByte(), SCORE.raw, toByteArray(score));
+	}
+
+	@Override
 	public void gmupdate(byte[] key, byte[] member, Geometry<?> geometry) {
 		// GMUPDATEBY key member geojson
 		sendCommand(GMUPDATE, key, member, geometry.getJsonByte());
 	}
 
 	@Override
+	public void gmupdate(byte[] key, byte[] member, Geometry<?> geometry, double score) {
+		// GMUPDATEBY key member geojson
+		sendCommand(GMUPDATE, key, member, geometry.getJsonByte(), SCORE.raw, toByteArray(score));
+	}
+
+	@Override
 	public void gmrange(byte[] key, long start, long stop) {
 		// GMADD key member value geojson
-		sendCommand(GMRANGE, key, toByteArray(start), toByteArray(stop), WITHVALUES.raw);
+		sendCommand(GMRANGE, key, toByteArray(start), toByteArray(stop), WITHVALUES.raw, WITHSCORES.raw, WITHGEOJSON.raw);
 	}
 
 	@Override
 	public void gmrevrange(byte[] key, long start, long stop) {
 		// GMADD key member value geojson
-		sendCommand(GMREVRANGE, key, toByteArray(start), toByteArray(stop), WITHVALUES.raw);
+		sendCommand(GMREVRANGE, key, toByteArray(start), toByteArray(stop), WITHVALUES.raw, WITHSCORES.raw, WITHGEOJSON.raw);
 	}
 
 	@Override
@@ -990,27 +1008,29 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void gmrelation(byte[] key, Polygon<?> polygon) {
+	public void gmrelation(byte[] key, Geometry<?> geometry) {
 		/*
 		 * GMRELATION key geojson CONTAINS|WITHIN [WITHVALUES] [WITHGEOJSON]
 		 */
-		sendCommand(GMRELATION, key, polygon.getJsonByte(), CONTAINS.raw, WITHVALUES.raw, WITHGEOJSON.raw);
+		sendCommand(GMRELATION, key, geometry.getJsonByte(), CONTAINS.raw, WITHVALUES.raw, WITHSCORES.raw, WITHGEOJSON.raw);
 	}
 
 	@Override
-	public void gmrelation(byte[] key, LineString<?> lineString) {
+	public void gmrelation(byte[] key, Geometry<?> geometry, byte[] mpattern, byte[] vpattern) {
 		/*
 		 * GMRELATION key geojson CONTAINS|WITHIN [WITHVALUES] [WITHGEOJSON]
 		 */
-		sendCommand(GMRELATION, key, lineString.getJsonByte(), CONTAINS.raw, WITHVALUES.raw, WITHGEOJSON.raw);
+		sendCommand(GMRELATION, key, geometry.getJsonByte(), CONTAINS.raw, MATCH.raw, mpattern, MATCHVALUE.raw, vpattern, WITHVALUES.raw,
+				WITHSCORES.raw, WITHGEOJSON.raw);
 	}
 
 	@Override
-	public void gmrelation(byte[] key, Point<?> point) {
+	public void gmrelation(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, byte[] mpattern, byte[] vpattern) {
 		/*
 		 * GMRELATION key geojson CONTAINS|WITHIN [WITHVALUES] [WITHGEOJSON]
 		 */
-		sendCommand(GMRELATION, key, point.getJsonByte(), CONTAINS.raw, WITHVALUES.raw, WITHGEOJSON.raw);
+		sendCommand(GMRELATION, key, geometry.getJsonByte(), CONTAINS.raw, SCORE.raw, min, max, MATCH.raw, mpattern, MATCHVALUE.raw,
+				vpattern, WITHVALUES.raw, WITHSCORES.raw, WITHGEOJSON.raw);
 	}
 
 	@Override
@@ -1018,7 +1038,25 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		/*
 		 * GMRELATIONBYMEMBER key BY bykey bymember CONTAINS|WITHIN [WITHVALUES] [WITHGEOJSON]
 		 */
-		sendCommand(GMRELATIONBYMEMBER, key, BY.raw, byKey, byMember, CONTAINS.raw, WITHVALUES.raw, WITHGEOJSON.raw);
+		sendCommand(GMRELATIONBYMEMBER, key, BY.raw, byKey, byMember, CONTAINS.raw, WITHVALUES.raw, WITHSCORES.raw, WITHGEOJSON.raw);
+	}
+
+	@Override
+	public void gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember, byte[] mpattern, byte[] vpattern) {
+		/*
+		 * GMRELATIONBYMEMBER key BY bykey bymember CONTAINS|WITHIN [WITHVALUES] [WITHGEOJSON]
+		 */
+		sendCommand(GMRELATIONBYMEMBER, key, BY.raw, byKey, byMember, CONTAINS.raw, MATCH.raw, mpattern, MATCHVALUE.raw, vpattern,
+				WITHVALUES.raw, WITHSCORES.raw, WITHGEOJSON.raw);
+	}
+
+	@Override
+	public void gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember, byte[] min, byte[] max, byte[] mpattern, byte[] vpattern) {
+		/*
+		 * GMRELATIONBYMEMBER key BY bykey bymember CONTAINS|WITHIN [WITHVALUES] [WITHGEOJSON]
+		 */
+		sendCommand(GMRELATIONBYMEMBER, key, BY.raw, byKey, byMember, CONTAINS.raw, SCORE.raw, min, max, MATCH.raw, mpattern,
+				MATCHVALUE.raw, vpattern, WITHVALUES.raw, WITHSCORES.raw, WITHGEOJSON.raw);
 	}
 
 	@Override
@@ -1026,8 +1064,8 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		/*
 		 *  GMNN key latitude longitude LIMIT count [MATCHVALUE pattern] [WITHVALUES] [WITHDISTANCE] [WITHGEOJSON]
 		 */
-		sendCommand(GMNN, key, toByteArray(x), toByteArray(y), LIMIT.raw, toByteArray(count), WITHVALUES.raw, WITHDISTANCE.raw,
-				WITHGEOJSON.raw);
+		sendCommand(GMNN, key, toByteArray(x), toByteArray(y), LIMIT.raw, toByteArray(count), WITHVALUES.raw, WITHSCORES.raw,
+				WITHDISTANCE.raw, WITHGEOJSON.raw);
 	}
 
 	@Override
@@ -1036,7 +1074,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		 *  GMNN key latitude longitude LIMIT count [MATCHVALUE pattern] [WITHVALUES] [WITHDISTANCE] [WITHGEOJSON]
 		 */
 		sendCommand(GMNN, key, toByteArray(x), toByteArray(y), LIMIT.raw, toByteArray(count), MATCHVALUE.raw, vpattern, WITHVALUES.raw,
-				WITHDISTANCE.raw, WITHGEOJSON.raw);
+				WITHSCORES.raw, WITHDISTANCE.raw, WITHGEOJSON.raw);
 	}
 
 	@Override

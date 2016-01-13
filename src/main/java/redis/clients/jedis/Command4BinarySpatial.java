@@ -4,9 +4,6 @@ import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Geometry;
-import redis.clients.spatial.model.LineString;
-import redis.clients.spatial.model.Point;
-import redis.clients.spatial.model.Polygon;
 
 public interface Command4BinarySpatial {
 
@@ -193,6 +190,10 @@ public interface Command4BinarySpatial {
 
 	void gmadd(byte[] key, double x, double y, byte[] member, byte[] value);
 
+	void gmadd(byte[] key, byte[] member, byte[] value, Geometry<?> geometry, double score);
+
+	void gmadd(byte[] key, double x, double y, byte[] member, byte[] value, double score);
+
 	void gmrange(byte[] key, long start, long stop);
 
 	void gmrevrange(byte[] key, long start, long stop);
@@ -205,11 +206,11 @@ public interface Command4BinarySpatial {
 
 	void gmmget(byte[] key, byte[]... members);
 
-	void gmrelation(byte[] key, Polygon<?> polygon);
+	void gmrelation(byte[] key, Geometry<?> geometry);
 
-	void gmrelation(byte[] key, LineString<?> lineString);
+	void gmrelation(byte[] key, Geometry<?> geometry, byte[] mpattern, byte[] vpattern);
 
-	void gmrelation(byte[] key, Point<?> point);
+	void gmrelation(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, byte[] mpattern, byte[] vpattern);
 
 	void gmnn(byte[] key, double x, double y, long count);
 
@@ -217,6 +218,12 @@ public interface Command4BinarySpatial {
 
 	void gmupdate(byte[] key, byte[] member, Geometry<?> geometry);
 
+	void gmupdate(byte[] key, byte[] member, Geometry<?> geometry, double score);
+
 	void gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember);
+
+	void gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember, byte[] mpattern, byte[] vpattern);
+
+	void gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember, byte[] min, byte[] max, byte[] mpattern, byte[] vpattern);
 
 }

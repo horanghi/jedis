@@ -191,6 +191,10 @@ public interface Commands4Spatial extends Commands {
 
 	void gmadd(String key, double x, double y, String member, String value);
 
+	void gmadd(String key, String member, String value, Geometry<?> geometry, double score);
+
+	void gmadd(String key, double x, double y, String member, String value, double score);
+
 	void gmrange(String key, long start, long stop);
 
 	void gmrevrange(String key, long start, long stop);
@@ -203,11 +207,11 @@ public interface Commands4Spatial extends Commands {
 
 	void gmmget(String key, String... members);
 
-	void gmrelation(String key, Polygon<?> polygon);
+	void gmrelation(String key, Geometry<?> geometry);
 
-	void gmrelation(String key, LineString<?> lineString);
+	void gmrelation(String key, Geometry<?> geometry, String mpattern, String vpattern);
 
-	void gmrelation(String key, Point<?> point);
+	void gmrelation(String key, Geometry<?> geometry, String min, String max, String mpattern, String vpattern);
 
 	void gmnn(String key, double x, double y, long count);
 
@@ -215,6 +219,12 @@ public interface Commands4Spatial extends Commands {
 
 	void gmupdate(String key, String member, Geometry<?> geometry);
 
+	void gmupdate(String key, String member, Geometry<?> geometry, double score);
+
 	void gmrelationByMember(String key, String byKey, String byMember);
+
+	void gmrelationByMember(String key, String byKey, String byMember, String mpattern, String vpattern);
+
+	void gmrelationByMember(String key, String byKey, String byMember, String min, String max, String mpattern, String vpattern);
 
 }

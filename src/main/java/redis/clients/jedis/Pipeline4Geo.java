@@ -201,54 +201,28 @@ public interface Pipeline4Geo {
 
 	// gpregion
 
-	Response<List<Point<String>>> gpregion(String key, Polygon<?> polygon);
+	Response<List<Point<String>>> gpregion(String key, Geometry<?> geometry);
 
-	Response<List<Point<byte[]>>> gpregion(byte[] key, Polygon<?> polygon);
+	Response<List<Point<byte[]>>> gpregion(byte[] key, Geometry<?> geometry);
 
-	Response<List<Point<String>>> gpregion(String key, LineString<?> lineString);
+	Response<List<Point<String>>> gpregion(String key, Geometry<?> geometry, String valuePattern);
 
-	Response<List<Point<byte[]>>> gpregion(byte[] key, LineString<?> lineString);
+	Response<List<Point<byte[]>>> gpregion(byte[] key, Geometry<?> geometry, byte[] valuePattern);
 
-	Response<List<Point<String>>> gpregion(String key, Point<?> point);
-
-	Response<List<Point<byte[]>>> gpregion(byte[] key, Point<?> point);
-
-	Response<List<Point<String>>> gpregion(String key, Polygon<?> polygon, String valuePattern);
-
-	Response<List<Point<byte[]>>> gpregion(byte[] key, Polygon<?> polygon, byte[] valuePattern);
-
-	Response<List<Point<String>>> gpregion(String key, LineString<?> lineString, String valuePattern);
-
-	Response<List<Point<byte[]>>> gpregion(byte[] key, LineString<?> lineString, byte[] valuePattern);
-
-	Response<List<Point<String>>> gpregion(String key, Point<?> point, String valuePattern);
-
-	Response<List<Point<byte[]>>> gpregion(byte[] key, Point<?> point, byte[] valuePattern);
-
-	Response<List<Point<String>>> gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count,
+	Response<List<Point<String>>> gpregion(String key, Geometry<?> geometry, String min, String max, long offset, long count,
 			String valuePattern);
 
-	Response<List<Point<byte[]>>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count,
+	Response<List<Point<byte[]>>> gpregion(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, long offset, long count,
 			byte[] valuePattern);
 
-	Response<List<Point<String>>> gpregion(String key, LineString<?> lineString, String min, String max, long offset, long count,
-			String valuePattern);
+	Response<List<Point<String>>> gpregion(String key, Geometry<?> geometry, String min, String max, String valuePattern);
 
-	Response<List<Point<byte[]>>> gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, long offset, long count,
-			byte[] valuePattern);
+	Response<List<Point<byte[]>>> gpregion(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, byte[] valuePattern);
 
-	Response<List<Point<String>>> gpregion(String key, Polygon<?> polygon, String min, String max, String valuePattern);
-
-	Response<List<Point<byte[]>>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, byte[] valuePattern);
-
-	Response<List<Point<String>>> gpregion(String key, LineString<?> lineString, String min, String max, String valuePattern);
-
-	Response<List<Point<byte[]>>> gpregion(byte[] key, LineString<?> lineString, byte[] min, byte[] max, byte[] valuePattern);
-
-	Response<List<Point<String>>> gpregion(String key, Polygon<?> polygon, String min, String max, long offset, long count,
+	Response<List<Point<String>>> gpregion(String key, Geometry<?> geometry, String min, String max, long offset, long count,
 			String memberPattern, String valuePattern);
 
-	Response<List<Point<byte[]>>> gpregion(byte[] key, Polygon<?> polygon, byte[] min, byte[] max, long offset, long count,
+	Response<List<Point<byte[]>>> gpregion(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, long offset, long count,
 			byte[] memberPattern, byte[] valuePattern);
 
 	Response<List<Point<String>>> gprange(String key, long start, long stop);
@@ -295,21 +269,13 @@ public interface Pipeline4Geo {
 
 	Response<Long> ggexists(byte[] key, byte[] member);
 
-	Response<Long> ggadd(String key, String member, String value, Polygon<?> polygon);
+	Response<Long> ggadd(String key, String member, String value, Geometry<?> geometry);
 
-	Response<Long> ggadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon);
-
-	Response<Long> ggadd(String key, String member, String value, LineString<?> lineString);
-
-	Response<Long> ggadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString);
+	Response<Long> ggadd(byte[] key, byte[] member, byte[] value, Geometry<?> geometry);
 
 	Response<List<Geometry<String>>> ggrange(String key, long start, long stop);
 
 	Response<List<Geometry<byte[]>>> ggrange(byte[] key, long start, long stop);
-
-	Response<Long> ggadd(String key, String member, String value, Point<?> point);
-
-	Response<Long> ggadd(byte[] key, byte[] member, byte[] value, Point<?> point);
 
 	Response<List<Geometry<String>>> ggrevrange(String key, long start, long stop);
 
@@ -331,17 +297,9 @@ public interface Pipeline4Geo {
 
 	Response<List<Geometry<byte[]>>> ggmget(byte[] key, byte[]... members);
 
-	Response<List<Geometry<String>>> ggrelation(String key, Polygon<?> polygon);
+	Response<List<Geometry<String>>> ggrelation(String key, Geometry<?> geometry);
 
-	Response<List<Geometry<byte[]>>> ggrelation(byte[] key, Polygon<?> polygon);
-
-	Response<List<Geometry<String>>> ggrelation(String key, LineString<?> lineString);
-
-	Response<List<Geometry<byte[]>>> ggrelation(byte[] key, LineString<?> lineString);
-
-	Response<List<Geometry<String>>> ggrelation(String key, Point<?> point);
-
-	Response<List<Geometry<byte[]>>> ggrelation(byte[] key, Point<?> point);
+	Response<List<Geometry<byte[]>>> ggrelation(byte[] key, Geometry<?> geometry);
 
 	Response<List<Geometry<String>>> ggnn(String key, double lat, double lon, long count);
 
@@ -355,17 +313,9 @@ public interface Pipeline4Geo {
 
 	Response<List<Geometry<byte[]>>> ggnn(byte[] key, double lat, double lon, long count, byte[] memberPattern, byte[] valuePattern);
 
-	Response<Long> ggupdate(String key, String member, Point<?> point);
+	Response<Long> ggupdate(String key, String member, Geometry<?> geometry);
 
-	Response<Long> ggupdate(byte[] key, byte[] member, Point<?> point);
-
-	Response<Long> ggupdate(String key, String member, Polygon<?> polygon);
-
-	Response<Long> ggupdate(byte[] key, byte[] member, Polygon<?> polygon);
-
-	Response<Long> ggupdate(String key, String member, LineString<?> lineString);
-
-	Response<Long> ggupdate(byte[] key, byte[] member, LineString<?> lineString);
+	Response<Long> ggupdate(byte[] key, byte[] member, Geometry<?> geometry);
 
 	Response<List<Geometry<String>>> ggrelationByMember(String key, String byKey, String byMember);
 
@@ -389,17 +339,9 @@ public interface Pipeline4Geo {
 
 	Response<Long> gmrebuildBoundary(byte[] key, double minx, double miny, double maxx, double maxy);
 
-	Response<Long> gmadd(String key, String member, String value, Polygon<?> polygon);
+	Response<Long> gmadd(String key, String member, String value, Geometry<?> geometry);
 
-	Response<Long> gmadd(byte[] key, byte[] member, byte[] value, Polygon<?> polygon);
-
-	Response<Long> gmadd(String key, String member, String value, LineString<?> lineString);
-
-	Response<Long> gmadd(byte[] key, byte[] member, byte[] value, LineString<?> lineString);
-
-	Response<Long> gmadd(String key, String member, String value, Point<?> point);
-
-	Response<Long> gmadd(byte[] key, byte[] member, byte[] value, Point<?> point);
+	Response<Long> gmadd(byte[] key, byte[] member, byte[] value, Geometry<?> geometry);
 
 	Response<Long> gmadd(String key, double x, double y, String member, String value);
 
@@ -429,17 +371,9 @@ public interface Pipeline4Geo {
 
 	Response<List<Geometry<byte[]>>> gmmget(byte[] key, byte[]... members);
 
-	Response<List<Geometry<String>>> gmrelation(String key, Polygon<?> polygon);
+	Response<List<Geometry<String>>> gmrelation(String key, Geometry<?> geometry);
 
-	Response<List<Geometry<byte[]>>> gmrelation(byte[] key, Polygon<?> polygon);
-
-	Response<List<Geometry<String>>> gmrelation(String key, LineString<?> lineString);
-
-	Response<List<Geometry<byte[]>>> gmrelation(byte[] key, LineString<?> lineString);
-
-	Response<List<Geometry<String>>> gmrelation(String key, Point<?> point);
-
-	Response<List<Geometry<byte[]>>> gmrelation(byte[] key, Point<?> point);
+	Response<List<Geometry<byte[]>>> gmrelation(byte[] key, Geometry<?> geometry);
 
 	Response<List<Geometry<String>>> gmnn(String key, double x, double y, long count);
 
@@ -449,17 +383,9 @@ public interface Pipeline4Geo {
 
 	Response<List<Geometry<byte[]>>> gmnn(byte[] key, double x, double y, long count, byte[] valuePattern);
 
-	Response<Long> gmupdate(String key, String member, Point<?> point);
+	Response<Long> gmupdate(String key, String member, Geometry<?> geometry);
 
-	Response<Long> gmupdate(byte[] key, byte[] member, Point<?> point);
-
-	Response<Long> gmupdate(String key, String member, Polygon<?> polygon);
-
-	Response<Long> gmupdate(byte[] key, byte[] member, Polygon<?> polygon);
-
-	Response<Long> gmupdate(String key, String member, LineString<?> lineString);
-
-	Response<Long> gmupdate(byte[] key, byte[] member, LineString<?> lineString);
+	Response<Long> gmupdate(byte[] key, byte[] member, Geometry<?> geometry);
 
 	Response<List<Geometry<String>>> gmrelationByMember(String key, String byKey, String byMember);
 

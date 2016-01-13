@@ -1669,6 +1669,4 @@ class Geodis extends BinaryJedis implements GeoCommands {
 		return this.sortBy(order, points, null, offset, count);
 	}
 
-	// TDODO with Score
-
 }

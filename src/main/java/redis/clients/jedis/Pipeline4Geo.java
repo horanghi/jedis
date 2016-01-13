@@ -7,9 +7,7 @@ import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Geometry;
-import redis.clients.spatial.model.LineString;
 import redis.clients.spatial.model.Point;
-import redis.clients.spatial.model.Polygon;
 
 /**
  * @author horanghi
@@ -390,5 +388,65 @@ public interface Pipeline4Geo {
 	Response<List<Geometry<String>>> gmrelationByMember(String key, String byKey, String byMember);
 
 	Response<List<Geometry<byte[]>>> gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember);
+
+	Response<List<Point<String>>> gpregion(String key, Geometry<?> geometry, String memberPattern, String valuePattern);
+
+	Response<List<Point<byte[]>>> gpregion(byte[] key, Geometry<?> geometry, byte[] memberPattern, byte[] valuePattern);
+
+	Response<List<Point<String>>> gpregion(String key, Geometry<?> geometry, String min, String max, String memberPattern,
+			String valuePattern);
+
+	Response<List<Point<byte[]>>> gpregion(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, byte[] memberPattern,
+			byte[] valuePattern);
+
+	Response<Long> ggadd(String key, String member, String value, Geometry<?> geometry, double score);
+
+	Response<Long> ggadd(byte[] key, byte[] member, byte[] value, Geometry<?> geometry, double score);
+
+	Response<Long> ggupdate(String key, String member, Geometry<?> geometry, double score);
+
+	Response<Long> ggupdate(byte[] key, byte[] member, Geometry<?> geometry, double score);
+
+	Response<Long> gmupdate(String key, String member, Geometry<?> geometry, double score);
+
+	Response<Long> gmupdate(byte[] key, byte[] member, Geometry<?> geometry, double score);
+
+	Response<List<Geometry<String>>> ggrelation(String key, Geometry<?> geometry, String min, String max);
+
+	Response<List<Geometry<byte[]>>> ggrelation(byte[] key, Geometry<?> geometry, byte[] min, byte[] max);
+
+	Response<List<Geometry<String>>> ggnn(String key, double lat, double lon, long count, String memberPattern, String valuePattern,
+			String min, String max);
+
+	Response<List<Geometry<byte[]>>> ggnn(byte[] key, double lat, double lon, long count, byte[] memberPattern, byte[] valuePattern,
+			byte[] min, byte[] max);
+
+	Response<Long> gmadd(String key, String member, String value, Geometry<?> geometry, double score);
+
+	Response<Long> gmadd(byte[] key, byte[] member, byte[] value, Geometry<?> geometry, double score);
+
+	Response<Long> gmadd(String key, double x, double y, String member, String value, double score);
+
+	Response<Long> gmadd(byte[] key, double x, double y, byte[] member, byte[] value, double score);
+
+	Response<List<Geometry<String>>> gmrelation(String key, Geometry<?> geometry, String memberPattern, String valuePattern);
+
+	Response<List<Geometry<byte[]>>> gmrelation(byte[] key, Geometry<?> geometry, byte[] memberPattern, byte[] valuePattern);
+
+	Response<List<Geometry<String>>> gmrelation(String key, Geometry<?> geometry, String min, String max, String memberPattern,
+			String valuePattern);
+
+	Response<List<Geometry<byte[]>>> gmrelation(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, byte[] memberPattern,
+			byte[] valuePattern);
+
+	Response<List<Geometry<String>>> gmrelationByMember(String key, String byKey, String byMember, String memberPattern, String valuePattern);
+
+	Response<List<Geometry<byte[]>>> gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember, byte[] memberPattern, byte[] valuePattern);
+
+	Response<List<Geometry<String>>> gmrelationByMember(String key, String byKey, String byMember, String min, String max,
+			String memberPattern, String valuePattern);
+
+	Response<List<Geometry<byte[]>>> gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember, byte[] min, byte[] max,
+			byte[] memberPattern, byte[] valuePattern);
 
 }

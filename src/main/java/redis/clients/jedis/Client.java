@@ -12,9 +12,6 @@ import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Geometry;
-import redis.clients.spatial.model.LineString;
-import redis.clients.spatial.model.Point;
-import redis.clients.spatial.model.Polygon;
 import redis.clients.util.SafeEncoder;
 
 public class Client extends BinaryClient4Spatial implements Commands4Spatial {

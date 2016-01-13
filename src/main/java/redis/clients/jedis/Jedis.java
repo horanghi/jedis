@@ -12,9 +12,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import redis.clients.jedis.BinaryClient.LIST_POSITION;
-import redis.clients.spatial.model.LineString;
-import redis.clients.spatial.model.Point;
-import redis.clients.spatial.model.Polygon;
 import redis.clients.util.SafeEncoder;
 import redis.clients.util.Slowlog;
 

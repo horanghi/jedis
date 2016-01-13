@@ -10,7 +10,6 @@ import redis.clients.spatial.model.Geometry;
 import redis.clients.spatial.model.LineString;
 import redis.clients.spatial.model.LineStringBuffer;
 import redis.clients.spatial.model.Point;
-import redis.clients.spatial.model.Polygon;
 
 /**
  * Common interface for sharded and non-sharded Jedis

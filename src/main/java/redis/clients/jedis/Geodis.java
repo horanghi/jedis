@@ -17,7 +17,6 @@ import redis.clients.spatial.model.Geometry;
 import redis.clients.spatial.model.LineString;
 import redis.clients.spatial.model.LineStringBuffer;
 import redis.clients.spatial.model.Point;
-import redis.clients.spatial.model.Polygon;
 
 import com.vividsolutions.jts.operation.distance.DistanceOp;
 
@@ -1536,7 +1535,6 @@ class Geodis extends BinaryJedis implements GeoCommands {
 		return this.sortBy(order, points, lineBuffer, offset, count);
 	}
 
-	@SuppressWarnings("rawtypes")
 	public <T> List<Point<T>> sortBy(ORDERBY order, List<Point<T>> points, LineStringBuffer lineStringBuffer) {
 		List<Point<T>> rpoints = new ArrayList<Point<T>>();
 
@@ -1630,7 +1628,6 @@ class Geodis extends BinaryJedis implements GeoCommands {
 		return rpoints;
 	}
 
-	@SuppressWarnings("rawtypes")
 	public <T> List<Point<T>> sortBy(ORDERBY order, List<Point<T>> points, LineStringBuffer lineStringBuffer, long offset, long count) {
 		List<Point<T>> result = null;
 		if (lineStringBuffer != null) {

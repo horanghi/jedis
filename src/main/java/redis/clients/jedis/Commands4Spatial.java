@@ -4,9 +4,6 @@ import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Geometry;
-import redis.clients.spatial.model.LineString;
-import redis.clients.spatial.model.Point;
-import redis.clients.spatial.model.Polygon;
 
 public interface Commands4Spatial extends Commands {
 

@@ -7,9 +7,7 @@ import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
 import redis.clients.spatial.model.Circle;
 import redis.clients.spatial.model.Geometry;
-import redis.clients.spatial.model.LineString;
 import redis.clients.spatial.model.Point;
-import redis.clients.spatial.model.Polygon;
 
 abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements Pipeline4Geo {
 
@@ -265,13 +263,13 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 
 	@Override
 	public Response<List<Point<String>>> gprevrange(String key, long start, long stop) {
-		client.gprange(key, start, stop);
+		client.gprevrange(key, start, stop);
 		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHSCORE_LIST);
 	}
 
 	@Override
 	public Response<List<Point<byte[]>>> gprevrange(byte[] key, long start, long stop) {
-		client.gprange(key, start, stop);
+		client.gprevrange(key, start, stop);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHSCORE_LIST);
 	}
 
@@ -426,6 +424,18 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
+	public Response<Long> ggadd(String key, String member, String value, Geometry<?> geometry, double score) {
+		client.ggadd(key, member, value, geometry, score);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> ggadd(byte[] key, byte[] member, byte[] value, Geometry<?> geometry, double score) {
+		client.ggadd(key, member, value, geometry, score);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
 	public Response<List<Geometry<String>>> ggrange(String key, long start, long stop) {
 		client.ggrange(key, start, stop);
 		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
@@ -510,6 +520,18 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
+	public Response<List<Geometry<String>>> ggrelation(String key, Geometry<?> geometry, String min, String max) {
+		client.ggrelation(key, geometry, min, max);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> ggrelation(byte[] key, Geometry<?> geometry, byte[] min, byte[] max) {
+		client.ggrelation(key, geometry, min, max);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
 	public Response<List<Geometry<String>>> ggrelationByMember(String key, String byKey, String byMember) {
 		client.ggrelationByMember(key, byKey, byMember);
 		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
@@ -554,6 +576,20 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	@Override
 	public Response<List<Geometry<byte[]>>> ggnn(byte[] key, double lat, double lon, long count, byte[] memberPattern, byte[] valuePattern) {
 		client.ggnn(key, lat, lon, count, memberPattern, valuePattern);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> ggnn(String key, double lat, double lon, long count, String memberPattern, String valuePattern,
+			String min, String max) {
+		client.ggnn(key, lat, lon, count, memberPattern, valuePattern, min, max);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> ggnn(byte[] key, double lat, double lon, long count, byte[] memberPattern, byte[] valuePattern,
+			byte[] min, byte[] max) {
+		client.ggnn(key, lat, lon, count, memberPattern, valuePattern, min, max);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
 	}
 
@@ -609,13 +645,37 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 
 	@Override
 	public Response<Long> gmadd(String key, double x, double y, String member, String value) {
-		client.gmadd(key, member, value, new Point<String>(x, y));
+		client.gmadd(key, x, y, member, value);
 		return getResponse(BuilderFactory.LONG);
 	}
 
 	@Override
 	public Response<Long> gmadd(byte[] key, double x, double y, byte[] member, byte[] value) {
-		client.gmadd(key, member, value, new Point<byte[]>(x, y));
+		client.gmadd(key, x, y, member, value);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gmadd(String key, double x, double y, String member, String value, double score) {
+		client.gmadd(key, x, y, member, value, score);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gmadd(byte[] key, double x, double y, byte[] member, byte[] value, double score) {
+		client.gmadd(key, x, y, member, value, score);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gmadd(String key, String member, String value, Geometry<?> geometry, double score) {
+		client.gmadd(key, member, value, geometry, score);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gmadd(byte[] key, byte[] member, byte[] value, Geometry<?> geometry, double score) {
+		client.gmadd(key, member, value, geometry, score);
 		return getResponse(BuilderFactory.LONG);
 	}
 
@@ -704,6 +764,32 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
+	public Response<List<Geometry<String>>> gmrelation(String key, Geometry<?> geometry, String memberPattern, String valuePattern) {
+		client.gmrelation(key, geometry, memberPattern, valuePattern);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> gmrelation(byte[] key, Geometry<?> geometry, byte[] memberPattern, byte[] valuePattern) {
+		client.gmrelation(key, geometry, memberPattern, valuePattern);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> gmrelation(String key, Geometry<?> geometry, String min, String max, String memberPattern,
+			String valuePattern) {
+		client.gmrelation(key, geometry, min, max, memberPattern, valuePattern);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> gmrelation(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, byte[] memberPattern,
+			byte[] valuePattern) {
+		client.gmrelation(key, geometry, min, max, memberPattern, valuePattern);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
 	public Response<List<Geometry<String>>> gmrelationByMember(String key, String byKey, String byMember) {
 		client.gmrelationByMember(key, byKey, byMember);
 		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
@@ -712,6 +798,34 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	@Override
 	public Response<List<Geometry<byte[]>>> gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember) {
 		client.gmrelationByMember(key, byKey, byMember);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> gmrelationByMember(String key, String byKey, String byMember, String memberPattern,
+			String valuePattern) {
+		client.gmrelationByMember(key, byKey, byMember, memberPattern, valuePattern);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember, byte[] memberPattern,
+			byte[] valuePattern) {
+		client.gmrelationByMember(key, byKey, byMember, memberPattern, valuePattern);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<String>>> gmrelationByMember(String key, String byKey, String byMember, String min, String max,
+			String memberPattern, String valuePattern) {
+		client.gmrelationByMember(key, byKey, byMember, min, max, memberPattern, valuePattern);
+		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
+	}
+
+	@Override
+	public Response<List<Geometry<byte[]>>> gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember, byte[] min, byte[] max,
+			byte[] memberPattern, byte[] valuePattern) {
+		client.gmrelationByMember(key, byKey, byMember, min, max, memberPattern, valuePattern);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
 	}
 
@@ -974,6 +1088,18 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
+	public Response<List<Point<String>>> gpregion(String key, Geometry<?> geometry, String memberPattern, String valuePattern) {
+		client.gpregion(key, geometry, memberPattern, valuePattern);
+		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LIST);
+	}
+
+	@Override
+	public Response<List<Point<byte[]>>> gpregion(byte[] key, Geometry<?> geometry, byte[] memberPattern, byte[] valuePattern) {
+		client.gpregion(key, geometry, memberPattern, valuePattern);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LIST);
+	}
+
+	@Override
 	public Response<List<Point<String>>> gpregion(String key, Geometry<?> geometry, String min, String max, String valuePattern) {
 		client.gpregion(key, geometry, min, max, valuePattern);
 		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LIST);
@@ -996,6 +1122,20 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	public Response<List<Point<byte[]>>> gpregion(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, long offset, long count,
 			byte[] valuePattern) {
 		client.gpregion(key, geometry, min, max, offset, count, valuePattern);
+		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LIST);
+	}
+
+	@Override
+	public Response<List<Point<String>>> gpregion(String key, Geometry<?> geometry, String min, String max, String memberPattern,
+			String valuePattern) {
+		client.gpregion(key, geometry, min, max, memberPattern, valuePattern);
+		return getResponse(BuilderFactory.SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LIST);
+	}
+
+	@Override
+	public Response<List<Point<byte[]>>> gpregion(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, byte[] memberPattern,
+			byte[] valuePattern) {
+		client.gpregion(key, geometry, min, max, memberPattern, valuePattern);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LIST);
 	}
 
@@ -1026,6 +1166,18 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
+	public Response<Long> ggupdate(String key, String member, Geometry<?> geometry, double score) {
+		client.ggupdate(key, member, geometry, score);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> ggupdate(byte[] key, byte[] member, Geometry<?> geometry, double score) {
+		client.ggupdate(key, member, geometry, score);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
 	public Response<Long> gmupdate(String key, String member, Geometry<?> geometry) {
 		client.gmupdate(key, member, geometry);
 		return getResponse(BuilderFactory.LONG);
@@ -1037,4 +1189,15 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 		return getResponse(BuilderFactory.LONG);
 	}
 
+	@Override
+	public Response<Long> gmupdate(String key, String member, Geometry<?> geometry, double score) {
+		client.gmupdate(key, member, geometry, score);
+		return getResponse(BuilderFactory.LONG);
+	}
+
+	@Override
+	public Response<Long> gmupdate(byte[] key, byte[] member, Geometry<?> geometry, double score) {
+		client.gmupdate(key, member, geometry, score);
+		return getResponse(BuilderFactory.LONG);
+	}
 }

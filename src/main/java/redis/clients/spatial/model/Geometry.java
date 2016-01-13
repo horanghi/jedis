@@ -31,15 +31,15 @@ public class Geometry<T> implements Serializable, Comparable<T> {
 
 	final GeometryFactory gf = new GeometryFactory();
 
-	public Geometry() {
+	protected Geometry() {
 	}
 
-	public Geometry(final T member, final T value) {
+	protected Geometry(final T member, final T value) {
 		this.member = member;
 		this.value = value;
 	}
 
-	public Geometry(final T member, final T value, double score) {
+	protected Geometry(final T member, final T value, double score) {
 		this.member = member;
 		this.value = value;
 		this.score = score;

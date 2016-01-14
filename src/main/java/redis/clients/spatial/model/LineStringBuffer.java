@@ -21,6 +21,7 @@ public class LineStringBuffer {
 
 	@Getter
 	final double distance;
+	@Getter
 	final UNITS unit;
 
 	public LineStringBuffer(final LineString<?> linestring, final double distance, UNITS unit) {

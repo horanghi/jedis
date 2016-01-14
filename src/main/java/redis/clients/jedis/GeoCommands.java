@@ -360,11 +360,11 @@ public interface GeoCommands {
 
 	List<Geometry<byte[]>> ggnn(byte[] key, double lat, double lon, long count, byte[] memberPattern, byte[] valuePattern);
 
-	List<Geometry<String>> ggnn(String key, double lat, double lon, long count, String memberPattern, String valuePattern, String min,
-			String max);
+	List<Geometry<String>> ggnn(String key, double lat, double lon, long count, String min, String max, String memberPattern,
+			String valuePattern);
 
-	List<Geometry<byte[]>> ggnn(byte[] key, double lat, double lon, long count, byte[] memberPattern, byte[] valuePattern, byte[] min,
-			byte[] max);
+	List<Geometry<byte[]>> ggnn(byte[] key, double lat, double lon, long count, byte[] min, byte[] max, byte[] memberPattern,
+			byte[] valuePattern);
 
 	Long ggupdate(String key, String member, Geometry<?> geometry);
 

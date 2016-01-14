@@ -1080,16 +1080,16 @@ class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Geometry<String>> ggnn(String key, double lat, double lon, long count, String memberPattern, String valuePattern,
-			String min, String max) {
+	public List<Geometry<String>> ggnn(String key, double lat, double lon, long count, String min, String max, String memberPattern,
+			String valuePattern) {
 		checkIsInMulti();
 		client.ggnn(key, lat, lon, count, memberPattern, valuePattern, min, max);
 		return client.getSpatialMGETGEOMultiBulkReply();
 	}
 
 	@Override
-	public List<Geometry<byte[]>> ggnn(byte[] key, double lat, double lon, long count, byte[] memberPattern, byte[] valuePattern,
-			byte[] min, byte[] max) {
+	public List<Geometry<byte[]>> ggnn(byte[] key, double lat, double lon, long count, byte[] min, byte[] max, byte[] memberPattern,
+			byte[] valuePattern) {
 		checkIsInMulti();
 		client.ggnn(key, lat, lon, count, memberPattern, valuePattern, min, max);
 		return client.getBinarySpatialMGETGEOMultiBulkReply();

@@ -785,7 +785,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	@Override
 	public void ggadd(byte[] key, byte[] member, byte[] value, Geometry<?> geometry, double score) {
 		// GGADD key member value geojson
-		sendCommand(GGADD, key, member, value, geometry.getJsonByte(), toByteArray(score));
+		sendCommand(GGADD, key, member, value, geometry.getJsonByte(), SCORE.raw, toByteArray(score));
 	}
 
 	@Override
@@ -797,7 +797,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	@Override
 	public void ggupdate(byte[] key, byte[] member, Geometry<?> geometry, double score) {
 		// GGUPDATEBY key member geojson score
-		sendCommand(GGUPDATE, key, member, geometry.getJsonByte(), toByteArray(score));
+		sendCommand(GGUPDATE, key, member, geometry.getJsonByte(), SCORE.raw, toByteArray(score));
 	}
 
 	@Override
@@ -854,7 +854,7 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		/*
 		 * GGRELATION key geojson CONTAINS|WITHIN [WITHVALUES] [WITHGEOJSON]
 		 */
-		sendCommand(GGRELATION, key, geometry.getJsonByte(), SCORE.raw, min, max, CONTAINS.raw, WITHVALUES.raw, WITHSCORES.raw,
+		sendCommand(GGRELATION, key, geometry.getJsonByte(), CONTAINS.raw, SCORE.raw, min, max, WITHVALUES.raw, WITHSCORES.raw,
 				WITHGEOJSON.raw);
 	}
 

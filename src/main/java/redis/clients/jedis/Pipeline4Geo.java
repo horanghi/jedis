@@ -415,11 +415,11 @@ public interface Pipeline4Geo {
 
 	Response<List<Geometry<byte[]>>> ggrelation(byte[] key, Geometry<?> geometry, byte[] min, byte[] max);
 
-	Response<List<Geometry<String>>> ggnn(String key, double lat, double lon, long count, String memberPattern, String valuePattern,
-			String min, String max);
+	Response<List<Geometry<String>>> ggnn(String key, double lat, double lon, long count, String min, String max, String memberPattern,
+			String valuePattern);
 
-	Response<List<Geometry<byte[]>>> ggnn(byte[] key, double lat, double lon, long count, byte[] memberPattern, byte[] valuePattern,
-			byte[] min, byte[] max);
+	Response<List<Geometry<byte[]>>> ggnn(byte[] key, double lat, double lon, long count, byte[] min, byte[] max, byte[] memberPattern,
+			byte[] valuePattern);
 
 	Response<Long> gmadd(String key, String member, String value, Geometry<?> geometry, double score);
 

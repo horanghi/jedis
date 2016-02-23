@@ -60,13 +60,15 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<Long> gpupdate(String key, String member, double lat, double lon, double radius, UNITS unit, String value, double score) {
+	public Response<Long> gpupdate(String key, String member, double lat, double lon, double radius, UNITS unit, String value,
+			double score) {
 		client.gpupdate(key, member, lat, lon, radius, unit, value, score);
 		return getResponse(BuilderFactory.LONG);
 	}
 
 	@Override
-	public Response<Long> gpupdate(byte[] key, byte[] member, double lat, double lon, double radius, UNITS unit, byte[] value, double score) {
+	public Response<Long> gpupdate(byte[] key, byte[] member, double lat, double lon, double radius, UNITS unit, byte[] value,
+			double score) {
 		client.gpupdate(key, member, lat, lon, radius, unit, value, score);
 		return getResponse(BuilderFactory.LONG);
 	}
@@ -508,38 +510,38 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<List<Geometry<String>>> ggrelation(String key, Geometry<?> geometry) {
-		client.ggrelation(key, geometry);
+	public Response<List<Geometry<String>>> ggrelation(String key, Geometry<?> geometry, RELATION relation) {
+		client.ggrelation(key, geometry, relation);
 		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
-	public Response<List<Geometry<byte[]>>> ggrelation(byte[] key, Geometry<?> geometry) {
-		client.ggrelation(key, geometry);
+	public Response<List<Geometry<byte[]>>> ggrelation(byte[] key, Geometry<?> geometry, RELATION relation) {
+		client.ggrelation(key, geometry, relation);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
-	public Response<List<Geometry<String>>> ggrelation(String key, Geometry<?> geometry, String min, String max) {
-		client.ggrelation(key, geometry, min, max);
+	public Response<List<Geometry<String>>> ggrelation(String key, Geometry<?> geometry, RELATION relation, String min, String max) {
+		client.ggrelation(key, geometry, relation, min, max);
 		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
-	public Response<List<Geometry<byte[]>>> ggrelation(byte[] key, Geometry<?> geometry, byte[] min, byte[] max) {
-		client.ggrelation(key, geometry, min, max);
+	public Response<List<Geometry<byte[]>>> ggrelation(byte[] key, Geometry<?> geometry, RELATION relation, byte[] min, byte[] max) {
+		client.ggrelation(key, geometry, relation, min, max);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
-	public Response<List<Geometry<String>>> ggrelationByMember(String key, String byKey, String byMember) {
-		client.ggrelationByMember(key, byKey, byMember);
+	public Response<List<Geometry<String>>> ggrelationByMember(String key, String byKey, String byMember, RELATION relation) {
+		client.ggrelationByMember(key, byKey, byMember, relation);
 		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
-	public Response<List<Geometry<byte[]>>> ggrelationByMember(byte[] key, byte[] byKey, byte[] byMember) {
-		client.ggrelationByMember(key, byKey, byMember);
+	public Response<List<Geometry<byte[]>>> ggrelationByMember(byte[] key, byte[] byKey, byte[] byMember, RELATION relation) {
+		client.ggrelationByMember(key, byKey, byMember, relation);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
 	}
 
@@ -568,13 +570,15 @@ abstract class GeoMultiKeyPipelineBase extends MultiKeyPipelineBase implements P
 	}
 
 	@Override
-	public Response<List<Geometry<String>>> ggnn(String key, double lat, double lon, long count, String memberPattern, String valuePattern) {
+	public Response<List<Geometry<String>>> ggnn(String key, double lat, double lon, long count, String memberPattern,
+			String valuePattern) {
 		client.ggnn(key, lat, lon, count, memberPattern, valuePattern);
 		return getResponse(BuilderFactory.SPATIAL_GGRAPHY_LIST);
 	}
 
 	@Override
-	public Response<List<Geometry<byte[]>>> ggnn(byte[] key, double lat, double lon, long count, byte[] memberPattern, byte[] valuePattern) {
+	public Response<List<Geometry<byte[]>>> ggnn(byte[] key, double lat, double lon, long count, byte[] memberPattern,
+			byte[] valuePattern) {
 		client.ggnn(key, lat, lon, count, memberPattern, valuePattern);
 		return getResponse(BuilderFactory.BYTE_SPATIAL_GGRAPHY_LIST);
 	}

@@ -954,7 +954,8 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gpradius(final String key, final double lat, final double lon, final double radius, final UNITS unit, final String vpattern) {
+	public void gpradius(final String key, final double lat, final double lon, final double radius, final UNITS unit,
+			final String vpattern) {
 		gpradius(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(vpattern));
 	}
 
@@ -1004,19 +1005,20 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void gpcircle(final String key, final double lat, final double lon, final double radius, final UNITS unit, final String vpattern) {
+	public void gpcircle(final String key, final double lat, final double lon, final double radius, final UNITS unit,
+			final String vpattern) {
 		gpcircle(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(vpattern));
 	}
 
 	@Override
-	public void gpcircle(final String key, final double lat, final double lon, final double radius, final UNITS unit,
-			final String vpattern, final RELATION scope, final ORDERBY order) {
+	public void gpcircle(final String key, final double lat, final double lon, final double radius, final UNITS unit, final String vpattern,
+			final RELATION scope, final ORDERBY order) {
 		gpcircle(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(vpattern), scope, order);
 	}
 
 	@Override
-	public void gpcircle(final String key, final double lat, final double lon, final double radius, final UNITS unit,
-			final String mpattern, final String vpattern, final RELATION scope, final ORDERBY order) {
+	public void gpcircle(final String key, final double lat, final double lon, final double radius, final UNITS unit, final String mpattern,
+			final String vpattern, final RELATION scope, final ORDERBY order) {
 		gpcircle(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern), scope, order);
 	}
 
@@ -1263,18 +1265,18 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	}
 
 	@Override
-	public void ggrelation(String key, Geometry<?> geometry) {
-		ggrelation(SafeEncoder.encode(key), geometry);
+	public void ggrelation(String key, Geometry<?> geometry, RELATION relation) {
+		ggrelation(SafeEncoder.encode(key), geometry, relation);
 	}
 
 	@Override
-	public void ggrelation(String key, Geometry<?> geometry, String min, String max) {
-		ggrelation(SafeEncoder.encode(key), geometry, SafeEncoder.encode(min), SafeEncoder.encode(max));
+	public void ggrelation(String key, Geometry<?> geometry, RELATION relation, String min, String max) {
+		ggrelation(SafeEncoder.encode(key), geometry, relation, SafeEncoder.encode(min), SafeEncoder.encode(max));
 	}
 
 	@Override
-	public void ggrelationByMember(String key, String byKey, String byMember) {
-		ggrelationByMember(SafeEncoder.encode(key), SafeEncoder.encode(byKey), SafeEncoder.encode(byMember));
+	public void ggrelationByMember(String key, String byKey, String byMember, RELATION relation) {
+		ggrelationByMember(SafeEncoder.encode(key), SafeEncoder.encode(byKey), SafeEncoder.encode(byMember), relation);
 	}
 
 	@Override

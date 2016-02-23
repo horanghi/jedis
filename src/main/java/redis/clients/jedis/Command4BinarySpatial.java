@@ -158,9 +158,9 @@ public interface Command4BinarySpatial {
 
 	void ggmget(byte[] key, byte[]... members);
 
-	void ggrelation(byte[] key, Geometry<?> geometry);
+	void ggrelation(byte[] key, Geometry<?> geometry, RELATION relation);
 
-	void ggrelation(byte[] key, Geometry<?> geometry, byte[] min, byte[] max);
+	void ggrelation(byte[] key, Geometry<?> geometry, RELATION relation, byte[] min, byte[] max);
 
 	void ggnn(byte[] key, double lat, double lon, long count);
 
@@ -174,7 +174,7 @@ public interface Command4BinarySpatial {
 
 	void ggupdate(byte[] key, byte[] member, Geometry<?> geometry, double score);
 
-	void ggrelationByMember(byte[] key, byte[] byKey, byte[] byMember);
+	void ggrelationByMember(byte[] key, byte[] byKey, byte[] byMember, RELATION relation);
 
 	/* Geometry */
 

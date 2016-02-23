@@ -759,8 +759,9 @@ public class GeodisTest {
 	public void testgaddnRegionLineString() {
 
 		// 판교 하나은행에서 할리스 커피 까지 라인 185.45m
-		LineString<String> linestring = new LineString<String>(new Point<String>(37.396446, 127.110032), new Point<String>(37.397665,
-				127.111322), new Point<String>(37.397725, 127.111415), new Point<String>(37.396396, 127.111451));
+		LineString<String> linestring = new LineString<String>(new Point<String>(37.396446, 127.110032),
+				new Point<String>(37.397665, 127.111322), new Point<String>(37.397725, 127.111415),
+				new Point<String>(37.396396, 127.111451));
 
 		// SKP
 		double latitude = 37.397516;
@@ -815,8 +816,8 @@ public class GeodisTest {
 
 		// 판교 하나은행에서 할리스 커피 까지 라인 185.45m
 		LineString<String> linestring = new LineString<String>(37.396290, 127.110355,
-		/* 37.396288, 127.110744 , */
-		37.396290, 127.111468, // 37.396295, 127.111767
+				/* 37.396288, 127.110744 , */
+				37.396290, 127.111468, // 37.396295, 127.111767
 				/*37.396292, 127.111910 , */
 				37.396290, 127.112116);
 
@@ -888,8 +889,8 @@ public class GeodisTest {
 
 		// 판교 하나은행에서 할리스 커피 까지 라인 185.45m
 		LineString<byte[]> linestring = new LineString<byte[]>(37.396290, 127.110355,
-		/* 37.396288, 127.110744 , */
-		37.396290, 127.111468, // 37.396295, 127.111767
+				/* 37.396288, 127.110744 , */
+				37.396290, 127.111468, // 37.396295, 127.111767
 				/*37.396292, 127.111910 , */
 				37.396290, 127.112116);
 
@@ -933,8 +934,8 @@ public class GeodisTest {
 		assertFalse(rpoints.contains(hop));
 
 		// 범위내에 좌표가 벗어난 경우
-		rpoints = geodis.gpregion(keyb, new LineStringBuffer(linestring, 25, UNITS.M), "12".getBytes(), "21".getBytes(),
-				"*1234".getBytes(), ORDERBY.DISTANCE_ASC);
+		rpoints = geodis.gpregion(keyb, new LineStringBuffer(linestring, 25, UNITS.M), "12".getBytes(), "21".getBytes(), "*1234".getBytes(),
+				ORDERBY.DISTANCE_ASC);
 		assertFalse(rpoints.contains(dental));
 		assertTrue(rpoints.contains(hop));
 
@@ -1512,7 +1513,7 @@ public class GeodisTest {
 		assertThat(geodis.ggadd(key, members[0], value, polygon), is(OKl));
 		assertThat(geodis.ggadd(key, members[1], value, linestr), is(OKl));
 		assertThat(geodis.ggadd(key, members[2], value, point), is(OKl));
-		
+
 		assertThat((Polygon<String>) geodis.ggget(key, members[0]), is(polygon));
 		assertThat((LineString<String>) geodis.ggget(key, members[1]), is(linestr));
 		assertThat((Point<String>) geodis.ggget(key, members[2]), is(point));
@@ -1692,18 +1693,18 @@ public class GeodisTest {
 
 		Polygon<String> polygon1 = new Polygon<String>(new Point<String>(2, 2), new Point<String>(2, -2), new Point<String>(-2, -2),
 				new Point<String>(-2, 2), new Point<String>(2, 2));
-		assertThat(geodis.ggrelation(key, polygon1).size(), is(2));// not contain point
+		assertThat(geodis.ggrelation(key, polygon1, RELATION.CONTAINS).size(), is(2));// not contain point
 
-		assertThat((Polygon<String>) geodis.ggrelation(key, polygon).get(0), is(polygon));
-		assertThat((LineString<String>) geodis.ggrelation(key, linestr).get(0), is(linestr));
-		assertThat((Point<String>) geodis.ggrelation(key, point).get(0), is(point));
+		assertThat((Polygon<String>) geodis.ggrelation(key, polygon, RELATION.CONTAINS).get(0), is(polygon));
+		assertThat((LineString<String>) geodis.ggrelation(key, linestr, RELATION.CONTAINS).get(0), is(linestr));
+		assertThat((Point<String>) geodis.ggrelation(key, point, RELATION.CONTAINS).get(0), is(point));
 
 		// contain operation with point (1.9,1.9)
 		Point<String> pointq = new Point<String>(1.9, 1.9);
 		assertThat(geodis.ggadd(key, members[3], value, pointq), is(OKl));
 		Polygon<String> polygon2 = new Polygon<String>(new Point<String>(2, 2), new Point<String>(2, -2), new Point<String>(-2, -2),
 				new Point<String>(-2, 2), new Point<String>(2, 2));
-		assertThat(geodis.ggrelation(key, polygon2).size(), is(3));
+		assertThat(geodis.ggrelation(key, polygon2, RELATION.CONTAINS).size(), is(3));
 
 		geodis.del(key);
 
@@ -1720,18 +1721,18 @@ public class GeodisTest {
 
 		Polygon<byte[]> polygon1b = new Polygon<byte[]>(new Point<byte[]>(2, 2), new Point<byte[]>(2, -2), new Point<byte[]>(-2, -2),
 				new Point<byte[]>(-2, 2), new Point<byte[]>(2, 2));
-		assertThat(geodis.ggrelation(keyb, polygon1b).size(), is(2));// not contain point
+		assertThat(geodis.ggrelation(keyb, polygon1b, RELATION.CONTAINS).size(), is(2));// not contain point
 
-		assertThat((Polygon<byte[]>) geodis.ggrelation(keyb, polygonb).get(0), is(polygonb));
-		assertThat((LineString<byte[]>) geodis.ggrelation(keyb, linestrb).get(0), is(linestrb));
-		assertThat((Point<byte[]>) geodis.ggrelation(keyb, pointb).get(0), is(pointb));
+		assertThat((Polygon<byte[]>) geodis.ggrelation(keyb, polygonb, RELATION.CONTAINS).get(0), is(polygonb));
+		assertThat((LineString<byte[]>) geodis.ggrelation(keyb, linestrb, RELATION.CONTAINS).get(0), is(linestrb));
+		assertThat((Point<byte[]>) geodis.ggrelation(keyb, pointb, RELATION.CONTAINS).get(0), is(pointb));
 
 		// contain operation with point (1.9,1.9)
 		Point<byte[]> pointqb = new Point<byte[]>(1.9, 1.9);
 		assertThat(geodis.ggadd(keyb, membersb[3], valueb, pointqb), is(OKl));
 		Polygon<byte[]> polygon2b = new Polygon<byte[]>(new Point<byte[]>(2, 2), new Point<byte[]>(2, -2), new Point<byte[]>(-2, -2),
 				new Point<byte[]>(-2, 2), new Point<byte[]>(2, 2));
-		assertThat(geodis.ggrelation(keyb, polygon2b).size(), is(3));
+		assertThat(geodis.ggrelation(keyb, polygon2b, RELATION.CONTAINS).size(), is(3));
 
 		geodis.del(keyb);
 	}
@@ -1752,18 +1753,18 @@ public class GeodisTest {
 
 		Polygon<String> polygon1 = new Polygon<String>(new Point<String>(2, 2), new Point<String>(2, -2), new Point<String>(-2, -2),
 				new Point<String>(-2, 2), new Point<String>(2, 2));
-		assertThat(geodis.ggrelation(key, polygon1).size(), is(2));// not contain point
+		assertThat(geodis.ggrelation(key, polygon1, RELATION.CONTAINS).size(), is(2));// not contain point
 
-		assertThat((Polygon<String>) geodis.ggrelationByMember(key, key, members[0]).get(0), is(polygon));
-		assertThat((LineString<String>) geodis.ggrelationByMember(key, key, members[1]).get(0), is(linestr));
-		assertThat((Point<String>) geodis.ggrelationByMember(key, key, members[2]).get(0), is(point));
+		assertThat((Polygon<String>) geodis.ggrelationByMember(key, key, members[0], RELATION.CONTAINS).get(0), is(polygon));
+		assertThat((LineString<String>) geodis.ggrelationByMember(key, key, members[1], RELATION.CONTAINS).get(0), is(linestr));
+		assertThat((Point<String>) geodis.ggrelationByMember(key, key, members[2], RELATION.CONTAINS).get(0), is(point));
 
 		// contain operation with point (1.9,1.9)
 		Point<String> pointq = new Point<String>(1.9, 1.9);
 		assertThat(geodis.ggadd(key, members[3], value, pointq), is(OKl));
 		Polygon<String> polygon2 = new Polygon<String>(new Point<String>(2, 2), new Point<String>(2, -2), new Point<String>(-2, -2),
 				new Point<String>(-2, 2), new Point<String>(2, 2));
-		assertThat(geodis.ggrelation(key, polygon2).size(), is(3));
+		assertThat(geodis.ggrelation(key, polygon2, RELATION.CONTAINS).size(), is(3));
 
 		geodis.del(key);
 
@@ -1780,18 +1781,18 @@ public class GeodisTest {
 
 		Polygon<byte[]> polygon1b = new Polygon<byte[]>(new Point<byte[]>(2, 2), new Point<byte[]>(2, -2), new Point<byte[]>(-2, -2),
 				new Point<byte[]>(-2, 2), new Point<byte[]>(2, 2));
-		assertThat(geodis.ggrelation(keyb, polygon1b).size(), is(2));// not contain point
+		assertThat(geodis.ggrelation(keyb, polygon1b, RELATION.CONTAINS).size(), is(2));// not contain point
 
-		assertThat((Polygon<byte[]>) geodis.ggrelationByMember(keyb, keyb, membersb[0]).get(0), is(polygonb));
-		assertThat((LineString<byte[]>) geodis.ggrelationByMember(keyb, keyb, membersb[1]).get(0), is(linestrb));
-		assertThat((Point<byte[]>) geodis.ggrelationByMember(keyb, keyb, membersb[2]).get(0), is(pointb));
+		assertThat((Polygon<byte[]>) geodis.ggrelationByMember(keyb, keyb, membersb[0], RELATION.CONTAINS).get(0), is(polygonb));
+		assertThat((LineString<byte[]>) geodis.ggrelationByMember(keyb, keyb, membersb[1], RELATION.CONTAINS).get(0), is(linestrb));
+		assertThat((Point<byte[]>) geodis.ggrelationByMember(keyb, keyb, membersb[2], RELATION.CONTAINS).get(0), is(pointb));
 
 		// contain operation with point (1.9,1.9)
 		Point<byte[]> pointqb = new Point<byte[]>(1.9, 1.9);
 		assertThat(geodis.ggadd(keyb, membersb[3], valueb, pointqb), is(OKl));
 		Polygon<byte[]> polygon2b = new Polygon<byte[]>(new Point<byte[]>(2, 2), new Point<byte[]>(2, -2), new Point<byte[]>(-2, -2),
 				new Point<byte[]>(-2, 2), new Point<byte[]>(2, 2));
-		assertThat(geodis.ggrelation(keyb, polygon2b).size(), is(3));
+		assertThat(geodis.ggrelation(keyb, polygon2b, RELATION.CONTAINS).size(), is(3));
 
 		geodis.del(keyb);
 	}

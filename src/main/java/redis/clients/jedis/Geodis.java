@@ -237,14 +237,16 @@ class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Point<String>> gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max, ORDERBY order) {
+	public List<Point<String>> gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max,
+			ORDERBY order) {
 		checkIsInMulti();
 		client.gpradius(key, lat, lon, radius, unit, min, max, order);
 		return client.getSPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LISTMultiBulkReply();
 	}
 
 	@Override
-	public List<Point<byte[]>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max, ORDERBY order) {
+	public List<Point<byte[]>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max,
+			ORDERBY order) {
 		checkIsInMulti();
 		client.gpradius(key, lat, lon, radius, unit, min, max, order);
 		return client.getBYTE_SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LISTMultiBulkReply();
@@ -341,16 +343,16 @@ class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Circle<String>> gpcircle(String key, double lat, double lon, double radius, UNITS unit, String valuePattern,
-			RELATION scope, ORDERBY order) {
+	public List<Circle<String>> gpcircle(String key, double lat, double lon, double radius, UNITS unit, String valuePattern, RELATION scope,
+			ORDERBY order) {
 		checkIsInMulti();
 		client.gpcircle(key, lat, lon, radius, unit, valuePattern, scope, order);
 		return client.getSpatialCircleMultiBulkReply();
 	}
 
 	@Override
-	public List<Circle<byte[]>> gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] valuePattern,
-			RELATION scope, ORDERBY order) {
+	public List<Circle<byte[]>> gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] valuePattern, RELATION scope,
+			ORDERBY order) {
 		checkIsInMulti();
 		client.gpcircle(key, lat, lon, radius, unit, valuePattern, scope, order);
 		return client.getBinarySpatialCircleMultiBulkReply();
@@ -661,14 +663,16 @@ class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Point<String>> gpregion(String key, Geometry<?> geometry, String min, String max, String memberPattern, String valuePattern) {
+	public List<Point<String>> gpregion(String key, Geometry<?> geometry, String min, String max, String memberPattern,
+			String valuePattern) {
 		checkIsInMulti();
 		client.gpregion(key, geometry, min, max, memberPattern, valuePattern);
 		return client.getSPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LISTMultiBulkReply();
 	}
 
 	@Override
-	public List<Point<byte[]>> gpregion(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, byte[] memberPattern, byte[] valuePattern) {
+	public List<Point<byte[]>> gpregion(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, byte[] memberPattern,
+			byte[] valuePattern) {
 		checkIsInMulti();
 		client.gpregion(key, geometry, min, max, memberPattern, valuePattern);
 		return client.getBYTE_SPATIAL_GPOINT_WITHDISTANCE_WITHSCORES_LISTMultiBulkReply();
@@ -824,8 +828,8 @@ class Geodis extends BinaryJedis implements GeoCommands {
 		double earthRadius = GeoUtils.EarthRadius; // meters (EPSG 3785)
 		double dLat = Math.toRadians(lat2 - lat1);
 		double dLng = Math.toRadians(lng2 - lng1);
-		double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-				* Math.sin(dLng / 2) * Math.sin(dLng / 2);
+		double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+				+ Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
 		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 		float dist = (float) (earthRadius * c);
 
@@ -996,44 +1000,44 @@ class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Geometry<String>> ggrelation(String key, Geometry<?> geometry) {
+	public List<Geometry<String>> ggrelation(String key, Geometry<?> geometry, RELATION relation) {
 		checkIsInMulti();
-		client.ggrelation(key, geometry);
+		client.ggrelation(key, geometry, relation);
 		return client.getSpatialMGETGEOMultiBulkReply();
 	}
 
 	@Override
-	public List<Geometry<byte[]>> ggrelation(byte[] key, Geometry<?> geometry) {
+	public List<Geometry<byte[]>> ggrelation(byte[] key, Geometry<?> geometry, RELATION relation) {
 		checkIsInMulti();
-		client.ggrelation(key, geometry);
+		client.ggrelation(key, geometry, relation);
 		return client.getBinarySpatialMGETGEOMultiBulkReply();
 	}
 
 	@Override
-	public List<Geometry<String>> ggrelation(String key, Geometry<?> geometry, String min, String max) {
+	public List<Geometry<String>> ggrelation(String key, Geometry<?> geometry, RELATION relation, String min, String max) {
 		checkIsInMulti();
-		client.ggrelation(key, geometry, min, max);
+		client.ggrelation(key, geometry, relation, min, max);
 		return client.getSpatialMGETGEOMultiBulkReply();
 	}
 
 	@Override
-	public List<Geometry<byte[]>> ggrelation(byte[] key, Geometry<?> geometry, byte[] min, byte[] max) {
+	public List<Geometry<byte[]>> ggrelation(byte[] key, Geometry<?> geometry, RELATION relation, byte[] min, byte[] max) {
 		checkIsInMulti();
-		client.ggrelation(key, geometry, min, max);
+		client.ggrelation(key, geometry, relation, min, max);
 		return client.getBinarySpatialMGETGEOMultiBulkReply();
 	}
 
 	@Override
-	public List<Geometry<String>> ggrelationByMember(String key, String byKey, String byMember) {
+	public List<Geometry<String>> ggrelationByMember(String key, String byKey, String byMember, RELATION relation) {
 		checkIsInMulti();
-		client.ggrelationByMember(key, byKey, byMember);
+		client.ggrelationByMember(key, byKey, byMember, relation);
 		return client.getSpatialMGETGEOMultiBulkReply();
 	}
 
 	@Override
-	public List<Geometry<byte[]>> ggrelationByMember(byte[] key, byte[] byKey, byte[] byMember) {
+	public List<Geometry<byte[]>> ggrelationByMember(byte[] key, byte[] byKey, byte[] byMember, RELATION relation) {
 		checkIsInMulti();
-		client.ggrelationByMember(key, byKey, byMember);
+		client.ggrelationByMember(key, byKey, byMember, relation);
 		return client.getBinarySpatialMGETGEOMultiBulkReply();
 	}
 
@@ -1482,13 +1486,15 @@ class Geodis extends BinaryJedis implements GeoCommands {
 	}
 
 	@Override
-	public List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer, String min, String max, String valuePattern, ORDERBY order) {
+	public List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer, String min, String max, String valuePattern,
+			ORDERBY order) {
 		List<Point<String>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, valuePattern);
 		return this.sortBy(order, points, lineBuffer);
 	}
 
 	@Override
-	public List<Point<byte[]>> gpregion(byte[] key, LineStringBuffer lineBuffer, byte[] min, byte[] max, byte[] valuePattern, ORDERBY order) {
+	public List<Point<byte[]>> gpregion(byte[] key, LineStringBuffer lineBuffer, byte[] min, byte[] max, byte[] valuePattern,
+			ORDERBY order) {
 		List<Point<byte[]>> points = this.gpregion(key, lineBuffer.getLinePolygon(), min, max, valuePattern);
 		return this.sortBy(order, points, lineBuffer);
 	}

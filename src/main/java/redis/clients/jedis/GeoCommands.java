@@ -72,19 +72,21 @@ public interface GeoCommands {
 
 	List<Point<byte[]>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] valuePattern);
 
-	List<Point<String>> gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max, String valuePattern);
+	List<Point<String>> gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max,
+			String valuePattern);
 
-	List<Point<byte[]>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max, byte[] valuePattern);
+	List<Point<byte[]>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max,
+			byte[] valuePattern);
 
 	List<Point<String>> gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max, ORDERBY order);
 
 	List<Point<byte[]>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max, ORDERBY order);
 
-	List<Point<String>> gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max,
-			String valuePattern, long offset, long count, ORDERBY order);
+	List<Point<String>> gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max, String valuePattern,
+			long offset, long count, ORDERBY order);
 
-	List<Point<byte[]>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max,
-			byte[] valuePattern, long offset, long count, ORDERBY order);
+	List<Point<byte[]>> gpradius(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max, byte[] valuePattern,
+			long offset, long count, ORDERBY order);
 
 	List<Point<String>> gpradius(String key, double lat, double lon, double radius, UNITS unit, String min, String max,
 			String memberPattern, String valuePattern, long offset, long count, ORDERBY order);
@@ -240,11 +242,11 @@ public interface GeoCommands {
 
 	List<Point<byte[]>> gpregion(byte[] key, LineStringBuffer lineBuffer, byte[] min, byte[] max, byte[] valuePattern, ORDERBY order);
 
-	List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer, String min, String max, String memberPattern,
-			String valuePattern, ORDERBY order);
+	List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer, String min, String max, String memberPattern, String valuePattern,
+			ORDERBY order);
 
-	List<Point<byte[]>> gpregion(byte[] key, LineStringBuffer lineBuffer, byte[] min, byte[] max, byte[] memberPattern,
-			byte[] valuePattern, ORDERBY order);
+	List<Point<byte[]>> gpregion(byte[] key, LineStringBuffer lineBuffer, byte[] min, byte[] max, byte[] memberPattern, byte[] valuePattern,
+			ORDERBY order);
 
 	List<Point<String>> gpregion(String key, LineStringBuffer lineBuffer, String min, String max, long offset, long count,
 			String valuePattern, ORDERBY order);
@@ -340,13 +342,13 @@ public interface GeoCommands {
 
 	List<Geometry<byte[]>> ggmget(byte[] key, byte[]... members);
 
-	List<Geometry<String>> ggrelation(String key, Geometry<?> geometry);
+	List<Geometry<String>> ggrelation(String key, Geometry<?> geometry, RELATION relation);
 
-	List<Geometry<byte[]>> ggrelation(byte[] key, Geometry<?> geometry);
+	List<Geometry<byte[]>> ggrelation(byte[] key, Geometry<?> geometry, RELATION relation);
 
-	List<Geometry<String>> ggrelation(String key, Geometry<?> geometry, String min, String max);
+	List<Geometry<String>> ggrelation(String key, Geometry<?> geometry, RELATION relation, String min, String max);
 
-	List<Geometry<byte[]>> ggrelation(byte[] key, Geometry<?> geometry, byte[] min, byte[] max);
+	List<Geometry<byte[]>> ggrelation(byte[] key, Geometry<?> geometry, RELATION relation, byte[] min, byte[] max);
 
 	List<Geometry<String>> ggnn(String key, double lat, double lon, long count);
 
@@ -374,9 +376,9 @@ public interface GeoCommands {
 
 	Long ggupdate(byte[] key, byte[] member, Geometry<?> geometry, double score);
 
-	List<Geometry<String>> ggrelationByMember(String key, String byKey, String byMember);
+	List<Geometry<String>> ggrelationByMember(String key, String byKey, String byMember, RELATION relation);
 
-	List<Geometry<byte[]>> ggrelationByMember(byte[] key, byte[] byKey, byte[] byMember);
+	List<Geometry<byte[]>> ggrelationByMember(byte[] key, byte[] byKey, byte[] byMember, RELATION relation);
 
 	/* Geometry */
 

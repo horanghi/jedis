@@ -87,7 +87,8 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void gpadd(final byte[] key, final double latitude, final double longitude, final byte[] member, final byte[] value, double score) {
+	public void gpadd(final byte[] key, final double latitude, final double longitude, final byte[] member, final byte[] value,
+			double score) {
 		gpadd(key, latitude, longitude, 0, UNITS.M, member, value, score);
 	}
 
@@ -291,12 +292,13 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		* 		[LIMIT offset count] 
 		* 		[WITHVALUES] [WITHSCORES] [WITHDISTANCE]
 		*/
-		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, scope.raw,
-				WITHVALUES.raw, WITHDISTANCE.raw, XR.raw, order.raw0, order.raw1, order.raw2);
+		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, scope.raw, WITHVALUES.raw,
+				WITHDISTANCE.raw, XR.raw, order.raw0, order.raw1, order.raw2);
 	}
 
 	@Override
-	public void gpcircle(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit, final byte[] vpattern) {
+	public void gpcircle(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit,
+			final byte[] vpattern) {
 		/*
 		* GPRADIUS key latitude longitude 
 		* 		[RADIUS radius m|km] [CONTAINS|WITHIN] 
@@ -307,11 +309,28 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		* 		[WITHVALUES] [WITHSCORES] [WITHDISTANCE]
 		*/
 		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, CONTAINS.raw,
-				WITHVALUES.raw, WITHDISTANCE.raw, DISTANCE_ASC.raw0, DISTANCE_ASC.raw1, DISTANCE_ASC.raw2, XR.raw, MATCHVALUE.raw, vpattern);
+				WITHVALUES.raw, WITHDISTANCE.raw, DISTANCE_ASC.raw0, DISTANCE_ASC.raw1, DISTANCE_ASC.raw2, XR.raw, MATCHVALUE.raw,
+				vpattern);
 	}
 
 	@Override
-	public void gpcircle(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit,
+	public void gpcircle(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit, final byte[] vpattern,
+			final RELATION scope, final ORDERBY order) {
+		/*
+		* GPRADIUS key latitude longitude 
+		* 		[RADIUS radius m|km] [CONTAINS|WITHIN] 
+		* 		[MATCH key_pattern][MATCHVALUE value_pattern] 
+		* 		[SCORE min max] [NR|XR] 
+		* 		[ORDERBY SCORE|DIST ASC|DESC] 
+		* 		[LIMIT offset count] 
+		* 		[WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, scope.raw, WITHVALUES.raw,
+				WITHDISTANCE.raw, order.raw0, order.raw1, order.raw2, XR.raw, MATCHVALUE.raw, vpattern);
+	}
+
+	@Override
+	public void gpcircle(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit, final byte[] mpattern,
 			final byte[] vpattern, final RELATION scope, final ORDERBY order) {
 		/*
 		* GPRADIUS key latitude longitude 
@@ -322,24 +341,8 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		* 		[LIMIT offset count] 
 		* 		[WITHVALUES] [WITHSCORES] [WITHDISTANCE]
 		*/
-		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, scope.raw,
-				WITHVALUES.raw, WITHDISTANCE.raw, order.raw0, order.raw1, order.raw2, XR.raw, MATCHVALUE.raw, vpattern);
-	}
-
-	@Override
-	public void gpcircle(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit,
-			final byte[] mpattern, final byte[] vpattern, final RELATION scope, final ORDERBY order) {
-		/*
-		* GPRADIUS key latitude longitude 
-		* 		[RADIUS radius m|km] [CONTAINS|WITHIN] 
-		* 		[MATCH key_pattern][MATCHVALUE value_pattern] 
-		* 		[SCORE min max] [NR|XR] 
-		* 		[ORDERBY SCORE|DIST ASC|DESC] 
-		* 		[LIMIT offset count] 
-		* 		[WITHVALUES] [WITHSCORES] [WITHDISTANCE]
-		*/
-		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, scope.raw,
-				WITHVALUES.raw, WITHDISTANCE.raw, order.raw0, order.raw1, order.raw2, XR.raw, MATCH.raw, mpattern, MATCHVALUE.raw, vpattern);
+		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, scope.raw, WITHVALUES.raw,
+				WITHDISTANCE.raw, order.raw0, order.raw1, order.raw2, XR.raw, MATCH.raw, mpattern, MATCHVALUE.raw, vpattern);
 	}
 
 	// gpradiusByMember
@@ -525,7 +528,8 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		* 		[WITHVALUES] [WITHDISTANCE]
 		*/
 		sendCommand(GPNN, key, toByteArray(lat), toByteArray(lon), LIMIT.raw, toByteArray(offset), toByteArray(count), MATCHVALUE.raw,
-				vpattern, NR.raw, WITHVALUES.raw, WITHSCORES.raw, WITHDISTANCE.raw, DISTANCE_ASC.raw0, DISTANCE_ASC.raw1, DISTANCE_ASC.raw2);
+				vpattern, NR.raw, WITHVALUES.raw, WITHSCORES.raw, WITHDISTANCE.raw, DISTANCE_ASC.raw0, DISTANCE_ASC.raw1,
+				DISTANCE_ASC.raw2);
 	}
 
 	@Override
@@ -842,28 +846,28 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 	}
 
 	@Override
-	public void ggrelation(byte[] key, Geometry<?> geometry) {
+	public void ggrelation(byte[] key, Geometry<?> geometry, RELATION relation) {
 		/*
 		 * GGRELATION key geojson CONTAINS|WITHIN [WITHVALUES] [WITHGEOJSON]
 		 */
-		sendCommand(GGRELATION, key, geometry.getJsonByte(), CONTAINS.raw, WITHVALUES.raw, WITHSCORES.raw, WITHGEOJSON.raw);
+		sendCommand(GGRELATION, key, geometry.getJsonByte(), relation.raw, WITHVALUES.raw, WITHSCORES.raw, WITHGEOJSON.raw);
 	}
 
 	@Override
-	public void ggrelation(byte[] key, Geometry<?> geometry, byte[] min, byte[] max) {
+	public void ggrelation(byte[] key, Geometry<?> geometry, RELATION relation, byte[] min, byte[] max) {
 		/*
 		 * GGRELATION key geojson CONTAINS|WITHIN [WITHVALUES] [WITHGEOJSON]
 		 */
-		sendCommand(GGRELATION, key, geometry.getJsonByte(), CONTAINS.raw, SCORE.raw, min, max, WITHVALUES.raw, WITHSCORES.raw,
+		sendCommand(GGRELATION, key, geometry.getJsonByte(), relation.raw, SCORE.raw, min, max, WITHVALUES.raw, WITHSCORES.raw,
 				WITHGEOJSON.raw);
 	}
 
 	@Override
-	public void ggrelationByMember(byte[] key, byte[] byKey, byte[] byMember) {
+	public void ggrelationByMember(byte[] key, byte[] byKey, byte[] byMember, RELATION relation) {
 		/*
 		 * GGRELATIONBYMEMBER key BY bykey bymember CONTAINS|WITHIN [WITHVALUES] [WITHGEOJSON]
 		 */
-		sendCommand(GGRELATIONBYMEMBER, key, BY.raw, byKey, byMember, CONTAINS.raw, WITHVALUES.raw, WITHSCORES.raw, WITHGEOJSON.raw);
+		sendCommand(GGRELATIONBYMEMBER, key, BY.raw, byKey, byMember, relation.raw, WITHVALUES.raw, WITHSCORES.raw, WITHGEOJSON.raw);
 	}
 
 	@Override

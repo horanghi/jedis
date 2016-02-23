@@ -156,9 +156,9 @@ public interface Commands4Spatial extends Commands {
 
 	void ggmget(String key, String... members);
 
-	void ggrelation(String key, Geometry<?> geometry);
+	void ggrelation(String key, Geometry<?> geometry, RELATION relation);
 
-	void ggrelation(String key, Geometry<?> geometry, String min, String max);
+	void ggrelation(String key, Geometry<?> geometry, RELATION relation, String min, String max);
 
 	void ggnn(String key, double lat, double lon, long count);
 
@@ -172,7 +172,7 @@ public interface Commands4Spatial extends Commands {
 
 	void ggupdate(String key, String member, Geometry<?> geometry, double score);
 
-	void ggrelationByMember(String key, String byKey, String byMember);
+	void ggrelationByMember(String key, String byKey, String byMember, RELATION relation);
 
 	/* Geometry */
 

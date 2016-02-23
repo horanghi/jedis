@@ -295,9 +295,9 @@ public interface Pipeline4Geo {
 
 	Response<List<Geometry<byte[]>>> ggmget(byte[] key, byte[]... members);
 
-	Response<List<Geometry<String>>> ggrelation(String key, Geometry<?> geometry);
+	Response<List<Geometry<String>>> ggrelation(String key, Geometry<?> geometry, RELATION relation);
 
-	Response<List<Geometry<byte[]>>> ggrelation(byte[] key, Geometry<?> geometry);
+	Response<List<Geometry<byte[]>>> ggrelation(byte[] key, Geometry<?> geometry, RELATION relation);
 
 	Response<List<Geometry<String>>> ggnn(String key, double lat, double lon, long count);
 
@@ -315,9 +315,9 @@ public interface Pipeline4Geo {
 
 	Response<Long> ggupdate(byte[] key, byte[] member, Geometry<?> geometry);
 
-	Response<List<Geometry<String>>> ggrelationByMember(String key, String byKey, String byMember);
+	Response<List<Geometry<String>>> ggrelationByMember(String key, String byKey, String byMember, RELATION relation);
 
-	Response<List<Geometry<byte[]>>> ggrelationByMember(byte[] key, byte[] byKey, byte[] byMember);
+	Response<List<Geometry<byte[]>>> ggrelationByMember(byte[] key, byte[] byKey, byte[] byMember, RELATION relation);
 
 	/* Geometry */
 
@@ -411,9 +411,9 @@ public interface Pipeline4Geo {
 
 	Response<Long> gmupdate(byte[] key, byte[] member, Geometry<?> geometry, double score);
 
-	Response<List<Geometry<String>>> ggrelation(String key, Geometry<?> geometry, String min, String max);
+	Response<List<Geometry<String>>> ggrelation(String key, Geometry<?> geometry, RELATION relation, String min, String max);
 
-	Response<List<Geometry<byte[]>>> ggrelation(byte[] key, Geometry<?> geometry, byte[] min, byte[] max);
+	Response<List<Geometry<byte[]>>> ggrelation(byte[] key, Geometry<?> geometry, RELATION relation, byte[] min, byte[] max);
 
 	Response<List<Geometry<String>>> ggnn(String key, double lat, double lon, long count, String min, String max, String memberPattern,
 			String valuePattern);
@@ -439,9 +439,11 @@ public interface Pipeline4Geo {
 	Response<List<Geometry<byte[]>>> gmrelation(byte[] key, Geometry<?> geometry, byte[] min, byte[] max, byte[] memberPattern,
 			byte[] valuePattern);
 
-	Response<List<Geometry<String>>> gmrelationByMember(String key, String byKey, String byMember, String memberPattern, String valuePattern);
+	Response<List<Geometry<String>>> gmrelationByMember(String key, String byKey, String byMember, String memberPattern,
+			String valuePattern);
 
-	Response<List<Geometry<byte[]>>> gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember, byte[] memberPattern, byte[] valuePattern);
+	Response<List<Geometry<byte[]>>> gmrelationByMember(byte[] key, byte[] byKey, byte[] byMember, byte[] memberPattern,
+			byte[] valuePattern);
 
 	Response<List<Geometry<String>>> gmrelationByMember(String key, String byKey, String byMember, String min, String max,
 			String memberPattern, String valuePattern);

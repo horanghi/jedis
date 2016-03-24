@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import redis.clients.jedis.Protocol.NXR;
 import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
@@ -1020,6 +1021,22 @@ public class Client extends BinaryClient4Spatial implements Commands4Spatial {
 	public void gpcircle(final String key, final double lat, final double lon, final double radius, final UNITS unit, final String mpattern,
 			final String vpattern, final RELATION scope, final ORDERBY order) {
 		gpcircle(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern), scope, order);
+	}
+
+	@Override
+	public void gpcircle(final String key, final double lat, final double lon, final double radius, final UNITS unit, final String min,
+			final String max, final String mpattern, final String vpattern, final long offset, final long count, final RELATION scope,
+			final ORDERBY order) {
+		gpcircle(SafeEncoder.encode(key), lat, lon, radius, unit, SafeEncoder.encode(min), SafeEncoder.encode(max),
+				SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern), offset, count, scope, order);
+	}
+
+	@Override
+	public void gpcircle(final String key, final double lat, final double lon, final double radius, final UNITS unit, final NXR nxr,
+			final String min, final String max, final String mpattern, final String vpattern, final long offset, final long count,
+			final RELATION scope, final ORDERBY order) {
+		gpcircle(SafeEncoder.encode(key), lat, lon, radius, unit, nxr, SafeEncoder.encode(min), SafeEncoder.encode(max),
+				SafeEncoder.encode(mpattern), SafeEncoder.encode(vpattern), offset, count, scope, order);
 	}
 
 	// gpradiusByMember

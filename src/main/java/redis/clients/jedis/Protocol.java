@@ -393,7 +393,7 @@ public final class Protocol {
 
 		GPEXISTS,
 		GGEXISTS,
-		GMEXISTS, ;
+		GMEXISTS,;
 
 		public final byte[] raw;
 
@@ -489,23 +489,19 @@ public final class Protocol {
 		}
 	}
 
+	public static enum NXR {
+		XR, NR;
+		public final byte[] raw;
+
+		NXR() {
+			raw = SafeEncoder.encode(this.name());
+		}
+	}
+
 	public static enum GeoOptions {
 		// BY CONTAINS|WITHIN [MATCH key-pattern] [MATCHVALUE value-pattern] [WITHVALUES] [WITHDISTANCE] [ASC|DESC]
 		// [LIMIT offset count]
-		BY,
-		RADIUS,
-		MATCH,
-		MATCHVALUE,
-		SCORE,
-		WITHVALUES,
-		WITHSCORES,
-		WITHDISTANCE,
-		WITHGEOJSON,
-		XR,
-		NR,
-		LIMIT,
-		POS,
-		VALUE, ;
+		BY, RADIUS, MATCH, MATCHVALUE, SCORE, WITHVALUES, WITHSCORES, WITHDISTANCE, WITHGEOJSON, XR, NR, LIMIT, POS, VALUE,;
 
 		public final byte[] raw;
 

@@ -60,6 +60,8 @@ import static redis.clients.jedis.Protocol.GeoOptions.XR;
 import static redis.clients.jedis.Protocol.ORDERBY.DISTANCE_ASC;
 import static redis.clients.jedis.Protocol.ORDERBY.SCORE_DESC;
 import static redis.clients.jedis.Protocol.RELATION.CONTAINS;
+
+import redis.clients.jedis.Protocol.NXR;
 import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
@@ -343,6 +345,42 @@ public class BinaryClient4Spatial extends BinaryClient implements Command4Binary
 		*/
 		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, scope.raw, WITHVALUES.raw,
 				WITHDISTANCE.raw, order.raw0, order.raw1, order.raw2, XR.raw, MATCH.raw, mpattern, MATCHVALUE.raw, vpattern);
+	}
+
+	@Override
+	public void gpcircle(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit, final byte[] min,
+			final byte[] max, final byte[] mpattern, final byte[] vpattern, final long offset, final long count, final RELATION scope,
+			final ORDERBY order) {
+		/*
+		* GPRADIUS key latitude longitude 
+		* 		[RADIUS radius m|km] [CONTAINS|WITHIN] 
+		* 		[MATCH key_pattern][MATCHVALUE value_pattern] 
+		* 		[SCORE min max] [NR|XR] 
+		* 		[ORDERBY SCORE|DIST ASC|DESC] 
+		* 		[LIMIT offset count] 
+		* 		[WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, scope.raw, WITHVALUES.raw,
+				WITHDISTANCE.raw, order.raw0, order.raw1, order.raw2, XR.raw, MATCH.raw, mpattern, MATCHVALUE.raw, vpattern, SCORE.raw, min,
+				max, LIMIT.raw, toByteArray(offset), toByteArray(count));
+	}
+
+	@Override
+	public void gpcircle(final byte[] key, final double lat, final double lon, final double radius, final UNITS unit, final NXR nxr,
+			final byte[] min, final byte[] max, final byte[] mpattern, final byte[] vpattern, final long offset, final long count,
+			final RELATION scope, final ORDERBY order) {
+		/*
+		* GPRADIUS key latitude longitude 
+		* 		[RADIUS radius m|km] [CONTAINS|WITHIN] 
+		* 		[MATCH key_pattern][MATCHVALUE value_pattern] 
+		* 		[SCORE min max] [NR|XR] 
+		* 		[ORDERBY SCORE|DIST ASC|DESC] 
+		* 		[LIMIT offset count] 
+		* 		[WITHVALUES] [WITHSCORES] [WITHDISTANCE]
+		*/
+		sendCommand(GPRADIUS, key, toByteArray(lat), toByteArray(lon), RADIUS.raw, toByteArray(radius), unit.raw, scope.raw, WITHVALUES.raw,
+				WITHDISTANCE.raw, order.raw0, order.raw1, order.raw2, nxr.raw, MATCH.raw, mpattern, MATCHVALUE.raw, vpattern, SCORE.raw,
+				min, max, LIMIT.raw, toByteArray(offset), toByteArray(count));
 	}
 
 	// gpradiusByMember

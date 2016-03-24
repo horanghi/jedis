@@ -1,5 +1,6 @@
 package redis.clients.jedis;
 
+import redis.clients.jedis.Protocol.NXR;
 import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
@@ -61,6 +62,12 @@ public interface Commands4Spatial extends Commands {
 
 	void gpcircle(String key, double lat, double lon, double radius, UNITS unit, String mpattern, String vpattern, RELATION scope,
 			ORDERBY order);
+
+	void gpcircle(String key, double lat, double lon, double radius, UNITS unit, String min, String max, String mpattern, String vpattern,
+			long offset, long count, RELATION scope, ORDERBY order);
+
+	void gpcircle(String key, double lat, double lon, double radius, UNITS unit, NXR nxr, String min, String max, String mpattern,
+			String vpattern, long offset, long count, RELATION scope, ORDERBY order);
 
 	// gpradiusByMember
 

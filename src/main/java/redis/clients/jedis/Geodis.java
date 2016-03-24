@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import redis.clients.jedis.Protocol.NXR;
 import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
@@ -371,6 +372,22 @@ class Geodis extends BinaryJedis implements GeoCommands {
 			byte[] valuePattern, RELATION scope, ORDERBY order) {
 		checkIsInMulti();
 		client.gpcircle(key, lat, lon, radius, unit, memberPattern, valuePattern, scope, order);
+		return client.getBinarySpatialCircleMultiBulkReply();
+	}
+
+	@Override
+	public List<Circle<String>> gpcircle(String key, double lat, double lon, double radius, UNITS unit, String min, String max,
+			String memberPattern, String valuePattern, int offset, int count, RELATION scope, ORDERBY order) {
+		checkIsInMulti();
+		client.gpcircle(key, lat, lon, radius, unit, min, max, memberPattern, valuePattern, offset, count, scope, order);
+		return client.getSpatialCircleMultiBulkReply();
+	}
+
+	@Override
+	public List<Circle<byte[]>> gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, NXR nxr, byte[] min, byte[] max,
+			byte[] memberPattern, byte[] valuePattern, int offset, int count, RELATION scope, ORDERBY order) {
+		checkIsInMulti();
+		client.gpcircle(key, lat, lon, radius, unit, nxr, min, max, memberPattern, valuePattern, offset, count, scope, order);
 		return client.getBinarySpatialCircleMultiBulkReply();
 	}
 

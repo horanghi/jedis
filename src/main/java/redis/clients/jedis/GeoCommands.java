@@ -2,6 +2,7 @@ package redis.clients.jedis;
 
 import java.util.List;
 
+import redis.clients.jedis.Protocol.NXR;
 import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
@@ -123,6 +124,12 @@ public interface GeoCommands {
 
 	List<Circle<byte[]>> gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] memberPattern, byte[] valuePattern,
 			RELATION ops, ORDERBY sort);
+
+	List<Circle<String>> gpcircle(String key, double lat, double lon, double radius, UNITS unit, String min, String max,
+			String memberPattern, String valuePattern, int offset, int count, RELATION scope, ORDERBY order);
+
+	List<Circle<byte[]>> gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, NXR nxr, byte[] min, byte[] max,
+			byte[] memberPattern, byte[] valuePattern, int offset, int count, RELATION scope, ORDERBY order);
 
 	// gpradiusByMember
 

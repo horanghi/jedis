@@ -1,5 +1,6 @@
 package redis.clients.jedis;
 
+import redis.clients.jedis.Protocol.NXR;
 import redis.clients.jedis.Protocol.ORDERBY;
 import redis.clients.jedis.Protocol.RELATION;
 import redis.clients.jedis.Protocol.UNITS;
@@ -61,6 +62,12 @@ public interface Command4BinarySpatial {
 
 	void gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] mpattern, byte[] vpattern, RELATION ops,
 			ORDERBY sort);
+
+	void gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, byte[] min, byte[] max, byte[] mpattern, byte[] vpattern,
+			long offset, long count, RELATION scope, ORDERBY order);
+
+	void gpcircle(byte[] key, double lat, double lon, double radius, UNITS unit, final NXR nxr, byte[] min, byte[] max, byte[] mpattern,
+			byte[] vpattern, long offset, long count, RELATION scope, ORDERBY order);
 
 	// gpradiusByMember
 
